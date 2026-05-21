@@ -1,0 +1,9 @@
+{
+  "name": "ror-data-fetcher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fetches Shopify + GA4 data for the ROR Growth Dashboard",
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
