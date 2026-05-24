@@ -29,7 +29,7 @@ jobs:
         working-directory: scripts
 
       - name: Fetch Shopify + GA4 data
-                env:
+        env:
           SHOPIFY_STORE:    ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_TOKEN:    ${{ secrets.SHOPIFY_TOKEN }}
           GA4_PROPERTY_ID:  ${{ secrets.GA4_PROPERTY_ID }}
