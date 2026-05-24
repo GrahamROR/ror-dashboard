@@ -29,11 +29,12 @@ jobs:
         working-directory: scripts
 
       - name: Fetch Shopify + GA4 data
-        env:
+                env:
           SHOPIFY_STORE:    ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_TOKEN:    ${{ secrets.SHOPIFY_TOKEN }}
           GA4_PROPERTY_ID:  ${{ secrets.GA4_PROPERTY_ID }}
           GA4_CREDENTIALS:  ${{ secrets.GA4_CREDENTIALS }}
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
         run: node scripts/fetch-data.js
 
       - name: Commit and push data.json
