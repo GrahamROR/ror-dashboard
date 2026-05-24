@@ -1,0 +1,212 @@
+{
+  "updated": "2026-05-24T22:17:58.774Z",
+  "fy": "FY26",
+  "fyLabel": "Aug 2025 – Jul 2026",
+  "monthly": [
+    {
+      "key": "2025-08",
+      "label": "Aug 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-09",
+      "label": "Sep 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-10",
+      "label": "Oct 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-11",
+      "label": "Nov 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-12",
+      "label": "Dec 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-01",
+      "label": "Jan 26",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-02",
+      "label": "Feb 26",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-03",
+      "label": "Mar 26",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-04",
+      "label": "Apr 26",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-05",
+      "label": "May 26",
+      "revenue": 1780.34,
+      "orders": 46,
+      "customers": 45,
+      "returning": 0,
+      "sessions": null,
+      "complete": false,
+      "mtd": true,
+      "future": false
+    },
+    {
+      "key": "2026-06",
+      "label": "Jun 26",
+      "revenue": null,
+      "orders": null,
+      "customers": null,
+      "returning": null,
+      "sessions": null,
+      "complete": false,
+      "mtd": false,
+      "future": true
+    },
+    {
+      "key": "2026-07",
+      "label": "Jul 26",
+      "revenue": null,
+      "orders": null,
+      "customers": null,
+      "returning": null,
+      "sessions": null,
+      "complete": false,
+      "mtd": false,
+      "future": true
+    }
+  ],
+  "topProducts": [
+    {
+      "name": "Personalised Year Sweatshirt",
+      "revenue": 665,
+      "orders": 19
+    },
+    {
+      "name": "Tea Please Sweatshirt",
+      "revenue": 105,
+      "orders": 3
+    },
+    {
+      "name": "Personalised Year Unisex T-shirt",
+      "revenue": 104,
+      "orders": 4
+    },
+    {
+      "name": "Personalised Slogan T-shirt",
+      "revenue": 84,
+      "orders": 3
+    },
+    {
+      "name": "Custard Cream Connoisseur T-Shirt",
+      "revenue": 78,
+      "orders": 3
+    },
+    {
+      "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
+      "revenue": 72,
+      "orders": 3
+    },
+    {
+      "name": "Personalised Embroidered Slogan Heavyweight Hoodie",
+      "revenue": 48,
+      "orders": 1
+    },
+    {
+      "name": "Embroidered Unisex Personalised Slogan Cap",
+      "revenue": 42,
+      "orders": 2
+    },
+    {
+      "name": "Note To Self Sleeve Sweatshirt",
+      "revenue": 38,
+      "orders": 1
+    },
+    {
+      "name": "Let's Have A Brew Slogan Sweatshirt",
+      "revenue": 38,
+      "orders": 1
+    }
+  ],
+  "summary": {
+    "ytdRevenue": 1780.34,
+    "ytdOrders": 46,
+    "ytdSessions": null,
+    "avgAOV": 38.7,
+    "avgRepeatRate": 0,
+    "ytdReturning": 0,
+    "ytdCustomers": 45
+  }
+}
