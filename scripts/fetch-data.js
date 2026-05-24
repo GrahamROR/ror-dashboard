@@ -51,7 +51,7 @@ async function fetchAllOrders() {
   let url = `${base}/orders.json?financial_status=paid` +
             `&created_at_min=${FY_START}` +
             `&limit=250` +
-            `&fields=created_at,current_total_price,customer,line_items`;
+            `&fields=created_at,current_subtotal_price,customer,line_items`;
 
   console.log(`  Starting fetch from: ${FY_START}`);
 
@@ -97,7 +97,7 @@ function aggregateOrders(orders) {
     if (!buckets[monthKey]) return;
 
     const b = buckets[monthKey];
-    b.revenue += parseFloat(order.current_total_price || 0);
+    b.revenue += parseFloat(order.current_subtotal_price || 0);
     b.orders  += 1;
 
     if (order.customer?.id) {
