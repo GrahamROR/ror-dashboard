@@ -1,0 +1,212 @@
+{
+  "updated": "2026-05-24T21:32:34.388Z",
+  "fy": "FY26",
+  "fyLabel": "Aug 2025 – Jul 2026",
+  "monthly": [
+    {
+      "key": "2025-08",
+      "label": "Aug 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-09",
+      "label": "Sep 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-10",
+      "label": "Oct 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-11",
+      "label": "Nov 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2025-12",
+      "label": "Dec 25",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-01",
+      "label": "Jan 26",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-02",
+      "label": "Feb 26",
+      "revenue": 0,
+      "orders": 0,
+      "customers": 0,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-03",
+      "label": "Mar 26",
+      "revenue": 3616.57,
+      "orders": 90,
+      "customers": 90,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-04",
+      "label": "Apr 26",
+      "revenue": 19895.98,
+      "orders": 514,
+      "customers": 500,
+      "returning": 0,
+      "sessions": null,
+      "complete": true,
+      "mtd": false,
+      "future": false
+    },
+    {
+      "key": "2026-05",
+      "label": "May 26",
+      "revenue": 16836.14,
+      "orders": 428,
+      "customers": 420,
+      "returning": 0,
+      "sessions": null,
+      "complete": false,
+      "mtd": true,
+      "future": false
+    },
+    {
+      "key": "2026-06",
+      "label": "Jun 26",
+      "revenue": null,
+      "orders": null,
+      "customers": null,
+      "returning": null,
+      "sessions": null,
+      "complete": false,
+      "mtd": false,
+      "future": true
+    },
+    {
+      "key": "2026-07",
+      "label": "Jul 26",
+      "revenue": null,
+      "orders": null,
+      "customers": null,
+      "returning": null,
+      "sessions": null,
+      "complete": false,
+      "mtd": false,
+      "future": true
+    }
+  ],
+  "topProducts": [
+    {
+      "name": "Personalised Year Sweatshirt",
+      "revenue": 15015,
+      "orders": 425
+    },
+    {
+      "name": "Personalised Year Unisex T-shirt",
+      "revenue": 2444,
+      "orders": 91
+    },
+    {
+      "name": "Personalised Varsity Year Leopard Print Tote Bag",
+      "revenue": 1680,
+      "orders": 69
+    },
+    {
+      "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
+      "revenue": 1056,
+      "orders": 43
+    },
+    {
+      "name": "Personalisation on the back of the neck (+£4.95)",
+      "revenue": 707.85,
+      "orders": 143
+    },
+    {
+      "name": "Happy Hour Slogan Sweatshirt",
+      "revenue": 700,
+      "orders": 20
+    },
+    {
+      "name": "Embroidered Unisex Personalised Slogan Cap",
+      "revenue": 609.65,
+      "orders": 25
+    },
+    {
+      "name": "Funky Font Personalised Year Sweatshirt",
+      "revenue": 595,
+      "orders": 17
+    },
+    {
+      "name": "Embroidered Yes I Like Pina Coladas T-shirt",
+      "revenue": 532,
+      "orders": 19
+    },
+    {
+      "name": "Embroidered Personalised Cuff Sweatshirt",
+      "revenue": 520,
+      "orders": 11
+    }
+  ],
+  "summary": {
+    "ytdRevenue": 40348.69,
+    "ytdOrders": 1032,
+    "ytdSessions": null,
+    "avgAOV": 39.1,
+    "avgRepeatRate": 0,
+    "ytdReturning": 0,
+    "ytdCustomers": 1010
+  }
+}
