@@ -19,8 +19,8 @@ const GA4_CREDENTIALS = process.env.GA4_CREDENTIALS   // full service account JS
 
 // ── FINANCIAL YEAR ────────────────────────────────────────────
 // FY26 = Aug 2025 → Jul 2026
-const FY_START = '2025-08-01T00:00:00+00:00';
-const FY_END   = '2026-07-31T23:59:59+00:00';
+const FY_START = '2025-08-01';
+const FY_END   = '2026-07-31';
 const TODAY    = new Date().toISOString().split('T')[0];  // YYYY-MM-DD
 const THIS_MONTH = TODAY.slice(0, 7);                     // YYYY-MM
 
