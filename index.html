@@ -93,10 +93,10 @@ const GOALS = {
 // Seasonal weights Aug→Jul (derived from real FY26 data)
 const WEIGHTS = [0.074,0.067,0.060,0.117,0.142,0.106,0.063,0.077,0.056,0.067,0.070,0.061];
 
-// Fallback data — real numbers pulled from Shopify on May 19 2026
-// Used only if data.json hasn't been generated yet
+// Fallback data — pulled directly from Shopify via MCP on May 24 2026
+// Used only if data.json hasn't been generated yet by GitHub Actions
 const FALLBACK = {
-  updated: '2026-05-19T00:00:00Z',
+  updated: '2026-05-24T00:00:00Z',
   fy: 'FY26', fyLabel: 'Aug 2025 – Jul 2026',
   monthly: [
     {key:'2025-08',label:'Aug 25',revenue:22210.46,orders:563, customers:545, returning:77, sessions:null,complete:true, mtd:false,future:false},
@@ -108,23 +108,23 @@ const FALLBACK = {
     {key:'2026-02',label:'Feb 26',revenue:18915.93,orders:538, customers:511, returning:97, sessions:null,complete:true, mtd:false,future:false},
     {key:'2026-03',label:'Mar 26',revenue:23062.43,orders:671, customers:663, returning:99, sessions:null,complete:true, mtd:false,future:false},
     {key:'2026-04',label:'Apr 26',revenue:16899.06,orders:521, customers:507, returning:70, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2026-05',label:'May 26',revenue:2837.96, orders:87,  customers:87,  returning:9,  sessions:null,complete:false,mtd:true, future:false},
+    {key:'2026-05',label:'May 26',revenue:14245.05,orders:433, customers:425, returning:63, sessions:null,complete:false,mtd:true, future:false},
     {key:'2026-06',label:'Jun 26',revenue:null,    orders:null,customers:null,returning:null,sessions:null,complete:false,mtd:false,future:true},
     {key:'2026-07',label:'Jul 26',revenue:null,    orders:null,customers:null,returning:null,sessions:null,complete:false,mtd:false,future:true},
   ],
   topProducts: [
-    {name:'Personalised Year Sweatshirt',          revenue:90186.63,orders:2724},
-    {name:'The ULTIMATE Mystery Bag',              revenue:11884.45,orders:360},
-    {name:'Happy Hour Slogan Sweatshirt',          revenue:8595.50, orders:263},
-    {name:'Custard Cream Connoisseur Sweatshirt',  revenue:8398.00, orders:218},
-    {name:'Only Here for the Pigs in Blankets',    revenue:5836.35, orders:195},
-    {name:'Personalised Year Unisex T-shirt',      revenue:5832.45, orders:227},
-    {name:'Vintage Style Denim Personalised Cap',  revenue:5576.79, orders:139},
-    {name:'Yes I Like Pina Colada Cap',            revenue:5491.18, orders:261},
-    {name:'Personalisation on back of neck (+£4.95)',revenue:4965.45,orders:912},
-    {name:'Embroidered Yes I Like Pina Coladas T',  revenue:4722.83, orders:174},
+    {name:'Personalised Year Sweatshirt',                        revenue:77149.62,orders:2373},
+    {name:'The ULTIMATE Mystery Bag',                            revenue:11884.45,orders:360},
+    {name:'Custard Cream Connoisseur Sweatshirt',                revenue:8474.00, orders:220},
+    {name:'Happy Hour Slogan Sweatshirt',                        revenue:6101.16, orders:192},
+    {name:'Only Here for the Pigs in Blankets Christmas Sweatshirt',revenue:5675.35,orders:190},
+    {name:'Personalised Year Unisex T-shirt',                    revenue:4740.37, orders:193},
+    {name:'Personalisation on the back of the neck (+£4.95)',    revenue:4158.60, orders:759},
+    {name:'My Other Job is a Dallas Cowboys Cheerleader Sweatshirt',revenue:3605.00,orders:99},
+    {name:'Personalised Handwriting Cuff Sweatshirt',            revenue:3311.98, orders:77},
+    {name:'Yes I Like Pina Coladas Sweatshirt',                  revenue:3200.00, orders:98},
   ],
-  summary:{ytdRevenue:229478.86,ytdOrders:6476,ytdSessions:null,avgAOV:33.02,avgRepeatRate:0.14,ytdReturning:998,ytdCustomers:7014}
+  summary:{ytdRevenue:243164.01,ytdOrders:6750,ytdSessions:null,avgAOV:32.97,avgRepeatRate:0.147,ytdReturning:897,ytdCustomers:6098}
 };
 
 // ── HELPERS ───────────────────────────────────────────────────
