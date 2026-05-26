@@ -2,7 +2,7 @@ name: Fetch Dashboard Data
 
 on:
   schedule:
-    - cron: '0 5 * * *'   # 5am UTC = 6am BST every day
+    - cron: '0 3 * * *'   # 3am UTC = 4am BST every day
   workflow_dispatch:        # manual trigger from GitHub Actions tab
 
 permissions:
