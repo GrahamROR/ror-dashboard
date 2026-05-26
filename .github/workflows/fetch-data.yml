@@ -2,8 +2,8 @@ name: Fetch Dashboard Data
 
 on:
   schedule:
-    - cron: '0 3 * * *'   # 3am UTC = 4am BST every day
-  workflow_dispatch:        # manual trigger from GitHub Actions tab
+    - cron: '0 3 * * *'
+  workflow_dispatch:        # manual trigger from GitHub Actions tab  
 
 permissions:
   contents: write           # needed to commit data.json back to repo
@@ -36,6 +36,16 @@ jobs:
           GA4_CREDENTIALS:  ${{ secrets.GA4_CREDENTIALS }}
           NODE_TLS_REJECT_UNAUTHORIZED: '0'
         run: node scripts/fetch-data.js
+
+      - name: Verify data quality before committing
+        run: |
+          ORDERS=$(node -e "const d=require('./data.json');console.log(d.summary.ytdOrders)")
+          echo "Orders in data.json: $ORDERS"
+          if [ "$ORDERS" -lt 2000 ]; then
+            echo "❌ Order count too low ($ORDERS) — looks like partial data. Aborting commit."
+            exit 1
+          fi
+          echo "✓ Order count looks good ($ORDERS orders)"
 
       - name: Commit and push data.json
         run: |
