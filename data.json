@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-27T08:59:10.529Z",
+  "updated": "2026-05-27T10:47:23.857Z",
   "fy": "FY26",
   "fyLabel": "Aug 2025 – Jul 2026",
   "monthly": [
@@ -114,11 +114,11 @@
     {
       "key": "2026-05",
       "label": "May 26",
-      "revenue": 14386.93,
-      "orders": 485,
-      "customers": 477,
+      "revenue": 14947.98,
+      "orders": 503,
+      "customers": 495,
       "returning": 70,
-      "sessions": null,
+      "sessions": 634,
       "complete": false,
       "mtd": true,
       "future": false
@@ -201,12 +201,12 @@
     }
   ],
   "summary": {
-    "ytdRevenue": 220059.5,
-    "ytdOrders": 6802,
-    "ytdSessions": null,
+    "ytdRevenue": 220620.55,
+    "ytdOrders": 6820,
+    "ytdSessions": 634,
     "avgAOV": 32.35,
-    "avgRepeatRate": 0.164,
+    "avgRepeatRate": 0.163,
     "ytdReturning": 1078,
-    "ytdCustomers": 6587
+    "ytdCustomers": 6605
   }
 }
