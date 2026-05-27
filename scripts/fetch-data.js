@@ -165,6 +165,13 @@ async function main() {
   console.log('\n→ Loading existing data.json...');
   const existing = loadExistingData();
   console.log(`  Loaded — currently ${existing.summary.ytdOrders} orders YTD`);
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const updatedToday = existing.updated?.slice(0, 10) === todayStr;
+  const alreadyApplied = existing.lastIncrementalDate === dateStr
+    || (!existing.lastIncrementalDate && updatedToday);
+  if (alreadyApplied) {
+    console.log(`  ${dateStr} appears to have already been applied — Shopify order totals will not be added again`);
+  }
 
   // Get fresh Shopify token
   console.log('\n→ Authenticating with Shopify...');
@@ -219,12 +226,13 @@ async function main() {
     console.warn(`  Month ${monthKey} not found in data.json — skipping update`);
   } else {
     const m = monthly[monthIdx];
-    // Add yesterday's data to the month
-    m.revenue   = Math.round(((m.revenue   || 0) + dayRevenue)            * 100) / 100;
-    m.orders    = (m.orders    || 0) + orders.length;
-    m.customers = (m.customers || 0) + customerIds.size;
-    m.returning = (m.returning || 0) + dayReturning;
-    if (daySessions !== null) m.sessions = (m.sessions || 0) + daySessions;
+    // Add yesterday's Shopify data once; GA4 sessions are backfilled below.
+    if (!alreadyApplied) {
+      m.revenue   = Math.round(((m.revenue   || 0) + dayRevenue)            * 100) / 100;
+      m.orders    = (m.orders    || 0) + orders.length;
+      m.customers = (m.customers || 0) + customerIds.size;
+      m.returning = (m.returning || 0) + dayReturning;
+    }
     m.mtd       = monthKey === thisMonthKey;
     m.complete  = isMonthComplete;
     m.future    = false;
@@ -270,6 +278,7 @@ async function main() {
   };
 
   existing.updated = new Date().toISOString();
+  existing.lastIncrementalDate = dateStr;
 
   // Write updated data.json
   const outPath = path.join(__dirname, '..', 'data.json');
