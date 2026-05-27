@@ -8,16 +8,11 @@
 
 const fs   = require('fs');
 const path = require('path');
-const { google } = require('googleapis');
 
 // ── CONFIG ───────────────────────────────────────────────────
 const SHOPIFY_STORE     = process.env.SHOPIFY_STORE;
 const SHOPIFY_CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
 const SHOPIFY_SECRET    = process.env.SHOPIFY_CLIENT_SECRET;
-const GA4_PROPERTY_ID   = process.env.GA4_PROPERTY_ID;
-const GA4_CREDENTIALS   = process.env.GA4_CREDENTIALS
-  ? JSON.parse(process.env.GA4_CREDENTIALS)
-  : null;
 
 // ── DATE HELPERS ─────────────────────────────────────────────
 function getYesterday() {
@@ -88,62 +83,61 @@ async function fetchYesterdayOrders(token, dateStr) {
   return allOrders;
 }
 
-// ── FETCH YESTERDAY'S GA4 SESSIONS ───────────────────────────
-async function fetchYesterdaySessions(dateStr) {
-  if (!GA4_CREDENTIALS || !GA4_PROPERTY_ID) return null;
+// ── FETCH FY SHOPIFY ANALYTICS BY MONTH ──────────────────────
+async function fetchFYShopifyAnalytics(token, startDate, endDate) {
+  const query = `
+    query DashboardAnalytics($query: String!) {
+      shopifyqlQuery(query: $query) {
+        tableData {
+          rows
+        }
+        parseErrors
+      }
+    }
+  `;
+  const shopifyql =
+    `FROM sessions ` +
+    `SHOW sessions, conversion_rate, sessions_that_completed_checkout ` +
+    `GROUP BY month SINCE ${startDate} UNTIL ${endDate} ORDER BY month`;
 
-  try {
-    const auth = new google.auth.GoogleAuth({
-      credentials: GA4_CREDENTIALS,
-      scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
-    });
-    const analyticsData = google.analyticsdata({ version: 'v1beta', auth });
-    const res = await analyticsData.properties.runReport({
-      property: `properties/${GA4_PROPERTY_ID}`,
-      requestBody: {
-        dateRanges: [{ startDate: dateStr, endDate: dateStr }],
-        metrics:    [{ name: 'sessions' }],
+  const resp = await fetch(
+    `https://${SHOPIFY_STORE}.myshopify.com/admin/api/2026-04/graphql.json`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': token,
       },
-    });
-    return parseInt(res.data?.rows?.[0]?.metricValues?.[0]?.value || '0', 10);
-  } catch(e) {
-    console.warn(`  GA4 warning: ${e.message}`);
-    return null;
+      body: JSON.stringify({ query, variables: { query: shopifyql } }),
+    }
+  );
+
+  const json = await resp.json();
+  if (!resp.ok || json.errors) {
+    throw new Error(`Shopify Analytics API failed: ${JSON.stringify(json.errors || json)}`);
   }
-}
 
-// ── FETCH FY GA4 SESSIONS BY MONTH ───────────────────────────
-async function fetchFYMonthlySessions(startDate, endDate) {
-  if (!GA4_CREDENTIALS || !GA4_PROPERTY_ID) return null;
-
-  try {
-    const auth = new google.auth.GoogleAuth({
-      credentials: GA4_CREDENTIALS,
-      scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
-    });
-    const analyticsData = google.analyticsdata({ version: 'v1beta', auth });
-    const res = await analyticsData.properties.runReport({
-      property: `properties/${GA4_PROPERTY_ID}`,
-      requestBody: {
-        dateRanges: [{ startDate, endDate }],
-        dimensions:  [{ name: 'yearMonth' }],
-        metrics:     [{ name: 'sessions' }],
-      },
-    });
-
-    const byMonth = {};
-    (res.data?.rows || []).forEach(row => {
-      const yearMonth = row.dimensionValues?.[0]?.value;
-      const sessions  = parseInt(row.metricValues?.[0]?.value || '0', 10);
-      if (!yearMonth || yearMonth.length !== 6) return;
-      const monthKey = `${yearMonth.slice(0, 4)}-${yearMonth.slice(4, 6)}`;
-      byMonth[monthKey] = sessions;
-    });
-    return byMonth;
-  } catch(e) {
-    console.warn(`  GA4 monthly warning: ${e.message}`);
-    return null;
+  const result = json.data?.shopifyqlQuery;
+  if (result?.parseErrors?.length) {
+    throw new Error(`Shopify Analytics parse errors: ${result.parseErrors.join('; ')}`);
   }
+
+  const byMonth = {};
+  (result?.tableData?.rows || []).forEach(row => {
+    const month = row.month;
+    if (!month) return;
+    const monthKey = month.slice(0, 7);
+    const sessions = Number(row.sessions || 0);
+    const convertedSessions = Number(row.sessions_that_completed_checkout || 0);
+    byMonth[monthKey] = {
+      sessions,
+      convertedSessions,
+      conversionRate: sessions ? convertedSessions / sessions : null,
+      shopifyConversionRate: row.conversion_rate == null ? null : Number(row.conversion_rate),
+    };
+  });
+
+  return byMonth;
 }
 
 // ── LOAD EXISTING DATA ────────────────────────────────────────
@@ -197,19 +191,15 @@ async function main() {
 
   console.log(`  Revenue: £${dayRevenue.toFixed(2)} | Orders: ${orders.length} | Returning: ${dayReturning}`);
 
-  // Fetch yesterday's sessions for the incremental month update, then
-  // backfill FY-to-date sessions by month so conversion is not calculated
-  // from one day's sessions against all YTD orders.
-  console.log('\n→ Fetching GA4 sessions...');
-  const daySessions = await fetchYesterdaySessions(dateStr);
-  console.log(`  Yesterday sessions: ${daySessions ?? 'not available'}`);
-
+  // Backfill Shopify's own sessions and conversion metrics from the FY start
+  // so the dashboard matches Shopify Analytics instead of using orders/sessions.
+  console.log('\n→ Fetching Shopify Analytics sessions and conversion...');
   const fyStartDate = `${existing.monthly?.[0]?.key || '2025-08'}-01`;
-  const fySessions = await fetchFYMonthlySessions(fyStartDate, dateStr);
+  const shopifyAnalytics = await fetchFYShopifyAnalytics(token, fyStartDate, 'today');
   console.log(
-    fySessions
-      ? `  Monthly sessions loaded for ${Object.keys(fySessions).length} month(s)`
-      : '  Monthly sessions not available'
+    shopifyAnalytics
+      ? `  Shopify Analytics loaded for ${Object.keys(shopifyAnalytics).length} month(s)`
+      : '  Shopify Analytics not available'
   );
 
   // Update the monthly entry in existing data
@@ -226,7 +216,7 @@ async function main() {
     console.warn(`  Month ${monthKey} not found in data.json — skipping update`);
   } else {
     const m = monthly[monthIdx];
-    // Add yesterday's Shopify data once; GA4 sessions are backfilled below.
+    // Add yesterday's Shopify order data once; Analytics metrics are backfilled below.
     if (!alreadyApplied) {
       m.revenue   = Math.round(((m.revenue   || 0) + dayRevenue)            * 100) / 100;
       m.orders    = (m.orders    || 0) + orders.length;
@@ -239,12 +229,19 @@ async function main() {
     console.log(`  Updated ${m.label}: now £${m.revenue} (${m.orders} orders)`);
   }
 
-  if (fySessions) {
+  if (shopifyAnalytics) {
     monthly.forEach(m => {
-      if (Object.prototype.hasOwnProperty.call(fySessions, m.key)) {
-        m.sessions = fySessions[m.key];
+      if (Object.prototype.hasOwnProperty.call(shopifyAnalytics, m.key)) {
+        const analytics = shopifyAnalytics[m.key];
+        m.sessions = analytics.sessions;
+        m.convertedSessions = analytics.convertedSessions;
+        m.conversionRate = analytics.conversionRate;
+        m.shopifyConversionRate = analytics.shopifyConversionRate;
       } else if (!m.future) {
         m.sessions = null;
+        m.convertedSessions = null;
+        m.conversionRate = null;
+        m.shopifyConversionRate = null;
       }
     });
   }
@@ -266,11 +263,19 @@ async function main() {
   const ytdSessions  = active.some(m => m.sessions)
     ? active.reduce((s, m) => s + (m.sessions || 0), 0)
     : null;
+  const ytdConvertedSessions = active.some(m => m.convertedSessions)
+    ? active.reduce((s, m) => s + (m.convertedSessions || 0), 0)
+    : null;
+  const avgConversionRate = ytdSessions && ytdConvertedSessions != null
+    ? Math.round((ytdConvertedSessions / ytdSessions) * 10000) / 10000
+    : null;
 
   existing.summary = {
     ytdRevenue:    Math.round(ytdRevenue  * 100) / 100,
     ytdOrders,
     ytdSessions,
+    ytdConvertedSessions,
+    avgConversionRate,
     avgAOV:        ytdOrders ? Math.round((ytdRevenue / ytdOrders) * 100) / 100 : 0,
     avgRepeatRate: ytdCustomers ? Math.round((ytdReturning / ytdCustomers) * 1000) / 1000 : 0,
     ytdReturning,

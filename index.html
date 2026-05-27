@@ -278,7 +278,7 @@ function App() {
   const ordersPerDay_goal = (goalRev / GOALS.aov) / 365;
   const sessPerDay_cur    = ordersPerDay_cur  / (summary.avgAOV ? summary.ytdOrders/(summary.ytdSessions||400000) : 0.023);
   const sessPerDay_goal   = ordersPerDay_goal / GOALS.conversion;
-  const convActual        = summary.ytdSessions ? summary.ytdOrders/summary.ytdSessions : null;
+  const convActual        = summary.avgConversionRate ?? (summary.ytdSessions ? summary.ytdOrders/summary.ytdSessions : null);
 
   async function runAI() {
     if (!apiKey) { setShowAI(true); return; }
@@ -407,7 +407,7 @@ function App() {
             actual: summary.ytdSessions ? fmt(summary.ytdSessions) : 'Not tracked',
             target: fmt(GOALS.sessions), unit:'/year',
             statusKey: summary.ytdSessions ? status(summary.ytdSessions, GOALS.sessions) : 'pending',
-            note: summary.ytdSessions ? null : 'GA4 pipeline active — sessions appear after first nightly run',
+            note: summary.ytdSessions ? null : 'Shopify Analytics pipeline active — sessions appear after first nightly run',
           }),
 
           el(MetricCard, {
@@ -415,7 +415,7 @@ function App() {
             actual: convActual ? fmtP(convActual) : '—',
             target: fmtP(GOALS.conversion),
             statusKey: convActual ? status(convActual, GOALS.conversion) : 'pending',
-            note: convActual ? null : 'Requires sessions data — available once GA4 pipeline runs',
+            note: convActual ? null : 'Requires Shopify Analytics sessions data',
           }),
 
           el(MetricCard, {
