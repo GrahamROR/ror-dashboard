@@ -2,11 +2,11 @@ name: Fetch Dashboard Data
 
 on:
   schedule:
-    - cron: '0 3 * * *'   # 3am UTC = 4am BST every day
-  workflow_dispatch:        # manual trigger from GitHub Actions tab
+    - cron: '0 4 * * *'    # 4am UTC = 5am BST every day
+  workflow_dispatch:         # manual trigger from GitHub Actions tab
 
 permissions:
-  contents: write           # needed to commit data.json back to repo
+  contents: write            # needed to commit data.json back to repo
 
 jobs:
   fetch-data:
@@ -28,7 +28,7 @@ jobs:
         run: npm install
         working-directory: scripts
 
-      - name: Fetch Shopify + GA4 data
+      - name: Fetch yesterday's data and update data.json
         env:
           SHOPIFY_STORE:         ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_CLIENT_ID:     ${{ secrets.SHOPIFY_CLIENT_ID }}
@@ -38,12 +38,12 @@ jobs:
           NODE_TLS_REJECT_UNAUTHORIZED: '0'
         run: node scripts/fetch-data.js
 
-      - name: Commit and push data.json
+      - name: Commit and push updated data.json
         run: |
           git config user.name  "ror-dashboard[bot]"
           git config user.email "dashboard@rockonruby.co.uk"
           git add data.json
           git diff --staged --quiet && echo "No changes to commit" || (
-            git commit -m "chore: update dashboard data $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git commit -m "chore: daily update $(date -u +'%Y-%m-%d')"
             git push
           )
