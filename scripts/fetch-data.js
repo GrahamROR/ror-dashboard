@@ -112,6 +112,40 @@ async function fetchYesterdaySessions(dateStr) {
   }
 }
 
+// ── FETCH FY GA4 SESSIONS BY MONTH ───────────────────────────
+async function fetchFYMonthlySessions(startDate, endDate) {
+  if (!GA4_CREDENTIALS || !GA4_PROPERTY_ID) return null;
+
+  try {
+    const auth = new google.auth.GoogleAuth({
+      credentials: GA4_CREDENTIALS,
+      scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
+    });
+    const analyticsData = google.analyticsdata({ version: 'v1beta', auth });
+    const res = await analyticsData.properties.runReport({
+      property: `properties/${GA4_PROPERTY_ID}`,
+      requestBody: {
+        dateRanges: [{ startDate, endDate }],
+        dimensions:  [{ name: 'yearMonth' }],
+        metrics:     [{ name: 'sessions' }],
+      },
+    });
+
+    const byMonth = {};
+    (res.data?.rows || []).forEach(row => {
+      const yearMonth = row.dimensionValues?.[0]?.value;
+      const sessions  = parseInt(row.metricValues?.[0]?.value || '0', 10);
+      if (!yearMonth || yearMonth.length !== 6) return;
+      const monthKey = `${yearMonth.slice(0, 4)}-${yearMonth.slice(4, 6)}`;
+      byMonth[monthKey] = sessions;
+    });
+    return byMonth;
+  } catch(e) {
+    console.warn(`  GA4 monthly warning: ${e.message}`);
+    return null;
+  }
+}
+
 // ── LOAD EXISTING DATA ────────────────────────────────────────
 function loadExistingData() {
   const dataPath = path.join(__dirname, '..', 'data.json');
@@ -156,10 +190,20 @@ async function main() {
 
   console.log(`  Revenue: £${dayRevenue.toFixed(2)} | Orders: ${orders.length} | Returning: ${dayReturning}`);
 
-  // Fetch yesterday's sessions
+  // Fetch yesterday's sessions for the incremental month update, then
+  // backfill FY-to-date sessions by month so conversion is not calculated
+  // from one day's sessions against all YTD orders.
   console.log('\n→ Fetching GA4 sessions...');
   const daySessions = await fetchYesterdaySessions(dateStr);
-  console.log(`  Sessions: ${daySessions ?? 'not available'}`);
+  console.log(`  Yesterday sessions: ${daySessions ?? 'not available'}`);
+
+  const fyStartDate = `${existing.monthly?.[0]?.key || '2025-08'}-01`;
+  const fySessions = await fetchFYMonthlySessions(fyStartDate, dateStr);
+  console.log(
+    fySessions
+      ? `  Monthly sessions loaded for ${Object.keys(fySessions).length} month(s)`
+      : '  Monthly sessions not available'
+  );
 
   // Update the monthly entry in existing data
   const monthly = existing.monthly;
@@ -185,6 +229,16 @@ async function main() {
     m.complete  = isMonthComplete;
     m.future    = false;
     console.log(`  Updated ${m.label}: now £${m.revenue} (${m.orders} orders)`);
+  }
+
+  if (fySessions) {
+    monthly.forEach(m => {
+      if (Object.prototype.hasOwnProperty.call(fySessions, m.key)) {
+        m.sessions = fySessions[m.key];
+      } else if (!m.future) {
+        m.sessions = null;
+      }
+    });
   }
 
   // Mark previous month as complete if we've moved into a new month
