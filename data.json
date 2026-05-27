@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-27T10:47:23.857Z",
+  "updated": "2026-05-27T11:45:09.002Z",
   "fy": "FY26",
   "fyLabel": "Aug 2025 – Jul 2026",
   "monthly": [
@@ -10,10 +10,13 @@
       "orders": 563,
       "customers": 545,
       "returning": 77,
-      "sessions": null,
+      "sessions": 17526,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 502,
+      "conversionRate": 0.028643158735592835,
+      "shopifyConversionRate": 0.028643158735592835
     },
     {
       "key": "2025-09",
@@ -22,10 +25,13 @@
       "orders": 526,
       "customers": 512,
       "returning": 82,
-      "sessions": null,
+      "sessions": 16479,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 476,
+      "conversionRate": 0.028885247891255537,
+      "shopifyConversionRate": 0.028885247891255537
     },
     {
       "key": "2025-10",
@@ -34,10 +40,13 @@
       "orders": 515,
       "customers": 500,
       "returning": 94,
-      "sessions": null,
+      "sessions": 19841,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 474,
+      "conversionRate": 0.02388992490297868,
+      "shopifyConversionRate": 0.02388992490297868
     },
     {
       "key": "2025-11",
@@ -46,10 +55,13 @@
       "orders": 923,
       "customers": 883,
       "returning": 182,
-      "sessions": null,
+      "sessions": 33757,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 798,
+      "conversionRate": 0.02363954142844447,
+      "shopifyConversionRate": 0.02363954142844447
     },
     {
       "key": "2025-12",
@@ -58,10 +70,13 @@
       "orders": 1159,
       "customers": 1126,
       "returning": 175,
-      "sessions": null,
+      "sessions": 44680,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 1036,
+      "conversionRate": 0.023187108325872875,
+      "shopifyConversionRate": 0.023187108325872875
     },
     {
       "key": "2026-01",
@@ -70,10 +85,13 @@
       "orders": 901,
       "customers": 863,
       "returning": 132,
-      "sessions": null,
+      "sessions": 28524,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 782,
+      "conversionRate": 0.027415509746178658,
+      "shopifyConversionRate": 0.027415509746178658
     },
     {
       "key": "2026-02",
@@ -82,10 +100,13 @@
       "orders": 538,
       "customers": 511,
       "returning": 97,
-      "sessions": null,
+      "sessions": 20398,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 477,
+      "conversionRate": 0.023384645553485635,
+      "shopifyConversionRate": 0.023384645553485635
     },
     {
       "key": "2026-03",
@@ -94,10 +115,13 @@
       "orders": 671,
       "customers": 663,
       "returning": 99,
-      "sessions": null,
+      "sessions": 20878,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 600,
+      "conversionRate": 0.028738384902768463,
+      "shopifyConversionRate": 0.028738384902768463
     },
     {
       "key": "2026-04",
@@ -106,10 +130,13 @@
       "orders": 521,
       "customers": 507,
       "returning": 70,
-      "sessions": null,
+      "sessions": 16841,
       "complete": true,
       "mtd": false,
-      "future": false
+      "future": false,
+      "convertedSessions": 483,
+      "conversionRate": 0.02868000712546761,
+      "shopifyConversionRate": 0.02868000712546761
     },
     {
       "key": "2026-05",
@@ -118,10 +145,13 @@
       "orders": 503,
       "customers": 495,
       "returning": 70,
-      "sessions": 634,
+      "sessions": 15001,
       "complete": false,
       "mtd": true,
-      "future": false
+      "future": false,
+      "convertedSessions": 435,
+      "conversionRate": 0.028998066795546965,
+      "shopifyConversionRate": 0.028998066795546965
     },
     {
       "key": "2026-06",
@@ -203,10 +233,13 @@
   "summary": {
     "ytdRevenue": 220620.55,
     "ytdOrders": 6820,
-    "ytdSessions": 634,
+    "ytdSessions": 233925,
+    "ytdConvertedSessions": 6063,
+    "avgConversionRate": 0.0259,
     "avgAOV": 32.35,
     "avgRepeatRate": 0.163,
     "ytdReturning": 1078,
     "ytdCustomers": 6605
-  }
+  },
+  "lastIncrementalDate": "2026-05-26"
 }
