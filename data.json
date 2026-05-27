@@ -1,0 +1,40 @@
+{
+  "updated": "2026-05-27T09:00:00.000Z",
+  "fy": "FY26",
+  "fyLabel": "Aug 2025 – Jul 2026",
+  "monthly": [
+    {"key":"2025-08","label":"Aug 25","revenue":20012.34,"orders":563,"customers":545,"returning":77,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2025-09","label":"Sep 25","revenue":18184.71,"orders":526,"customers":512,"returning":82,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2025-10","label":"Oct 25","revenue":16352.73,"orders":515,"customers":500,"returning":94,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2025-11","label":"Nov 25","revenue":31514.82,"orders":923,"customers":883,"returning":182,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2025-12","label":"Dec 25","revenue":37970.93,"orders":1159,"customers":1126,"returning":175,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2026-01","label":"Jan 26","revenue":28760.66,"orders":901,"customers":863,"returning":132,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2026-02","label":"Feb 26","revenue":16828.83,"orders":538,"customers":511,"returning":97,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2026-03","label":"Mar 26","revenue":20773.86,"orders":671,"customers":663,"returning":99,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2026-04","label":"Apr 26","revenue":15273.69,"orders":521,"customers":507,"returning":70,"sessions":null,"complete":true,"mtd":false,"future":false},
+    {"key":"2026-05","label":"May 26","revenue":13825.88,"orders":467,"customers":459,"returning":70,"sessions":null,"complete":false,"mtd":true,"future":false},
+    {"key":"2026-06","label":"Jun 26","revenue":null,"orders":null,"customers":null,"returning":null,"sessions":null,"complete":false,"mtd":false,"future":true},
+    {"key":"2026-07","label":"Jul 26","revenue":null,"orders":null,"customers":null,"returning":null,"sessions":null,"complete":false,"mtd":false,"future":true}
+  ],
+  "topProducts": [
+    {"name":"Personalised Year Sweatshirt","revenue":77412.07,"orders":2380},
+    {"name":"The ULTIMATE Mystery Bag","revenue":11884.45,"orders":360},
+    {"name":"Custard Cream Connoisseur Sweatshirt","revenue":8474.00,"orders":220},
+    {"name":"Happy Hour Slogan Sweatshirt","revenue":6101.16,"orders":192},
+    {"name":"Only Here for the Pigs in Blankets Christmas Sweatshirt","revenue":5675.35,"orders":190},
+    {"name":"Personalised Year Unisex T-shirt","revenue":4827.03,"orders":197},
+    {"name":"Personalisation on the back of the neck (+£4.95)","revenue":4193.25,"orders":764},
+    {"name":"My Other Job is a Dallas Cowboys Cheerleader Sweatshirt","revenue":3605.00,"orders":99},
+    {"name":"Personalised Handwriting Cuff Sweatshirt","revenue":3311.98,"orders":77},
+    {"name":"Yes I Like Pina Coladas Sweatshirt","revenue":3200.00,"orders":98}
+  ],
+  "summary": {
+    "ytdRevenue": 219498.45,
+    "ytdOrders": 6784,
+    "ytdSessions": null,
+    "avgAOV": 32.36,
+    "avgRepeatRate": 0.147,
+    "ytdReturning": 904,
+    "ytdCustomers": 6130
+  }
+}
