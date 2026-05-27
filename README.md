@@ -143,6 +143,35 @@ The dashboard shows the real seed data from May 2026 (pulled directly from Shopi
 
 **GitHub Pages not loading:** Check Settings → Pages — it can take 5 minutes on first deploy. Also make sure the branch is set to `main` and folder to `/`.
 
+### If GA4 rejects the service account email
+
+If GA4 will not let you add the service account email in **Admin → Property Access Management**, use the one-time Admin API helper:
+
+1. In Google Cloud, enable the **Google Analytics Admin API**.
+2. Create an OAuth client ID of type **Desktop app**.
+3. Run:
+
+```bash
+cd scripts
+npm install
+GA4_PROPERTY_ID="123456789" \
+GA4_SERVICE_ACCOUNT_EMAIL="your-service-account@your-project.iam.gserviceaccount.com" \
+GOOGLE_OAUTH_CLIENT_ID="your-oauth-client-id" \
+GOOGLE_OAUTH_CLIENT_SECRET="your-oauth-client-secret" \
+node grant-ga4-access.js
+```
+
+Open the printed URL, sign in with a Google account that already has **Administrator** access to the GA4 property, and approve the request. The script grants the service account **Viewer** access to that property.
+
+After that, add these GitHub secrets:
+
+| Secret name | Value |
+|---|---|
+| `GA4_PROPERTY_ID` | The numeric GA4 property ID |
+| `GA4_CREDENTIALS` | The full service account JSON key |
+
+Then run **Actions → Test GA4 API Access → Run workflow** in GitHub.
+
 ---
 
 ## Adding the AI key later
