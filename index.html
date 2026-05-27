@@ -207,7 +207,7 @@ function MiniBar({ months, goalRev }) {
       const revH = Math.round((rev/maxRev)*h);
       const col  = m.future?'var(--s4)':rev>=tgt?'var(--grn)':rev>=tgt*0.85?'var(--amb)':'var(--red)';
       return el('div', {key:m.key, style:{flex:1,display:'flex',alignItems:'flex-end',gap:1,position:'relative'},title:`${m.label}: ${fmtC(rev)}`},
-        el('div', {style:{flex:1,height:tgtH,background:'var(--s3)',borderRadius:2}}),
+        el('div', {style:{flex:1,height:tgtH,background:'#fff',borderRadius:2}}),
         !m.future && el('div', {style:{position:'absolute',left:0,right:0,bottom:0,height:revH,background:col,borderRadius:2,opacity:0.85}})
       );
     })
@@ -390,7 +390,7 @@ function App() {
         el('div', {style:{marginTop:14,paddingTop:14,borderTop:'1px solid var(--bdr)'}},
           el('div', {className:'lbl',style:{marginBottom:4}}, 'Monthly revenue vs target  ',
             el('span',{style:{color:'var(--grn)',fontWeight:400}}, '█ actual'),
-            '  ',el('span',{style:{color:'var(--s4)',fontWeight:400}}, '░ target')
+            '  ',el('span',{style:{color:'#fff',fontWeight:400}}, '░ target')
           ),
           el(MiniBar, {months:monthly, goalRev})
         )
