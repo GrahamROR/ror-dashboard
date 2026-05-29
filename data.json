@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-28T06:55:33.276Z",
+  "updated": "2026-05-29T06:55:30.804Z",
   "fy": "FY26",
   "fyLabel": "Aug 2025 – Jul 2026",
   "monthly": [
@@ -141,17 +141,17 @@
     {
       "key": "2026-05",
       "label": "May 26",
-      "revenue": 15311.02,
-      "orders": 515,
-      "customers": 507,
+      "revenue": 15937.68,
+      "orders": 533,
+      "customers": 525,
       "returning": 70,
-      "sessions": 15547,
+      "sessions": 16317,
       "complete": false,
       "mtd": true,
       "future": false,
-      "convertedSessions": 442,
-      "conversionRate": 0.028429922171480028,
-      "shopifyConversionRate": 0.028429922171480028
+      "convertedSessions": 462,
+      "conversionRate": 0.028314028314028315,
+      "shopifyConversionRate": 0.028314028314028315
     },
     {
       "key": "2026-06",
@@ -231,15 +231,15 @@
     }
   ],
   "summary": {
-    "ytdRevenue": 220983.59,
-    "ytdOrders": 6832,
-    "ytdSessions": 234471,
-    "ytdConvertedSessions": 6070,
+    "ytdRevenue": 221610.25,
+    "ytdOrders": 6850,
+    "ytdSessions": 235241,
+    "ytdConvertedSessions": 6090,
     "avgConversionRate": 0.0259,
     "avgAOV": 32.35,
-    "avgRepeatRate": 0.163,
+    "avgRepeatRate": 0.162,
     "ytdReturning": 1078,
-    "ytdCustomers": 6617
+    "ytdCustomers": 6635
   },
-  "lastIncrementalDate": "2026-05-27"
+  "lastIncrementalDate": "2026-05-28"
 }
