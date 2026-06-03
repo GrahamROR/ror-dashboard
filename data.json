@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-03T08:17:47.289Z",
+  "updated": "2026-06-03T12:35:38.739Z",
   "fy": "FY26",
   "fyLabel": "Aug 2025 – Jul 2026",
   "monthly": [
@@ -160,13 +160,13 @@
       "orders": 29,
       "customers": 29,
       "returning": 0,
-      "sessions": 1005,
+      "sessions": 1103,
       "complete": false,
       "mtd": true,
       "future": false,
-      "convertedSessions": 31,
-      "conversionRate": 0.030845771144278607,
-      "shopifyConversionRate": 0.030845771144278607
+      "convertedSessions": 34,
+      "conversionRate": 0.030825022665457842,
+      "shopifyConversionRate": 0.030825022665457842
     },
     {
       "key": "2026-07",
@@ -236,13 +236,33 @@
   "summary": {
     "ytdRevenue": 224466.19,
     "ytdOrders": 6937,
-    "ytdSessions": 237794,
-    "ytdConvertedSessions": 6178,
+    "ytdSessions": 237892,
+    "ytdConvertedSessions": 6181,
     "avgConversionRate": 0.026,
     "avgAOV": 32.36,
     "avgRepeatRate": 0.16,
     "ytdReturning": 1078,
     "ytdCustomers": 6722
   },
-  "lastIncrementalDate": "2026-06-02"
+  "lastIncrementalDate": "2026-06-02",
+  "yesterday": {
+    "date": "2026-06-02",
+    "monthKey": "2026-06",
+    "revenue": 462.91,
+    "orders": 13,
+    "customers": 13,
+    "returning": 0,
+    "repeatRate": 0,
+    "aov": 35.61,
+    "sessions": 498,
+    "convertedSessions": 12,
+    "conversionRate": 0.024096385542168676,
+    "shopifyConversionRate": 0.024096385542168676,
+    "margin": null,
+    "profit": null,
+    "marginSource": "pending_sku_cost_data",
+    "profitSource": "pending_sku_cost_data",
+    "revenueSource": "Shopify Orders API current_subtotal_price",
+    "analyticsSource": "Shopify Analytics API sessions report"
+  }
 }
