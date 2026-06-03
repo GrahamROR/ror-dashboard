@@ -140,6 +140,56 @@ async function fetchFYShopifyAnalytics(token, startDate, endDate) {
   return byMonth;
 }
 
+// ── FETCH YESTERDAY'S SHOPIFY ANALYTICS ──────────────────────
+async function fetchYesterdayShopifyAnalytics(token, dateStr) {
+  const query = `
+    query YesterdayAnalytics($query: String!) {
+      shopifyqlQuery(query: $query) {
+        tableData {
+          rows
+        }
+        parseErrors
+      }
+    }
+  `;
+  const shopifyql =
+    `FROM sessions ` +
+    `SHOW sessions, conversion_rate, sessions_that_completed_checkout ` +
+    `SINCE ${dateStr} UNTIL ${dateStr}`;
+
+  const resp = await fetch(
+    `https://${SHOPIFY_STORE}.myshopify.com/admin/api/2026-04/graphql.json`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Access-Token': token,
+      },
+      body: JSON.stringify({ query, variables: { query: shopifyql } }),
+    }
+  );
+
+  const json = await resp.json();
+  if (!resp.ok || json.errors) {
+    throw new Error(`Shopify yesterday Analytics API failed: ${JSON.stringify(json.errors || json)}`);
+  }
+
+  const result = json.data?.shopifyqlQuery;
+  if (result?.parseErrors?.length) {
+    throw new Error(`Shopify yesterday Analytics parse errors: ${result.parseErrors.join('; ')}`);
+  }
+
+  const row = result?.tableData?.rows?.[0] || {};
+  const sessions = Number(row.sessions || 0);
+  const convertedSessions = Number(row.sessions_that_completed_checkout || 0);
+  return {
+    sessions,
+    convertedSessions,
+    conversionRate: sessions ? convertedSessions / sessions : null,
+    shopifyConversionRate: row.conversion_rate == null ? null : Number(row.conversion_rate),
+  };
+}
+
 // ── LOAD EXISTING DATA ────────────────────────────────────────
 function loadExistingData() {
   const dataPath = path.join(__dirname, '..', 'data.json');
@@ -202,6 +252,10 @@ async function main() {
       : '  Shopify Analytics not available'
   );
 
+  console.log('\n→ Fetching yesterday Shopify Analytics...');
+  const yesterdayAnalytics = await fetchYesterdayShopifyAnalytics(token, dateStr);
+  console.log(`  Yesterday sessions: ${yesterdayAnalytics.sessions} | Converted sessions: ${yesterdayAnalytics.convertedSessions}`);
+
   // Update the monthly entry in existing data
   const monthly = existing.monthly;
   const monthIdx = monthly.findIndex(m => m.key === monthKey);
@@ -245,6 +299,29 @@ async function main() {
       }
     });
   }
+
+  const yesterdayAOV = orders.length ? Math.round((dayRevenue / orders.length) * 100) / 100 : null;
+  const yesterdayRepeatRate = customerIds.size ? Math.round((dayReturning / customerIds.size) * 1000) / 1000 : null;
+  existing.yesterday = {
+    date: dateStr,
+    monthKey,
+    revenue: Math.round(dayRevenue * 100) / 100,
+    orders: orders.length,
+    customers: customerIds.size,
+    returning: dayReturning,
+    repeatRate: yesterdayRepeatRate,
+    aov: yesterdayAOV,
+    sessions: yesterdayAnalytics.sessions,
+    convertedSessions: yesterdayAnalytics.convertedSessions,
+    conversionRate: yesterdayAnalytics.conversionRate,
+    shopifyConversionRate: yesterdayAnalytics.shopifyConversionRate,
+    margin: null,
+    profit: null,
+    marginSource: 'pending_sku_cost_data',
+    profitSource: 'pending_sku_cost_data',
+    revenueSource: 'Shopify Orders API current_subtotal_price',
+    analyticsSource: 'Shopify Analytics API sessions report',
+  };
 
   // Mark previous month as complete if we've moved into a new month
   monthly.forEach((m, i) => {

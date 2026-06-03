@@ -152,6 +152,10 @@ function statusBadge(s,text) {
   const cls = s==='green'?'badge bg':s==='amber'?'badge ba':s==='red'?'badge br':'badge bb';
   return {cls, text: text||(s==='green'?'on track':s==='amber'?'close':s==='red'?'off track':'pending')};
 }
+function dateLabel(dateStr) {
+  if (!dateStr) return 'Yesterday';
+  return new Date(dateStr + 'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
+}
 
 // ── ANTHROPIC ─────────────────────────────────────────────────
 async function callClaude(prompt, key) {
@@ -236,6 +240,27 @@ function MetricCard({ icon, label, actual, target, unit='', statusKey, note, acc
   );
 }
 
+function YesterdayCard({ icon, label, actual, target, statusKey, note, accentCol }) {
+  const col = statusKey==='pending'?'var(--t3)':statusCol(statusKey);
+  const bd  = statusBadge(statusKey);
+  return el('div', {className:'card',style:{display:'flex',flexDirection:'column',gap:0,minHeight:142}},
+    el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:12}},
+      el('div', {style:{display:'flex',alignItems:'center',gap:8,minWidth:0}},
+        el('div', {style:{width:28,height:28,borderRadius:6,background:accentCol+'22',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
+          el('i', {className:'ti '+icon, style:{color:accentCol,fontSize:14}})
+        ),
+        el('div', {className:'lbl',style:{lineHeight:1.25}}, label)
+      ),
+      el('div', {className:bd.cls,style:{flexShrink:0}}, bd.text)
+    ),
+    el('div', {style:{fontSize:24,fontWeight:600,color:col,fontFamily:"'DM Mono',monospace",letterSpacing:'-0.02em',lineHeight:1.12,marginBottom:4}}, actual),
+    el('div', {style:{fontSize:12,color:'var(--t3)',marginBottom:note?8:0}}, 'Target: ',
+      el('span',{style:{color:'var(--t2)',fontFamily:"'DM Mono',monospace"}}, target)
+    ),
+    note && el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.5,borderTop:'1px solid var(--bdr)',paddingTop:8,marginTop:'auto'}}, note)
+  );
+}
+
 function App() {
   const [data,       setData]       = useState(null);
   const [loadErr,    setLoadErr]    = useState('');
@@ -266,12 +291,18 @@ function App() {
   const summary      = data?.summary || {};
   const monthly      = data?.monthly || [];
   const topProducts  = data?.topProducts || [];
+  const yesterday    = data?.yesterday || null;
   const updatedAt    = data?.updated ? new Date(data.updated) : null;
 
   const completedCount = monthly.filter(m=>!m.future).length;
   const ytdGoal        = ytdTarget(goalRev, completedCount);
   const ytdVariance    = summary.ytdRevenue - ytdGoal;
   const ytdOnTrack     = ytdVariance >= 0;
+  const yesterdayIdx   = Math.max(0, monthly.findIndex(m=>m.key===yesterday?.monthKey));
+  const yRevTarget     = dailyTarget(goalRev, yesterdayIdx);
+  const yOrdersTarget  = yRevTarget / GOALS.aov;
+  const ySessionsTarget = dailyTarget(GOALS.sessions, yesterdayIdx);
+  const yProfitTarget  = yRevTarget * GOALS.margin;
 
   // Slider derived numbers
   const ordersPerDay_cur  = (goalRev / (summary.avgAOV||33)) / 365;
@@ -326,7 +357,7 @@ function App() {
               )
         ),
         el('div', {className:'tab-bar'},
-          [['overview','ti-layout-dashboard'],['monthly','ti-calendar'],['products','ti-package'],['margin','ti-chart-pie']].map(([t,ic])=>
+          [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['margin','ti-chart-pie']].map(([t,ic])=>
             el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t)},
               el('i', {className:'ti '+ic, style:{fontSize:13}}),
               el('span', {className:'hide-mobile', style:{marginLeft:5}}, t.charAt(0).toUpperCase()+t.slice(1))
@@ -473,6 +504,91 @@ function App() {
           aiInsight && el('div', {style:{fontSize:13,color:'var(--t1)',lineHeight:1.8,whiteSpace:'pre-wrap',padding:14,background:'var(--s2)',borderRadius:'var(--r)',border:'1px solid var(--bdr2)'}}, aiInsight),
           !aiInsight && !aiLoading && !showAI && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'20px 0',textAlign:'center'}},
             'Click "Get insight" to analyse your FY26 performance against the ',fmtC(goalRev,0),' goal.'
+          )
+        )
+      ),
+
+      // ══ YESTERDAY ═══════════════════════════════════════════
+      activeTab==='yesterday' && el('div', {className:'fi'},
+        el('div', {className:'card',style:{marginBottom:16}},
+          el('div', {style:{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:12,flexWrap:'wrap'}},
+            el('div', null,
+              el('div', {className:'lbl',style:{marginBottom:4}}, 'Yesterday performance'),
+              el('div', {style:{fontSize:24,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1.1}}, dateLabel(yesterday?.date)),
+              el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.5}},
+                'Shopify Orders API for revenue/orders · Shopify Analytics for sessions/conversion · targets follow the revenue goal slider'
+              )
+            ),
+            el('div', {style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
+              el('div', {className:'badge bb'}, 'daily targets'),
+              el('div', {className:'badge ba'}, 'margin pending')
+            )
+          )
+        ),
+        yesterday ? el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(190px,1fr))',gap:12,marginBottom:16},className:'grid-auto'},
+          el(YesterdayCard, {
+            icon:'ti-currency-pound', label:'Revenue', accentCol:'var(--grn)',
+            actual: fmtC(yesterday.revenue,0), target: fmtC(yRevTarget,0),
+            statusKey: status(yesterday.revenue, yRevTarget),
+            note: 'Uses Shopify current_subtotal_price, matching the daily order fetcher.',
+          }),
+          el(YesterdayCard, {
+            icon:'ti-shopping-bag', label:'Orders', accentCol:'var(--amb)',
+            actual: fmt(yesterday.orders), target: fmt(yOrdersTarget,1),
+            statusKey: status(yesterday.orders, yOrdersTarget),
+            note: 'Target is revenue daily target divided by £48 goal AOV.',
+          }),
+          el(YesterdayCard, {
+            icon:'ti-current-location', label:'Sessions', accentCol:'var(--blu)',
+            actual: fmt(yesterday.sessions), target: fmt(ySessionsTarget,0),
+            statusKey: status(yesterday.sessions, ySessionsTarget),
+            note: 'Pulled directly from Shopify Analytics sessions.',
+          }),
+          el(YesterdayCard, {
+            icon:'ti-receipt', label:'AOV', accentCol:'var(--grn)',
+            actual: fmtC(yesterday.aov,2), target: fmtC(GOALS.aov,0),
+            statusKey: status(yesterday.aov, GOALS.aov),
+            note: 'Calculated from yesterday revenue divided by yesterday orders.',
+          }),
+          el(YesterdayCard, {
+            icon:'ti-refresh', label:'Repeat rate', accentCol:'var(--amb)',
+            actual: fmtP(yesterday.repeatRate), target: fmtP(GOALS.repeatRate),
+            statusKey: status(yesterday.repeatRate, GOALS.repeatRate),
+            note: fmt(yesterday.returning)+' returning of '+fmt(yesterday.customers)+' order customers.',
+          }),
+          el(YesterdayCard, {
+            icon:'ti-percentage', label:'Margin', accentCol:'var(--pur)',
+            actual: yesterday.margin==null?'Pending':fmtP(yesterday.margin),
+            target: fmtP(GOALS.margin),
+            statusKey: yesterday.margin==null?'pending':status(yesterday.margin, GOALS.margin),
+            note: 'Requires SKU cost/margin data before this can be calculated safely.',
+          }),
+          el(YesterdayCard, {
+            icon:'ti-chart-pie', label:'Profit', accentCol:'var(--pur)',
+            actual: yesterday.profit==null?'Pending':fmtC(yesterday.profit,0),
+            target: fmtC(yProfitTarget,0),
+            statusKey: yesterday.profit==null?'pending':status(yesterday.profit, yProfitTarget),
+            note: 'Target is daily revenue target × 45% margin goal.',
+          })
+        ) : el('div', {className:'card',style:{textAlign:'center',padding:'28px 20px'}},
+          el('div', {style:{fontWeight:600,marginBottom:6}}, 'Yesterday data not available yet'),
+          el('div', {style:{fontSize:12,color:'var(--t3)'}}, 'Run Fetch Dashboard Data once after this update deploys.')
+        ),
+        yesterday && el('div', {className:'card'},
+          el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Shopify Analytics context'),
+          el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:14}}, 'Not a goal card, but useful for checking Shopify behaviour.'),
+          el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10}},
+            [
+              {lbl:'Converted sessions',val:fmt(yesterday.convertedSessions),col:'var(--pur)'},
+              {lbl:'Shopify conversion',val:fmtP(yesterday.shopifyConversionRate),col:'var(--pur)'},
+              {lbl:'Revenue source',val:'Orders API',col:'var(--t2)'},
+              {lbl:'Analytics source',val:'ShopifyQL',col:'var(--t2)'},
+            ].map((item,i)=>
+              el('div', {key:i,style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'10px 12px',border:'1px solid var(--bdr)'}},
+                el('div', {className:'lbl',style:{marginBottom:4}}, item.lbl),
+                el('div', {style:{fontSize:17,fontWeight:600,color:item.col,fontFamily:"'DM Mono',monospace"}}, item.val)
+              )
+            )
           )
         )
       ),
