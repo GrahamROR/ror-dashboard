@@ -62,7 +62,7 @@ async function fetchYesterdayOrders(token, dateStr) {
   const end   = `${dateStr}T23:59:59+00:00`;
 
   let allOrders = [];
-  let url = `${base}/orders.json?financial_status=paid` +
+  let url = `${base}/orders.json?financial_status=paid,authorized,partially_paid` +
             `&created_at_min=${start}&created_at_max=${end}` +
             `&limit=250` +
             `&fields=created_at,current_subtotal_price,customer`;
