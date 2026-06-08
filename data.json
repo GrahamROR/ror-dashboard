@@ -1,12 +1,12 @@
 {
-  "updated": "2026-06-08T08:10:10.465Z",
+  "updated": "2026-06-08T09:35:42.607Z",
   "fy": "FY26",
   "fyLabel": "Aug 2025 – Jul 2026",
   "monthly": [
     {
       "key": "2025-08",
       "label": "Aug 25",
-      "revenue": 20012.34,
+      "revenue": 22039.92,
       "orders": 563,
       "customers": 545,
       "returning": 77,
@@ -21,7 +21,7 @@
     {
       "key": "2025-09",
       "label": "Sep 25",
-      "revenue": 18184.71,
+      "revenue": 21432.2,
       "orders": 526,
       "customers": 512,
       "returning": 82,
@@ -36,7 +36,7 @@
     {
       "key": "2025-10",
       "label": "Oct 25",
-      "revenue": 16352.73,
+      "revenue": 21093.36,
       "orders": 515,
       "customers": 500,
       "returning": 94,
@@ -51,7 +51,7 @@
     {
       "key": "2025-11",
       "label": "Nov 25",
-      "revenue": 31514.82,
+      "revenue": 39761.69,
       "orders": 923,
       "customers": 883,
       "returning": 182,
@@ -66,7 +66,7 @@
     {
       "key": "2025-12",
       "label": "Dec 25",
-      "revenue": 37970.93,
+      "revenue": 48198.14,
       "orders": 1159,
       "customers": 1126,
       "returning": 175,
@@ -81,7 +81,7 @@
     {
       "key": "2026-01",
       "label": "Jan 26",
-      "revenue": 28760.66,
+      "revenue": 36918.08,
       "orders": 901,
       "customers": 863,
       "returning": 132,
@@ -96,7 +96,7 @@
     {
       "key": "2026-02",
       "label": "Feb 26",
-      "revenue": 16828.83,
+      "revenue": 21628.91,
       "orders": 538,
       "customers": 511,
       "returning": 97,
@@ -111,7 +111,7 @@
     {
       "key": "2026-03",
       "label": "Mar 26",
-      "revenue": 20773.86,
+      "revenue": 26840.28,
       "orders": 671,
       "customers": 663,
       "returning": 99,
@@ -126,7 +126,7 @@
     {
       "key": "2026-04",
       "label": "Apr 26",
-      "revenue": 15273.69,
+      "revenue": 19921.78,
       "orders": 521,
       "customers": 507,
       "returning": 70,
@@ -141,10 +141,10 @@
     {
       "key": "2026-05",
       "label": "May 26",
-      "revenue": 17783.28,
-      "orders": 591,
-      "customers": 583,
-      "returning": 70,
+      "revenue": 21458.05,
+      "orders": 565,
+      "customers": 554,
+      "returning": 84,
       "sessions": 17865,
       "complete": true,
       "mtd": false,
@@ -156,17 +156,17 @@
     {
       "key": "2026-06",
       "label": "Jun 26",
-      "revenue": 3810.02,
-      "orders": 105,
-      "customers": 105,
-      "returning": 0,
-      "sessions": 3452,
+      "revenue": 4459.57,
+      "orders": 113,
+      "customers": 112,
+      "returning": 22,
+      "sessions": 3486,
       "complete": false,
       "mtd": true,
       "future": false,
       "convertedSessions": 102,
-      "conversionRate": 0.02954808806488992,
-      "shopifyConversionRate": 0.02954808806488992
+      "conversionRate": 0.029259896729776247,
+      "shopifyConversionRate": 0.029259896729776247
     },
     {
       "key": "2026-07",
@@ -234,26 +234,25 @@
     }
   ],
   "summary": {
-    "ytdRevenue": 227265.87,
-    "ytdOrders": 7013,
-    "ytdSessions": 240241,
+    "ytdRevenue": 283751.98,
+    "ytdOrders": 6995,
+    "ytdSessions": 240275,
     "ytdConvertedSessions": 6249,
     "avgConversionRate": 0.026,
-    "avgAOV": 32.41,
-    "avgRepeatRate": 0.159,
-    "ytdReturning": 1078,
-    "ytdCustomers": 6798
+    "avgAOV": 40.56,
+    "avgRepeatRate": 0.164,
+    "ytdReturning": 1114,
+    "ytdCustomers": 6776
   },
-  "lastIncrementalDate": "2026-06-07",
   "yesterday": {
     "date": "2026-06-07",
     "monthKey": "2026-06",
-    "revenue": 579.08,
+    "revenue": 634.38,
     "orders": 17,
     "customers": 17,
-    "returning": 0,
-    "repeatRate": 0,
-    "aov": 34.06,
+    "returning": 3,
+    "repeatRate": 0.176,
+    "aov": 29.23,
     "sessions": 613,
     "convertedSessions": 16,
     "conversionRate": 0.026101141924959218,
@@ -262,7 +261,7 @@
     "profit": null,
     "marginSource": "pending_sku_cost_data",
     "profitSource": "pending_sku_cost_data",
-    "revenueSource": "Shopify Orders API current_subtotal_price",
-    "analyticsSource": "Shopify Analytics API sessions report"
+    "revenueSource": "Shopify Analytics total_sales",
+    "analyticsSource": "Shopify Analytics sessions report"
   }
 }
