@@ -309,7 +309,7 @@ function App() {
   const ordersPerDay_goal = (goalRev / GOALS.aov) / 365;
   const sessPerDay_cur    = ordersPerDay_cur  / (summary.avgAOV ? summary.ytdOrders/(summary.ytdSessions||400000) : 0.023);
   const sessPerDay_goal   = ordersPerDay_goal / GOALS.conversion;
-  const convActual        = summary.avgConversionRate ?? (summary.ytdSessions ? summary.ytdOrders/summary.ytdSessions : null);
+  const convActual        = summary.avgConversionRate ?? null;
 
   async function runAI() {
     if (!apiKey) { setShowAI(true); return; }
@@ -516,7 +516,7 @@ function App() {
               el('div', {className:'lbl',style:{marginBottom:4}}, 'Yesterday performance'),
               el('div', {style:{fontSize:24,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1.1}}, dateLabel(yesterday?.date)),
               el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.5}},
-                'Shopify Orders API for revenue/orders · Shopify Analytics for sessions/conversion · targets follow the revenue goal slider'
+                'Shopify Analytics total_sales for revenue/orders/AOV · Shopify Analytics sessions report for sessions/conversion · targets follow the revenue goal slider'
               )
             ),
             el('div', {style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
@@ -548,7 +548,7 @@ function App() {
             icon:'ti-receipt', label:'AOV', accentCol:'var(--grn)',
             actual: fmtC(yesterday.aov,2), target: fmtC(GOALS.aov,0),
             statusKey: status(yesterday.aov, GOALS.aov),
-            note: 'Calculated from yesterday revenue divided by yesterday orders.',
+            note: 'Pulled directly from Shopify Analytics average_order_value.',
           }),
           el(YesterdayCard, {
             icon:'ti-refresh', label:'Repeat rate', accentCol:'var(--amb)',
@@ -619,7 +619,7 @@ function App() {
               el('tbody', null,
                 monthly.map((m,i)=>{
                   const tgt  = monthlyTarget(goalRev, i);
-                  const aov  = m.orders ? round2(m.revenue/m.orders) : null;
+                  const aov  = m.aov ?? (m.orders ? round2(m.revenue/m.orders) : null);
                   const rr   = m.customers ? round2(m.returning/m.customers) : null;
                   const vari = m.revenue!=null ? m.revenue-tgt : null;
                   const st   = m.future?'future': m.mtd?'mtd': status(m.revenue, tgt*0.9);
