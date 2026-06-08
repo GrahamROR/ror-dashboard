@@ -55,9 +55,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 .card{background:var(--s1);border:1px solid var(--bdr);border-radius:var(--rlg);padding:20px;}
 .mono{font-family:'DM Mono',monospace;}
 .lbl{font-size:11px;color:var(--t2);text-transform:uppercase;letter-spacing:0.08em;}
-.tab-bar{display:flex;gap:2px;background:var(--s2);border-radius:var(--r);padding:3px;border:1px solid var(--bdr);}
+.tab-bar{display:flex;gap:2px;background:var(--s3);border-radius:var(--r);padding:3px;border:1px solid var(--bdr2);}
 .tab{padding:5px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--t2);transition:all 0.15s;}
-.tab.active{background:var(--s4);color:var(--t1);}
+.tab.active{background:var(--s1);color:var(--amb);border:1px solid var(--amb-bdr);}
 .badge{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;}
 .bg{background:var(--grn-bg);color:var(--grn);border:1px solid var(--grn-bdr);}
 .br{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bdr);}
@@ -545,6 +545,13 @@ function App() {
             note: 'Pulled directly from Shopify Analytics sessions.',
           }),
           el(YesterdayCard, {
+            icon:'ti-percentage', label:'Conversion rate', accentCol:'var(--pur)',
+            actual: yesterday.shopifyConversionRate!=null ? fmtP(yesterday.shopifyConversionRate) : '—',
+            target: fmtP(GOALS.conversion),
+            statusKey: yesterday.shopifyConversionRate!=null ? status(yesterday.shopifyConversionRate, GOALS.conversion) : 'pending',
+            note: fmt(yesterday.convertedSessions)+' converted sessions of '+fmt(yesterday.sessions)+' total.',
+          }),
+          el(YesterdayCard, {
             icon:'ti-receipt', label:'AOV', accentCol:'var(--grn)',
             actual: fmtC(yesterday.aov,2), target: fmtC(GOALS.aov,0),
             statusKey: status(yesterday.aov, GOALS.aov),
@@ -574,23 +581,6 @@ function App() {
           el('div', {style:{fontWeight:600,marginBottom:6}}, 'Yesterday data not available yet'),
           el('div', {style:{fontSize:12,color:'var(--t3)'}}, 'Run Fetch Dashboard Data once after this update deploys.')
         ),
-        yesterday && el('div', {className:'card'},
-          el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Shopify Analytics context'),
-          el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:14}}, 'Not a goal card, but useful for checking Shopify behaviour.'),
-          el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))',gap:10}},
-            [
-              {lbl:'Converted sessions',val:fmt(yesterday.convertedSessions),col:'var(--pur)'},
-              {lbl:'Shopify conversion',val:fmtP(yesterday.shopifyConversionRate),col:'var(--pur)'},
-              {lbl:'Revenue source',val:'Orders API',col:'var(--t2)'},
-              {lbl:'Analytics source',val:'ShopifyQL',col:'var(--t2)'},
-            ].map((item,i)=>
-              el('div', {key:i,style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'10px 12px',border:'1px solid var(--bdr)'}},
-                el('div', {className:'lbl',style:{marginBottom:4}}, item.lbl),
-                el('div', {style:{fontSize:17,fontWeight:600,color:item.col,fontFamily:"'DM Mono',monospace"}}, item.val)
-              )
-            )
-          )
-        )
       ),
 
       // ══ MONTHLY ═════════════════════════════════════════════
@@ -611,7 +601,7 @@ function App() {
             el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13,minWidth:600}},
               el('thead', null,
                 el('tr', {style:{borderBottom:'1px solid var(--bdr2)',background:'var(--s2)'}},
-                  ['Month','Revenue','Target','Variance','Orders','AOV','Repeat rate','Status'].map((h,i)=>
+                  ['Month','Revenue','Target','Variance','Orders','AOV','Conv rate','Repeat rate','Status'].map((h,i)=>
                     el('th', {key:i,style:{padding:'8px 12px',textAlign:i===0?'left':'right',fontSize:10,textTransform:'uppercase',letterSpacing:'0.07em',color:'var(--t2)',whiteSpace:'nowrap',fontWeight:500}},h)
                   )
                 )
@@ -636,6 +626,7 @@ function App() {
                       vari!=null?(vari>=0?'+':'')+fmtC(Math.abs(vari),0):'—'),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--t2)'}}, m.orders!=null?fmt(m.orders):'—'),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, aov?fmtC(aov,2):'—'),
+                    el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--pur)'}}, m.shopifyConversionRate!=null?fmtP(m.shopifyConversionRate):'—'),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--t2)'}}, rr?fmtP(rr):'—'),
                     el('td',{style:{padding:'9px 12px',textAlign:'right'}},
                       m.future?el('span',{style:{fontSize:11,color:'var(--t3)'}},'—'):
@@ -656,6 +647,7 @@ function App() {
                     (ytdVariance>=0?'+':'')+fmtC(Math.abs(ytdVariance),0)),
                   el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--t2)'}}, fmt(summary.ytdOrders)),
                   el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, fmtC(summary.avgAOV,2)),
+                  el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--pur)'}}, convActual?fmtP(convActual):'—'),
                   el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--t2)'}}, fmtP(summary.avgRepeatRate)),
                   el('td',null)
                 )
