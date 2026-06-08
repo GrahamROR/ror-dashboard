@@ -2,7 +2,7 @@ name: Fetch Dashboard Data
 
 on:
   schedule:
-    - cron: '0 3 * * *'    # 3am UTC = 4am BST every day
+    - cron: '0 5 * * *'    # 5am UTC = 6am BST every day
   workflow_dispatch:         # manual trigger from GitHub Actions tab
 
 permissions:
@@ -21,21 +21,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: scripts/package.json
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: scripts
-
-      - name: Fetch yesterday's data and update data.json
+      - name: Fetch data from Shopify Analytics
         env:
           SHOPIFY_STORE:         ${{ secrets.SHOPIFY_STORE }}
           SHOPIFY_CLIENT_ID:     ${{ secrets.SHOPIFY_CLIENT_ID }}
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
-          GA4_PROPERTY_ID:       ${{ secrets.GA4_PROPERTY_ID }}
-          GA4_CREDENTIALS:       ${{ secrets.GA4_CREDENTIALS }}
-          NODE_TLS_REJECT_UNAUTHORIZED: '0'
         run: node scripts/fetch-data.js
 
       - name: Commit and push updated data.json
