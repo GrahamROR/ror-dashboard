@@ -282,6 +282,7 @@ async function main() {
       label,
       revenue:              sales.revenue    ?? null,
       orders:               sales.orders     ?? null,
+      aov:                  sales.aov        ?? null,
       customers:            sales.customers  ?? null,
       returning:            sales.returning  ?? null,
       sessions:             sessions.sessions ?? null,
@@ -305,6 +306,11 @@ async function main() {
   const ytdConverted     = active.some(m => m.convertedSessions)
     ? active.reduce((s, m) => s + (m.convertedSessions || 0), 0) : null;
 
+  // Weighted average of Shopify's actual average_order_value per month
+  // (gross_sales net of discounts / orders) — NOT total_sales/orders which inflates AOV with shipping & taxes
+  const ytdAovNumerator  = active.reduce((s, m) => s + ((m.aov || 0) * (m.orders || 0)), 0);
+  const avgAOV           = ytdOrders ? Math.round((ytdAovNumerator / ytdOrders) * 100) / 100 : 0;
+
   const summary = {
     ytdRevenue:        Math.round(ytdRevenue   * 100) / 100,
     ytdOrders,
@@ -312,7 +318,7 @@ async function main() {
     ytdConvertedSessions: ytdConverted,
     avgConversionRate: ytdSessions && ytdConverted != null
       ? Math.round((ytdConverted / ytdSessions) * 10000) / 10000 : null,
-    avgAOV:            ytdOrders ? Math.round((ytdRevenue / ytdOrders) * 100) / 100 : 0,
+    avgAOV:            avgAOV,
     avgRepeatRate:     ytdCustomers ? Math.round((ytdReturning / ytdCustomers) * 1000) / 1000 : 0,
     ytdReturning,
     ytdCustomers,
