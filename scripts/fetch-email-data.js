@@ -68,6 +68,10 @@ async function klaviyoGet(endpoint) {
 }
 
 // ── CAMPAIGN REPORT (last 90 days, email channel) ─────────────
+// NOTE: the campaign-values-reports endpoint only returns groupings +
+// statistics — it does NOT include the campaign name or send time.
+// That's why every row previously showed "Unnamed campaign" with no
+// date. We fetch that metadata separately in fetchCampaignMetadata().
 async function fetchCampaignReport() {
   const body = {
     data: {
@@ -87,8 +91,8 @@ async function fetchCampaignReport() {
   const json = await klaviyoPost('campaign-values-reports', body);
   return (json.data?.attributes?.results || []).map(r => ({
     id:       r.groupings?.campaign_id,
-    name:     r.campaign_details?.attributes?.name || 'Unnamed campaign',
-    sendTime: r.campaign_details?.attributes?.send_time || null,
+    name:     null,     // filled in by fetchCampaignMetadata()
+    sendTime: null,     // filled in by fetchCampaignMetadata()
     recipients:        r.statistics?.recipients        ?? 0,
     openRate:          r.statistics?.open_rate          ?? 0,
     clickRate:         r.statistics?.click_rate         ?? 0,
@@ -101,7 +105,48 @@ async function fetchCampaignReport() {
   }));
 }
 
-// ── FLOW REPORT (last 90 days, grouped by flow) ────────────────
+// Looks up name / send_time / status for a batch of campaign IDs via
+// the single-resource GET endpoint (one call per ID — certain to work,
+// vs. guessing at bulk-filter syntax). Runs with limited concurrency
+// so we don't trip Klaviyo's rate limit.
+async function fetchCampaignMetadata(ids) {
+  const map = {};
+  await runWithConcurrency(ids, 5, async (id) => {
+    try {
+      const json = await klaviyoGet(`campaigns/${id}/?fields[campaign]=name,status,send_time`);
+      map[id] = {
+        name:     json.data?.attributes?.name || 'Unnamed campaign',
+        sendTime: json.data?.attributes?.send_time || null,
+        status:   json.data?.attributes?.status || null,
+      };
+    } catch (e) {
+      console.log(`    ⚠ campaign ${id} metadata lookup failed: ${e.message}`);
+      map[id] = { name: 'Unnamed campaign', sendTime: null, status: null };
+    }
+  });
+  return map;
+}
+
+// Simple concurrency-limited runner — avoids hammering the API with
+// 30+ simultaneous requests while still being much faster than serial.
+async function runWithConcurrency(items, limit, fn) {
+  let i = 0;
+  async function worker() {
+    while (i < items.length) {
+      const idx = i++;
+      await fn(items[idx]);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+}
+
+// ── FLOW REPORT (last 90 days) ─────────────────────────────────
+// NOTE: the previous version read `flow_aggregation` from the response,
+// but that key doesn't exist — Klaviyo returns per-flow-message rows
+// under `results` (same shape as the campaign report), grouped by
+// flow_id + flow_message_id. That's why flow revenue always showed £0:
+// it was reading a field that was never there. We now read `results`
+// and sum the message-level rows back up to one row per flow.
 async function fetchFlowReport() {
   const body = {
     data: {
@@ -113,26 +158,62 @@ async function fetchFlowReport() {
           'recipients', 'open_rate', 'click_rate', 'conversion_rate', 'conversions',
           'average_order_value', 'conversion_value', 'revenue_per_recipient',
         ],
-        group_by: ['flow_id', 'flow_message_id', 'flow_name'],
       },
     },
   };
   const json = await klaviyoPost('flow-values-reports', body);
-  // flow_aggregation gives one row per flow already summed across messages
-  const agg = json.data?.attributes?.flow_aggregation || [];
-  return agg.map(r => ({
-    id:       r.flow_id,
-    name:     r.flow_details?.attributes?.name || 'Unnamed flow',
-    status:   r.flow_details?.attributes?.status || null,
-    recipients:        r.statistics?.recipients        ?? 0,
-    openRate:          r.statistics?.open_rate          ?? 0,
-    clickRate:         r.statistics?.click_rate         ?? 0,
-    conversionRate:    r.statistics?.conversion_rate    ?? 0,
-    conversions:       r.statistics?.conversions         ?? 0,
-    aov:               r.statistics?.average_order_value ?? 0,
-    revenue:           r.statistics?.conversion_value    ?? 0,
-    revenuePerRecipient: r.statistics?.revenue_per_recipient ?? 0,
+  const rows = json.data?.attributes?.results || [];
+
+  // Collapse per-message rows into one row per flow_id
+  const byFlow = {};
+  for (const r of rows) {
+    const flowId = r.groupings?.flow_id;
+    if (!flowId) continue;
+    if (!byFlow[flowId]) {
+      byFlow[flowId] = { id: flowId, recipients: 0, conversions: 0, revenue: 0, _openWeighted: 0, _clickWeighted: 0, _convWeighted: 0 };
+    }
+    const s = r.statistics || {};
+    const recip = s.recipients ?? 0;
+    byFlow[flowId].recipients   += recip;
+    byFlow[flowId].conversions  += s.conversions ?? 0;
+    byFlow[flowId].revenue      += s.conversion_value ?? 0;
+    byFlow[flowId]._openWeighted += (s.open_rate ?? 0) * recip;
+    byFlow[flowId]._clickWeighted += (s.click_rate ?? 0) * recip;
+    byFlow[flowId]._convWeighted  += (s.conversion_rate ?? 0) * recip;
+  }
+
+  return Object.values(byFlow).map(f => ({
+    id: f.id,
+    name: null,   // filled in by fetchFlowMetadata()
+    status: null, // filled in by fetchFlowMetadata()
+    recipients: f.recipients,
+    openRate:       f.recipients ? f._openWeighted  / f.recipients : 0,
+    clickRate:      f.recipients ? f._clickWeighted / f.recipients : 0,
+    conversionRate: f.recipients ? f._convWeighted  / f.recipients : 0,
+    conversions: f.conversions,
+    aov: f.conversions ? f.revenue / f.conversions : 0,
+    revenue: Math.round(f.revenue * 100) / 100,
+    revenuePerRecipient: f.recipients ? f.revenue / f.recipients : 0,
   }));
+}
+
+// Looks up name / status for a batch of flow IDs, same pattern as
+// fetchCampaignMetadata().
+async function fetchFlowMetadata(ids) {
+  const map = {};
+  await runWithConcurrency(ids, 5, async (id) => {
+    try {
+      const json = await klaviyoGet(`flows/${id}/?fields[flow]=name,status`);
+      map[id] = {
+        name:   json.data?.attributes?.name || 'Unnamed flow',
+        status: json.data?.attributes?.status || null,
+      };
+    } catch (e) {
+      console.log(`    ⚠ flow ${id} metadata lookup failed: ${e.message}`);
+      map[id] = { name: 'Unnamed flow', status: null };
+    }
+  });
+  return map;
 }
 
 // ── LIST SIZE (optional — needs KLAVIYO_LIST_ID) ───────────────
@@ -193,12 +274,29 @@ async function main() {
   console.log('=== ROR Email Dashboard — fetch v1 ===');
 
   console.log('\n→ Fetching Klaviyo campaign report (90d)...');
-  const campaigns = await fetchCampaignReport();
-  console.log(`  ✓ ${campaigns.length} campaigns`);
+  const campaignRows = await fetchCampaignReport();
+  console.log(`  ✓ ${campaignRows.length} campaigns`);
+
+  console.log('→ Looking up campaign names + send dates...');
+  const campaignMeta = await fetchCampaignMetadata(campaignRows.map(c => c.id).filter(Boolean));
+  const campaigns = campaignRows.map(c => ({
+    ...c,
+    name:     campaignMeta[c.id]?.name     || 'Unnamed campaign',
+    sendTime: campaignMeta[c.id]?.sendTime || null,
+    status:   campaignMeta[c.id]?.status   || null,
+  }));
 
   console.log('→ Fetching Klaviyo flow report (90d)...');
-  const flows = await fetchFlowReport();
-  console.log(`  ✓ ${flows.length} flows`);
+  const flowRows = await fetchFlowReport();
+  console.log(`  ✓ ${flowRows.length} flows`);
+
+  console.log('→ Looking up flow names...');
+  const flowMeta = await fetchFlowMetadata(flowRows.map(f => f.id).filter(Boolean));
+  const flows = flowRows.map(f => ({
+    ...f,
+    name:   flowMeta[f.id]?.name   || 'Unnamed flow',
+    status: flowMeta[f.id]?.status || null,
+  }));
 
   console.log('→ Fetching Klaviyo list size...');
   const listSize = await fetchListSize();
