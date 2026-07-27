@@ -13,27 +13,36 @@ const SHOPIFY_STORE     = process.env.SHOPIFY_STORE;
 const SHOPIFY_CLIENT_ID = process.env.SHOPIFY_CLIENT_ID;
 const SHOPIFY_SECRET    = process.env.SHOPIFY_CLIENT_SECRET;
 
-// FY26: Aug 2025 – Jul 2026
-const FY_START   = '2025-08-01';
-const FY_END     = '2026-07-31';
-const FY_KEY     = 'FY26';
-const FY_LABEL   = 'Aug 2025 – Jul 2026';
+// ── FISCAL YEAR (auto-computed — no more annual hand-editing) ──
+// ROR's fiscal year runs Aug → Jul. Given today's date, work out which
+// FY we're currently in, so this script never needs manual updating
+// at year-end. FY_KEY/START/END/MONTHS below are for THIS RUN ONLY —
+// they describe the "current" year being refreshed. Past years are
+// untouched (see writeYearBlock / main()).
+function computeFiscalYear(now) {
+  const month     = now.getMonth(); // 0 = Jan … 7 = Aug
+  const startYear = month >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+  const endYear   = startYear + 1;
+  const pad2      = n => String(n).slice(-2);
+  const monthNames = ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'];
 
-// All 12 months of FY26 in order
-const FY_MONTHS = [
-  { key: '2025-08', label: 'Aug 25' },
-  { key: '2025-09', label: 'Sep 25' },
-  { key: '2025-10', label: 'Oct 25' },
-  { key: '2025-11', label: 'Nov 25' },
-  { key: '2025-12', label: 'Dec 25' },
-  { key: '2026-01', label: 'Jan 26' },
-  { key: '2026-02', label: 'Feb 26' },
-  { key: '2026-03', label: 'Mar 26' },
-  { key: '2026-04', label: 'Apr 26' },
-  { key: '2026-05', label: 'May 26' },
-  { key: '2026-06', label: 'Jun 26' },
-  { key: '2026-07', label: 'Jul 26' },
-];
+  const months = monthNames.map((label, i) => {
+    const calYear  = i < 5 ? startYear : endYear;      // Aug–Dec = startYear, Jan–Jul = endYear
+    const calMonth = ((i + 7) % 12) + 1;                // Aug(7)->8 ... Jul(6)->7 next cycle
+    const pad      = n => String(n).padStart(2, '0');
+    return { key: `${calYear}-${pad(calMonth)}`, label: `${label} ${pad2(calYear)}` };
+  });
+
+  return {
+    FY_KEY:   `FY${pad2(endYear)}`,
+    FY_START: `${startYear}-08-01`,
+    FY_END:   `${endYear}-07-31`,
+    FY_LABEL: `Aug ${startYear} – Jul ${endYear}`,
+    FY_MONTHS: months,
+  };
+}
+
+const { FY_KEY, FY_START, FY_END, FY_LABEL, FY_MONTHS } = computeFiscalYear(new Date());
 
 // ── DATE HELPERS ─────────────────────────────────────────────
 function getYesterday() {
@@ -243,20 +252,41 @@ async function fetchYesterdaySales(token, dateStr) {
   };
 }
 
-// ── FETCH TOP PRODUCTS ────────────────────────────────────────
-// Preserves existing topProducts from data.json — these are
-// manually seeded and don't need daily updates.
-function preserveTopProducts(existing) {
-  return existing?.topProducts || [];
-}
-
-// ── LOAD EXISTING DATA ────────────────────────────────────────
+// ── LOAD EXISTING DATA (multi-year aware) ───────────────────────
+// data.json shape: { updated, currentFY, yesterday, years: { FYxx: {...} } }
+// If the file is still in the old single-year flat shape (fy/fyLabel/
+// monthly/topProducts/summary at the top level), migrate it into
+// years[oldFyKey] once, non-destructively.
 function loadExistingData() {
   const dataPath = path.join(__dirname, '..', 'data.json');
   if (!fs.existsSync(dataPath)) {
     throw new Error('data.json not found. Upload the seed file first.');
   }
-  return JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+  const raw = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+
+  if (raw.years) return raw; // already multi-year shape
+
+  console.log('  ↻ Migrating data.json from single-year to multi-year shape...');
+  const oldFyKey = raw.fy || FY_KEY;
+  return {
+    updated:   raw.updated || null,
+    currentFY: oldFyKey,
+    yesterday: raw.yesterday || null,
+    years: {
+      [oldFyKey]: {
+        fyLabel:     raw.fyLabel || FY_LABEL,
+        monthly:     raw.monthly || [],
+        topProducts: raw.topProducts || [],
+        summary:     raw.summary || {},
+      },
+    },
+  };
+}
+
+// Preserves existing topProducts for the CURRENT year's block only —
+// these are manually seeded and don't need daily updates.
+function preserveTopProducts(existing) {
+  return existing?.years?.[FY_KEY]?.topProducts || [];
 }
 
 // ── MAIN ──────────────────────────────────────────────────────
@@ -371,15 +401,23 @@ async function main() {
     ytdEstGrossProfit,
   };
 
-  // Assemble final data.json
+  // Assemble final data.json — SAFETY: spread `existing.years` first so
+  // every OTHER fiscal year's block is carried over byte-for-byte. We
+  // only ever overwrite years[FY_KEY]. A past year, once closed, is never
+  // touched by this script again — no risk of a bad run corrupting history.
   const output = {
-    updated:  new Date().toISOString(),
-    fy:       FY_KEY,
-    fyLabel:  FY_LABEL,
-    monthly,
-    topProducts: preserveTopProducts(existing),
-    summary,
+    updated:   new Date().toISOString(),
+    currentFY: FY_KEY,
     yesterday,
+    years: {
+      ...(existing.years || {}),
+      [FY_KEY]: {
+        fyLabel:     FY_LABEL,
+        monthly,
+        topProducts: preserveTopProducts(existing),
+        summary,
+      },
+    },
   };
 
   // Write
