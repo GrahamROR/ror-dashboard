@@ -11,14 +11,41 @@ Live dashboard served by GitHub Pages. Data pulled nightly from Shopify + GA4 vi
 ```
 ror-dashboard/
 ├── index.html                        ← the dashboard (served by GitHub Pages)
-├── data.json                         ← generated nightly by GitHub Actions
+├── data.json                         ← generated nightly by GitHub Actions (multi-year — see below)
+├── email-data.json                   ← generated nightly by GitHub Actions (rolling 90-day window)
 ├── scripts/
 │   ├── fetch-data.js                 ← fetches Shopify + GA4, writes data.json
+│   ├── fetch-email-data.js           ← fetches Klaviyo + Shopify, writes email-data.json
 │   └── package.json                  ← googleapis dependency
 └── .github/
     └── workflows/
-        └── fetch-data.yml            ← runs daily at 6am BST
+        ├── fetch-data.yml            ← runs daily at 6am BST
+        └── fetch-email-data.yml      ← runs daily at 6am BST, 10 mins after the above
 ```
+
+---
+
+## Fiscal years — how `data.json` is structured
+
+ROR's fiscal year runs **August → July**. `data.json` holds every fiscal year the dashboard has ever run, keyed by name, plus a pointer to whichever one is current:
+
+```json
+{
+  "updated": "2026-07-27T06:00:00Z",
+  "currentFY": "FY26",
+  "yesterday": { "...": "yesterday's live snapshot, current year only" },
+  "years": {
+    "FY26": { "fyLabel": "Aug 2025 – Jul 2026", "monthly": [...], "topProducts": [...], "summary": {...} },
+    "FY27": { "fyLabel": "Aug 2026 – Jul 2027", "monthly": [...], "topProducts": [...], "summary": {...} }
+  }
+}
+```
+
+**`fetch-data.js` works out the current fiscal year from today's date automatically** — no manual editing needed at year-end. Each nightly run only ever writes to the block matching the *current* year (`years[currentFY]`); every other year is carried over completely untouched, so a bad run can't corrupt historical data.
+
+The dashboard shows a **year tab-switcher** in the header once more than one year exists, so you can flick between FY26, FY27, etc. and compare them.
+
+`email-data.json` is unaffected by any of this — it's a rolling 90-day window (not fiscal-year scoped), so it just keeps updating on its own with no year boundary to manage.
 
 ---
 
@@ -117,16 +144,19 @@ If you leave it blank, team members can enter their own key when they want to us
 
 **Every morning at 6am:**
 1. GitHub Actions wakes up
-2. Calls Shopify Orders API — fetches all FY26 orders, aggregates by month
+2. Calls Shopify Orders API — fetches the *current* fiscal year's orders, aggregates by month
 3. Calls GA4 Data API — fetches sessions by month
-4. Writes `data.json` to the repository
+4. Writes that year's block into `data.json`, leaving every other year untouched
 5. GitHub Pages serves the updated file
 
 **When anyone opens the dashboard URL:**
 1. The page loads instantly (static HTML)
 2. Fetches `data.json` (takes under a second)
-3. Dashboard renders with today's numbers
+3. Dashboard renders with today's numbers for the current year, with a year switcher if past years exist
 4. Revenue goal slider works immediately
+
+**At the end of each fiscal year (31 July):**
+Nothing needs to be done manually. From 1 August, `fetch-data.js` automatically recognises it's a new fiscal year, starts a fresh block for it, and the year before becomes a frozen, browsable archive in the year switcher.
 
 **If `data.json` hasn't been generated yet:**
 The dashboard shows the real seed data from May 2026 (pulled directly from Shopify). Once the Action runs for the first time, it switches to live data automatically.
@@ -142,6 +172,8 @@ The dashboard shows the real seed data from May 2026 (pulled directly from Shopi
 **Sessions always show `—`:** GA4 credentials not set up. Revenue, orders, AOV and repeat rate all work without GA4.
 
 **GitHub Pages not loading:** Check Settings → Pages — it can take 5 minutes on first deploy. Also make sure the branch is set to `main` and folder to `/`.
+
+**A past year's numbers look wrong or missing:** They won't have been touched by any recent run — check that `data.json` still has a `years` object with that year's key in it (open the file on GitHub and search for it). If it's genuinely missing, restore it from an earlier commit in the file's history.
 
 ### If GA4 rejects the service account email
 
