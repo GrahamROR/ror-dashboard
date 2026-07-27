@@ -107,36 +107,44 @@ const WEIGHTS = [0.074,0.067,0.060,0.117,0.142,0.106,0.063,0.077,0.056,0.067,0.0
 
 // Fallback data — total sales pulled directly from Shopify Analytics
 // Used only if data.json hasn't been generated yet by GitHub Actions
+// NOTE: multi-year shape. Each fiscal year lives under years[FYKEY] and is
+// never touched by the fetch script once a later year becomes current —
+// currentFY tells the dashboard which block is "live".
 const FALLBACK = {
   updated: '2026-05-24T00:00:00Z',
-  fy: 'FY26', fyLabel: 'Aug 2025 – Jul 2026',
-  monthly: [
-    {key:'2025-08',label:'Aug 25',revenue:20012.34,orders:563, customers:545, returning:77, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2025-09',label:'Sep 25',revenue:18184.71,orders:526, customers:512, returning:82, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2025-10',label:'Oct 25',revenue:16352.73,orders:515, customers:500, returning:94, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2025-11',label:'Nov 25',revenue:31514.82,orders:923, customers:883, returning:182,sessions:null,complete:true, mtd:false,future:false},
-    {key:'2025-12',label:'Dec 25',revenue:37970.93,orders:1159,customers:1126,returning:175,sessions:null,complete:true, mtd:false,future:false},
-    {key:'2026-01',label:'Jan 26',revenue:28760.66,orders:901, customers:863, returning:132,sessions:null,complete:true, mtd:false,future:false},
-    {key:'2026-02',label:'Feb 26',revenue:16828.83,orders:538, customers:511, returning:97, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2026-03',label:'Mar 26',revenue:20773.86,orders:671, customers:663, returning:99, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2026-04',label:'Apr 26',revenue:15273.69,orders:521, customers:507, returning:70, sessions:null,complete:true, mtd:false,future:false},
-    {key:'2026-05',label:'May 26',revenue:12949.52,orders:433, customers:425, returning:63, sessions:null,complete:false,mtd:true, future:false},
-    {key:'2026-06',label:'Jun 26',revenue:null,    orders:null,customers:null,returning:null,sessions:null,complete:false,mtd:false,future:true},
-    {key:'2026-07',label:'Jul 26',revenue:null,    orders:null,customers:null,returning:null,sessions:null,complete:false,mtd:false,future:true},
-  ],
-  topProducts: [
-    {name:'Personalised Year Sweatshirt',                        revenue:77149.62,orders:2373},
-    {name:'The ULTIMATE Mystery Bag',                            revenue:11884.45,orders:360},
-    {name:'Custard Cream Connoisseur Sweatshirt',                revenue:8474.00, orders:220},
-    {name:'Happy Hour Slogan Sweatshirt',                        revenue:6101.16, orders:192},
-    {name:'Only Here for the Pigs in Blankets Christmas Sweatshirt',revenue:5675.35,orders:190},
-    {name:'Personalised Year Unisex T-shirt',                    revenue:4740.37, orders:193},
-    {name:'Personalisation on the back of the neck (+£4.95)',    revenue:4158.60, orders:759},
-    {name:'My Other Job is a Dallas Cowboys Cheerleader Sweatshirt',revenue:3605.00,orders:99},
-    {name:'Personalised Handwriting Cuff Sweatshirt',            revenue:3311.98, orders:77},
-    {name:'Yes I Like Pina Coladas Sweatshirt',                  revenue:3200.00, orders:98},
-  ],
-  summary:{ytdRevenue:218622.09,ytdOrders:6750,ytdSessions:null,avgAOV:32.39,avgConversionRate:0.026,avgRepeatRate:0.147}
+  currentFY: 'FY26',
+  years: {
+    FY26: {
+      fyLabel: 'Aug 2025 – Jul 2026',
+      monthly: [
+        {key:'2025-08',label:'Aug 25',revenue:20012.34,orders:563, customers:545, returning:77, sessions:null,complete:true, mtd:false,future:false},
+        {key:'2025-09',label:'Sep 25',revenue:18184.71,orders:526, customers:512, returning:82, sessions:null,complete:true, mtd:false,future:false},
+        {key:'2025-10',label:'Oct 25',revenue:16352.73,orders:515, customers:500, returning:94, sessions:null,complete:true, mtd:false,future:false},
+        {key:'2025-11',label:'Nov 25',revenue:31514.82,orders:923, customers:883, returning:182,sessions:null,complete:true, mtd:false,future:false},
+        {key:'2025-12',label:'Dec 25',revenue:37970.93,orders:1159,customers:1126,returning:175,sessions:null,complete:true, mtd:false,future:false},
+        {key:'2026-01',label:'Jan 26',revenue:28760.66,orders:901, customers:863, returning:132,sessions:null,complete:true, mtd:false,future:false},
+        {key:'2026-02',label:'Feb 26',revenue:16828.83,orders:538, customers:511, returning:97, sessions:null,complete:true, mtd:false,future:false},
+        {key:'2026-03',label:'Mar 26',revenue:20773.86,orders:671, customers:663, returning:99, sessions:null,complete:true, mtd:false,future:false},
+        {key:'2026-04',label:'Apr 26',revenue:15273.69,orders:521, customers:507, returning:70, sessions:null,complete:true, mtd:false,future:false},
+        {key:'2026-05',label:'May 26',revenue:12949.52,orders:433, customers:425, returning:63, sessions:null,complete:false,mtd:true, future:false},
+        {key:'2026-06',label:'Jun 26',revenue:null,    orders:null,customers:null,returning:null,sessions:null,complete:false,mtd:false,future:true},
+        {key:'2026-07',label:'Jul 26',revenue:null,    orders:null,customers:null,returning:null,sessions:null,complete:false,mtd:false,future:true},
+      ],
+      topProducts: [
+        {name:'Personalised Year Sweatshirt',                        revenue:77149.62,orders:2373},
+        {name:'The ULTIMATE Mystery Bag',                            revenue:11884.45,orders:360},
+        {name:'Custard Cream Connoisseur Sweatshirt',                revenue:8474.00, orders:220},
+        {name:'Happy Hour Slogan Sweatshirt',                        revenue:6101.16, orders:192},
+        {name:'Only Here for the Pigs in Blankets Christmas Sweatshirt',revenue:5675.35,orders:190},
+        {name:'Personalised Year Unisex T-shirt',                    revenue:4740.37, orders:193},
+        {name:'Personalisation on the back of the neck (+£4.95)',    revenue:4158.60, orders:759},
+        {name:'My Other Job is a Dallas Cowboys Cheerleader Sweatshirt',revenue:3605.00,orders:99},
+        {name:'Personalised Handwriting Cuff Sweatshirt',            revenue:3311.98, orders:77},
+        {name:'Yes I Like Pina Coladas Sweatshirt',                  revenue:3200.00, orders:98},
+      ],
+      summary:{ytdRevenue:218622.09,ytdOrders:6750,ytdSessions:null,avgAOV:32.39,avgConversionRate:0.026,avgRepeatRate:0.147}
+    }
+  }
 };
 
 // Email/SMS fallback — seeded from the last live Klaviyo + Shopify pull,
@@ -156,6 +164,26 @@ const EMAIL_FALLBACK = {
 };
 
 // ── HELPERS ───────────────────────────────────────────────────
+// Pulls one fiscal year's block out of the multi-year data.json and
+// flattens it back into the shape the rest of the dashboard expects.
+// "yesterday" (the live daily snapshot) only applies to whichever year
+// is currently live — past years show no yesterday card.
+function pickYear(raw, wantFY) {
+  if (!raw) return null;
+  const years = raw.years || {};
+  const fy = (wantFY && years[wantFY]) ? wantFY : (raw.currentFY || Object.keys(years)[0]);
+  const block = years[fy] || {};
+  return {
+    updated:     raw.updated,
+    fy,
+    fyLabel:     block.fyLabel || fy,
+    monthly:     block.monthly || [],
+    topProducts: block.topProducts || [],
+    summary:     block.summary || {},
+    yesterday:   fy === raw.currentFY ? (raw.yesterday || null) : null,
+  };
+}
+
 const fmt  = (n,d=0)  => n==null?'—':Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
 const fmtC = (n,d=0)  => n==null?'—':'£'+fmt(n,d);
 const fmtP = (n,d=1)  => n==null?'—':(n*100).toFixed(d)+'%';
@@ -615,7 +643,8 @@ function EmailWhatIfBar({ es, projConv, setProjConv, projAOV, setProjAOV,
 }
 
 function App() {
-  const [data,       setData]       = useState(null);
+  const [data,       setData]       = useState(null); // raw multi-year data.json
+  const [selectedFY, setSelectedFY] = useState(null);  // which year the dashboard is showing
   const [loadErr,    setLoadErr]    = useState('');
   const [loading,    setLoading]    = useState(true);
   const [isFallback, setIsFallback] = useState(false);
@@ -669,13 +698,18 @@ function App() {
   useEffect(() => {
     fetch(DATA_URL + '?t=' + Date.now())
       .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
-      .then(d => { setData(d); setLoading(false); })
+      .then(d => { setData(d); setSelectedFY(d.currentFY); setLoading(false); })
       .catch(() => {
         setData(FALLBACK);
+        setSelectedFY(FALLBACK.currentFY);
         setIsFallback(true);
         setLoading(false);
       });
   }, []);
+
+  // Years available for the selector, most recent first
+  const availableYears = data?.years ? Object.keys(data.years).sort().reverse() : [];
+  const viewData = useMemo(() => pickYear(data, selectedFY), [data, selectedFY]);
 
   // Load email-data.json on mount (independent of the main pull —
   // if this 404s, the Email tab just shows fallback numbers)
@@ -686,12 +720,13 @@ function App() {
       .catch(() => { setEmailData(EMAIL_FALLBACK); setEmailIsFallback(true); });
   }, []);
 
-  // Derived values from data
-  const summary      = data?.summary || {};
-  const monthly      = data?.monthly || [];
-  const topProducts  = data?.topProducts || [];
-  const yesterday    = data?.yesterday || null;
-  const updatedAt    = data?.updated ? new Date(data.updated) : null;
+  // Derived values from the selected year's data
+  const summary      = viewData?.summary || {};
+  const monthly      = viewData?.monthly || [];
+  const topProducts  = viewData?.topProducts || [];
+  const yesterday     = viewData?.yesterday || null;
+  const updatedAt    = viewData?.updated ? new Date(viewData.updated) : null;
+  const isLiveYear   = selectedFY === data?.currentFY;
 
   const completedCount = monthly.filter(m=>!m.future).length;
   const ytdGoal        = ytdTarget(goalRev, completedCount);
@@ -762,7 +797,17 @@ function App() {
       el('div', {style:{display:'flex',alignItems:'center',gap:12}},
         el('div', {style:{width:8,height:8,borderRadius:'50%',background:isFallback?'var(--amb)':'var(--grn)',flexShrink:0,boxShadow:isFallback?'0 0 0 3px var(--amb-bdr)':'0 0 0 3px var(--grn-bdr)'}}),
         el('div', {style:{fontWeight:600,fontSize:14,whiteSpace:'nowrap'}}, 'Rock On Ruby'),
-        el('div', {className:'hide-mobile',style:{color:'var(--t3)',fontSize:12}}, '·  Growth Dashboard  ·  FY26')
+        el('div', {className:'hide-mobile',style:{color:'var(--t3)',fontSize:12}}, '·  Growth Dashboard  ·  '+(viewData?.fy||'')),
+        availableYears.length > 1 && el('div', {className:'tab-bar'},
+          availableYears.map(fy =>
+            el('button', {
+              key: fy,
+              className: 'tab' + (fy===selectedFY ? ' active' : ''),
+              onClick: () => setSelectedFY(fy),
+              style:{padding:'4px 10px'}
+            }, fy)
+          )
+        )
       ),
       el('div', {style:{display:'flex',alignItems:'center',gap:8}},
         // Data freshness indicator — prominent
@@ -946,7 +991,7 @@ function App() {
           aiErr && el('div', {style:{fontSize:12,color:'var(--red)',padding:'10px 14px',background:'var(--red-bg)',borderRadius:'var(--r)',border:'1px solid var(--red-bdr)'}}, aiErr),
           aiInsight && el('div', {style:{fontSize:13,color:'var(--t1)',lineHeight:1.8,whiteSpace:'pre-wrap',padding:14,background:'var(--s2)',borderRadius:'var(--r)',border:'1px solid var(--bdr2)'}}, aiInsight),
           !aiInsight && !aiLoading && !showAI && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'20px 0',textAlign:'center'}},
-            'Click "Get insight" to analyse your FY26 performance against the ',fmtC(goalRev,0),' goal.'
+            'Click "Get insight" to analyse your ',(viewData?.fy||''),' performance against the ',fmtC(goalRev,0),' goal.'
           )
         )
       ),
@@ -1031,8 +1076,8 @@ function App() {
         el('div', {className:'card'},
           el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:10}},
             el('div', null,
-              el('div', {style:{fontWeight:500,fontSize:14}}, 'FY26 Monthly Performance'),
-              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, 'Aug 2025 – Jul 2026  ·  Target scales with goal slider above')
+              el('div', {style:{fontWeight:500,fontSize:14}}, (viewData?.fy||'')+' Monthly Performance'),
+              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, (viewData?.fyLabel||'')+'  ·  Target scales with goal slider above')
             ),
             el('div', {style:{display:'flex',gap:6,flexWrap:'wrap'}},
               [['on track','bg'],['close','ba'],['off track','br'],['future','bb']].map(([l,c])=>
@@ -1104,7 +1149,7 @@ function App() {
       activeTab==='products' && el('div', {className:'fi',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
 
         el('div', {className:'card'},
-          el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Top 10 Products — FY26'),
+          el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Top 10 Products — '+(viewData?.fy||'')),
           el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:18}}, 'By gross revenue · Updated from Shopify'),
           topProducts.map((p,i) => {
             const totalRev = topProducts.reduce((s,t)=>s+(t.revenue||0),0);
@@ -1375,7 +1420,7 @@ function App() {
     // FOOTER
     el('div', {style:{borderTop:'1px solid var(--bdr)',padding:'10px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--s1)',flexWrap:'wrap',gap:8}},
       el('div', {style:{fontSize:11,color:'var(--t3)'}},
-        'Rock On Ruby · Growth Dashboard · FY26 · Total sales · ',
+        'Rock On Ruby · Growth Dashboard · '+(viewData?.fy||'')+' · Total sales · ',
         isFallback
           ? el('span', {style:{color:'var(--amb)'}}, 'Showing embedded data — live updates nightly at 5am BST once GitHub Action is running correctly')
           : el('span', {style:{color:'var(--grn)'}},
