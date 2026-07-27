@@ -1276,7 +1276,7 @@ function App() {
 
             // Campaigns table
             emailData?.campaigns?.length > 0 && el('div', {className:'card',style:{marginBottom:16}},
-              el('div', {style:{fontWeight:500,marginBottom:12}}, 'Campaigns — last 90 days, ranked by revenue per recipient'),
+              el('div', {style:{fontWeight:500,marginBottom:12}}, 'Campaigns — last 90 days, newest first'),
               el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
