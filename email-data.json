@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-27T13:12:30.755Z",
+  "updated": "2026-07-27T13:44:43.034Z",
   "window": "last_90_days",
   "goals": {
     "campaignConversion": 0.0007,
@@ -21,7 +21,7 @@
     "attribution": 0.23,
     "repeatPurchaseRate": 0.1875,
     "totalStoreRevenue90d": 54193.37,
-    "listSize": 35653
+    "listSize": 35654
   },
   "campaigns": [
     {
@@ -29,7 +29,7 @@
       "name": "Sat 25th July - Silly T-Shirt ",
       "sendTime": "2026-07-25T09:00:00+00:00",
       "recipients": 23700,
-      "openRate": 0.33682,
+      "openRate": 0.33708,
       "clickRate": 0.00203,
       "conversionRate": 0.00004,
       "conversions": 1,
@@ -74,7 +74,7 @@
       "name": "Wed 15th July New Leopard Bags",
       "sendTime": "2026-07-15T16:00:00+00:00",
       "recipients": 23449,
-      "openRate": 0.3268,
+      "openRate": 0.32684,
       "clickRate": 0.00542,
       "conversionRate": 0.0003,
       "conversions": 7,
@@ -89,7 +89,7 @@
       "name": "Sat 11th July - Roundup",
       "sendTime": "2026-07-11T09:00:00+00:00",
       "recipients": 23055,
-      "openRate": 0.32546,
+      "openRate": 0.3255,
       "clickRate": 0.00117,
       "conversionRate": 0,
       "conversions": 0,
@@ -489,27 +489,27 @@
       "id": "TYYedR",
       "name": "ROR Browse Abandonment / Viewed Product",
       "status": "live",
-      "recipients": 3682,
-      "openRate": 0.4497764475828354,
-      "clickRate": 0.035207528517110266,
-      "conversionRate": 0.012006083650190113,
+      "recipients": 3683,
+      "openRate": 0.4499286994298126,
+      "clickRate": 0.03520008960086886,
+      "conversionRate": 0.012001325006787944,
       "conversions": 44,
       "aov": 39.07636386363636,
       "revenue": 1719.36,
-      "revenuePerRecipient": 0.4669636094513851
+      "revenuePerRecipient": 0.46683682052674447
     },
     {
       "id": "YqqPJy",
       "name": "ROR Welcome Series",
       "status": "live",
-      "recipients": 10235,
-      "openRate": 0.4038130835368833,
-      "clickRate": 0.018533399120664387,
-      "conversionRate": 0.009302410356619443,
+      "recipients": 10239,
+      "openRate": 0.4036554263111632,
+      "clickRate": 0.018524881336067976,
+      "conversionRate": 0.009298936419572223,
       "conversions": 94,
       "aov": 38.64904276595745,
       "revenue": 3633.01,
-      "revenuePerRecipient": 0.3549594548119199
+      "revenuePerRecipient": 0.3548207852329329
     },
     {
       "id": "R3N2yb",
@@ -541,14 +541,14 @@
       "id": "XZVvkn",
       "name": "ROR Customer Winback Flow 90D+",
       "status": "live",
-      "recipients": 1600,
-      "openRate": 0.43090541250000003,
-      "clickRate": 0.02439219375,
-      "conversionRate": 0.0024997500000000002,
+      "recipients": 1612,
+      "openRate": 0.42831785359801494,
+      "clickRate": 0.024833691066997517,
+      "conversionRate": 0.0024811414392059555,
       "conversions": 4,
       "aov": 25.94,
       "revenue": 103.76,
-      "revenuePerRecipient": 0.06485
+      "revenuePerRecipient": 0.06436724565756824
     },
     {
       "id": "RLiQxx",
@@ -577,12 +577,12 @@
       "revenuePerRecipient": 0
     },
     {
-      "id": "Ubx5EQ",
-      "name": "ROR Sunset Unengaged Subscribers - Customer vs. Non-Customer",
+      "id": "RMQspX",
+      "name": "ROR Abandoned Cart Reminder",
       "status": "live",
-      "recipients": 2202,
-      "openRate": 0.009555199818346957,
-      "clickRate": 0,
+      "recipients": 251,
+      "openRate": 0.4621522310756972,
+      "clickRate": 0.059758844621513936,
       "conversionRate": 0,
       "conversions": 0,
       "aov": 0,
@@ -590,12 +590,12 @@
       "revenuePerRecipient": 0
     },
     {
-      "id": "RMQspX",
-      "name": "ROR Abandoned Cart Reminder",
+      "id": "Ubx5EQ",
+      "name": "ROR Sunset Unengaged Subscribers - Customer vs. Non-Customer",
       "status": "live",
-      "recipients": 248,
-      "openRate": 0.46774225806451614,
-      "clickRate": 0.060482499999999995,
+      "recipients": 2202,
+      "openRate": 0.009555199818346957,
+      "clickRate": 0,
       "conversionRate": 0,
       "conversions": 0,
       "aov": 0,
