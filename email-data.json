@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-27T06:38:04.673Z",
+  "updated": "2026-07-27T12:45:58.113Z",
   "window": "last_90_days",
   "goals": {
     "campaignConversion": 0.0007,
@@ -13,15 +13,15 @@
     "campaignAOV": 40.24,
     "campaignRevenue90d": 2897.27,
     "campaignRecipients90d": 616881,
-    "flowRevenue90d": 0,
-    "flowAOV": 0,
-    "flowSharePct": 0,
-    "totalEmailRevenue90d": 2897.27,
-    "blendedAOV": 40.24,
-    "attribution": 0.054,
-    "repeatPurchaseRate": 0.18772305496074232,
-    "totalStoreRevenue90d": 53982.72,
-    "listSize": 35647
+    "flowRevenue90d": 9550.64,
+    "flowAOV": 38.05,
+    "flowSharePct": 0.767,
+    "totalEmailRevenue90d": 12447.91,
+    "blendedAOV": 38.54,
+    "attribution": 0.23,
+    "repeatPurchaseRate": 0.1875,
+    "totalStoreRevenue90d": 54193.37,
+    "listSize": 35653
   },
   "campaigns": [
     {
@@ -36,40 +36,43 @@
       "unsubscribeRate": 0.02448,
       "aov": 50.4,
       "revenue": 50.4,
-      "revenuePerRecipient": 0.08811
+      "revenuePerRecipient": 0.08811,
+      "status": null
     },
     {
       "id": "01KVZDK9MT811STZJMW67KVTQG",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 27th - FLASH SALE STARTS",
+      "sendTime": "2026-06-27T07:00:00+00:00",
       "recipients": 25926,
-      "openRate": 0.33203,
+      "openRate": 0.33207,
       "clickRate": 0.00741,
       "conversionRate": 0.00031,
       "conversions": 8,
       "unsubscribeRate": 0.00166,
       "aov": 51.37625,
       "revenue": 411.00999,
-      "revenuePerRecipient": 0.01586
+      "revenuePerRecipient": 0.01586,
+      "status": "Sent"
     },
     {
       "id": "01KVT2VJPF7WJTJ7NNS3V6S0H8",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sun 28th June - Last chance flash sale",
+      "sendTime": "2026-06-28T08:00:00+00:00",
       "recipients": 25889,
-      "openRate": 0.32803,
+      "openRate": 0.32806,
       "clickRate": 0.00402,
       "conversionRate": 0.00031,
       "conversions": 8,
       "unsubscribeRate": 0.00189,
       "aov": 44.3375,
       "revenue": 354.7,
-      "revenuePerRecipient": 0.01371
+      "revenuePerRecipient": 0.01371,
+      "status": "Sent"
     },
     {
       "id": "01KVT1WDGVPNG8RNMEVHVN5PEQ",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Fri 26th June - FLASH SALE STARTS TOMORROW",
+      "sendTime": "2026-06-26T07:00:00+00:00",
       "recipients": 25906,
       "openRate": 0.33265,
       "clickRate": 0.00336,
@@ -78,12 +81,13 @@
       "unsubscribeRate": 0.00189,
       "aov": 40.1,
       "revenue": 280.7,
-      "revenuePerRecipient": 0.01084
+      "revenuePerRecipient": 0.01084,
+      "status": "Sent"
     },
     {
       "id": "01KVSYC95RMCKCABB9Y16RY7B2",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 24th June - Customer Images",
+      "sendTime": "2026-06-24T18:00:00+00:00",
       "recipients": 20219,
       "openRate": 0.35901,
       "clickRate": 0.00188,
@@ -92,40 +96,43 @@
       "unsubscribeRate": 0.00188,
       "aov": 45.465,
       "revenue": 181.86,
-      "revenuePerRecipient": 0.009
+      "revenuePerRecipient": 0.009,
+      "status": "Sent"
     },
     {
       "id": "01KXJJB42FXQSTN7NR6JFZHJ8Y",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 23449,
-      "openRate": 0.32663,
+      "openRate": 0.3268,
       "clickRate": 0.00542,
       "conversionRate": 0.0003,
       "conversions": 7,
       "unsubscribeRate": 0.00162,
       "aov": 29.95,
       "revenue": 209.65001,
-      "revenuePerRecipient": 0.00895
+      "revenuePerRecipient": 0.00895,
+      "status": null
     },
     {
       "id": "01KXQRTH8YYQPG6JDZ5A07P4HJ",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 23680,
-      "openRate": 0.35497,
+      "openRate": 0.35514,
       "clickRate": 0.00262,
       "conversionRate": 0.00017,
       "conversions": 4,
       "unsubscribeRate": 0.00207,
       "aov": 44.725,
       "revenue": 178.9,
-      "revenuePerRecipient": 0.00756
+      "revenuePerRecipient": 0.00756,
+      "status": null
     },
     {
       "id": "01KSMN560JEJ0SA85GT28C3S5W",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 30th May - Matching Caps and last chance",
+      "sendTime": "2026-05-30T08:00:00+00:00",
       "recipients": 22833,
       "openRate": 0.36627,
       "clickRate": 0.00504,
@@ -134,12 +141,13 @@
       "unsubscribeRate": 0.00294,
       "aov": 39.475,
       "revenue": 157.9,
-      "revenuePerRecipient": 0.00692
+      "revenuePerRecipient": 0.00692,
+      "status": "Sent"
     },
     {
       "id": "01KSMGHSCVFYFS2ZHNAGPT69W4",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 27th May - Father's Day Discount",
+      "sendTime": "2026-05-27T18:00:00+00:00",
       "recipients": 25350,
       "openRate": 0.34207,
       "clickRate": 0.0062,
@@ -148,12 +156,13 @@
       "unsubscribeRate": 0.00241,
       "aov": 41.925,
       "revenue": 167.7,
-      "revenuePerRecipient": 0.00663
+      "revenuePerRecipient": 0.00663,
+      "status": "Sent"
     },
     {
       "id": "01KQA59A6GJ1QZ1FT3500N8WMC",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 29th April - Broadcast Channel",
+      "sendTime": "2026-04-29T18:00:00+00:00",
       "recipients": 22249,
       "openRate": 0.36043,
       "clickRate": 0.00499,
@@ -162,12 +171,13 @@
       "unsubscribeRate": 0.0027,
       "aov": 54.8,
       "revenue": 109.6,
-      "revenuePerRecipient": 0.00493
+      "revenuePerRecipient": 0.00493,
+      "status": "Sent"
     },
     {
       "id": "01KQW26JD4MAXZH406Q8QKSCFX",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 6th May - 5 Star Review Images",
+      "sendTime": "2026-05-06T18:00:00+00:00",
       "recipients": 21974,
       "openRate": 0.33982,
       "clickRate": 0.00196,
@@ -176,12 +186,13 @@
       "unsubscribeRate": 0.0021,
       "aov": 35.93667,
       "revenue": 107.81,
-      "revenuePerRecipient": 0.00491
+      "revenuePerRecipient": 0.00491,
+      "status": "Sent"
     },
     {
       "id": "01KR15BVN6X8WJ3M8ZH3W4QZTF",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 9th May - Only here for cap follow up",
+      "sendTime": "2026-05-09T08:00:00+00:00",
       "recipients": 21854,
       "openRate": 0.33835,
       "clickRate": 0.0016,
@@ -190,12 +201,13 @@
       "unsubscribeRate": 0.00266,
       "aov": 29.88667,
       "revenue": 89.66,
-      "revenuePerRecipient": 0.0041
+      "revenuePerRecipient": 0.0041,
+      "status": "Sent"
     },
     {
       "id": "01KT8TN9M6QD6S710GQAG1KB1A",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 6th June - Father's Day Gift Guide",
+      "sendTime": "2026-06-06T07:45:00+00:00",
       "recipients": 22338,
       "openRate": 0.33372,
       "clickRate": 0.00175,
@@ -204,26 +216,28 @@
       "unsubscribeRate": 0.00255,
       "aov": 30.425,
       "revenue": 60.85,
-      "revenuePerRecipient": 0.00273
+      "revenuePerRecipient": 0.00273,
+      "status": "Sent"
     },
     {
       "id": "01KWC1JQZT3HNP6RASB7HB5HRJ",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 1st July - Giveaway Launch",
+      "sendTime": "2026-07-01T19:00:00+00:00",
       "recipients": 26085,
-      "openRate": 0.34199,
+      "openRate": 0.34203,
       "clickRate": 0.01182,
       "conversionRate": 0.00008,
       "conversions": 2,
       "unsubscribeRate": 0.00288,
       "aov": 34.93,
       "revenue": 69.86,
-      "revenuePerRecipient": 0.00268
+      "revenuePerRecipient": 0.00268,
+      "status": "Sent"
     },
     {
       "id": "01KT6PHK1199479D82KHXSP6T5",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 3rd June - June Calendar upcoming events",
+      "sendTime": "2026-06-03T18:00:00+00:00",
       "recipients": 22398,
       "openRate": 0.33584,
       "clickRate": 0.00094,
@@ -232,12 +246,13 @@
       "unsubscribeRate": 0.00183,
       "aov": 29.58,
       "revenue": 59.16,
-      "revenuePerRecipient": 0.00264
+      "revenuePerRecipient": 0.00264,
+      "status": "Sent"
     },
     {
       "id": "01KT9CG7SJVNTT6D70Z0BPD0Q0",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 10th June - Real custom father's day orders",
+      "sendTime": "2026-06-10T18:00:00+00:00",
       "recipients": 22483,
       "openRate": 0.33983,
       "clickRate": 0.00191,
@@ -246,26 +261,28 @@
       "unsubscribeRate": 0.002,
       "aov": 28.65,
       "revenue": 57.3,
-      "revenuePerRecipient": 0.00255
+      "revenuePerRecipient": 0.00255,
+      "status": "Sent"
     },
     {
       "id": "01KV8GF8M65CQ71WB378Y4NZ46",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sun 21st June - Father's Day",
+      "sendTime": "2026-06-21T08:00:00+00:00",
       "recipients": 20131,
       "openRate": 0.35553,
       "clickRate": 0.0008,
       "conversionRate": 0.00005,
       "conversions": 1,
-      "unsubscribeRate": 0.00184,
+      "unsubscribeRate": 0.00189,
       "aov": 47.15,
       "revenue": 47.15,
-      "revenuePerRecipient": 0.00234
+      "revenuePerRecipient": 0.00234,
+      "status": "Sent"
     },
     {
       "id": "01KV8ACZQTEX62MPX8E8R3D3JV",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 17th June - Last chance Father's Day",
+      "sendTime": "2026-06-17T18:00:00+00:00",
       "recipients": 22615,
       "openRate": 0.33434,
       "clickRate": 0.00177,
@@ -274,26 +291,28 @@
       "unsubscribeRate": 0.00248,
       "aov": 48.85,
       "revenue": 48.85,
-      "revenuePerRecipient": 0.00216
+      "revenuePerRecipient": 0.00216,
+      "status": "Sent"
     },
     {
       "id": "01KTTVTMKSPBMHPJJYHS7TMVJX",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 13th Father's Day Delivery Dates",
+      "sendTime": "2026-06-13T18:00:00+00:00",
       "recipients": 22372,
-      "openRate": 0.3298,
+      "openRate": 0.32984,
       "clickRate": 0.00166,
       "conversionRate": 0.00004,
       "conversions": 1,
       "unsubscribeRate": 0.00201,
       "aov": 45.35,
       "revenue": 45.35,
-      "revenuePerRecipient": 0.00203
+      "revenuePerRecipient": 0.00203,
+      "status": "Sent"
     },
     {
       "id": "01KRG5CW8C4JCE8WF4G8N3KW02",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 13th May - ROR Roundup",
+      "sendTime": "2026-05-14T18:30:00+00:00",
       "recipients": 22150,
       "openRate": 0.39035,
       "clickRate": 0,
@@ -302,68 +321,73 @@
       "unsubscribeRate": 0.00402,
       "aov": 43.95,
       "revenue": 43.95,
-      "revenuePerRecipient": 0.00199
+      "revenuePerRecipient": 0.00199,
+      "status": "Sent"
     },
     {
       "id": "01KWYC25N685JKBM5EQR8CPZTJ",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 20154,
-      "openRate": 0.35508,
+      "openRate": 0.35517,
       "clickRate": 0.00069,
       "conversionRate": 0.00005,
       "conversions": 1,
       "unsubscribeRate": 0.00204,
       "aov": 39.95,
       "revenue": 39.95,
-      "revenuePerRecipient": 0.00198
+      "revenuePerRecipient": 0.00198,
+      "status": null
     },
     {
       "id": "01KWEDCZ0M8FM9SB4SCTWJF30Z",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 20038,
-      "openRate": 0.36109,
+      "openRate": 0.36124,
       "clickRate": 0.00519,
       "conversionRate": 0.00005,
       "conversions": 1,
       "unsubscribeRate": 0.0024,
       "aov": 39.01,
       "revenue": 39.01,
-      "revenuePerRecipient": 0.00195
+      "revenuePerRecipient": 0.00195,
+      "status": null
     },
     {
       "id": "01KY4CH0K4X9AA71CECMNPZTFX",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 23260,
-      "openRate": 0.3131,
+      "openRate": 0.31404,
       "clickRate": 0.00275,
       "conversionRate": 0.00004,
       "conversions": 1,
       "unsubscribeRate": 0.00202,
       "aov": 29.95,
       "revenue": 29.95,
-      "revenuePerRecipient": 0.00129
+      "revenuePerRecipient": 0.00129,
+      "status": null
     },
     {
       "id": "01KY4RAVJJET5BSRHRK6CT3AR7",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 23700,
-      "openRate": 0.33264,
+      "openRate": 0.3367,
       "clickRate": 0.00203,
       "conversionRate": 0.00004,
       "conversions": 1,
-      "unsubscribeRate": 0.00224,
+      "unsubscribeRate": 0.00228,
       "aov": 29.95,
       "revenue": 29.95,
-      "revenuePerRecipient": 0.00126
+      "revenuePerRecipient": 0.00126,
+      "status": null
     },
     {
       "id": "01KRJVT6XQTJN5EDG4BGKHERFF",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Wed 20th May - Father's Day preview",
+      "sendTime": "2026-05-20T18:00:00+00:00",
       "recipients": 22201,
       "openRate": 0.3458,
       "clickRate": 0.007,
@@ -372,12 +396,13 @@
       "unsubscribeRate": 0.00235,
       "aov": 26.05,
       "revenue": 26.05,
-      "revenuePerRecipient": 0.00118
+      "revenuePerRecipient": 0.00118,
+      "status": "Sent"
     },
     {
       "id": "01KQC96VDMDC558KSV9Y7TR864",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 2nd May - New Leopard Bags",
+      "sendTime": "2026-05-02T08:00:00+00:00",
       "recipients": 21855,
       "openRate": 0.34345,
       "clickRate": 0.00298,
@@ -386,12 +411,13 @@
       "unsubscribeRate": 0.00256,
       "aov": 0,
       "revenue": 0,
-      "revenuePerRecipient": 0
+      "revenuePerRecipient": 0,
+      "status": "Sent"
     },
     {
       "id": "01KRZPH8A0CQKB80S1N849ZZ51",
-      "name": "Unnamed campaign",
-      "sendTime": null,
+      "name": "Sat 23rd May - new father's day collection online",
+      "sendTime": "2026-05-23T08:00:00+00:00",
       "recipients": 22143,
       "openRate": 0.33296,
       "clickRate": 0.0019,
@@ -400,22 +426,181 @@
       "unsubscribeRate": 0.00177,
       "aov": 0,
       "revenue": 0,
-      "revenuePerRecipient": 0
+      "revenuePerRecipient": 0,
+      "status": "Sent"
     },
     {
       "id": "01KX0VWZBTSHWN6FVQC9DRWD2Y",
       "name": "Unnamed campaign",
       "sendTime": null,
       "recipients": 23055,
-      "openRate": 0.32541,
+      "openRate": 0.32546,
       "clickRate": 0.00117,
       "conversionRate": 0,
       "conversions": 0,
       "unsubscribeRate": 0.00278,
       "aov": 0,
       "revenue": 0,
-      "revenuePerRecipient": 0
+      "revenuePerRecipient": 0,
+      "status": null
     }
   ],
-  "flows": []
+  "flows": [
+    {
+      "id": "TARvYu",
+      "name": "ROR Welcome (SMS)",
+      "status": "live",
+      "recipients": 429,
+      "openRate": 0,
+      "clickRate": 0.31235,
+      "conversionRate": 0.12354,
+      "conversions": 53,
+      "aov": 37.82849075471698,
+      "revenue": 2004.91,
+      "revenuePerRecipient": 4.673449906759907
+    },
+    {
+      "id": "SyjWq3",
+      "name": "ROR Abandoned Checkout - Shopify",
+      "status": "live",
+      "recipients": 1739,
+      "openRate": 0.3353079183438758,
+      "clickRate": 0.03297381828637148,
+      "conversionRate": 0.024877826336975273,
+      "conversions": 43,
+      "aov": 37.92209348837209,
+      "revenue": 1630.65,
+      "revenuePerRecipient": 0.9376940885566418
+    },
+    {
+      "id": "SHt2vM",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 61,
+      "openRate": 0.83607,
+      "clickRate": 0,
+      "conversionRate": 0.01639,
+      "conversions": 1,
+      "aov": 46.8,
+      "revenue": 46.8,
+      "revenuePerRecipient": 0.7672131147540984
+    },
+    {
+      "id": "TYYedR",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 3682,
+      "openRate": 0.4497764475828354,
+      "clickRate": 0.035207528517110266,
+      "conversionRate": 0.012006083650190113,
+      "conversions": 44,
+      "aov": 39.07636386363636,
+      "revenue": 1719.36,
+      "revenuePerRecipient": 0.4669636094513851
+    },
+    {
+      "id": "YqqPJy",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 10233,
+      "openRate": 0.4038909567086876,
+      "clickRate": 0.018538582038502886,
+      "conversionRate": 0.009303739861233264,
+      "conversions": 94,
+      "aov": 38.64904276595745,
+      "revenue": 3633.01,
+      "revenuePerRecipient": 0.35502883025505716
+    },
+    {
+      "id": "R3N2yb",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 709,
+      "openRate": 0.4380041889985895,
+      "clickRate": 0.024262524682651623,
+      "conversionRate": 0.007144781382228492,
+      "conversions": 5,
+      "aov": 38.33,
+      "revenue": 191.65,
+      "revenuePerRecipient": 0.27031029619181945
+    },
+    {
+      "id": "QXtS9c",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 349,
+      "openRate": 0.59884,
+      "clickRate": 0.0407,
+      "conversionRate": 0.00291,
+      "conversions": 1,
+      "aov": 25.9,
+      "revenue": 25.9,
+      "revenuePerRecipient": 0.07421203438395416
+    },
+    {
+      "id": "XZVvkn",
+      "name": "ROR Customer Winback Flow 90D+",
+      "status": "live",
+      "recipients": 1600,
+      "openRate": 0.43090541250000003,
+      "clickRate": 0.02439219375,
+      "conversionRate": 0.0024997500000000002,
+      "conversions": 4,
+      "aov": 25.94,
+      "revenue": 103.76,
+      "revenuePerRecipient": 0.06485
+    },
+    {
+      "id": "RLiQxx",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 5601,
+      "openRate": 0.5366107552222817,
+      "clickRate": 0.02023477593286913,
+      "conversionRate": 0.001073868951972862,
+      "conversions": 6,
+      "aov": 32.43333333333333,
+      "revenue": 194.6,
+      "revenuePerRecipient": 0.03474379575075879
+    },
+    {
+      "id": "Wnu32D",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 1652,
+      "openRate": 0.3831307142857143,
+      "clickRate": 0.06360964285714286,
+      "conversionRate": 0,
+      "conversions": 0,
+      "aov": 0,
+      "revenue": 0,
+      "revenuePerRecipient": 0
+    },
+    {
+      "id": "RMQspX",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 248,
+      "openRate": 0.46774225806451614,
+      "clickRate": 0.060482499999999995,
+      "conversionRate": 0,
+      "conversions": 0,
+      "aov": 0,
+      "revenue": 0,
+      "revenuePerRecipient": 0
+    },
+    {
+      "id": "Ubx5EQ",
+      "name": "Unnamed flow",
+      "status": null,
+      "recipients": 2202,
+      "openRate": 0.009555199818346957,
+      "clickRate": 0,
+      "conversionRate": 0,
+      "conversions": 0,
+      "aov": 0,
+      "revenue": 0,
+      "revenuePerRecipient": 0
+    }
+  ]
 }
