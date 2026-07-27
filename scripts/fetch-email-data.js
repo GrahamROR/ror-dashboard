@@ -53,13 +53,20 @@ async function klaviyoPost(endpoint, body) {
   return json;
 }
 
-async function klaviyoGet(endpoint) {
+async function klaviyoGet(endpoint, attempt = 1) {
   const resp = await fetch(`${KLAVIYO_BASE}/${endpoint}`, {
     headers: {
       'Authorization': `Klaviyo-API-Key ${KLAVIYO_API_KEY}`,
       'revision':      KLAVIYO_REVISION,
     },
   });
+  if (resp.status === 429 && attempt <= 4) {
+    // Rate-limited — back off and retry rather than silently failing.
+    const retryAfter = Number(resp.headers.get('retry-after')) || attempt * 2;
+    console.log(`    ⏳ rate limited on ${endpoint}, retrying in ${retryAfter}s (attempt ${attempt})`);
+    await new Promise(r => setTimeout(r, retryAfter * 1000));
+    return klaviyoGet(endpoint, attempt + 1);
+  }
   const json = await resp.json();
   if (!resp.ok) {
     throw new Error(`Klaviyo ${endpoint} failed: ${resp.status} ${JSON.stringify(json)}`);
@@ -111,7 +118,8 @@ async function fetchCampaignReport() {
 // so we don't trip Klaviyo's rate limit.
 async function fetchCampaignMetadata(ids) {
   const map = {};
-  await runWithConcurrency(ids, 5, async (id) => {
+  let failCount = 0;
+  await runWithConcurrency(ids, 3, async (id) => {
     try {
       const json = await klaviyoGet(`campaigns/${id}/?fields[campaign]=name,status,send_time`);
       map[id] = {
@@ -120,10 +128,12 @@ async function fetchCampaignMetadata(ids) {
         status:   json.data?.attributes?.status || null,
       };
     } catch (e) {
-      console.log(`    ⚠ campaign ${id} metadata lookup failed: ${e.message}`);
+      failCount++;
+      console.log(`    ⚠ campaign ${id} metadata lookup FAILED — ${e.message}`);
       map[id] = { name: 'Unnamed campaign', sendTime: null, status: null };
     }
   });
+  if (failCount) console.log(`  ⚠ ${failCount}/${ids.length} campaign metadata lookups failed — see errors above`);
   return map;
 }
 
@@ -201,7 +211,8 @@ async function fetchFlowReport() {
 // fetchCampaignMetadata().
 async function fetchFlowMetadata(ids) {
   const map = {};
-  await runWithConcurrency(ids, 5, async (id) => {
+  let failCount = 0;
+  await runWithConcurrency(ids, 3, async (id) => {
     try {
       const json = await klaviyoGet(`flows/${id}/?fields[flow]=name,status`);
       map[id] = {
@@ -209,10 +220,12 @@ async function fetchFlowMetadata(ids) {
         status: json.data?.attributes?.status || null,
       };
     } catch (e) {
-      console.log(`    ⚠ flow ${id} metadata lookup failed: ${e.message}`);
+      failCount++;
+      console.log(`    ⚠ flow ${id} metadata lookup FAILED — ${e.message}`);
       map[id] = { name: 'Unnamed flow', status: null };
     }
   });
+  if (failCount) console.log(`  ⚠ ${failCount}/${ids.length} flow metadata lookups failed — see errors above`);
   return map;
 }
 
@@ -348,8 +361,16 @@ async function main() {
     window:   'last_90_days',
     goals:    EMAIL_GOALS,
     summary,
-    campaigns: campaigns.sort((a, b) => b.revenuePerRecipient - a.revenuePerRecipient),
-    flows:     flows.sort((a, b) => b.revenuePerRecipient - a.revenuePerRecipient),
+    // Newest first — matches how you'd read it in Klaviyo, and means a
+    // recent send with a failed name/date lookup still surfaces near the
+    // top (by ID recency) rather than sinking to the bottom unnoticed.
+    campaigns: campaigns.sort((a, b) => {
+      if (a.sendTime && b.sendTime) return new Date(b.sendTime) - new Date(a.sendTime);
+      if (a.sendTime) return -1;
+      if (b.sendTime) return 1;
+      return (b.id || '').localeCompare(a.id || ''); // ULIDs sort chronologically as strings
+    }),
+    flows: flows.sort((a, b) => b.revenuePerRecipient - a.revenuePerRecipient),
   };
 
   const outPath = path.join(__dirname, '..', 'email-data.json');
