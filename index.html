@@ -1298,8 +1298,12 @@ function App() {
             el('div', {className:'card',style:{marginBottom:16,display:'flex',flexWrap:'wrap',gap:24,alignItems:'center'}},
               el('div', null,
                 el('div', {className:'lbl',style:{marginBottom:4}}, 'Revenue split (90d)'),
-                el('div', {style:{fontSize:12,color:'var(--t2)'}},
-                  'Flows £'+fmt(es.flowRevenue90d)+' ('+fmtP(es.flowSharePct,0)+') · Campaigns £'+fmt(es.campaignRevenue90d)+' ('+fmtP(1-(es.flowSharePct||0),0)+')'
+                el('div', {style:{fontSize:12,color:'var(--t2)',display:'flex',alignItems:'center',gap:6,flexWrap:'wrap'}},
+                  el('span', {style:{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'var(--blu)'}}),
+                  el('span', null, 'Flows £'+fmt(es.flowRevenue90d)+' ('+fmtP(es.flowSharePct,0)+')'),
+                  el('span', null, ' · '),
+                  el('span', {style:{display:'inline-block',width:8,height:8,borderRadius:'50%',background:'var(--amb)'}}),
+                  el('span', null, 'Campaigns £'+fmt(es.campaignRevenue90d)+' ('+fmtP(1-(es.flowSharePct||0),0)+')'),
                 )
               ),
               el('div', {style:{flex:1,minWidth:120,height:8,background:'var(--s3)',borderRadius:4,overflow:'hidden',display:'flex'}},
