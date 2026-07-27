@@ -74,7 +74,7 @@ async function klaviyoGet(endpoint, attempt = 1) {
   return json;
 }
 
-// ── CAMPAIGN REPORT (last 90 days, email channel) ─────────────
+// ── CAMPAIGN REPORT (last 90 days, all channels — email + SMS) ─
 // NOTE: the campaign-values-reports endpoint only returns groupings +
 // statistics — it does NOT include the campaign name or send time.
 // That's why every row previously showed "Unnamed campaign" with no
@@ -91,7 +91,11 @@ async function fetchCampaignReport() {
           'conversion_rate', 'conversions', 'unsubscribe_rate', 'spam_complaint_rate',
           'average_order_value', 'conversion_value', 'revenue_per_recipient',
         ],
-        filter: "equals(send_channel,\"email\")",
+        // NOTE: no channel filter here on purpose. Klaviyo's own
+        // "Campaigns" total (vs. Flows) includes BOTH email and SMS
+        // campaigns. Filtering to email-only here was silently dropping
+        // SMS campaign revenue, which is why our campaign total came in
+        // a bit under Klaviyo's reported figure.
       },
     },
   };
@@ -101,7 +105,7 @@ async function fetchCampaignReport() {
     name:     null,     // filled in by fetchCampaignMetadata()
     sendTime: null,     // filled in by fetchCampaignMetadata()
     recipients:        r.statistics?.recipients        ?? 0,
-    openRate:          r.statistics?.open_rate          ?? 0,
+    openRate:          r.statistics?.open_rate          ?? null,
     clickRate:         r.statistics?.click_rate         ?? 0,
     conversionRate:    r.statistics?.conversion_rate    ?? 0,
     conversions:       r.statistics?.conversions         ?? 0,
