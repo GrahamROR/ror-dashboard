@@ -187,6 +187,38 @@ function pickYear(raw, wantFY) {
 const fmt  = (n,d=0)  => n==null?'—':Number(n).toLocaleString('en-GB',{minimumFractionDigits:d,maximumFractionDigits:d});
 const fmtC = (n,d=0)  => n==null?'—':'£'+fmt(n,d);
 const fmtP = (n,d=1)  => n==null?'—':(n*100).toFixed(d)+'%';
+
+// Generic click-to-sort helper for tables. type: 'string' | 'number' | 'date'
+function sortRows(rows, key, dir, type) {
+  return [...rows].sort((a, b) => {
+    let av = a[key], bv = b[key];
+    if (type === 'date') {
+      av = av ? new Date(av).getTime() : -Infinity;
+      bv = bv ? new Date(bv).getTime() : -Infinity;
+    } else if (type === 'string') {
+      av = (av || '').toLowerCase();
+      bv = (bv || '').toLowerCase();
+      return dir * av.localeCompare(bv);
+    } else {
+      av = av ?? -Infinity;
+      bv = bv ?? -Infinity;
+    }
+    return dir * (av - bv);
+  });
+}
+
+// Renders a clickable, sortable table header cell with a direction arrow
+function SortableTh({ label, sortKey, type, sort, setSort, align }) {
+  const active = sort.key === sortKey;
+  return el('th', {
+    onClick: () => setSort(s => s.key === sortKey ? { key: sortKey, dir: -s.dir } : { key: sortKey, dir: type === 'string' ? 1 : -1 }),
+    style: {
+      padding:'8px 12px', textAlign: align, fontSize:10, textTransform:'uppercase',
+      color: active ? 'var(--t1)' : 'var(--t3)', letterSpacing:'0.07em',
+      cursor:'pointer', userSelect:'none', whiteSpace:'nowrap',
+    },
+  }, label + (active ? (sort.dir === 1 ? ' ▲' : ' ▼') : ''));
+}
 const round2 = n       => Math.round(n*100)/100;
 
 function monthlyTarget(goal, idx)  { return goal * WEIGHTS[idx]; }
@@ -650,6 +682,8 @@ function App() {
   const [isFallback, setIsFallback] = useState(false);
   const [goalRev,    setGoalRev]    = useState(500000);
   const [activeTab,  setActiveTab]  = useState('overview');
+  const [campSort, setCampSort] = useState({ key: 'sendTime', dir: -1 });
+  const [flowSort, setFlowSort] = useState({ key: 'revenuePerRecipient', dir: -1 });
   const [apiKey,     setApiKey]     = useState(HARDCODED_KEY);
   const [keyIn,      setKeyIn]      = useState('');
   const [showAI,     setShowAI]     = useState(false);
@@ -1276,17 +1310,24 @@ function App() {
 
             // Campaigns table
             emailData?.campaigns?.length > 0 && el('div', {className:'card',style:{marginBottom:16}},
-              el('div', {style:{fontWeight:500,marginBottom:12}}, 'Campaigns — last 90 days, newest first'),
+              el('div', {style:{fontWeight:500,marginBottom:12}}, 'Campaigns — last 90 days  ·  click a column to sort'),
               el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
-                    ['Campaign','Sent','Recipients','Open','Click','Conv.','Rev/recipient','Revenue'].map((h,i)=>
-                      el('th', {key:i,style:{padding:'8px 12px',textAlign:i===0?'left':'right',fontSize:10,textTransform:'uppercase',color:'var(--t3)',letterSpacing:'0.07em'}}, h)
-                    )
+                    [
+                      {label:'Campaign',      key:'name',                 type:'string', align:'left'},
+                      {label:'Sent',          key:'sendTime',             type:'date',   align:'right'},
+                      {label:'Recipients',    key:'recipients',           type:'number', align:'right'},
+                      {label:'Open',          key:'openRate',             type:'number', align:'right'},
+                      {label:'Click',         key:'clickRate',            type:'number', align:'right'},
+                      {label:'Conv.',         key:'conversionRate',       type:'number', align:'right'},
+                      {label:'Rev/recipient', key:'revenuePerRecipient',  type:'number', align:'right'},
+                      {label:'Revenue',       key:'revenue',              type:'number', align:'right'},
+                    ].map(col => el(SortableTh, { key: col.key, ...col, sort: campSort, setSort: setCampSort }))
                   )
                 ),
                 el('tbody', null,
-                  emailData.campaigns.map((c,i) =>
+                  sortRows(emailData.campaigns, campSort.key, campSort.dir, campSort.key==='name'?'string':campSort.key==='sendTime'?'date':'number').map((c,i) =>
                     el('tr', {key:c.id||i,style:{borderBottom:'1px solid var(--bdr)'}},
                       el('td',{style:{padding:'9px 12px',fontWeight:500}}, c.name),
                       el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, c.sendTime ? new Date(c.sendTime).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'}) : '—'),
@@ -1304,17 +1345,23 @@ function App() {
 
             // Flows table
             emailData?.flows?.length > 0 && el('div', {className:'card',style:{marginBottom:16}},
-              el('div', {style:{fontWeight:500,marginBottom:12}}, 'Flows — last 90 days, ranked by revenue per recipient'),
+              el('div', {style:{fontWeight:500,marginBottom:12}}, 'Flows — last 90 days  ·  click a column to sort'),
               el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
-                    ['Flow','Recipients','Open','Click','Conv.','Rev/recipient','Revenue'].map((h,i)=>
-                      el('th', {key:i,style:{padding:'8px 12px',textAlign:i===0?'left':'right',fontSize:10,textTransform:'uppercase',color:'var(--t3)',letterSpacing:'0.07em'}}, h)
-                    )
+                    [
+                      {label:'Flow',          key:'name',                type:'string', align:'left'},
+                      {label:'Recipients',    key:'recipients',          type:'number', align:'right'},
+                      {label:'Open',          key:'openRate',            type:'number', align:'right'},
+                      {label:'Click',         key:'clickRate',           type:'number', align:'right'},
+                      {label:'Conv.',         key:'conversionRate',      type:'number', align:'right'},
+                      {label:'Rev/recipient', key:'revenuePerRecipient', type:'number', align:'right'},
+                      {label:'Revenue',       key:'revenue',             type:'number', align:'right'},
+                    ].map(col => el(SortableTh, { key: col.key, ...col, sort: flowSort, setSort: setFlowSort }))
                   )
                 ),
                 el('tbody', null,
-                  emailData.flows.map((f,i) =>
+                  sortRows(emailData.flows, flowSort.key, flowSort.dir, flowSort.key==='name'?'string':'number').map((f,i) =>
                     el('tr', {key:f.id||i,style:{borderBottom:'1px solid var(--bdr)'}},
                       el('td',{style:{padding:'9px 12px',fontWeight:500}}, f.name+(f.status==='draft'?' (draft)':'')),
                       el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace"}}, fmt(f.recipients)),
