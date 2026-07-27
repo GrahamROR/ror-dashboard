@@ -208,10 +208,10 @@ function sortRows(rows, key, dir, type) {
 }
 
 // Renders a clickable, sortable table header cell with a direction arrow
-function SortableTh({ label, sortKey, type, sort, setSort, align }) {
-  const active = sort.key === sortKey;
+function SortableTh({ label, field, type, sort, setSort, align }) {
+  const active = sort.key === field;
   return el('th', {
-    onClick: () => setSort(s => s.key === sortKey ? { key: sortKey, dir: -s.dir } : { key: sortKey, dir: type === 'string' ? 1 : -1 }),
+    onClick: () => setSort(s => s.key === field ? { key: field, dir: -s.dir } : { key: field, dir: type === 'string' ? 1 : -1 }),
     style: {
       padding:'8px 12px', textAlign: align, fontSize:10, textTransform:'uppercase',
       color: active ? 'var(--t1)' : 'var(--t3)', letterSpacing:'0.07em',
@@ -1315,15 +1315,15 @@ function App() {
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
                     [
-                      {label:'Campaign',      key:'name',                 type:'string', align:'left'},
-                      {label:'Sent',          key:'sendTime',             type:'date',   align:'right'},
-                      {label:'Recipients',    key:'recipients',           type:'number', align:'right'},
-                      {label:'Open',          key:'openRate',             type:'number', align:'right'},
-                      {label:'Click',         key:'clickRate',            type:'number', align:'right'},
-                      {label:'Conv.',         key:'conversionRate',       type:'number', align:'right'},
-                      {label:'Rev/recipient', key:'revenuePerRecipient',  type:'number', align:'right'},
-                      {label:'Revenue',       key:'revenue',              type:'number', align:'right'},
-                    ].map(col => el(SortableTh, { key: col.key, ...col, sort: campSort, setSort: setCampSort }))
+                      {label:'Campaign',      field:'name',                 type:'string', align:'left'},
+                      {label:'Sent',          field:'sendTime',             type:'date',   align:'right'},
+                      {label:'Recipients',    field:'recipients',           type:'number', align:'right'},
+                      {label:'Open',          field:'openRate',             type:'number', align:'right'},
+                      {label:'Click',         field:'clickRate',            type:'number', align:'right'},
+                      {label:'Conv.',         field:'conversionRate',       type:'number', align:'right'},
+                      {label:'Rev/recipient', field:'revenuePerRecipient',  type:'number', align:'right'},
+                      {label:'Revenue',       field:'revenue',              type:'number', align:'right'},
+                    ].map(col => el(SortableTh, { key: col.field, ...col, sort: campSort, setSort: setCampSort }))
                   )
                 ),
                 el('tbody', null,
@@ -1350,14 +1350,14 @@ function App() {
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
                     [
-                      {label:'Flow',          key:'name',                type:'string', align:'left'},
-                      {label:'Recipients',    key:'recipients',          type:'number', align:'right'},
-                      {label:'Open',          key:'openRate',            type:'number', align:'right'},
-                      {label:'Click',         key:'clickRate',           type:'number', align:'right'},
-                      {label:'Conv.',         key:'conversionRate',      type:'number', align:'right'},
-                      {label:'Rev/recipient', key:'revenuePerRecipient', type:'number', align:'right'},
-                      {label:'Revenue',       key:'revenue',             type:'number', align:'right'},
-                    ].map(col => el(SortableTh, { key: col.key, ...col, sort: flowSort, setSort: setFlowSort }))
+                      {label:'Flow',          field:'name',                type:'string', align:'left'},
+                      {label:'Recipients',    field:'recipients',          type:'number', align:'right'},
+                      {label:'Open',          field:'openRate',            type:'number', align:'right'},
+                      {label:'Click',         field:'clickRate',           type:'number', align:'right'},
+                      {label:'Conv.',         field:'conversionRate',      type:'number', align:'right'},
+                      {label:'Rev/recipient', field:'revenuePerRecipient', type:'number', align:'right'},
+                      {label:'Revenue',       field:'revenue',             type:'number', align:'right'},
+                    ].map(col => el(SortableTh, { key: col.field, ...col, sort: flowSort, setSort: setFlowSort }))
                   )
                 ),
                 el('tbody', null,
