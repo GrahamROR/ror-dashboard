@@ -1,5 +1,5 @@
 {
-  "updated": "2026-08-17T22:29:50.742Z",
+  "updated": "2026-08-17T22:34:15.912Z",
   "rolling": {
     "window": {
       "since": "2025-08-01",
@@ -13,7 +13,7 @@
       },
       "google": {
         "spend": null,
-        "source": "error: OAuth token refresh failed: {\"error\":\"invalid_client\",\"error_description\":\"The provided client secret is invalid.\"}"
+        "source": "error: {\"error\":{\"code\":403,\"message\":\"Google Ads API has not been used in project 1088933587797 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.\",\"status\":\"PERMISSION_DENIED\",\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.ErrorInfo\",\"reason\":\"SERVICE_DISABLED\",\"domain\":\"googleapis.com\",\"metadata\":{\"containerInfo\":\"1088933587797\",\"consumer\":\"projects/1088933587797\",\"activationUrl\":\"https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797\",\"service\":\"googleads.googleapis.com\",\"serviceTitle\":\"Google Ads API\"}},{\"@type\":\"type.googleapis.com/google.rpc.LocalizedMessage\",\"locale\":\"en-US\",\"message\":\"Google Ads API has not been used in project 1088933587797 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.\"},{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Google developers console API activation\",\"url\":\"https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797\"}]}]}}"
       },
       "blended": 65115.72
     },
@@ -43,7 +43,7 @@
       },
       "google": {
         "spend": null,
-        "source": "error: OAuth token refresh failed: {\"error\":\"invalid_client\",\"error_description\":\"The provided client secret is invalid.\"}"
+        "source": "error: {\"error\":{\"code\":403,\"message\":\"Google Ads API has not been used in project 1088933587797 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.\",\"status\":\"PERMISSION_DENIED\",\"details\":[{\"@type\":\"type.googleapis.com/google.rpc.ErrorInfo\",\"reason\":\"SERVICE_DISABLED\",\"domain\":\"googleapis.com\",\"metadata\":{\"containerInfo\":\"1088933587797\",\"consumer\":\"projects/1088933587797\",\"activationUrl\":\"https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797\",\"service\":\"googleads.googleapis.com\",\"serviceTitle\":\"Google Ads API\"}},{\"@type\":\"type.googleapis.com/google.rpc.LocalizedMessage\",\"locale\":\"en-US\",\"message\":\"Google Ads API has not been used in project 1088933587797 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.\"},{\"@type\":\"type.googleapis.com/google.rpc.Help\",\"links\":[{\"description\":\"Google developers console API activation\",\"url\":\"https://console.developers.google.com/apis/api/googleads.googleapis.com/overview?project=1088933587797\"}]}]}}"
       },
       "blended": 124705.24
     },
