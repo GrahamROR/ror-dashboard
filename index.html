@@ -81,6 +81,7 @@ const HARDCODED_KEY = '';            // paste Anthropic key here to skip AI key 
 const MODEL         = 'claude-haiku-4-5-20251001';
 const DATA_URL      = './data.json'; // served by GitHub Pages
 const EMAIL_DATA_URL = './email-data.json'; // written nightly by fetch-email-data.js
+const LTV_CAC_DATA_URL = './ltv-cac.json'; // written nightly by fetch-ltv-cac.js
 
 // ── CONSTANTS ─────────────────────────────────────────────────
 const GOALS = {
@@ -161,6 +162,25 @@ const EMAIL_FALLBACK = {
   },
   campaigns: [], // full list ships in email-data.json once the Action runs
   flows: [],
+};
+
+// LTV:CAC fallback — used until fetch-ltv-cac.js has run at least once
+// (or if Meta/Google Ads API credentials haven't been added as GitHub
+// secrets yet). Everything stays null/pending rather than fabricating
+// a number.
+const LTV_CAC_FALLBACK = {
+  updated: null,
+  window: { since: null, until: null, monthsUsed: 0, monthsTarget: 12 },
+  adSpend: {
+    meta:   { spend: null, source: 'not configured' },
+    google: { spend: null, source: 'not configured' },
+    blended: null,
+  },
+  customerMetrics: { avgAOV: null, ordersPerCustomer: null, marginPct: null, newCustomers: null, totalCustomers: null, totalOrders: null },
+  ltv: null,
+  cac: null,
+  ratio: null,
+  goals: { targetRatio: 3, minRatio: 1 },
 };
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -710,6 +730,10 @@ function App() {
   const [emailAiInsight,   setEmailAiInsight]   = useState('');
   const [emailAiErr,       setEmailAiErr]       = useState('');
 
+  // ── LTV:CAC STATE ────────────────────────────────────────────
+  const [ltvCacData,       setLtvCacData]       = useState(null);
+  const [ltvCacIsFallback, setLtvCacIsFallback] = useState(false);
+
   function resetEmailProjection() {
     setProjEmailConv(null); setProjEmailAOV(null);
     setEmailConvLocked(false); setEmailAovLocked(false);
@@ -752,6 +776,15 @@ function App() {
       .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
       .then(d => setEmailData(d))
       .catch(() => { setEmailData(EMAIL_FALLBACK); setEmailIsFallback(true); });
+  }, []);
+
+  // Load ltv-cac.json on mount (independent of the other pulls —
+  // if this 404s, the Margin tab's LTV:CAC card just shows pending state)
+  useEffect(() => {
+    fetch(LTV_CAC_DATA_URL + '?t=' + Date.now())
+      .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+      .then(d => setLtvCacData(d))
+      .catch(() => { setLtvCacData(LTV_CAC_FALLBACK); setLtvCacIsFallback(true); });
   }, []);
 
   // Derived values from the selected year's data
@@ -1453,6 +1486,78 @@ function App() {
             )
           )
         ),
+        (() => {
+          const lc = ltvCacData || LTV_CAC_FALLBACK;
+          const hasRatio = lc.ratio != null;
+          const ratioCol = !hasRatio ? 'var(--t3)' : lc.ratio >= lc.goals.targetRatio ? 'var(--grn)' : lc.ratio >= lc.goals.minRatio ? 'var(--amb)' : 'var(--red)';
+          const ratioBadge = !hasRatio
+            ? { cls: 'badge bb', text: 'pending' }
+            : lc.ratio >= lc.goals.targetRatio ? { cls: 'badge bg', text: 'on track' }
+            : lc.ratio >= lc.goals.minRatio    ? { cls: 'badge ba', text: 'below target' }
+            :                                    { cls: 'badge br', text: 'losing money' };
+          const metaMissing   = lc.adSpend.meta.spend   == null;
+          const googleMissing = lc.adSpend.google.spend == null;
+
+          return el('div', { className: 'card', style: { marginBottom: 16 } },
+            el('div', { style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 16 } },
+              el('div', null,
+                el('div', { style: { fontWeight: 500, fontSize: 14, marginBottom: 4 } }, 'LTV : CAC'),
+                el('div', { style: { fontSize: 12, color: 'var(--t2)', lineHeight: 1.5, maxWidth: 480 } },
+                  lc.window.monthsUsed
+                    ? 'Trailing ' + lc.window.monthsUsed + ' completed month' + (lc.window.monthsUsed === 1 ? '' : 's') +
+                      (lc.window.monthsUsed < lc.window.monthsTarget ? ' (still building to ' + lc.window.monthsTarget + ' — figure will settle as more history comes in)' : '') +
+                      ' · blended CAC = all ad spend ÷ new customers · LTV = AOV × orders/customer × margin %'
+                    : 'Waiting on the first LTV:CAC data pull'
+                )
+              ),
+              el('div', { className: ratioBadge.cls }, ratioBadge.text)
+            ),
+
+            (metaMissing || googleMissing) && el('div', {
+              style: { background: 'var(--amb-bg)', border: '1px solid var(--amb-bdr)', borderRadius: 'var(--r)', padding: '10px 14px', marginBottom: 16, fontSize: 12, color: 'var(--amb)', lineHeight: 1.6 }
+            },
+              'Ad spend not fully connected yet — ',
+              metaMissing && 'Meta (' + lc.adSpend.meta.source + ')',
+              metaMissing && googleMissing && ' and ',
+              googleMissing && 'Google Ads (' + lc.adSpend.google.source + ')',
+              '. CAC and the ratio populate once API credentials are added as GitHub secrets.'
+            ),
+
+            el('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 12 } },
+              [
+                {
+                  lbl: 'LTV (trailing ' + (lc.window.monthsUsed || lc.window.monthsTarget) + 'mo)',
+                  val: lc.ltv != null ? fmtC(lc.ltv, 0) : '—',
+                  col: 'var(--grn)',
+                  note: lc.customerMetrics.avgAOV != null
+                    ? fmtC(lc.customerMetrics.avgAOV, 2) + ' AOV × ' + lc.customerMetrics.ordersPerCustomer + ' orders/customer × ' + fmtP(lc.customerMetrics.marginPct, 0) + ' margin'
+                    : 'Needs costed-SKU margin data',
+                },
+                {
+                  lbl: 'CAC (blended)',
+                  val: lc.cac != null ? fmtC(lc.cac, 0) : '—',
+                  col: 'var(--amb)',
+                  note: lc.adSpend.blended != null
+                    ? fmtC(lc.adSpend.blended, 0) + ' spend ÷ ' + fmt(lc.customerMetrics.newCustomers) + ' new customers'
+                    : 'Needs ad spend data',
+                },
+                {
+                  lbl: 'LTV : CAC ratio',
+                  val: hasRatio ? lc.ratio.toFixed(1) + ' : 1' : '—',
+                  col: ratioCol,
+                  note: 'Target 3:1 · below 1:1 means each customer costs more than they bring in',
+                },
+              ].map((item, i) =>
+                el('div', { key: i, style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '14px 16px', border: '1px solid var(--bdr)' } },
+                  el('div', { className: 'lbl', style: { marginBottom: 8 } }, item.lbl),
+                  el('div', { style: { fontSize: 26, fontWeight: 700, color: item.col, fontFamily: "'DM Mono',monospace", marginBottom: 6 } }, item.val),
+                  el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5 } }, item.note)
+                )
+              )
+            )
+          );
+        })(),
+
         el('div', {className:'card'},
           el('div', {style:{fontWeight:500,marginBottom:12}}, 'Monthly margin breakdown'),
           el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},

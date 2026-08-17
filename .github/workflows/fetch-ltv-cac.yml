@@ -1,0 +1,47 @@
+name: Fetch LTV:CAC Data
+
+on:
+  schedule:
+    - cron: '25 3 * * *'   # after the Shopify pull (0 3) and email pull (10 3) so data.json is fresh
+  workflow_dispatch:         # manual trigger from GitHub Actions tab
+
+permissions:
+  contents: write            # needed to commit ltv-cac.json back to repo
+
+jobs:
+  fetch-ltv-cac:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Europe/London
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch ad spend from Meta + Google Ads
+        env:
+          META_ACCESS_TOKEN:           ${{ secrets.META_ACCESS_TOKEN }}
+          META_AD_ACCOUNT_ID:           ${{ secrets.META_AD_ACCOUNT_ID }}
+          GOOGLE_ADS_DEVELOPER_TOKEN:   ${{ secrets.GOOGLE_ADS_DEVELOPER_TOKEN }}
+          GOOGLE_ADS_CLIENT_ID:         ${{ secrets.GOOGLE_ADS_CLIENT_ID }}
+          GOOGLE_ADS_CLIENT_SECRET:     ${{ secrets.GOOGLE_ADS_CLIENT_SECRET }}
+          GOOGLE_ADS_REFRESH_TOKEN:     ${{ secrets.GOOGLE_ADS_REFRESH_TOKEN }}
+          GOOGLE_ADS_CUSTOMER_ID:       ${{ secrets.GOOGLE_ADS_CUSTOMER_ID }}
+          GOOGLE_ADS_LOGIN_CUSTOMER_ID: ${{ secrets.GOOGLE_ADS_LOGIN_CUSTOMER_ID }}
+        run: node scripts/fetch-ltv-cac.js
+
+      - name: Commit and push updated ltv-cac.json
+        run: |
+          git config user.name  "ror-dashboard[bot]"
+          git config user.email "dashboard@rockonruby.co.uk"
+          git add ltv-cac.json
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "chore: LTV:CAC update $(date +'%Y-%m-%d %H:%M %Z')"
+            git push
+          )
