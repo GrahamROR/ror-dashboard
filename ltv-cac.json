@@ -1,0 +1,35 @@
+{
+  "updated": "2026-08-17T21:09:26.920Z",
+  "window": {
+    "since": "2025-09-17",
+    "until": "2026-08-17",
+    "monthsUsed": 11,
+    "monthsTarget": 12
+  },
+  "adSpend": {
+    "meta": {
+      "spend": 60845,
+      "source": "Meta Marketing API insights"
+    },
+    "google": {
+      "spend": null,
+      "source": "error: OAuth token refresh failed: {\"error\":\"invalid_client\",\"error_description\":\"The provided client secret is invalid.\"}"
+    },
+    "blended": 60845
+  },
+  "customerMetrics": {
+    "avgAOV": 32.56,
+    "ordersPerCustomer": 1.03,
+    "marginPct": 0.582,
+    "newCustomers": 5960,
+    "totalCustomers": 7161,
+    "totalOrders": 7387
+  },
+  "ltv": 19.52,
+  "cac": 10.21,
+  "ratio": 1.91,
+  "goals": {
+    "targetRatio": 3,
+    "minRatio": 1
+  }
+}
