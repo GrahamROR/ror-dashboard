@@ -974,6 +974,13 @@ function App() {
           }),
 
           el(MetricCard, {
+            icon:'ti-shopping-bag', label:'Orders', accentCol:'var(--amb)',
+            actual: fmt(summary.ytdOrders), target: fmt(Math.round(ytdGoal / GOALS.aov)),
+            statusKey: status(summary.ytdOrders, ytdGoal / GOALS.aov),
+            note: 'YTD orders vs implied target at £'+GOALS.aov+' goal AOV · matches Orders/day on the goal slider above',
+          }),
+
+          el(MetricCard, {
             icon:'ti-refresh', label:'Repeat Rate', accentCol:'var(--amb)',
             actual: fmtP(summary.avgRepeatRate), target: fmtP(GOALS.repeatRate),
             statusKey: status(summary.avgRepeatRate, GOALS.repeatRate),
@@ -1043,7 +1050,7 @@ function App() {
             ),
             el('div', {style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
               el('div', {className:'badge bb'}, 'daily targets'),
-              el('div', {className:'badge ba'}, 'margin pending')
+              (yesterday?.margin==null) && el('div', {className:'badge ba'}, 'margin pending')
             )
           )
         ),
@@ -1185,6 +1192,7 @@ function App() {
         el('div', {className:'card'},
           el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Top 10 Products — '+(viewData?.fy||'')),
           el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:18}}, 'By gross revenue · Updated from Shopify'),
+          topProducts.length === 0 && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'12px 0'}}, 'No product data yet for '+(viewData?.fy||'this year')+' — populates after the next nightly data refresh.'),
           topProducts.map((p,i) => {
             const totalRev = topProducts.reduce((s,t)=>s+(t.revenue||0),0);
             const pct = totalRev ? (p.revenue/summary.ytdRevenue*100) : 0;
@@ -1211,7 +1219,11 @@ function App() {
               topProducts[0] ? (topProducts[0].revenue/summary.ytdRevenue*100).toFixed(1)+'%' : '—'
             ),
             el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.6}},
-              topProducts[0]?.name + ' drives nearly a third of all revenue. The next product is 8× smaller. Evergreen hero — but a risk to manage.'
+              topProducts[0]
+                ? topProducts[0].name + ' drives ' + Math.round(topProducts[0].revenue/summary.ytdRevenue*100) + '% of all revenue.' +
+                  (topProducts[1] ? ' The next product is ' + Math.max(1, Math.round(topProducts[0].revenue/topProducts[1].revenue)) + '× smaller.' : '') +
+                  ' Worth managing as a concentration risk.'
+                : 'No product data yet for ' + (viewData?.fy||'this year') + ' — populates after the next nightly data refresh.'
             )
           ),
           el('div', {className:'card'},
@@ -1429,8 +1441,8 @@ function App() {
         ),
         el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12,marginBottom:16}},
           [
-            {lbl:'Margin % (costed SKUs)', val: summary.ytdMarginPct!=null?fmtP(summary.ytdMarginPct,1):'—', note:'Gross profit ÷ revenue, costed SKUs only'},
-            {lbl:'Est. gross profit YTD',  val: summary.ytdEstGrossProfit!=null?fmtC(summary.ytdEstGrossProfit,0):'—', note:'Margin % applied to full net sales'},
+            {lbl:'Margin % (costed SKUs)', val: summary.ytdMarginPct!=null?fmtP(summary.ytdMarginPct,1):'—', note:'Goal: '+fmtP(GOALS.margin,0)+' · Gross profit ÷ revenue, costed SKUs only'},
+            {lbl:'Est. gross profit YTD',  val: summary.ytdEstGrossProfit!=null?fmtC(summary.ytdEstGrossProfit,0):'—', note:'Goal: '+fmtC(ytdGoal*GOALS.margin,0)+' (YTD revenue target × margin goal) · Margin % applied to full net sales'},
             {lbl:'Cost of goods (costed)', val: summary.ytdCostOfGoodsSold!=null?fmtC(summary.ytdCostOfGoodsSold,0):'—', note:'Actual COGS on SKUs with cost data'},
             {lbl:'Cost data coverage',     val: summary.ytdCostCoverage!=null?fmtP(summary.ytdCostCoverage,0):'—', note:'Share of net sales with a costed SKU'},
           ].map((item,i)=>
