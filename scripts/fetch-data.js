@@ -201,10 +201,16 @@ async function fetchMonthlySessions(token) {
 }
 
 // ── FETCH YESTERDAY ───────────────────────────────────────────
+// Margin/profit use the same costed-SKU approach as fetchMonthlySales:
+// gross_profit ÷ (cost_of_goods_sold + gross_profit) gives a real margin %
+// on whatever SKUs are costed, then that % is applied to net_sales to
+// estimate the day's gross profit. On a single day this can be noisy or
+// simply have no costed SKUs at all — in that case margin/profit stay
+// null and the dashboard shows "Pending", same as before.
 async function fetchYesterdaySales(token, dateStr) {
   const salesQL =
     `FROM sales ` +
-    `SHOW total_sales, orders, average_order_value, returning_customers, customers ` +
+    `SHOW total_sales, net_sales, orders, average_order_value, returning_customers, customers, cost_of_goods_sold, gross_profit ` +
     `SINCE ${dateStr} UNTIL ${dateStr}`;
 
   const sessionsQL =
@@ -221,12 +227,19 @@ async function fetchYesterdaySales(token, dateStr) {
   const a = sessionsRows[0] || {};
 
   const revenue   = s.total_sales            != null ? Math.round(Number(s.total_sales)           * 100) / 100 : 0;
+  const netSales  = s.net_sales               != null ? Math.round(Number(s.net_sales)             * 100) / 100 : null;
   const orders    = s.orders                 != null ? Number(s.orders)                                        : 0;
   const aov       = s.average_order_value    != null ? Math.round(Number(s.average_order_value)    * 100) / 100 : null;
   const returning = s.returning_customers    != null ? Number(s.returning_customers)                           : 0;
   const customers = s.customers              != null ? Number(s.customers)                                     : 0;
   const sessions  = Number(a.sessions || 0);
   const converted = Number(a.sessions_that_completed_checkout || 0);
+
+  const cogs           = s.cost_of_goods_sold != null ? Number(s.cost_of_goods_sold) : null;
+  const grossProfit     = s.gross_profit       != null ? Number(s.gross_profit)       : null;
+  const costedRevenue   = (cogs != null && grossProfit != null) ? cogs + grossProfit : null;
+  const marginPctCovered = costedRevenue ? grossProfit / costedRevenue : null;
+  const estGrossProfit   = (netSales != null && marginPctCovered != null) ? netSales * marginPctCovered : null;
 
   console.log(`  ✓ Yesterday: £${revenue} | ${orders} orders | ${sessions} sessions | ${returning}/${customers} returning`);
 
@@ -243,13 +256,44 @@ async function fetchYesterdaySales(token, dateStr) {
     convertedSessions:    converted,
     conversionRate:       sessions ? converted / sessions : null,
     shopifyConversionRate: a.conversion_rate != null ? Number(a.conversion_rate) : null,
-    margin:               null,
-    profit:               null,
-    marginSource:         'pending_sku_cost_data',
-    profitSource:         'pending_sku_cost_data',
+    margin:               marginPctCovered != null ? Math.round(marginPctCovered * 1000) / 1000 : null,
+    profit:               estGrossProfit   != null ? Math.round(estGrossProfit * 100) / 100 : null,
+    marginSource:         marginPctCovered != null ? 'Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)' : 'pending_sku_cost_data',
+    profitSource:         estGrossProfit   != null ? 'estimated: net_sales × margin % (costed SKUs)' : 'pending_sku_cost_data',
     revenueSource:        'Shopify Analytics total_sales',
     analyticsSource:      'Shopify Analytics sessions report',
   };
+}
+
+// ── FETCH TOP PRODUCTS ────────────────────────────────────────
+// Automated top-10-by-revenue pull for the current FY, replacing the old
+// approach of hand-seeding topProducts once and carrying it forward
+// year over year (which is why a brand-new FY started with an empty
+// list — nobody had re-seeded it). Falls back to whatever's already in
+// data.json if the query fails, so a bad run never blanks the card.
+async function fetchTopProducts(token) {
+  const shopifyql =
+    `FROM sales ` +
+    `SHOW total_sales, orders, product_title ` +
+    `GROUP BY product_title ` +
+    `SINCE ${FY_START} UNTIL ${FY_END} ` +
+    `ORDER BY total_sales DESC ` +
+    `LIMIT 10`;
+
+  try {
+    const rows = await runShopifyQL(token, shopifyql);
+    console.log(`  ✓ Top products: ${rows.length} rows returned`);
+    return rows
+      .filter(r => r.product_title)
+      .map(r => ({
+        name:    r.product_title,
+        revenue: r.total_sales != null ? Math.round(Number(r.total_sales) * 100) / 100 : 0,
+        orders:  r.orders      != null ? Number(r.orders)                             : 0,
+      }));
+  } catch (e) {
+    console.warn(`  ⚠ Top products fetch failed, keeping existing data: ${e.message}`);
+    return null;
+  }
 }
 
 // ── LOAD EXISTING DATA (multi-year aware) ───────────────────────
@@ -308,10 +352,11 @@ async function main() {
 
   // Fetch everything in parallel
   console.log('\n→ Fetching all data from Shopify Analytics...');
-  const [monthlySales, monthlySessions, yesterday] = await Promise.all([
+  const [monthlySales, monthlySessions, yesterday, fetchedTopProducts] = await Promise.all([
     fetchMonthlySales(token),
     fetchMonthlySessions(token),
     fetchYesterdaySales(token, dateStr),
+    fetchTopProducts(token),
   ]);
 
   // Build the monthly array — all 12 FY months
@@ -414,7 +459,7 @@ async function main() {
       [FY_KEY]: {
         fyLabel:     FY_LABEL,
         monthly,
-        topProducts: preserveTopProducts(existing),
+        topProducts: (fetchedTopProducts && fetchedTopProducts.length) ? fetchedTopProducts : preserveTopProducts(existing),
         summary,
       },
     },
