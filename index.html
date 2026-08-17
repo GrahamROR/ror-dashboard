@@ -1567,6 +1567,9 @@ function App() {
           };
 
           return el(React.Fragment, null,
+            el('div', { style: { fontSize: 11, color: 'var(--t3)', marginBottom: 8 } },
+              'Both cards below are always as-of-today (rolling 12 months / cumulative up to 3 years) — they don\'t change with the FY tab selected above, unlike everything else on this page.'
+            ),
             renderWindow(
               'LTV : CAC — rolling 12 months',
               w => 'Trailing ' + w.window.monthsUsed + ' completed month' + (w.window.monthsUsed === 1 ? '' : 's') + ' (' + w.window.since + ' → ' + w.window.until + ')',
