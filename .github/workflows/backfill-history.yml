@@ -1,0 +1,40 @@
+name: Backfill Historical Data (FY24 + FY25)
+
+on:
+  workflow_dispatch:         # manual trigger only — this is a one-off, not scheduled
+
+permissions:
+  contents: write            # needed to commit data.json back to repo
+
+jobs:
+  backfill-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Europe/London
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Backfill FY24 + FY25 from Shopify Analytics
+        env:
+          SHOPIFY_STORE:         ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID:     ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+        run: node scripts/backfill-history.js
+
+      - name: Commit and push updated data.json
+        run: |
+          git config user.name  "ror-dashboard[bot]"
+          git config user.email "dashboard@rockonruby.co.uk"
+          git add data.json
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "chore: backfill FY24 + FY25 historical data"
+            git push
+          )

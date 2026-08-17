@@ -1,26 +1,39 @@
 // ============================================================
-// ROCK ON RUBY — LTV:CAC Fetcher v1
-// Pulls blended ad spend from Meta + Google Ads, combines it with
-// order-side metrics already sitting in data.json (written by
+// ROCK ON RUBY — LTV:CAC Fetcher v3
+// Pulls blended ad spend from Meta + Google Ads and combines it with
+// order-side data already sitting in data.json (written by
 // fetch-data.js, which must run first in the same Action) to produce
-// a trailing-12-(completed)-month LTV:CAC figure.
+// TWO LTV:CAC figures.
 //
 // Methodology (agreed Aug 2026):
 //  - CAC is BLENDED: total ad spend (Meta + Google, all channels) ÷
-//    new customers acquired in the same window. Deliberately not
-//    paid-only — blended is the honest number for a business-level
-//    goal, paid-only is a channel-performance number.
+//    new customers acquired in the window. Deliberately not paid-only
+//    — blended is the honest number for a business-level goal,
+//    paid-only is a channel-performance number.
 //  - LTV = AOV × avg orders per customer over the window × gross
 //    margin % (costed SKUs). Margin step matters — a ratio built on
 //    revenue alone always looks healthier than it really is.
-//  - Window is a FLAT trailing-12-completed-months figure, not a
-//    proper cohort. A genuine cohort LTV (grouped by first-purchase
-//    month, tracked forward) is the more correct version long-term,
-//    but needs a few years of history to be meaningful. Flat 12-month
-//    is the standard interim number.
-//  - If fewer than 12 completed months exist yet (e.g. early in a new
-//    FY), this uses however many are available and records that in
-//    monthsUsed — it does not fabricate a full 12 months.
+//  - Two windows, per the original brief: "a genuine lifetime figure
+//    needs a few years of history behind it — until then it'd be a 12
+//    month LTV, which is completely standard."
+//      1. ROLLING — trailing 12 completed months, sliding forward
+//         every month. This is the headline "12 month LTV" figure.
+//      2. CUMULATIVE — as much history as exists, capped at 36
+//         months (3 years). Right now this is barely more than the
+//         rolling window (only ~1 year of history exists at all), but
+//         it grows toward the real multi-year lifetime figure as more
+//         fiscal years close, with no further code changes needed.
+//  - Both are flat, non-cohort figures — a proper cohort LTV (grouped
+//    by first-purchase month, tracked forward) is the more correct
+//    version long-term, but needs years of history to be meaningful.
+//
+// A note on "complete" months: a closed fiscal year's monthly array
+// can have its LAST month frozen with complete:false/mtd:true, simply
+// because that was its state on the final run before the next FY
+// took over as "current" (fetch-data.js never touches a past year's
+// block again). So `complete` is only trustworthy for data.json's
+// CURRENT fiscal year — every month in any OTHER (closed) year is
+// real, finished data regardless of what its flag says.
 // ============================================================
 
 const fs   = require('fs');
@@ -39,14 +52,20 @@ const GOOGLE_ADS_CUSTOMER_ID      = process.env.GOOGLE_ADS_CUSTOMER_ID      || n
 const GOOGLE_ADS_LOGIN_CUSTOMER_ID = process.env.GOOGLE_ADS_LOGIN_CUSTOMER_ID || null; // only if under an MCC
 const GOOGLE_ADS_API_VERSION      = process.env.GOOGLE_ADS_API_VERSION      || 'v25';
 
-const TARGET_RATIO = 3;   // usual 3:1 benchmark
-const MIN_RATIO     = 1;   // below 1:1 = losing money on every customer
-const WINDOW_MONTHS = 12;
+const TARGET_RATIO    = 3;    // usual 3:1 benchmark
+const MIN_RATIO        = 1;    // below 1:1 = losing money on every customer
+const ROLLING_MONTHS   = 12;
+const CUMULATIVE_CAP   = 36;   // 3 years
 
 // ── DATE HELPERS ─────────────────────────────────────────────
-function isoDate(d) {
+function firstDayOfMonthKey(key) {
+  return `${key}-01`;
+}
+function lastDayOfMonthKey(key) {
+  const [y, m] = key.split('-').map(Number); // m is 1-based
+  const day = new Date(y, m, 0).getDate();    // day 0 of month m = last day of month m-1 (0-based) = month m (1-based)
   const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  return `${y}-${pad(m)}-${pad(day)}`;
 }
 
 // ── META MARKETING API ────────────────────────────────────────
@@ -125,67 +144,50 @@ async function fetchGoogleAdsSpend(since, until) {
   }
 }
 
-// ── ORDER-SIDE TRAILING WINDOW (from data.json, already written by fetch-data.js) ──
-// Flattens monthly arrays across every FY block, keeps only completed
-// months (excludes the in-progress MTD month and future months so a
-// partial month never skews AOV/margin), sorts chronologically, and
-// takes the most recent WINDOW_MONTHS. This deliberately spans FY
-// boundaries — FY27's first completed month picks up right where
-// FY26's last one left off.
-function loadTrailingWindow() {
+// ── COMPLETED MONTHS ACROSS ALL FISCAL YEARS ────────────────────
+function loadCompletedMonths() {
   const dataPath = path.join(__dirname, '..', 'data.json');
   const raw = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-  const allMonths = Object.values(raw.years || {})
-    .flatMap(block => block.monthly || [])
-    .filter(m => m.complete)
+  return Object.entries(raw.years || {})
+    .flatMap(([fyKey, block]) =>
+      (block.monthly || []).filter(m => fyKey === raw.currentFY ? m.complete : true)
+    )
     .sort((a, b) => a.key.localeCompare(b.key));
+}
 
-  const window = allMonths.slice(-WINDOW_MONTHS);
-  if (!window.length) return null;
+// ── AGGREGATE A SLICE OF MONTHS INTO ONE LTV:CAC WINDOW ─────────
+function aggregateWindow(months) {
+  if (!months.length) return null;
 
-  const totalOrders    = window.reduce((s, m) => s + (m.orders    || 0), 0);
-  const totalCustomers = window.reduce((s, m) => s + (m.customers || 0), 0);
-  const totalReturning = window.reduce((s, m) => s + (m.returning || 0), 0);
-  const aovNumerator   = window.reduce((s, m) => s + ((m.aov || 0) * (m.orders || 0)), 0);
-  const totalCogs      = window.reduce((s, m) => s + (m.costOfGoodsSold || 0), 0);
-  const totalGrossProfit = window.reduce((s, m) => s + (m.grossProfit || 0), 0);
-  const costedRevenue  = totalCogs + totalGrossProfit;
+  const totalOrders      = months.reduce((s, m) => s + (m.orders    || 0), 0);
+  const totalCustomers   = months.reduce((s, m) => s + (m.customers || 0), 0);
+  const totalReturning   = months.reduce((s, m) => s + (m.returning || 0), 0);
+  const aovNumerator     = months.reduce((s, m) => s + ((m.aov || 0) * (m.orders || 0)), 0);
+  const totalCogs        = months.reduce((s, m) => s + (m.costOfGoodsSold || 0), 0);
+  const totalGrossProfit = months.reduce((s, m) => s + (m.grossProfit || 0), 0);
+  const costedRevenue    = totalCogs + totalGrossProfit;
 
   return {
-    monthsUsed:       window.length,
-    since:            window[0].key,
-    until:            window[window.length - 1].key,
-    avgAOV:           totalOrders ? Math.round((aovNumerator / totalOrders) * 100) / 100 : null,
+    monthsUsed:        months.length,
+    since:             firstDayOfMonthKey(months[0].key),
+    until:             lastDayOfMonthKey(months[months.length - 1].key),
+    avgAOV:            totalOrders ? Math.round((aovNumerator / totalOrders) * 100) / 100 : null,
     ordersPerCustomer: totalCustomers ? Math.round((totalOrders / totalCustomers) * 100) / 100 : null,
-    marginPct:        costedRevenue ? Math.round((totalGrossProfit / costedRevenue) * 1000) / 1000 : null,
+    marginPct:         costedRevenue ? Math.round((totalGrossProfit / costedRevenue) * 1000) / 1000 : null,
     newCustomers:      Math.max(0, totalCustomers - totalReturning),
     totalCustomers,
     totalOrders,
   };
 }
 
-// ── MAIN ──────────────────────────────────────────────────────
-async function main() {
-  console.log('=== ROR Dashboard — LTV:CAC Fetch ===');
-
-  const orderSide = loadTrailingWindow();
-  if (!orderSide) {
-    throw new Error('No completed months found in data.json — run fetch-data.js first.');
-  }
-  console.log(`  ✓ Order-side window: ${orderSide.monthsUsed} completed month(s), ${orderSide.since} → ${orderSide.until}`);
-
-  // Ad spend query window mirrors the order-side window (same calendar
-  // span) so LTV and CAC are measuring the same period, not two
-  // different clocks.
-  const until = isoDate(new Date());
-  const since = isoDate(new Date(Date.now() - orderSide.monthsUsed * 30.44 * 24 * 60 * 60 * 1000));
-
-  console.log('→ Fetching Meta ad spend...');
-  const meta = await fetchMetaSpend(since, until);
+// ── FETCH AD SPEND + COMPUTE LTV:CAC FOR ONE WINDOW ──────────────
+async function buildWindowResult(label, orderSide, monthsCap) {
+  console.log(`→ Fetching Meta ad spend (${label}, ${orderSide.since} → ${orderSide.until})...`);
+  const meta = await fetchMetaSpend(orderSide.since, orderSide.until);
   console.log(meta.spend != null ? `  ✓ £${meta.spend}` : `  – ${meta.source}`);
 
-  console.log('→ Fetching Google Ads spend...');
-  const google = await fetchGoogleAdsSpend(since, until);
+  console.log(`→ Fetching Google Ads spend (${label})...`);
+  const google = await fetchGoogleAdsSpend(orderSide.since, orderSide.until);
   console.log(google.spend != null ? `  ✓ £${google.spend}` : `  – ${google.source}`);
 
   const spendKnown = [meta.spend, google.spend].filter(v => v != null);
@@ -201,9 +203,13 @@ async function main() {
 
   const ratio = (ltv != null && cac) ? Math.round((ltv / cac) * 100) / 100 : null;
 
-  const output = {
-    updated: new Date().toISOString(),
-    window: { since, until, monthsUsed: orderSide.monthsUsed, monthsTarget: WINDOW_MONTHS },
+  return {
+    window: {
+      since: orderSide.since,
+      until: orderSide.until,
+      monthsUsed: orderSide.monthsUsed,
+      ...(monthsCap ? { monthsCap } : {}),
+    },
     adSpend: { meta, google, blended: blendedSpend },
     customerMetrics: {
       avgAOV:            orderSide.avgAOV,
@@ -216,6 +222,32 @@ async function main() {
     ltv,
     cac,
     ratio,
+  };
+}
+
+// ── MAIN ──────────────────────────────────────────────────────
+async function main() {
+  console.log('=== ROR Dashboard — LTV:CAC Fetch ===');
+
+  const allMonths = loadCompletedMonths();
+  if (!allMonths.length) {
+    throw new Error('No completed months found in data.json — run fetch-data.js first.');
+  }
+  console.log(`  ✓ ${allMonths.length} completed month(s) available, ${allMonths[0].key} → ${allMonths[allMonths.length - 1].key}`);
+
+  const rollingMonths    = allMonths.slice(-ROLLING_MONTHS);
+  const cumulativeMonths = allMonths.slice(-CUMULATIVE_CAP);
+
+  const rollingOrderSide    = aggregateWindow(rollingMonths);
+  const cumulativeOrderSide = aggregateWindow(cumulativeMonths);
+
+  const rolling    = await buildWindowResult('rolling 12mo', rollingOrderSide, null);
+  const cumulative = await buildWindowResult('cumulative', cumulativeOrderSide, CUMULATIVE_CAP);
+
+  const output = {
+    updated: new Date().toISOString(),
+    rolling,
+    cumulative,
     goals: { targetRatio: TARGET_RATIO, minRatio: MIN_RATIO },
   };
 
@@ -223,9 +255,8 @@ async function main() {
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
 
   console.log('\n✓ ltv-cac.json written');
-  console.log(`  LTV:  ${ltv != null ? '£' + ltv : 'n/a (needs cost-of-goods data)'}`);
-  console.log(`  CAC:  ${cac != null ? '£' + cac : 'n/a (needs ad spend + new customer data)'}`);
-  console.log(`  Ratio: ${ratio != null ? ratio + ':1' : 'n/a'} (target ${TARGET_RATIO}:1)`);
+  console.log(`  Rolling 12mo    — LTV: ${rolling.ltv != null ? '£' + rolling.ltv : 'n/a'}  CAC: ${rolling.cac != null ? '£' + rolling.cac : 'n/a'}  Ratio: ${rolling.ratio != null ? rolling.ratio + ':1' : 'n/a'}`);
+  console.log(`  Cumulative (${cumulativeOrderSide.monthsUsed}mo) — LTV: ${cumulative.ltv != null ? '£' + cumulative.ltv : 'n/a'}  CAC: ${cumulative.cac != null ? '£' + cumulative.cac : 'n/a'}  Ratio: ${cumulative.ratio != null ? cumulative.ratio + ':1' : 'n/a'}`);
 }
 
 main().catch(e => { console.error('\n✗ Fatal error:', e); process.exit(1); });
