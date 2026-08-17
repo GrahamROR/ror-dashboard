@@ -1,33 +1,64 @@
 {
-  "updated": "2026-08-17T21:09:26.920Z",
-  "window": {
-    "since": "2025-09-17",
-    "until": "2026-08-17",
-    "monthsUsed": 11,
-    "monthsTarget": 12
-  },
-  "adSpend": {
-    "meta": {
-      "spend": 60845,
-      "source": "Meta Marketing API insights"
+  "updated": "2026-08-17T22:21:10.470Z",
+  "rolling": {
+    "window": {
+      "since": "2025-08-01",
+      "until": "2026-07-31",
+      "monthsUsed": 12
     },
-    "google": {
-      "spend": null,
-      "source": "error: OAuth token refresh failed: {\"error\":\"invalid_client\",\"error_description\":\"The provided client secret is invalid.\"}"
+    "adSpend": {
+      "meta": {
+        "spend": 65115.72,
+        "source": "Meta Marketing API insights"
+      },
+      "google": {
+        "spend": null,
+        "source": "error: OAuth token refresh failed: {\"error\":\"invalid_client\",\"error_description\":\"The provided client secret is invalid.\"}"
+      },
+      "blended": 65115.72
     },
-    "blended": 60845
+    "customerMetrics": {
+      "avgAOV": 32.23,
+      "ordersPerCustomer": 1.03,
+      "marginPct": 0.579,
+      "newCustomers": 6287,
+      "totalCustomers": 7577,
+      "totalOrders": 7813
+    },
+    "ltv": 19.22,
+    "cac": 10.36,
+    "ratio": 1.86
   },
-  "customerMetrics": {
-    "avgAOV": 32.56,
-    "ordersPerCustomer": 1.03,
-    "marginPct": 0.582,
-    "newCustomers": 5960,
-    "totalCustomers": 7161,
-    "totalOrders": 7387
+  "cumulative": {
+    "window": {
+      "since": "2023-08-01",
+      "until": "2026-07-31",
+      "monthsUsed": 36,
+      "monthsCap": 36
+    },
+    "adSpend": {
+      "meta": {
+        "spend": 124705.24,
+        "source": "Meta Marketing API insights"
+      },
+      "google": {
+        "spend": null,
+        "source": "error: OAuth token refresh failed: {\"error\":\"invalid_client\",\"error_description\":\"The provided client secret is invalid.\"}"
+      },
+      "blended": 124705.24
+    },
+    "customerMetrics": {
+      "avgAOV": 33.78,
+      "ordersPerCustomer": 1.05,
+      "marginPct": 0.598,
+      "newCustomers": 13894,
+      "totalCustomers": 16808,
+      "totalOrders": 17613
+    },
+    "ltv": 21.21,
+    "cac": 8.98,
+    "ratio": 2.36
   },
-  "ltv": 19.52,
-  "cac": 10.21,
-  "ratio": 1.91,
   "goals": {
     "targetRatio": 3,
     "minRatio": 1
