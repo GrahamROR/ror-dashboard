@@ -1,0 +1,35 @@
+{
+  "updated": "2026-08-17T20:16:54.405Z",
+  "window": {
+    "since": "2025-09-17",
+    "until": "2026-08-17",
+    "monthsUsed": 11,
+    "monthsTarget": 12
+  },
+  "adSpend": {
+    "meta": {
+      "spend": null,
+      "source": "error: (#200) Ad account owner has NOT grant ads_management or ads_read permission, refer to https://developers.facebook.com/docs/marketing-api/get-started/authorization/#permissions-and-features for details."
+    },
+    "google": {
+      "spend": null,
+      "source": "error: OAuth token refresh failed: {\"error\":\"unauthorized_client\",\"error_description\":\"Unauthorized\"}"
+    },
+    "blended": null
+  },
+  "customerMetrics": {
+    "avgAOV": 32.56,
+    "ordersPerCustomer": 1.03,
+    "marginPct": 0.582,
+    "newCustomers": 5960,
+    "totalCustomers": 7161,
+    "totalOrders": 7387
+  },
+  "ltv": 19.52,
+  "cac": null,
+  "ratio": null,
+  "goals": {
+    "targetRatio": 3,
+    "minRatio": 1
+  }
+}
