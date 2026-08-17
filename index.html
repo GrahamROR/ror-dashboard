@@ -170,7 +170,7 @@ const EMAIL_FALLBACK = {
 // a number.
 const LTV_CAC_FALLBACK = {
   updated: null,
-  window: { since: null, until: null, monthsUsed: 0, monthsTarget: 12 },
+  window: { fyKey: null, fyLabel: null, since: null, until: null },
   adSpend: {
     meta:   { spend: null, source: 'not configured' },
     google: { spend: null, source: 'not configured' },
@@ -1503,10 +1503,8 @@ function App() {
               el('div', null,
                 el('div', { style: { fontWeight: 500, fontSize: 14, marginBottom: 4 } }, 'LTV : CAC'),
                 el('div', { style: { fontSize: 12, color: 'var(--t2)', lineHeight: 1.5, maxWidth: 480 } },
-                  lc.window.monthsUsed
-                    ? 'Trailing ' + lc.window.monthsUsed + ' completed month' + (lc.window.monthsUsed === 1 ? '' : 's') +
-                      (lc.window.monthsUsed < lc.window.monthsTarget ? ' (still building to ' + lc.window.monthsTarget + ' — figure will settle as more history comes in)' : '') +
-                      ' · blended CAC = all ad spend ÷ new customers · LTV = AOV × orders/customer × margin %'
+                  lc.window.fyLabel
+                    ? lc.window.fyKey + ' (' + lc.window.fyLabel + ', last complete fiscal year) · blended CAC = all ad spend ÷ new customers · LTV = AOV × orders/customer × margin %'
                     : 'Waiting on the first LTV:CAC data pull'
                 )
               ),
@@ -1526,7 +1524,7 @@ function App() {
             el('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 12 } },
               [
                 {
-                  lbl: 'LTV (trailing ' + (lc.window.monthsUsed || lc.window.monthsTarget) + 'mo)',
+                  lbl: 'LTV (' + (lc.window.fyKey || 'FY') + ')',
                   val: lc.ltv != null ? fmtC(lc.ltv, 0) : '—',
                   col: 'var(--grn)',
                   note: lc.customerMetrics.avgAOV != null

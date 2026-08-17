@@ -1,26 +1,32 @@
 // ============================================================
-// ROCK ON RUBY — LTV:CAC Fetcher v1
-// Pulls blended ad spend from Meta + Google Ads, combines it with
-// order-side metrics already sitting in data.json (written by
-// fetch-data.js, which must run first in the same Action) to produce
-// a trailing-12-(completed)-month LTV:CAC figure.
+// ROCK ON RUBY — LTV:CAC Fetcher v2
+// Pulls blended ad spend from Meta + Google Ads for ROR's last fully
+// completed fiscal year (Aug 1 → Jul 31), and combines it with that
+// same year's order-side summary already sitting in data.json
+// (written by fetch-data.js, which must run first in the same Action).
 //
 // Methodology (agreed Aug 2026):
+//  - Window is the last COMPLETE fiscal year, not a rolling trailing
+//    window. ROR's tax year runs Aug–Jul, same as every other metric
+//    on the dashboard (Overview/Monthly/Margin/Products all already
+//    key off this fiscal calendar in fetch-data.js) — LTV:CAC now
+//    matches rather than running on its own arbitrary clock. Using a
+//    closed year (not the in-progress one) also means this is always
+//    a full, unskewed 12 months, never a partial period.
 //  - CAC is BLENDED: total ad spend (Meta + Google, all channels) ÷
-//    new customers acquired in the same window. Deliberately not
-//    paid-only — blended is the honest number for a business-level
-//    goal, paid-only is a channel-performance number.
-//  - LTV = AOV × avg orders per customer over the window × gross
-//    margin % (costed SKUs). Margin step matters — a ratio built on
-//    revenue alone always looks healthier than it really is.
-//  - Window is a FLAT trailing-12-completed-months figure, not a
-//    proper cohort. A genuine cohort LTV (grouped by first-purchase
-//    month, tracked forward) is the more correct version long-term,
-//    but needs a few years of history to be meaningful. Flat 12-month
-//    is the standard interim number.
-//  - If fewer than 12 completed months exist yet (e.g. early in a new
-//    FY), this uses however many are available and records that in
-//    monthsUsed — it does not fabricate a full 12 months.
+//    new customers acquired in that year. Deliberately not paid-only —
+//    blended is the honest number for a business-level goal, paid-only
+//    is a channel-performance number.
+//  - LTV = AOV × avg orders per customer over the year × gross margin %
+//    (costed SKUs). Margin step matters — a ratio built on revenue
+//    alone always looks healthier than it really is.
+//  - This is a flat, whole-year figure, not a proper cohort LTV. A
+//    genuine cohort LTV (grouped by first-purchase month, tracked
+//    forward) is the more correct version long-term, but needs a few
+//    years of history to be meaningful.
+//  - The window only advances once a year, at each FY close (e.g.
+//    stays "FY26" until Aug 1 2027) — ad spend and customer numbers
+//    still refresh nightly within that same fixed window until then.
 // ============================================================
 
 const fs   = require('fs');
@@ -41,12 +47,22 @@ const GOOGLE_ADS_API_VERSION      = process.env.GOOGLE_ADS_API_VERSION      || '
 
 const TARGET_RATIO = 3;   // usual 3:1 benchmark
 const MIN_RATIO     = 1;   // below 1:1 = losing money on every customer
-const WINDOW_MONTHS = 12;
 
-// ── DATE HELPERS ─────────────────────────────────────────────
-function isoDate(d) {
-  const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+// ── FISCAL YEAR (mirrors fetch-data.js's computeFiscalYear exactly) ──
+// ROR's fiscal year runs Aug → Jul. This returns the CURRENT (in
+// progress) FY for a given date — main() below steps that back one
+// year to get the last COMPLETE FY, which is what LTV:CAC reports on.
+function computeFiscalYear(now) {
+  const month     = now.getMonth(); // 0 = Jan … 7 = Aug
+  const startYear = month >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+  const endYear   = startYear + 1;
+  const pad2      = n => String(n).slice(-2);
+  return {
+    FY_KEY:   `FY${pad2(endYear)}`,
+    FY_START: `${startYear}-08-01`,
+    FY_END:   `${endYear}-07-31`,
+    FY_LABEL: `Aug ${startYear} – Jul ${endYear}`,
+  };
 }
 
 // ── META MARKETING API ────────────────────────────────────────
@@ -125,42 +141,26 @@ async function fetchGoogleAdsSpend(since, until) {
   }
 }
 
-// ── ORDER-SIDE TRAILING WINDOW (from data.json, already written by fetch-data.js) ──
-// Flattens monthly arrays across every FY block, keeps only completed
-// months (excludes the in-progress MTD month and future months so a
-// partial month never skews AOV/margin), sorts chronologically, and
-// takes the most recent WINDOW_MONTHS. This deliberately spans FY
-// boundaries — FY27's first completed month picks up right where
-// FY26's last one left off.
-function loadTrailingWindow() {
+// ── ORDER-SIDE NUMBERS FOR THE LAST COMPLETE FY (from data.json) ──
+// A closed year's summary block already holds full-year totals (its
+// "ytd" fields simply equal the whole year, since the year is over) —
+// no need to reconstruct anything from the monthly array.
+function loadCompletedFY(prevFY) {
   const dataPath = path.join(__dirname, '..', 'data.json');
   const raw = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
-  const allMonths = Object.values(raw.years || {})
-    .flatMap(block => block.monthly || [])
-    .filter(m => m.complete)
-    .sort((a, b) => a.key.localeCompare(b.key));
+  const block = raw.years?.[prevFY.FY_KEY];
+  if (!block?.summary) return null;
 
-  const window = allMonths.slice(-WINDOW_MONTHS);
-  if (!window.length) return null;
-
-  const totalOrders    = window.reduce((s, m) => s + (m.orders    || 0), 0);
-  const totalCustomers = window.reduce((s, m) => s + (m.customers || 0), 0);
-  const totalReturning = window.reduce((s, m) => s + (m.returning || 0), 0);
-  const aovNumerator   = window.reduce((s, m) => s + ((m.aov || 0) * (m.orders || 0)), 0);
-  const totalCogs      = window.reduce((s, m) => s + (m.costOfGoodsSold || 0), 0);
-  const totalGrossProfit = window.reduce((s, m) => s + (m.grossProfit || 0), 0);
-  const costedRevenue  = totalCogs + totalGrossProfit;
+  const s = block.summary;
+  const costedRevenue = (s.ytdCostOfGoodsSold || 0) + (s.ytdGrossProfit || 0);
 
   return {
-    monthsUsed:       window.length,
-    since:            window[0].key,
-    until:            window[window.length - 1].key,
-    avgAOV:           totalOrders ? Math.round((aovNumerator / totalOrders) * 100) / 100 : null,
-    ordersPerCustomer: totalCustomers ? Math.round((totalOrders / totalCustomers) * 100) / 100 : null,
-    marginPct:        costedRevenue ? Math.round((totalGrossProfit / costedRevenue) * 1000) / 1000 : null,
-    newCustomers:      Math.max(0, totalCustomers - totalReturning),
-    totalCustomers,
-    totalOrders,
+    avgAOV:            s.avgAOV ?? null,
+    ordersPerCustomer: s.ytdCustomers ? Math.round((s.ytdOrders / s.ytdCustomers) * 100) / 100 : null,
+    marginPct:         costedRevenue ? Math.round((s.ytdGrossProfit / costedRevenue) * 1000) / 1000 : null,
+    newCustomers:      Math.max(0, (s.ytdCustomers || 0) - (s.ytdReturning || 0)),
+    totalCustomers:    s.ytdCustomers || 0,
+    totalOrders:       s.ytdOrders || 0,
   };
 }
 
@@ -168,24 +168,34 @@ function loadTrailingWindow() {
 async function main() {
   console.log('=== ROR Dashboard — LTV:CAC Fetch ===');
 
-  const orderSide = loadTrailingWindow();
-  if (!orderSide) {
-    throw new Error('No completed months found in data.json — run fetch-data.js first.');
-  }
-  console.log(`  ✓ Order-side window: ${orderSide.monthsUsed} completed month(s), ${orderSide.since} → ${orderSide.until}`);
+  const currentFY = computeFiscalYear(new Date());
+  // Step back one fiscal year explicitly (can't just subtract from the
+  // FY_START Date — fiscal years aren't a fixed number of days apart
+  // in a way that arithmetic on a Date object would get right).
+  const prevFY = (() => {
+    const startYear = Number(currentFY.FY_START.slice(0, 4)) - 1;
+    const endYear = startYear + 1;
+    const pad2 = n => String(n).slice(-2);
+    return {
+      FY_KEY:   `FY${pad2(endYear)}`,
+      FY_START: `${startYear}-08-01`,
+      FY_END:   `${endYear}-07-31`,
+      FY_LABEL: `Aug ${startYear} – Jul ${endYear}`,
+    };
+  })();
 
-  // Ad spend query window mirrors the order-side window (same calendar
-  // span) so LTV and CAC are measuring the same period, not two
-  // different clocks.
-  const until = isoDate(new Date());
-  const since = isoDate(new Date(Date.now() - orderSide.monthsUsed * 30.44 * 24 * 60 * 60 * 1000));
+  const orderSide = loadCompletedFY(prevFY);
+  if (!orderSide) {
+    throw new Error(`No completed fiscal year (${prevFY.FY_KEY}) found in data.json — run fetch-data.js first, or check back once a full FY has closed.`);
+  }
+  console.log(`  ✓ Reporting on ${prevFY.FY_KEY} (${prevFY.FY_LABEL}) — last complete fiscal year`);
 
   console.log('→ Fetching Meta ad spend...');
-  const meta = await fetchMetaSpend(since, until);
+  const meta = await fetchMetaSpend(prevFY.FY_START, prevFY.FY_END);
   console.log(meta.spend != null ? `  ✓ £${meta.spend}` : `  – ${meta.source}`);
 
   console.log('→ Fetching Google Ads spend...');
-  const google = await fetchGoogleAdsSpend(since, until);
+  const google = await fetchGoogleAdsSpend(prevFY.FY_START, prevFY.FY_END);
   console.log(google.spend != null ? `  ✓ £${google.spend}` : `  – ${google.source}`);
 
   const spendKnown = [meta.spend, google.spend].filter(v => v != null);
@@ -203,7 +213,12 @@ async function main() {
 
   const output = {
     updated: new Date().toISOString(),
-    window: { since, until, monthsUsed: orderSide.monthsUsed, monthsTarget: WINDOW_MONTHS },
+    window: {
+      fyKey:   prevFY.FY_KEY,
+      fyLabel: prevFY.FY_LABEL,
+      since:   prevFY.FY_START,
+      until:   prevFY.FY_END,
+    },
     adSpend: { meta, google, blended: blendedSpend },
     customerMetrics: {
       avgAOV:            orderSide.avgAOV,
