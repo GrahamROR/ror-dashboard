@@ -68,14 +68,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px;}
 .mobile-only{display:none;}
-.tab-bar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);}
+.scroll-x-fade{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);}
+.scroll-x-fade::-webkit-scrollbar{display:none;}
+.tab-bar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);width:fit-content;max-width:100%;}
 .tab-bar-scroll::-webkit-scrollbar{display:none;}
+.table-scroll-hint{display:none;}
 @media(max-width:768px){
   .hide-mobile{display:none!important;}
   .mobile-only{display:block;}
   .grid-auto{grid-template-columns:1fr!important;}
-  .tab-bar .tab{padding:9px 16px!important;font-size:13px!important;min-height:38px;display:flex!important;align-items:center;justify-content:center;}
+  .tab-bar .tab{padding:9px 14px!important;font-size:12px!important;min-height:38px;display:flex!important;align-items:center;justify-content:center;}
   .tab-bar{padding:4px!important;}
+  .table-scroll-hint{display:flex;}
 }
 </style>
 </head>
@@ -925,21 +929,32 @@ function App() {
                 updatedAt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : '—'
               )
         ),
+        // Labels stay visible at every width — icon-only tabs with no text
+        // turned out unreadable once this row wraps onto its own line on
+        // mobile: nothing to tell tabs apart, and no way to tell which page
+        // is active while scrolling past the visible ones.
         el('div', {className:'tab-bar tab-bar-scroll', style:{minWidth:0}},
           [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['margin','ti-chart-pie']].map(([t,ic])=>
-            el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t), style:{flexShrink:0}},
+            el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t), style:{flexShrink:0,whiteSpace:'nowrap'}},
               el('i', {className:'ti '+ic, style:{fontSize:13}}),
-              el('span', {className:'hide-mobile', style:{marginLeft:5}}, t.charAt(0).toUpperCase()+t.slice(1))
+              el('span', {style:{marginLeft:5}}, t.charAt(0).toUpperCase()+t.slice(1))
             )
           )
         )
       )
     ),
 
+    // Mobile-only current-page label — a fixed "you are here" independent of
+    // where the nav tab row happens to be scrolled to, since the active tab
+    // can easily be scrolled out of view on a narrow screen.
+    el('div', {className:'mobile-only', style:{padding:'8px 16px 0',fontSize:15,fontWeight:600,color:'var(--t1)'}},
+      activeTab.charAt(0).toUpperCase()+activeTab.slice(1)
+    ),
+
     // Mobile-only freshness line — plain left-aligned text below the sticky
     // header, not a pill, per the mobile feedback that the header pill read
     // as an out-of-place floating bubble on small screens.
-    el('div', {className:'mobile-only', style:{padding:'6px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',display:'flex',alignItems:'center',gap:5}},
+    el('div', {className:'mobile-only', style:{padding:'4px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',display:'flex',alignItems:'center',gap:5}},
       el('i', {className: isFallback ? 'ti ti-database-off' : 'ti ti-database-check', style:{fontSize:11}}),
       isFallback
         ? el('span', null, 'Embedded data · Live updates nightly at 5am BST')
@@ -1225,7 +1240,11 @@ function App() {
               )
             )
           ),
-          el('div', {style:{overflowX:'auto'}},
+          el('div', {className:'table-scroll-hint', style:{alignItems:'center',gap:5,fontSize:11,color:'var(--t3)',marginBottom:6}},
+            el('i', {className:'ti ti-arrows-horizontal', style:{fontSize:12}}),
+            el('span', null, 'Swipe to see more columns')
+          ),
+          el('div', {className:'scroll-x-fade', style:{overflowX:'auto'}},
             el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13,minWidth:600}},
               el('thead', null,
                 el('tr', {style:{borderBottom:'1px solid var(--bdr2)',background:'var(--s2)'}},
@@ -1426,7 +1445,12 @@ function App() {
             // Campaigns table
             emailData?.campaigns?.length > 0 && el('div', {className:'card',style:{marginBottom:16}},
               el('div', {style:{fontWeight:500,marginBottom:12}}, 'Campaigns — last 90 days  ·  click a column to sort'),
-              el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
+              el('div', {className:'table-scroll-hint', style:{alignItems:'center',gap:5,fontSize:11,color:'var(--t3)',marginBottom:6}},
+                el('i', {className:'ti ti-arrows-horizontal', style:{fontSize:12}}),
+                el('span', null, 'Swipe to see more columns')
+              ),
+              el('div', {className:'scroll-x-fade', style:{overflowX:'auto'}},
+              el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13,minWidth:640}},
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
                     [
@@ -1456,12 +1480,18 @@ function App() {
                   )
                 )
               )
+              )
             ),
 
             // Flows table
             emailData?.flows?.length > 0 && el('div', {className:'card',style:{marginBottom:16}},
               el('div', {style:{fontWeight:500,marginBottom:12}}, 'Flows — last 90 days  ·  click a column to sort'),
-              el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
+              el('div', {className:'table-scroll-hint', style:{alignItems:'center',gap:5,fontSize:11,color:'var(--t3)',marginBottom:6}},
+                el('i', {className:'ti ti-arrows-horizontal', style:{fontSize:12}}),
+                el('span', null, 'Swipe to see more columns')
+              ),
+              el('div', {className:'scroll-x-fade', style:{overflowX:'auto'}},
+              el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13,minWidth:600}},
                 el('thead', null,
                   el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
                     [
@@ -1488,6 +1518,7 @@ function App() {
                     )
                   )
                 )
+              )
               )
             ),
 
@@ -1645,7 +1676,12 @@ function App() {
 
         el('div', {className:'card'},
           el('div', {style:{fontWeight:500,marginBottom:12}}, 'Monthly margin breakdown'),
-          el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13}},
+          el('div', {className:'table-scroll-hint', style:{alignItems:'center',gap:5,fontSize:11,color:'var(--t3)',marginBottom:6}},
+            el('i', {className:'ti ti-arrows-horizontal', style:{fontSize:12}}),
+            el('span', null, 'Swipe to see more columns')
+          ),
+          el('div', {className:'scroll-x-fade', style:{overflowX:'auto'}},
+          el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13,minWidth:600}},
             el('thead', null,
               el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
                 ['Month','Net sales','COGS (costed)','Margin % (costed)','Cost coverage','Est. gross profit'].map((h,i)=>
@@ -1665,6 +1701,7 @@ function App() {
                 )
               )
             )
+          )
           )
         )
       )
