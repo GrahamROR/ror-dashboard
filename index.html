@@ -862,10 +862,15 @@ function App() {
   // Reset both sliders to actuals
   function resetProjection() { setProjCVR(null); setProjAOV(null); setCvrLocked(false); setAovLocked(false); }
 
-  // Slider derived numbers
-  const ordersPerDay_cur  = (goalRev / (summary.avgAOV||33)) / 365;
+  // Slider derived numbers — "cur" now tracks whatever CVR/AOV the What-If
+  // Modeller above is currently showing (actual, or a projected drag), so
+  // moving those sliders visibly changes the pace needed to hit the goal
+  // below rather than the two cards sitting disconnected from each other.
+  // "goal" stays fixed to the GOALS.aov/GOALS.conversion targets as the
+  // separate reference point (where we actually want CVR/AOV to be).
+  const ordersPerDay_cur  = (goalRev / (effectiveAOV||33)) / 365;
   const ordersPerDay_goal = (goalRev / GOALS.aov) / 365;
-  const sessPerDay_cur    = ordersPerDay_cur  / (summary.avgAOV ? summary.ytdOrders/(summary.ytdSessions||400000) : 0.023);
+  const sessPerDay_cur    = ordersPerDay_cur  / (effectiveCVR || 0.023);
   const sessPerDay_goal   = ordersPerDay_goal / GOALS.conversion;
   const convActual        = summary.avgConversionRate ?? null;
 
@@ -1031,14 +1036,29 @@ function App() {
           ['£150k','£250k','£350k','£450k','£550k','£650k','£800k'].map(l=>el('span',{key:l},l))
         ),
 
-        // What the goal means
+        // What the goal means — the two "Assumed" boxes read straight from
+        // the What-If Modeller above (effectiveCVR/effectiveAOV), so
+        // dragging those sliders visibly moves the pace figures here too,
+        // instead of the two cards being disconnected from each other.
+        el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:10,marginBottom:10}},
+          [
+            {lbl:'Assumed conversion rate', val:fmtP(effectiveCVR,2), sub:'Goal: '+fmtP(GOALS.conversion,1)+(projCVR!==null?' · projected':' · actual'), col:'var(--pur)'},
+            {lbl:'Assumed AOV',             val:fmtC(effectiveAOV,2), sub:'Goal: '+fmtC(GOALS.aov,0)+(projAOV!==null?' · projected':' · actual'), col:'var(--grn)'},
+          ].map((item,i)=>
+            el('div', {key:i,style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'12px 14px',border:'1px solid var(--bdr)'}},
+              el('div', {className:'lbl',style:{marginBottom:5}}, item.lbl),
+              el('div', {style:{fontSize:20,fontWeight:600,color:item.col||'var(--t1)',fontFamily:"'DM Mono',monospace",marginBottom:2}}, item.val),
+              el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.4}}, item.sub)
+            )
+          )
+        ),
         el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:10}},
           [
             {lbl:'Monthly avg',     val:fmtC(goalRev/12,0),         sub:'Peak: '+fmtC(goalRev*WEIGHTS[3],0)+' (Nov)'},
             {lbl:'Weekly avg',      val:fmtC(goalRev/52,0),         sub:'Flat weekly average'},
             {lbl:'Daily avg',       val:fmtC(goalRev/365,0),        sub:'Every day of the year'},
-            {lbl:'Orders/day @'+fmtC(summary.avgAOV||33)+' AOV', val:ordersPerDay_cur.toFixed(1), sub:ordersPerDay_goal.toFixed(1)+' orders/day @ £'+GOALS.aov+' goal', col:'var(--amb)'},
-            {lbl:'Sessions/day needed', val:fmt(Math.round(sessPerDay_goal)), sub:'At 3.5% conv · '+fmt(Math.round(sessPerDay_cur))+' at current', col:'var(--blu)'},
+            {lbl:'Orders/day @'+fmtC(effectiveAOV,2)+' AOV'+(projAOV!==null?' (projected)':''), val:ordersPerDay_cur.toFixed(1), sub:ordersPerDay_goal.toFixed(1)+' orders/day @ £'+GOALS.aov+' goal', col:'var(--amb)'},
+            {lbl:'Sessions/day needed'+(projCVR!==null?' (projected CVR)':''), val:fmt(Math.round(sessPerDay_cur)), sub:'At '+fmtP(effectiveCVR,2)+' conv · '+fmt(Math.round(sessPerDay_goal))+' at '+fmtP(GOALS.conversion,1)+' goal', col:'var(--blu)'},
           ].map((item,i)=>
             el('div', {key:i,style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'12px 14px',border:'1px solid var(--bdr)'}},
               el('div', {className:'lbl',style:{marginBottom:5}}, item.lbl),
