@@ -67,9 +67,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--s4);border-radius:2px;}
+.mobile-only{display:none;}
+.tab-bar-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 20px),transparent);}
+.tab-bar-scroll::-webkit-scrollbar{display:none;}
 @media(max-width:768px){
   .hide-mobile{display:none!important;}
+  .mobile-only{display:block;}
   .grid-auto{grid-template-columns:1fr!important;}
+  .tab-bar .tab{padding:9px 16px!important;font-size:13px!important;min-height:38px;display:flex!important;align-items:center;justify-content:center;}
+  .tab-bar{padding:4px!important;}
 }
 </style>
 </head>
@@ -434,20 +440,27 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
     flex: 1,
   });
 
-  const lockBtn = (locked, onClick, col) =>
+  // Locked state always reads as amber/orange regardless of the metric's
+  // own accent colour — a consistent "this is pinned" signal is easier to
+  // spot at a glance (and on a small screen) than each card using its own
+  // colour for two different meanings (value colour vs. lock state).
+  const lockBtn = (locked, onClick) =>
     el('button', {
       onClick,
-      title: locked ? 'Unlock' : 'Lock at this value',
+      title: locked ? 'Unlock — allow dragging' : 'Lock at this value',
       style: {
-        padding: '4px 8px', fontSize: 11, border: 'none',
-        background: locked ? col + '22' : 'var(--s3)',
-        color: locked ? col : 'var(--t3)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5,
+        padding: '6px 10px', fontSize: 11, fontWeight: 600,
+        minHeight: 38, minWidth: 38,
+        border: '1.5px solid ' + (locked ? 'var(--amb)' : 'var(--bdr2)'),
+        background: locked ? 'var(--amb-bg)' : 'var(--s3)',
+        color: locked ? 'var(--amb)' : 'var(--t3)',
         borderRadius: 6, cursor: 'pointer', lineHeight: 1,
-        outline: locked ? '1px solid ' + col + '55' : 'none',
         flexShrink: 0,
       }
     },
-    el('i', { className: 'ti ' + (locked ? 'ti-lock' : 'ti-lock-open'), style: { fontSize: 12 } })
+    el('i', { className: 'ti ' + (locked ? 'ti-lock' : 'ti-lock-open'), style: { fontSize: 14 } }),
+    el('span', { className: 'hide-mobile' }, locked ? 'Locked' : 'Unlocked')
   );
 
   return el('div', { className: 'card', style: { marginBottom: 16 } },
@@ -489,6 +502,7 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
 
     // Three columns: Sessions | CVR | AOV
     el('div', {
+      className: 'grid-auto',
       style: {
         display: 'grid',
         gridTemplateColumns: '1fr 1fr 1fr',
@@ -514,8 +528,8 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
       ),
 
       // ── CVR slider ──
-      el('div', { style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '12px 14px', border: '1px solid ' + (cvrLocked ? 'var(--pur-bdr)' : 'var(--bdr)') } },
-        el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
+      el('div', { style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '12px 14px', border: '1.5px solid ' + (cvrLocked ? 'var(--amb)' : 'var(--bdr)') } },
+        el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 6 } },
           el('div', null,
             el('div', { className: 'lbl', style: { marginBottom: 1 } }, 'Conversion Rate'),
             el('div', { style: { fontSize: 18, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: 'var(--pur)' } },
@@ -523,10 +537,10 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
             )
           ),
           el('div', { style: { display: 'flex', alignItems: 'center', gap: 6 } },
-            projCVR !== null && el('span', { style: { fontSize: 10, color: 'var(--t3)', padding: '2px 6px', background: 'var(--s3)', borderRadius: 4 } },
+            projCVR !== null && el('span', { className: 'hide-mobile', style: { fontSize: 10, color: 'var(--t3)', padding: '2px 6px', background: 'var(--s3)', borderRadius: 4 } },
               'actual ' + fmtPct(actualCVR)
             ),
-            lockBtn(cvrLocked, () => setCvrLocked(l => !l), 'var(--pur)')
+            lockBtn(cvrLocked, () => setCvrLocked(l => !l))
           )
         ),
         el('div', sliderStyle(cvrLocked),
@@ -543,8 +557,8 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
       ),
 
       // ── AOV slider ──
-      el('div', { style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '12px 14px', border: '1px solid ' + (aovLocked ? 'var(--grn-bdr)' : 'var(--bdr)') } },
-        el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
+      el('div', { style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '12px 14px', border: '1.5px solid ' + (aovLocked ? 'var(--amb)' : 'var(--bdr)') } },
+        el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 6 } },
           el('div', null,
             el('div', { className: 'lbl', style: { marginBottom: 1 } }, 'Avg Order Value'),
             el('div', { style: { fontSize: 18, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: 'var(--grn)' } },
@@ -552,10 +566,10 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
             )
           ),
           el('div', { style: { display: 'flex', alignItems: 'center', gap: 6 } },
-            projAOV !== null && el('span', { style: { fontSize: 10, color: 'var(--t3)', padding: '2px 6px', background: 'var(--s3)', borderRadius: 4 } },
+            projAOV !== null && el('span', { className: 'hide-mobile', style: { fontSize: 10, color: 'var(--t3)', padding: '2px 6px', background: 'var(--s3)', borderRadius: 4 } },
               'actual £' + actualAOV.toFixed(2)
             ),
-            lockBtn(aovLocked, () => setAovLocked(l => !l), 'var(--grn)')
+            lockBtn(aovLocked, () => setAovLocked(l => !l))
           )
         ),
         el('div', sliderStyle(aovLocked),
@@ -636,7 +650,7 @@ function EmailWhatIfBar({ es, projConv, setProjConv, projAOV, setProjAOV,
       )
     ),
 
-    el('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 } },
+    el('div', { className: 'grid-auto', style: { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 } },
 
       // ── Recipients (fixed) ──
       el('div', { style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '12px 14px', border: '1px solid var(--bdr)', opacity: 0.6 } },
@@ -708,6 +722,10 @@ function App() {
   const [loading,    setLoading]    = useState(true);
   const [isFallback, setIsFallback] = useState(false);
   const [goalRev,    setGoalRev]    = useState(500000);
+  // Locked by default so every new visitor sees the same committed goal
+  // rather than whatever position the slider happens to land on — it's
+  // only meant to be unlocked deliberately, to explore a different figure.
+  const [goalRevLocked, setGoalRevLocked] = useState(true);
   const [activeTab,  setActiveTab]  = useState('overview');
   const [campSort, setCampSort] = useState({ key: 'sendTime', dir: -1 });
   const [flowSort, setFlowSort] = useState({ key: 'revenuePerRecipient', dir: -1 });
@@ -867,31 +885,36 @@ function App() {
   return el('div', {style:{minHeight:'100vh',display:'flex',flexDirection:'column'}},
 
     // HEADER
-    el('div', {style:{background:'var(--s1)',borderBottom:'1px solid var(--bdr)',padding:'0 20px',display:'flex',alignItems:'center',justifyContent:'space-between',height:48,position:'sticky',top:0,zIndex:20}},
-      el('div', {style:{display:'flex',alignItems:'center',gap:12}},
+    el('div', {style:{background:'var(--s1)',borderBottom:'1px solid var(--bdr)',padding:'8px 16px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',rowGap:8,position:'sticky',top:0,zIndex:20}},
+      el('div', {style:{display:'flex',alignItems:'center',gap:12,minWidth:0}},
         el('div', {style:{width:8,height:8,borderRadius:'50%',background:isFallback?'var(--amb)':'var(--grn)',flexShrink:0,boxShadow:isFallback?'0 0 0 3px var(--amb-bdr)':'0 0 0 3px var(--grn-bdr)'}}),
-        el('div', {style:{fontWeight:600,fontSize:14,whiteSpace:'nowrap'}}, 'Rock On Ruby'),
-        el('div', {className:'hide-mobile',style:{color:'var(--t3)',fontSize:12}}, '·  Growth Dashboard  ·  '+(viewData?.fy||'')),
-        availableYears.length > 1 && el('div', {className:'tab-bar'},
+        el('div', {style:{fontWeight:600,fontSize:14,whiteSpace:'nowrap',flexShrink:0}}, 'Rock On Ruby'),
+        el('div', {className:'hide-mobile',style:{color:'var(--t3)',fontSize:12,whiteSpace:'nowrap'}}, '·  Growth Dashboard  ·  '+(viewData?.fy||'')),
+        availableYears.length > 1 && el('div', {className:'tab-bar tab-bar-scroll',style:{minWidth:0}},
           availableYears.map(fy =>
             el('button', {
               key: fy,
               className: 'tab' + (fy===selectedFY ? ' active' : ''),
               onClick: () => setSelectedFY(fy),
-              style:{padding:'4px 10px'}
+              style:{padding:'4px 10px',flexShrink:0}
             }, fy)
           )
         )
       ),
-      el('div', {style:{display:'flex',alignItems:'center',gap:8}},
-        // Data freshness indicator — prominent
-        el('div', {style:{
+      el('div', {style:{display:'flex',alignItems:'center',gap:8,minWidth:0}},
+        // Data freshness indicator — prominent pill on desktop; moved to its
+        // own plain left-aligned line below the header on mobile instead
+        // (see mobile-only block just after this header), since a floating
+        // bubble squeezed into this row was the first thing to get clipped
+        // on narrow screens.
+        el('div', {className:'hide-mobile', style:{
           display:'flex',alignItems:'center',gap:6,
           padding:'4px 10px',borderRadius:20,
           background: isFallback ? 'var(--amb-bg)' : 'var(--grn-bg)',
           border: '1px solid ' + (isFallback ? 'var(--amb-bdr)' : 'var(--grn-bdr)'),
           fontSize:11,
           color: isFallback ? 'var(--amb)' : 'var(--grn)',
+          whiteSpace:'nowrap',
         }},
           el('i', {className: isFallback ? 'ti ti-database-off' : 'ti ti-database-check', style:{fontSize:11}}),
           isFallback
@@ -902,15 +925,29 @@ function App() {
                 updatedAt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : '—'
               )
         ),
-        el('div', {className:'tab-bar'},
+        el('div', {className:'tab-bar tab-bar-scroll', style:{minWidth:0}},
           [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['margin','ti-chart-pie']].map(([t,ic])=>
-            el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t)},
+            el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t), style:{flexShrink:0}},
               el('i', {className:'ti '+ic, style:{fontSize:13}}),
               el('span', {className:'hide-mobile', style:{marginLeft:5}}, t.charAt(0).toUpperCase()+t.slice(1))
             )
           )
         )
       )
+    ),
+
+    // Mobile-only freshness line — plain left-aligned text below the sticky
+    // header, not a pill, per the mobile feedback that the header pill read
+    // as an out-of-place floating bubble on small screens.
+    el('div', {className:'mobile-only', style:{padding:'6px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',display:'flex',alignItems:'center',gap:5}},
+      el('i', {className: isFallback ? 'ti ti-database-off' : 'ti ti-database-check', style:{fontSize:11}}),
+      isFallback
+        ? el('span', null, 'Embedded data · Live updates nightly at 5am BST')
+        : el('span', null,
+            'Live · Updated ',
+            updatedAt ? updatedAt.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' at ' +
+            updatedAt.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}) : '—'
+          )
     ),
 
     // CONTENT
@@ -928,11 +965,29 @@ function App() {
       }),
 
       // ── SLIDER ──────────────────────────────────────────────
-      el('div', {className:'card',style:{marginBottom:16}},
+      el('div', {className:'card',style:{marginBottom:16,border:'1.5px solid '+(goalRevLocked?'var(--amb)':'var(--bdr)')}},
         // Top row
         el('div', {style:{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:16}},
           el('div', null,
-            el('div', {className:'lbl',style:{marginBottom:4}}, 'Revenue goal — drag to explore'),
+            el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:4,flexWrap:'wrap'}},
+              el('div', {className:'lbl'}, goalRevLocked ? 'Revenue goal — locked' : 'Revenue goal — drag to explore'),
+              el('button', {
+                onClick: () => setGoalRevLocked(l => !l),
+                title: goalRevLocked ? 'Unlock — allow dragging' : 'Lock at this value for everyone',
+                style: {
+                  display:'flex',alignItems:'center',justifyContent:'center',gap:5,
+                  padding:'5px 9px',fontSize:10,fontWeight:600,
+                  minHeight:36,minWidth:36,
+                  border:'1.5px solid '+(goalRevLocked?'var(--amb)':'var(--bdr2)'),
+                  background: goalRevLocked ? 'var(--amb-bg)' : 'var(--s3)',
+                  color: goalRevLocked ? 'var(--amb)' : 'var(--t3)',
+                  borderRadius:6,cursor:'pointer',lineHeight:1,
+                }
+              },
+                el('i', {className:'ti '+(goalRevLocked?'ti-lock':'ti-lock-open'), style:{fontSize:13}}),
+                el('span', {className:'hide-mobile'}, goalRevLocked ? 'Locked' : 'Unlocked')
+              )
+            ),
             el('div', {style:{fontSize:34,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",letterSpacing:'-0.02em',lineHeight:1}},
               goalRev>=1000000 ? '£'+(goalRev/1000000).toFixed(2)+'m' : '£'+(goalRev/1000).toFixed(0)+'k'
             )
@@ -952,7 +1007,11 @@ function App() {
         ),
 
         // Slider
-        el('input', {type:'range',min:150000,max:800000,step:5000,value:goalRev,onChange:e=>setGoalRev(+e.target.value),style:{marginBottom:6}}),
+        el('input', {
+          type:'range',min:150000,max:800000,step:5000,value:goalRev,
+          onChange:e=>{ if(!goalRevLocked) setGoalRev(+e.target.value); },
+          style:{marginBottom:6,opacity:goalRevLocked?0.5:1,pointerEvents:goalRevLocked?'none':'auto'}
+        }),
         el('div', {style:{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--t3)',marginBottom:16}},
           ['£150k','£250k','£350k','£450k','£550k','£650k','£800k'].map(l=>el('span',{key:l},l))
         ),
@@ -1227,7 +1286,7 @@ function App() {
       ),
 
       // ══ PRODUCTS ════════════════════════════════════════════
-      activeTab==='products' && el('div', {className:'fi',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
+      activeTab==='products' && el('div', {className:'fi grid-auto',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}},
 
         el('div', {className:'card'},
           el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Top 10 Products — '+(viewData?.fy||'')),
