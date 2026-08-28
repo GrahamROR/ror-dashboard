@@ -1,21 +1,21 @@
 {
-  "updated": "2026-08-27T13:26:12.661Z",
+  "updated": "2026-08-28T14:45:50.216Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-08-26",
+    "date": "2026-08-27",
     "monthKey": "2026-08",
-    "revenue": 877.47,
-    "orders": 24,
-    "customers": 24,
-    "returning": 4,
-    "repeatRate": 0.167,
-    "aov": 27.87,
-    "sessions": 929,
-    "convertedSessions": 16,
-    "conversionRate": 0.017222820236813777,
-    "shopifyConversionRate": 0.017222820236813777,
-    "margin": 0.515,
-    "profit": 344.46,
+    "revenue": 421.76,
+    "orders": 14,
+    "customers": 14,
+    "returning": 5,
+    "repeatRate": 0.357,
+    "aov": 21.75,
+    "sessions": 748,
+    "convertedSessions": 10,
+    "conversionRate": 0.013368983957219251,
+    "shopifyConversionRate": 0.013368983957219251,
+    "margin": 0.445,
+    "profit": 137.39,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -366,24 +366,24 @@
         {
           "key": "2026-08",
           "label": "Aug 26",
-          "revenue": 18026.1,
-          "netSales": 13797.58,
-          "orders": 490,
-          "aov": 28.3,
-          "customers": 485,
-          "returning": 66,
-          "sessions": 21517,
+          "revenue": 19139.31,
+          "netSales": 14671.26,
+          "orders": 517,
+          "aov": 28.51,
+          "customers": 509,
+          "returning": 74,
+          "sessions": 22180,
           "complete": false,
           "mtd": true,
           "future": false,
-          "convertedSessions": 403,
-          "conversionRate": 0.01872937677185481,
-          "shopifyConversionRate": 0.01872937677185481,
-          "costOfGoodsSold": 7020.2,
-          "grossProfit": 6382.96,
-          "marginPctCovered": 0.476,
-          "costCoverage": 0.971,
-          "estGrossProfit": 6570.79
+          "convertedSessions": 418,
+          "conversionRate": 0.01884580703336339,
+          "shopifyConversionRate": 0.01884580703336339,
+          "costOfGoodsSold": 7441,
+          "grossProfit": 6744.78,
+          "marginPctCovered": 0.475,
+          "costCoverage": 0.967,
+          "estGrossProfit": 6975.61
         },
         {
           "key": "2026-09",
@@ -521,38 +521,38 @@
       "topProducts": [
         {
           "name": "Personalised Initial Leopard Print Cross Body Bag",
-          "revenue": 1979.91,
-          "orders": 74
+          "revenue": 2026.71,
+          "orders": 77
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
-          "revenue": 1827.83,
-          "orders": 72
+          "revenue": 1879.83,
+          "orders": 73
         },
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 1327.46,
-          "orders": 34
+          "revenue": 1500.26,
+          "orders": 38
         },
         {
           "name": "Personalised Initial Leopard Print Backpack",
-          "revenue": 789.41,
-          "orders": 24
+          "revenue": 823.41,
+          "orders": 25
         },
         {
           "name": "Personalised 'Only Here For...' Cap",
-          "revenue": 764.2,
-          "orders": 29
+          "revenue": 788.2,
+          "orders": 30
         },
         {
           "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
-          "revenue": 490.8,
-          "orders": 20
+          "revenue": 577.2,
+          "orders": 22
         },
         {
           "name": "My Other Job is a Dallas Cowboys Cheerleader Sweatshirt",
-          "revenue": 437.4,
-          "orders": 13
+          "revenue": 469.8,
+          "orders": 14
         },
         {
           "name": "Personalised Year Unisex T-shirt",
@@ -560,27 +560,27 @@
           "orders": 10
         },
         {
-          "name": "Personalised Initial Leopard print Tote Bag",
-          "revenue": 336.7,
+          "name": "Personalised Mini Initials Leopard Print Cross Body Bag",
+          "revenue": 360.1,
           "orders": 14
         }
       ],
       "summary": {
-        "ytdRevenue": 18026.1,
-        "ytdNetSales": 13797.58,
-        "ytdOrders": 490,
-        "ytdSessions": 21517,
-        "ytdConvertedSessions": 403,
-        "avgConversionRate": 0.0187,
-        "avgAOV": 28.3,
-        "avgRepeatRate": 0.136,
-        "ytdReturning": 66,
-        "ytdCustomers": 485,
-        "ytdCostOfGoodsSold": 7020.2,
-        "ytdGrossProfit": 6382.96,
-        "ytdMarginPct": 0.476,
-        "ytdCostCoverage": 0.971,
-        "ytdEstGrossProfit": 6567.65
+        "ytdRevenue": 19139.31,
+        "ytdNetSales": 14671.26,
+        "ytdOrders": 517,
+        "ytdSessions": 22180,
+        "ytdConvertedSessions": 418,
+        "avgConversionRate": 0.0188,
+        "avgAOV": 28.51,
+        "avgRepeatRate": 0.145,
+        "ytdReturning": 74,
+        "ytdCustomers": 509,
+        "ytdCostOfGoodsSold": 7441,
+        "ytdGrossProfit": 6744.78,
+        "ytdMarginPct": 0.475,
+        "ytdCostCoverage": 0.967,
+        "ytdEstGrossProfit": 6968.85
       }
     },
     "FY24": {
