@@ -1,63 +1,63 @@
 {
-  "updated": "2026-08-31T09:53:49.500Z",
+  "updated": "2026-09-01T08:45:31.175Z",
   "rolling": {
     "window": {
-      "since": "2025-08-01",
-      "until": "2026-07-31",
+      "since": "2025-09-01",
+      "until": "2026-08-31",
       "monthsUsed": 12
     },
     "adSpend": {
       "meta": {
-        "spend": 65115.72,
+        "spend": 65326.35,
         "source": "Meta Marketing API insights"
       },
       "google": {
-        "spend": 9134.41,
+        "spend": 9128.07,
         "source": "Google Ads API GAQL"
       },
-      "blended": 74250.13
+      "blended": 74454.42
     },
     "customerMetrics": {
-      "avgAOV": 32.23,
+      "avgAOV": 31.71,
       "ordersPerCustomer": 1.03,
-      "marginPct": 0.579,
-      "newCustomers": 6287,
-      "totalCustomers": 7577,
-      "totalOrders": 7813
+      "marginPct": 0.562,
+      "newCustomers": 6309,
+      "totalCustomers": 7613,
+      "totalOrders": 7841
     },
-    "ltv": 19.22,
-    "cac": 11.81,
-    "ratio": 1.63
+    "ltv": 18.36,
+    "cac": 11.8,
+    "ratio": 1.56
   },
   "cumulative": {
     "window": {
-      "since": "2023-08-01",
-      "until": "2026-07-31",
+      "since": "2023-09-01",
+      "until": "2026-08-31",
       "monthsUsed": 36,
       "monthsCap": 36
     },
     "adSpend": {
       "meta": {
-        "spend": 124705.24,
+        "spend": 129654.54,
         "source": "Meta Marketing API insights"
       },
       "google": {
-        "spend": 25098.11,
+        "spend": 25341.15,
         "source": "Google Ads API GAQL"
       },
-      "blended": 149803.35
+      "blended": 154995.69
     },
     "customerMetrics": {
-      "avgAOV": 33.78,
+      "avgAOV": 33.57,
       "ordersPerCustomer": 1.05,
-      "marginPct": 0.598,
-      "newCustomers": 13894,
-      "totalCustomers": 16808,
-      "totalOrders": 17613
+      "marginPct": 0.589,
+      "newCustomers": 14257,
+      "totalCustomers": 17234,
+      "totalOrders": 18038
     },
-    "ltv": 21.21,
-    "cac": 10.78,
-    "ratio": 1.97
+    "ltv": 20.76,
+    "cac": 10.87,
+    "ratio": 1.91
   },
   "goals": {
     "targetRatio": 3,
