@@ -1,21 +1,21 @@
 {
-  "updated": "2026-08-31T09:09:13.945Z",
+  "updated": "2026-09-01T08:09:55.391Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-08-30",
+    "date": "2026-08-31",
     "monthKey": "2026-08",
-    "revenue": 878.12,
-    "orders": 23,
-    "customers": 23,
+    "revenue": 758.51,
+    "orders": 20,
+    "customers": 20,
     "returning": 5,
-    "repeatRate": 0.217,
-    "aov": 30.44,
-    "sessions": 778,
-    "convertedSessions": 15,
-    "conversionRate": 0.019280205655526992,
-    "shopifyConversionRate": 0.019280205655526992,
-    "margin": 0.543,
-    "profit": 380.29,
+    "repeatRate": 0.25,
+    "aov": 29.41,
+    "sessions": 643,
+    "convertedSessions": 10,
+    "conversionRate": 0.015552099533437015,
+    "shopifyConversionRate": 0.015552099533437015,
+    "margin": 0.516,
+    "profit": 303.63,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -366,36 +366,46 @@
         {
           "key": "2026-08",
           "label": "Aug 26",
-          "revenue": 21335.94,
-          "netSales": 16374.42,
-          "orders": 574,
-          "aov": 28.74,
-          "customers": 564,
-          "returning": 86,
-          "sessions": 24305,
-          "complete": false,
-          "mtd": true,
+          "revenue": 21982.85,
+          "netSales": 16876.25,
+          "orders": 591,
+          "aov": 28.76,
+          "customers": 581,
+          "returning": 91,
+          "sessions": 24816,
+          "complete": true,
+          "mtd": false,
           "future": false,
-          "convertedSessions": 451,
-          "conversionRate": 0.01855585270520469,
-          "shopifyConversionRate": 0.01855585270520469,
-          "costOfGoodsSold": 8283,
-          "grossProfit": 7622.49,
-          "marginPctCovered": 0.479,
-          "costCoverage": 0.971,
-          "estGrossProfit": 7847.22
+          "convertedSessions": 461,
+          "conversionRate": 0.01857672469374597,
+          "shopifyConversionRate": 0.01857672469374597,
+          "costOfGoodsSold": 8522.3,
+          "grossProfit": 7885.02,
+          "marginPctCovered": 0.481,
+          "costCoverage": 0.972,
+          "estGrossProfit": 8110.38
         },
         {
           "key": "2026-09",
           "label": "Sep 26",
-          "revenue": null,
-          "orders": null,
-          "customers": null,
-          "returning": null,
-          "sessions": null,
+          "revenue": 99.6,
+          "netSales": 73.78,
+          "orders": 3,
+          "aov": 24.59,
+          "customers": 3,
+          "returning": 0,
+          "sessions": 83,
           "complete": false,
-          "mtd": false,
-          "future": true
+          "mtd": true,
+          "future": false,
+          "convertedSessions": 1,
+          "conversionRate": 0.012048192771084338,
+          "shopifyConversionRate": 0.012048192771084338,
+          "costOfGoodsSold": 42.8,
+          "grossProfit": 30.98,
+          "marginPctCovered": 0.42,
+          "costCoverage": 1,
+          "estGrossProfit": 30.98
         },
         {
           "key": "2026-10",
@@ -521,8 +531,8 @@
       "topProducts": [
         {
           "name": "Personalised Initial Leopard Print Cross Body Bag",
-          "revenue": 2076.11,
-          "orders": 79
+          "revenue": 2102.11,
+          "orders": 80
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
@@ -531,18 +541,23 @@
         },
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 1568.66,
-          "orders": 40
+          "revenue": 1749.52,
+          "orders": 44
         },
         {
           "name": "Personalised Initial Leopard Print Backpack",
-          "revenue": 979.81,
-          "orders": 30
+          "revenue": 1047.81,
+          "orders": 32
         },
         {
           "name": "Personalised 'Only Here For...' Cap",
-          "revenue": 832.6,
-          "orders": 32
+          "revenue": 854.2,
+          "orders": 33
+        },
+        {
+          "name": "My Other Job is a Dallas Cowboys Cheerleader Sweatshirt",
+          "revenue": 610.2,
+          "orders": 18
         },
         {
           "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
@@ -550,37 +565,32 @@
           "orders": 23
         },
         {
-          "name": "My Other Job is a Dallas Cowboys Cheerleader Sweatshirt",
-          "revenue": 574.2,
-          "orders": 17
-        },
-        {
           "name": "Personalised Initial Leopard print Tote Bag",
-          "revenue": 457.6,
-          "orders": 19
+          "revenue": 481,
+          "orders": 20
         },
         {
           "name": "Don't Ever Stop Being Silly Slogan T-Shirt",
-          "revenue": 387.4,
-          "orders": 14
+          "revenue": 410.8,
+          "orders": 15
         }
       ],
       "summary": {
-        "ytdRevenue": 21335.94,
-        "ytdNetSales": 16374.42,
-        "ytdOrders": 574,
-        "ytdSessions": 24305,
-        "ytdConvertedSessions": 451,
+        "ytdRevenue": 22082.45,
+        "ytdNetSales": 16950.03,
+        "ytdOrders": 594,
+        "ytdSessions": 24899,
+        "ytdConvertedSessions": 462,
         "avgConversionRate": 0.0186,
         "avgAOV": 28.74,
-        "avgRepeatRate": 0.152,
-        "ytdReturning": 86,
-        "ytdCustomers": 564,
-        "ytdCostOfGoodsSold": 8283,
-        "ytdGrossProfit": 7622.49,
-        "ytdMarginPct": 0.479,
-        "ytdCostCoverage": 0.971,
-        "ytdEstGrossProfit": 7843.35
+        "avgRepeatRate": 0.156,
+        "ytdReturning": 91,
+        "ytdCustomers": 584,
+        "ytdCostOfGoodsSold": 8565.1,
+        "ytdGrossProfit": 7916,
+        "ytdMarginPct": 0.48,
+        "ytdCostCoverage": 0.972,
+        "ytdEstGrossProfit": 8136.01
       }
     },
     "FY24": {
