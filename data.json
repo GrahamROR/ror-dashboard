@@ -1,21 +1,21 @@
 {
-  "updated": "2026-09-11T07:38:29.406Z",
+  "updated": "2026-09-12T07:31:21.967Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-09-10",
+    "date": "2026-09-11",
     "monthKey": "2026-09",
-    "revenue": 667.82,
+    "revenue": 665.77,
     "orders": 17,
     "customers": 17,
-    "returning": 3,
-    "repeatRate": 0.176,
-    "aov": 31.78,
-    "sessions": 612,
-    "convertedSessions": 12,
-    "conversionRate": 0.0196078431372549,
-    "shopifyConversionRate": 0.0196078431372549,
-    "margin": 0.537,
-    "profit": 290.15,
+    "returning": 2,
+    "repeatRate": 0.118,
+    "aov": 31.56,
+    "sessions": 553,
+    "convertedSessions": 14,
+    "conversionRate": 0.02531645569620253,
+    "shopifyConversionRate": 0.02531645569620253,
+    "margin": 0.523,
+    "profit": 283.09,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -388,24 +388,24 @@
         {
           "key": "2026-09",
           "label": "Sep 26",
-          "revenue": 6664.76,
-          "netSales": 5206.32,
-          "orders": 168,
-          "aov": 31.48,
-          "customers": 166,
-          "returning": 37,
-          "sessions": 6193,
+          "revenue": 7219.08,
+          "netSales": 5661.4,
+          "orders": 182,
+          "aov": 31.54,
+          "customers": 180,
+          "returning": 38,
+          "sessions": 6755,
           "complete": false,
           "mtd": true,
           "future": false,
-          "convertedSessions": 111,
-          "conversionRate": 0.017923461973195543,
-          "shopifyConversionRate": 0.017923461973195543,
-          "costOfGoodsSold": 2244.2,
-          "grossProfit": 2379.35,
-          "marginPctCovered": 0.515,
-          "costCoverage": 0.888,
-          "estGrossProfit": 2679.25
+          "convertedSessions": 123,
+          "conversionRate": 0.018208734270910437,
+          "shopifyConversionRate": 0.018208734270910437,
+          "costOfGoodsSold": 2438.7,
+          "grossProfit": 2613.93,
+          "marginPctCovered": 0.517,
+          "costCoverage": 0.892,
+          "estGrossProfit": 2928.87
         },
         {
           "key": "2026-10",
@@ -531,18 +531,18 @@
       "topProducts": [
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 2854.06,
-          "orders": 75
+          "revenue": 2923.32,
+          "orders": 77
+        },
+        {
+          "name": "Personalised Initial Leopard Print Cross Body Bag",
+          "revenue": 2298.41,
+          "orders": 89
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
           "revenue": 2243.83,
           "orders": 88
-        },
-        {
-          "name": "Personalised Initial Leopard Print Cross Body Bag",
-          "revenue": 2226.91,
-          "orders": 86
         },
         {
           "name": "Personalised Initial Leopard Print Backpack",
@@ -571,26 +571,26 @@
         },
         {
           "name": "I'd Rather be Reading Sweatshirt",
-          "revenue": 617.5,
-          "orders": 16
+          "revenue": 651.7,
+          "orders": 17
         }
       ],
       "summary": {
-        "ytdRevenue": 28647.61,
-        "ytdNetSales": 22082.57,
-        "ytdOrders": 759,
-        "ytdSessions": 31009,
-        "ytdConvertedSessions": 572,
-        "avgConversionRate": 0.0184,
-        "avgAOV": 29.36,
-        "avgRepeatRate": 0.171,
-        "ytdReturning": 128,
-        "ytdCustomers": 747,
-        "ytdCostOfGoodsSold": 10766.5,
-        "ytdGrossProfit": 10264.37,
-        "ytdMarginPct": 0.488,
+        "ytdRevenue": 29201.93,
+        "ytdNetSales": 22537.65,
+        "ytdOrders": 773,
+        "ytdSessions": 31571,
+        "ytdConvertedSessions": 584,
+        "avgConversionRate": 0.0185,
+        "avgAOV": 29.41,
+        "avgRepeatRate": 0.17,
+        "ytdReturning": 129,
+        "ytdCustomers": 761,
+        "ytdCostOfGoodsSold": 10961,
+        "ytdGrossProfit": 10498.95,
+        "ytdMarginPct": 0.489,
         "ytdCostCoverage": 0.952,
-        "ytdEstGrossProfit": 10776.29
+        "ytdEstGrossProfit": 11020.91
       }
     },
     "FY24": {
