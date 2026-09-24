@@ -3,5 +3,7 @@
   "version": "5.0.0",
   "private": true,
   "description": "Fetches Shopify data for the ROR Growth Dashboard via ShopifyQL",
-  "dependencies": {}
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
 }

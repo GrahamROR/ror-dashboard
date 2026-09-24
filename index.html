@@ -1743,8 +1743,29 @@ function App() {
     )
   );
 }
+</script>
 
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+<!-- ROR Sales Dashboard ("Dashboard 2") — separate modules, loaded after
+     Dashboard 1's script above so they can reuse its el/useState/fmt*
+     helpers. See README.md's "Dashboard 2 — ROR Sales" section for the
+     architecture. Dashboard 1 (App, just above) is untouched by any
+     of this. -->
+<script src="dashboard2/data-model.js"></script>
+<script src="dashboard2/data-adapter.js"></script>
+<script src="dashboard2/calculations.js"></script>
+<script src="dashboard2/charts.js"></script>
+<script src="dashboard2/ror-sales-app.js"></script>
+
+<script>
+function RootApp() {
+  const [activeDashboard, setActiveDashboard] = useState('shopify'); // 'shopify' | 'ror-sales'
+  return el(React.Fragment, null,
+    el(RorTopNavSwitcher, { active: activeDashboard, onChange: setActiveDashboard }),
+    activeDashboard === 'ror-sales' ? el(RorSalesApp) : el(App)
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(RootApp));
 </script>
 </body>
 </html>
