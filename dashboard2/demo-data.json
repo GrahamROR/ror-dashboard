@@ -1,0 +1,2299 @@
+{
+  "meta": {
+    "label": "DEMO DATA — fictional figures generated for interface development and testing only. These are NOT Rock On Ruby's real sales.",
+    "generator": "scripts/build-demo-data.js",
+    "generatedAt": "2026-09-24T16:57:04.661Z",
+    "grain": "monthly",
+    "currency": "GBP",
+    "channels": {
+      "active": [
+        "shopify",
+        "noths",
+        "etsy"
+      ],
+      "legacy": [
+        "silkfred",
+        "asos"
+      ]
+    }
+  },
+  "records": [
+    {
+      "period": "2016-01",
+      "channel": "silkfred",
+      "revenue": 638.84,
+      "orders": 14,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-02",
+      "channel": "silkfred",
+      "revenue": 625,
+      "orders": 15,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-03",
+      "channel": "silkfred",
+      "revenue": 860.72,
+      "orders": 21,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-04",
+      "channel": "silkfred",
+      "revenue": 805.13,
+      "orders": 17,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-05",
+      "channel": "silkfred",
+      "revenue": 786.55,
+      "orders": 18,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-06",
+      "channel": "silkfred",
+      "revenue": 851.28,
+      "orders": 21,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-07",
+      "channel": "silkfred",
+      "revenue": 719.68,
+      "orders": 15,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-08",
+      "channel": "silkfred",
+      "revenue": 665.31,
+      "orders": 16,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-09",
+      "channel": "silkfred",
+      "revenue": 782.39,
+      "orders": 16,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-10",
+      "channel": "silkfred",
+      "revenue": 916.71,
+      "orders": 22,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-11",
+      "channel": "silkfred",
+      "revenue": 1379.51,
+      "orders": 30,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2016-12",
+      "channel": "silkfred",
+      "revenue": 1758.85,
+      "orders": 36,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-01",
+      "channel": "silkfred",
+      "revenue": 695.11,
+      "orders": 16,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-02",
+      "channel": "silkfred",
+      "revenue": 645.51,
+      "orders": 14,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-03",
+      "channel": "silkfred",
+      "revenue": 842.74,
+      "orders": 20,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-04",
+      "channel": "silkfred",
+      "revenue": 788.32,
+      "orders": 17,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-05",
+      "channel": "silkfred",
+      "revenue": 804.26,
+      "orders": 20,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-06",
+      "channel": "asos",
+      "revenue": 1389.75,
+      "orders": 48,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-06",
+      "channel": "silkfred",
+      "revenue": 870.78,
+      "orders": 20,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-07",
+      "channel": "asos",
+      "revenue": 1090.91,
+      "orders": 39,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-07",
+      "channel": "silkfred",
+      "revenue": 740.76,
+      "orders": 16,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-08",
+      "channel": "asos",
+      "revenue": 921.93,
+      "orders": 38,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-08",
+      "channel": "silkfred",
+      "revenue": 650.48,
+      "orders": 16,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-09",
+      "channel": "asos",
+      "revenue": 1189.77,
+      "orders": 45,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-09",
+      "channel": "silkfred",
+      "revenue": 802.6,
+      "orders": 18,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-10",
+      "channel": "asos",
+      "revenue": 1380.13,
+      "orders": 50,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-10",
+      "channel": "silkfred",
+      "revenue": 926.8,
+      "orders": 22,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-11",
+      "channel": "asos",
+      "revenue": 2213.99,
+      "orders": 73,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-11",
+      "channel": "silkfred",
+      "revenue": 1472.56,
+      "orders": 31,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-12",
+      "channel": "asos",
+      "revenue": 2727.47,
+      "orders": 94,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2017-12",
+      "channel": "silkfred",
+      "revenue": 1742.32,
+      "orders": 36,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-01",
+      "channel": "asos",
+      "revenue": 1101.02,
+      "orders": 42,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-01",
+      "channel": "silkfred",
+      "revenue": 696.57,
+      "orders": 15,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-02",
+      "channel": "asos",
+      "revenue": 919.1,
+      "orders": 38,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-02",
+      "channel": "silkfred",
+      "revenue": 686.3,
+      "orders": 16,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-03",
+      "channel": "asos",
+      "revenue": 1262.83,
+      "orders": 46,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-03",
+      "channel": "silkfred",
+      "revenue": 887.62,
+      "orders": 22,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-04",
+      "channel": "asos",
+      "revenue": 1244.92,
+      "orders": 49,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-04",
+      "channel": "silkfred",
+      "revenue": 796.16,
+      "orders": 19,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-05",
+      "channel": "asos",
+      "revenue": 1212.78,
+      "orders": 45,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-05",
+      "channel": "silkfred",
+      "revenue": 861.71,
+      "orders": 21,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-06",
+      "channel": "asos",
+      "revenue": 1330.26,
+      "orders": 50,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-06",
+      "channel": "silkfred",
+      "revenue": 926.67,
+      "orders": 18,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-07",
+      "channel": "asos",
+      "revenue": 1091.3,
+      "orders": 39,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-07",
+      "channel": "silkfred",
+      "revenue": 717.94,
+      "orders": 15,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-08",
+      "channel": "asos",
+      "revenue": 963.47,
+      "orders": 32,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-08",
+      "channel": "silkfred",
+      "revenue": 703.87,
+      "orders": 15,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-09",
+      "channel": "asos",
+      "revenue": 1265.54,
+      "orders": 53,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-09",
+      "channel": "silkfred",
+      "revenue": 838.14,
+      "orders": 19,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-10",
+      "channel": "asos",
+      "revenue": 1374.51,
+      "orders": 49,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-10",
+      "channel": "silkfred",
+      "revenue": 919.88,
+      "orders": 22,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-11",
+      "channel": "asos",
+      "revenue": 2172.22,
+      "orders": 87,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-11",
+      "channel": "silkfred",
+      "revenue": 1532.05,
+      "orders": 32,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-12",
+      "channel": "asos",
+      "revenue": 2459.41,
+      "orders": 81,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2018-12",
+      "channel": "silkfred",
+      "revenue": 1739.9,
+      "orders": 38,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-01",
+      "channel": "asos",
+      "revenue": 1032.62,
+      "orders": 43,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-02",
+      "channel": "asos",
+      "revenue": 934.37,
+      "orders": 31,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-03",
+      "channel": "asos",
+      "revenue": 1289.14,
+      "orders": 52,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-04",
+      "channel": "asos",
+      "revenue": 1203.53,
+      "orders": 42,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-05",
+      "channel": "asos",
+      "revenue": 1336.52,
+      "orders": 49,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-06",
+      "channel": "asos",
+      "revenue": 1353.61,
+      "orders": 51,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-07",
+      "channel": "asos",
+      "revenue": 1043.98,
+      "orders": 40,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-08",
+      "channel": "asos",
+      "revenue": 997.41,
+      "orders": 37,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-09",
+      "channel": "asos",
+      "revenue": 1106.86,
+      "orders": 41,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-10",
+      "channel": "asos",
+      "revenue": 1396.57,
+      "orders": 50,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-11",
+      "channel": "asos",
+      "revenue": 2111.83,
+      "orders": 74,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2019-12",
+      "channel": "asos",
+      "revenue": 2589.12,
+      "orders": 104,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-08",
+      "channel": "etsy",
+      "revenue": 1141.49,
+      "orders": 52,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-08",
+      "channel": "noths",
+      "revenue": 2230.3,
+      "orders": 65,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-08",
+      "channel": "shopify",
+      "revenue": 13370.85,
+      "orders": 452,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-09",
+      "channel": "etsy",
+      "revenue": 1369.27,
+      "orders": 59,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-09",
+      "channel": "noths",
+      "revenue": 2717.52,
+      "orders": 79,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-09",
+      "channel": "shopify",
+      "revenue": 17007.09,
+      "orders": 601,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-10",
+      "channel": "etsy",
+      "revenue": 1516.23,
+      "orders": 73,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-10",
+      "channel": "noths",
+      "revenue": 3068.7,
+      "orders": 92,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-10",
+      "channel": "shopify",
+      "revenue": 17658.2,
+      "orders": 628,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-11",
+      "channel": "etsy",
+      "revenue": 2580.24,
+      "orders": 110,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-11",
+      "channel": "noths",
+      "revenue": 4884.06,
+      "orders": 144,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-11",
+      "channel": "shopify",
+      "revenue": 28769.21,
+      "orders": 1000,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-12",
+      "channel": "etsy",
+      "revenue": 3024.21,
+      "orders": 132,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-12",
+      "channel": "noths",
+      "revenue": 6007.05,
+      "orders": 169,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2021-12",
+      "channel": "shopify",
+      "revenue": 34835.15,
+      "orders": 1153,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-01",
+      "channel": "etsy",
+      "revenue": 1286.85,
+      "orders": 57,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-01",
+      "channel": "noths",
+      "revenue": 2330.13,
+      "orders": 67,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-01",
+      "channel": "shopify",
+      "revenue": 15631.79,
+      "orders": 543,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-02",
+      "channel": "etsy",
+      "revenue": 1147.18,
+      "orders": 52,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-02",
+      "channel": "noths",
+      "revenue": 2185.61,
+      "orders": 62,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-02",
+      "channel": "shopify",
+      "revenue": 14091.7,
+      "orders": 489,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-03",
+      "channel": "etsy",
+      "revenue": 1625.15,
+      "orders": 80,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-03",
+      "channel": "noths",
+      "revenue": 3306.17,
+      "orders": 92,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-03",
+      "channel": "shopify",
+      "revenue": 20125.1,
+      "orders": 722,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-04",
+      "channel": "etsy",
+      "revenue": 1525.08,
+      "orders": 70,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-04",
+      "channel": "noths",
+      "revenue": 2706.99,
+      "orders": 83,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-04",
+      "channel": "shopify",
+      "revenue": 16883.12,
+      "orders": 566,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-05",
+      "channel": "etsy",
+      "revenue": 1595.01,
+      "orders": 68,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-05",
+      "channel": "noths",
+      "revenue": 3157.36,
+      "orders": 94,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-05",
+      "channel": "shopify",
+      "revenue": 18528.29,
+      "orders": 656,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-06",
+      "channel": "etsy",
+      "revenue": 1710.9,
+      "orders": 79,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-06",
+      "channel": "noths",
+      "revenue": 3470.47,
+      "orders": 99,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-06",
+      "channel": "shopify",
+      "revenue": 20498.78,
+      "orders": 670,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-07",
+      "channel": "etsy",
+      "revenue": 1404.28,
+      "orders": 63,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-07",
+      "channel": "noths",
+      "revenue": 2705.05,
+      "orders": 76,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-07",
+      "channel": "shopify",
+      "revenue": 15703.7,
+      "orders": 565,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-08",
+      "channel": "etsy",
+      "revenue": 1309.29,
+      "orders": 61,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-08",
+      "channel": "noths",
+      "revenue": 2229.23,
+      "orders": 66,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-08",
+      "channel": "shopify",
+      "revenue": 14681.69,
+      "orders": 514,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-09",
+      "channel": "etsy",
+      "revenue": 1498.85,
+      "orders": 66,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-09",
+      "channel": "noths",
+      "revenue": 3063.35,
+      "orders": 90,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-09",
+      "channel": "shopify",
+      "revenue": 19073.1,
+      "orders": 654,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-10",
+      "channel": "etsy",
+      "revenue": 1852.57,
+      "orders": 89,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-10",
+      "channel": "noths",
+      "revenue": 3408.67,
+      "orders": 95,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-10",
+      "channel": "shopify",
+      "revenue": 21252.72,
+      "orders": 750,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-11",
+      "channel": "etsy",
+      "revenue": 2810.72,
+      "orders": 139,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-11",
+      "channel": "noths",
+      "revenue": 5696.22,
+      "orders": 174,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-11",
+      "channel": "shopify",
+      "revenue": 31091.85,
+      "orders": 1113,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-12",
+      "channel": "etsy",
+      "revenue": 3682.35,
+      "orders": 162,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-12",
+      "channel": "noths",
+      "revenue": 6232.55,
+      "orders": 193,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2022-12",
+      "channel": "shopify",
+      "revenue": 37652.59,
+      "orders": 1226,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-01",
+      "channel": "etsy",
+      "revenue": 1454.52,
+      "orders": 65,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-01",
+      "channel": "noths",
+      "revenue": 2683.98,
+      "orders": 77,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-01",
+      "channel": "shopify",
+      "revenue": 16453.37,
+      "orders": 572,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-02",
+      "channel": "etsy",
+      "revenue": 1346.4,
+      "orders": 59,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-02",
+      "channel": "noths",
+      "revenue": 2583.25,
+      "orders": 80,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-02",
+      "channel": "shopify",
+      "revenue": 16309.46,
+      "orders": 564,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-03",
+      "channel": "etsy",
+      "revenue": 1792.65,
+      "orders": 76,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-03",
+      "channel": "noths",
+      "revenue": 3541.51,
+      "orders": 105,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-03",
+      "channel": "shopify",
+      "revenue": 22389.98,
+      "orders": 767,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-04",
+      "channel": "etsy",
+      "revenue": 1612.33,
+      "orders": 69,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-04",
+      "channel": "noths",
+      "revenue": 3120.25,
+      "orders": 87,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-04",
+      "channel": "shopify",
+      "revenue": 18323,
+      "orders": 642,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-05",
+      "channel": "etsy",
+      "revenue": 1760.39,
+      "orders": 80,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-05",
+      "channel": "noths",
+      "revenue": 3118.42,
+      "orders": 89,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-05",
+      "channel": "shopify",
+      "revenue": 18938.7,
+      "orders": 621,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-06",
+      "channel": "etsy",
+      "revenue": 2016.22,
+      "orders": 86,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-06",
+      "channel": "noths",
+      "revenue": 3399.25,
+      "orders": 104,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-06",
+      "channel": "shopify",
+      "revenue": 22901.82,
+      "orders": 816,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-07",
+      "channel": "etsy",
+      "revenue": 1717.53,
+      "orders": 83,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-07",
+      "channel": "noths",
+      "revenue": 2967.55,
+      "orders": 86,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-07",
+      "channel": "shopify",
+      "revenue": 18654.72,
+      "orders": 647,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-08",
+      "channel": "etsy",
+      "revenue": 1541.33,
+      "orders": 76,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-08",
+      "channel": "noths",
+      "revenue": 2368.13,
+      "orders": 67,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-08",
+      "channel": "shopify",
+      "revenue": 16277.11,
+      "orders": 572,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-09",
+      "channel": "etsy",
+      "revenue": 1743.15,
+      "orders": 81,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-09",
+      "channel": "noths",
+      "revenue": 2950.71,
+      "orders": 85,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-09",
+      "channel": "shopify",
+      "revenue": 20967.9,
+      "orders": 731,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-10",
+      "channel": "etsy",
+      "revenue": 2019.11,
+      "orders": 89,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-10",
+      "channel": "noths",
+      "revenue": 3676.63,
+      "orders": 116,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-10",
+      "channel": "shopify",
+      "revenue": 22406.75,
+      "orders": 797,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-11",
+      "channel": "etsy",
+      "revenue": 3350.44,
+      "orders": 161,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-11",
+      "channel": "noths",
+      "revenue": 5281.57,
+      "orders": 154,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-11",
+      "channel": "shopify",
+      "revenue": 36685.89,
+      "orders": 1260,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-12",
+      "channel": "etsy",
+      "revenue": 4027.56,
+      "orders": 190,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-12",
+      "channel": "noths",
+      "revenue": 6969.35,
+      "orders": 196,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2023-12",
+      "channel": "shopify",
+      "revenue": 45647.8,
+      "orders": 1493,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-01",
+      "channel": "etsy",
+      "revenue": 1574.55,
+      "orders": 69,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-01",
+      "channel": "noths",
+      "revenue": 2718.11,
+      "orders": 86,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-01",
+      "channel": "shopify",
+      "revenue": 17632.23,
+      "orders": 624,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-02",
+      "channel": "etsy",
+      "revenue": 1494.87,
+      "orders": 75,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-02",
+      "channel": "noths",
+      "revenue": 2759.73,
+      "orders": 87,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-02",
+      "channel": "shopify",
+      "revenue": 17013.65,
+      "orders": 611,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-03",
+      "channel": "etsy",
+      "revenue": 2086.28,
+      "orders": 94,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-03",
+      "channel": "noths",
+      "revenue": 3576.43,
+      "orders": 113,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-03",
+      "channel": "shopify",
+      "revenue": 21592.42,
+      "orders": 722,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-04",
+      "channel": "etsy",
+      "revenue": 1896.93,
+      "orders": 91,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-04",
+      "channel": "noths",
+      "revenue": 3341.97,
+      "orders": 98,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-04",
+      "channel": "shopify",
+      "revenue": 19527.22,
+      "orders": 644,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-05",
+      "channel": "etsy",
+      "revenue": 1983.09,
+      "orders": 92,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-05",
+      "channel": "noths",
+      "revenue": 3270.58,
+      "orders": 100,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-05",
+      "channel": "shopify",
+      "revenue": 21598.91,
+      "orders": 749,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-06",
+      "channel": "etsy",
+      "revenue": 2479.46,
+      "orders": 123,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-06",
+      "channel": "noths",
+      "revenue": 3965.41,
+      "orders": 115,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-06",
+      "channel": "shopify",
+      "revenue": 25128.57,
+      "orders": 891,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-07",
+      "channel": "etsy",
+      "revenue": 1849.4,
+      "orders": 78,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-07",
+      "channel": "noths",
+      "revenue": 2901.6,
+      "orders": 80,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-07",
+      "channel": "shopify",
+      "revenue": 20261.96,
+      "orders": 680,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-08",
+      "channel": "etsy",
+      "revenue": 1714.2,
+      "orders": 76,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-08",
+      "channel": "noths",
+      "revenue": 2835.35,
+      "orders": 81,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-08",
+      "channel": "shopify",
+      "revenue": 17798.19,
+      "orders": 623,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-09",
+      "channel": "etsy",
+      "revenue": 2023.4,
+      "orders": 101,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-09",
+      "channel": "noths",
+      "revenue": 3044.23,
+      "orders": 94,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-09",
+      "channel": "shopify",
+      "revenue": 22801.04,
+      "orders": 807,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-10",
+      "channel": "etsy",
+      "revenue": 2432.89,
+      "orders": 101,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-10",
+      "channel": "noths",
+      "revenue": 3516.62,
+      "orders": 100,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-10",
+      "channel": "shopify",
+      "revenue": 23634.87,
+      "orders": 835,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-11",
+      "channel": "etsy",
+      "revenue": 3692.74,
+      "orders": 156,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-11",
+      "channel": "noths",
+      "revenue": 5753.42,
+      "orders": 164,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-11",
+      "channel": "shopify",
+      "revenue": 38401.09,
+      "orders": 1279,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-12",
+      "channel": "etsy",
+      "revenue": 4482.56,
+      "orders": 185,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-12",
+      "channel": "noths",
+      "revenue": 7121.05,
+      "orders": 212,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2024-12",
+      "channel": "shopify",
+      "revenue": 50772.22,
+      "orders": 1727,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-01",
+      "channel": "etsy",
+      "revenue": 1897.32,
+      "orders": 86,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-01",
+      "channel": "noths",
+      "revenue": 2827.4,
+      "orders": 87,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-01",
+      "channel": "shopify",
+      "revenue": 18663.62,
+      "orders": 658,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-02",
+      "channel": "etsy",
+      "revenue": 1784.55,
+      "orders": 75,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-02",
+      "channel": "noths",
+      "revenue": 2755.79,
+      "orders": 84,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-02",
+      "channel": "shopify",
+      "revenue": 19619.03,
+      "orders": 675,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-03",
+      "channel": "etsy",
+      "revenue": 2411.68,
+      "orders": 107,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-03",
+      "channel": "noths",
+      "revenue": 3764.96,
+      "orders": 116,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-03",
+      "channel": "shopify",
+      "revenue": 24126.99,
+      "orders": 843,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-04",
+      "channel": "etsy",
+      "revenue": 2058.38,
+      "orders": 95,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-04",
+      "channel": "noths",
+      "revenue": 3161.11,
+      "orders": 91,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-04",
+      "channel": "shopify",
+      "revenue": 24422.19,
+      "orders": 867,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-05",
+      "channel": "etsy",
+      "revenue": 2441.19,
+      "orders": 112,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-05",
+      "channel": "noths",
+      "revenue": 3705.26,
+      "orders": 104,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-05",
+      "channel": "shopify",
+      "revenue": 25627.94,
+      "orders": 936,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-06",
+      "channel": "etsy",
+      "revenue": 2701.44,
+      "orders": 118,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-06",
+      "channel": "noths",
+      "revenue": 3744.02,
+      "orders": 113,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-06",
+      "channel": "shopify",
+      "revenue": 27217.6,
+      "orders": 940,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-07",
+      "channel": "etsy",
+      "revenue": 2048.88,
+      "orders": 86,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-07",
+      "channel": "noths",
+      "revenue": 3426.73,
+      "orders": 110,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-07",
+      "channel": "shopify",
+      "revenue": 21186.06,
+      "orders": 773,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-08",
+      "channel": "etsy",
+      "revenue": 1781.32,
+      "orders": 83,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-08",
+      "channel": "noths",
+      "revenue": 2790.86,
+      "orders": 88,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-08",
+      "channel": "shopify",
+      "revenue": 20240.9,
+      "orders": 725,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-09",
+      "channel": "etsy",
+      "revenue": 2404.68,
+      "orders": 105,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-09",
+      "channel": "noths",
+      "revenue": 3347.3,
+      "orders": 105,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-09",
+      "channel": "shopify",
+      "revenue": 23868.79,
+      "orders": 866,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-10",
+      "channel": "etsy",
+      "revenue": 2447.12,
+      "orders": 101,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-10",
+      "channel": "noths",
+      "revenue": 4136.47,
+      "orders": 118,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-10",
+      "channel": "shopify",
+      "revenue": 26622.02,
+      "orders": 944,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-11",
+      "channel": "etsy",
+      "revenue": 4309.53,
+      "orders": 197,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-11",
+      "channel": "noths",
+      "revenue": 5986.96,
+      "orders": 180,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-11",
+      "channel": "shopify",
+      "revenue": 45314.72,
+      "orders": 1661,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-12",
+      "channel": "etsy",
+      "revenue": 5371.71,
+      "orders": 245,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-12",
+      "channel": "noths",
+      "revenue": 7351.25,
+      "orders": 205,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2025-12",
+      "channel": "shopify",
+      "revenue": 53865.51,
+      "orders": 1854,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-01",
+      "channel": "etsy",
+      "revenue": 2113.61,
+      "orders": 103,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-01",
+      "channel": "noths",
+      "revenue": 3176.5,
+      "orders": 88,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-01",
+      "channel": "shopify",
+      "revenue": 20653.84,
+      "orders": 707,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-02",
+      "channel": "etsy",
+      "revenue": 2070.99,
+      "orders": 94,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-02",
+      "channel": "noths",
+      "revenue": 2831.26,
+      "orders": 90,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-02",
+      "channel": "shopify",
+      "revenue": 20111.19,
+      "orders": 723,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-03",
+      "channel": "etsy",
+      "revenue": 2774.67,
+      "orders": 123,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-03",
+      "channel": "noths",
+      "revenue": 3796.91,
+      "orders": 106,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-03",
+      "channel": "shopify",
+      "revenue": 26489.94,
+      "orders": 889,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-04",
+      "channel": "etsy",
+      "revenue": 2549.99,
+      "orders": 107,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-04",
+      "channel": "noths",
+      "revenue": 3500.59,
+      "orders": 102,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-04",
+      "channel": "shopify",
+      "revenue": 26316.34,
+      "orders": 869,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-05",
+      "channel": "etsy",
+      "revenue": 2502.57,
+      "orders": 121,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-05",
+      "channel": "noths",
+      "revenue": 3598.56,
+      "orders": 105,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-05",
+      "channel": "shopify",
+      "revenue": 27322.35,
+      "orders": 978,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-06",
+      "channel": "etsy",
+      "revenue": 2913.19,
+      "orders": 128,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-06",
+      "channel": "noths",
+      "revenue": 4123.45,
+      "orders": 121,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-06",
+      "channel": "shopify",
+      "revenue": 30318.59,
+      "orders": 1091,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-07",
+      "channel": "etsy",
+      "revenue": 2446.38,
+      "orders": 107,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-07",
+      "channel": "noths",
+      "revenue": 3644.8,
+      "orders": 108,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-07",
+      "channel": "shopify",
+      "revenue": 25210.18,
+      "orders": 890,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-08",
+      "channel": "etsy",
+      "revenue": 2293.35,
+      "orders": 99,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-08",
+      "channel": "noths",
+      "revenue": 2798.97,
+      "orders": 85,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-08",
+      "channel": "shopify",
+      "revenue": 21610.76,
+      "orders": 744,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "complete"
+    },
+    {
+      "period": "2026-09",
+      "channel": "etsy",
+      "revenue": 2778.07,
+      "orders": 116,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "partial"
+    },
+    {
+      "period": "2026-09",
+      "channel": "noths",
+      "revenue": 3710.23,
+      "orders": 112,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "partial"
+    },
+    {
+      "period": "2026-09",
+      "channel": "shopify",
+      "revenue": 27730.24,
+      "orders": 916,
+      "currency": "GBP",
+      "source": "demo-fixture",
+      "completeness": "partial"
+    }
+  ]
+}

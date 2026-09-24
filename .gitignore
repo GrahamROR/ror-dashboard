@@ -1,2 +1,8 @@
 scripts/node_modules/
 scripts/package-lock.json
+
+# Real (non-demo) business data — never publish this to the public repo.
+# See scripts/import-sales-spreadsheet.js and README's Dashboard 2 section.
+local-data/
+*.xlsx
+*.xls
