@@ -1,0 +1,47 @@
+name: Fetch Paid Ads Data
+
+on:
+  schedule:
+    - cron: '35 3 * * *'   # after the LTV:CAC pull (25 3), same 3am UTC window
+  workflow_dispatch:         # manual trigger from GitHub Actions tab
+
+permissions:
+  contents: write            # needed to commit ads-data.json back to repo
+
+jobs:
+  fetch-ads-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Europe/London
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch daily Meta + Google Ads performance
+        env:
+          META_ACCESS_TOKEN:           ${{ secrets.META_ACCESS_TOKEN }}
+          META_AD_ACCOUNT_ID:           ${{ secrets.META_AD_ACCOUNT_ID }}
+          GOOGLE_ADS_DEVELOPER_TOKEN:   ${{ secrets.GOOGLE_ADS_DEVELOPER_TOKEN }}
+          GOOGLE_ADS_CLIENT_ID:         ${{ secrets.GOOGLE_ADS_CLIENT_ID }}
+          GOOGLE_ADS_CLIENT_SECRET:     ${{ secrets.GOOGLE_ADS_CLIENT_SECRET }}
+          GOOGLE_ADS_REFRESH_TOKEN:     ${{ secrets.GOOGLE_ADS_REFRESH_TOKEN }}
+          GOOGLE_ADS_CUSTOMER_ID:       ${{ secrets.GOOGLE_ADS_CUSTOMER_ID }}
+          GOOGLE_ADS_LOGIN_CUSTOMER_ID: ${{ secrets.GOOGLE_ADS_LOGIN_CUSTOMER_ID }}
+        run: node scripts/fetch-ads-data.js
+
+      - name: Commit and push updated ads-data.json
+        run: |
+          git config user.name  "ror-dashboard[bot]"
+          git config user.email "dashboard@rockonruby.co.uk"
+          git add ads-data.json
+          git diff --staged --quiet && echo "No changes to commit" || (
+            git commit -m "chore: paid ads data update $(date +'%Y-%m-%d %H:%M %Z')"
+            git push
+          )

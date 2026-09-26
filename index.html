@@ -92,6 +92,7 @@ const MODEL         = 'claude-haiku-4-5-20251001';
 const DATA_URL      = './data.json'; // served by GitHub Pages
 const EMAIL_DATA_URL = './email-data.json'; // written nightly by fetch-email-data.js
 const LTV_CAC_DATA_URL = './ltv-cac.json'; // written nightly by fetch-ltv-cac.js
+const ADS_DATA_URL  = './ads-data.json'; // written nightly by fetch-ads-data.js
 
 // ── CONSTANTS ─────────────────────────────────────────────────
 const GOALS = {
@@ -201,6 +202,11 @@ const LTV_CAC_FALLBACK = {
   cumulative: { ...LTV_CAC_WINDOW_FALLBACK, window: { ...LTV_CAC_WINDOW_FALLBACK.window, monthsCap: 36 } },
   goals: { targetRatio: 3, minRatio: 1 },
 };
+
+// Paid Ads fallback — used until fetch-ads-data.js has run at least once
+// (or if Meta/Google Ads API credentials haven't been added as GitHub
+// secrets yet). Empty days object rather than fabricated numbers.
+const ADS_FALLBACK = { updated: null, days: {} };
 
 // ── HELPERS ───────────────────────────────────────────────────
 // Pulls one fiscal year's block out of the multi-year data.json and
@@ -765,6 +771,19 @@ function App() {
   const [ltvCacData,       setLtvCacData]       = useState(null);
   const [ltvCacIsFallback, setLtvCacIsFallback] = useState(false);
 
+  // ── PAID ADS TAB STATE ───────────────────────────────────────
+  const [adsData,       setAdsData]       = useState(null);
+  const [adsIsFallback, setAdsIsFallback] = useState(false);
+  const [adsRangePreset, setAdsRangePreset] = useState('last30');
+  const [adsCustomStart, setAdsCustomStart] = useState('');
+  const [adsCustomEnd,   setAdsCustomEnd]   = useState('');
+  const [adsGranularity, setAdsGranularity] = useState('daily');
+  const [adsChannel,     setAdsChannel]     = useState('all'); // 'all' | 'meta' | 'google'
+  const [adsSeriesMode,  setAdsSeriesMode]  = useState('combined'); // 'combined' | 'byChannel'
+  const [adsComparison,  setAdsComparison]  = useState('previous-period'); // 'none'|'previous-period'|'previous-year'
+  const [adsMetric,      setAdsMetric]      = useState('spend');
+  const [adsChartType,   setAdsChartType]   = useState('bar');
+
   function resetEmailProjection() {
     setProjEmailConv(null); setProjEmailAOV(null);
     setEmailConvLocked(false); setEmailAovLocked(false);
@@ -800,6 +819,15 @@ function App() {
   const availableYears = data?.years ? Object.keys(data.years).sort().reverse() : [];
   const viewData = useMemo(() => pickYear(data, selectedFY), [data, selectedFY]);
 
+  // Every month across every fiscal year on file, flattened — used by the
+  // Ads tab's "Shopify actuals" panel to look up sessions/orders/conversion
+  // rate for whatever months the selected ad date-range overlaps, regardless
+  // of which FY tab is currently selected elsewhere on the page.
+  const allMonthsFlat = useMemo(() => {
+    if (!data) return [];
+    return Object.values(data.years || {}).flatMap((y) => y.monthly || []);
+  }, [data]);
+
   // Load email-data.json on mount (independent of the main pull —
   // if this 404s, the Email tab just shows fallback numbers)
   useEffect(() => {
@@ -816,6 +844,15 @@ function App() {
       .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
       .then(d => setLtvCacData(d))
       .catch(() => { setLtvCacData(LTV_CAC_FALLBACK); setLtvCacIsFallback(true); });
+  }, []);
+
+  // Load ads-data.json on mount (independent of the other pulls —
+  // if this 404s, the Ads tab just shows an empty/pending state)
+  useEffect(() => {
+    fetch(ADS_DATA_URL + '?t=' + Date.now())
+      .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+      .then(d => setAdsData(d))
+      .catch(() => { setAdsData(ADS_FALLBACK); setAdsIsFallback(true); });
   }, []);
 
   // Derived values from the selected year's data
@@ -941,7 +978,7 @@ function App() {
         // mobile: nothing to tell tabs apart, and no way to tell which page
         // is active while scrolling past the visible ones.
         el('div', {className:'tab-bar tab-bar-scroll', style:{minWidth:0}},
-          [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['margin','ti-chart-pie']].map(([t,ic])=>
+          [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['ads','ti-speakerphone'],['margin','ti-chart-pie']].map(([t,ic])=>
             el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t), style:{flexShrink:0,whiteSpace:'nowrap'}},
               el('i', {className:'ti '+ic, style:{fontSize:13}}),
               el('span', {style:{marginLeft:5}}, t.charAt(0).toUpperCase()+t.slice(1))
@@ -1578,6 +1615,224 @@ function App() {
         })()
       ),
 
+      // ══ PAID ADS ═══════════════════════════════════════════════
+      activeTab==='ads' && (() => {
+        const ad = adsData || ADS_FALLBACK;
+        const daysData = ad.days || {};
+        const todayStr = AdsCalc.fmtDateISO(new Date());
+        const selectStyle = {background:'var(--s2)',border:'1px solid var(--bdr2)',color:'var(--t1)',borderRadius:'var(--r)',padding:'7px 10px',fontFamily:'inherit',fontSize:12.5,outline:'none'};
+        const lbl = (t) => el('div', {className:'lbl', style:{marginBottom:4}}, t);
+
+        const formatAdsMetric = (metric, v) => {
+          if (v == null) return '—';
+          if (metric === 'spend' || metric === 'conversionValue' || metric === 'cpa' || metric === 'cpc') return fmtC(v, 2);
+          if (metric === 'conversions' || metric === 'clicks' || metric === 'impressions') return fmt(Math.round(v), 0);
+          if (metric === 'roas') return v.toFixed(2) + 'x';
+          if (metric === 'ctr') return fmtP(v, 2);
+          return String(v);
+        };
+        const adsChangeText = (cmp) => {
+          if (!cmp || cmp.status === 'not-occurred') return { text: 'Not yet occurred', tone: 'muted' };
+          if (cmp.status === 'no-comparison-data' || cmp.status === 'zero-denominator' || cmp.percentChange == null) return { text: '—', tone: 'muted' };
+          const up = cmp.percentChange >= 0;
+          return { text: (up ? '+' : '') + cmp.percentChange.toFixed(1) + '%', tone: up ? 'up' : 'down' };
+        };
+        const adsToneColor = (tone) => tone === 'up' ? 'var(--grn)' : tone === 'down' ? 'var(--red)' : 'var(--t3)';
+
+        const kpiChannels = adsChannel === 'all' ? ['meta', 'google'] : [adsChannel];
+        const range = AdsCalc.resolveAdsDateRange(adsRangePreset, { customStart: adsCustomStart, customEnd: adsCustomEnd, todayStr });
+
+        const dateRangeControls = el('div', {className:'card', style:{display:'flex',flexWrap:'wrap',gap:16,alignItems:'flex-end',marginBottom:16}},
+          el('div', null, lbl('Date range'),
+            el('select', {value:adsRangePreset, onChange:e=>setAdsRangePreset(e.target.value), style:selectStyle},
+              AdsCalc.ADS_DATE_PRESETS.map(p => el('option', {key:p.key, value:p.key}, p.label))
+            ),
+            adsRangePreset === 'custom' && el('div', {style:{display:'flex',gap:6,marginTop:6}},
+              el('input', {type:'date', value:adsCustomStart, onChange:e=>setAdsCustomStart(e.target.value), style:{...selectStyle,padding:'6px 8px'}}),
+              el('input', {type:'date', value:adsCustomEnd, onChange:e=>setAdsCustomEnd(e.target.value), style:{...selectStyle,padding:'6px 8px'}})
+            )
+          ),
+          el('div', null, lbl('Channel'),
+            el('select', {value:adsChannel, onChange:e=>setAdsChannel(e.target.value), style:selectStyle},
+              el('option', {value:'all'}, 'All (blended)'), el('option', {value:'meta'}, 'Meta'), el('option', {value:'google'}, 'Google')
+            )
+          ),
+          el('div', null, lbl('Compare against'),
+            el('select', {value:adsComparison, onChange:e=>setAdsComparison(e.target.value), style:selectStyle},
+              el('option', {value:'none'}, 'No comparison'), el('option', {value:'previous-period'}, 'Previous period'), el('option', {value:'previous-year'}, 'Previous year')
+            )
+          ),
+          el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.5,maxWidth:320}},
+            'Real daily Meta + Google Ads figures, refreshed nightly. Never averages ROAS/CPA across days — always total spend ÷ total result for the period shown.'
+          )
+        );
+
+        if (range.unsupported) {
+          return el('div', {className:'fi'}, dateRangeControls,
+            el('div', {className:'card', style:{borderColor:'var(--amb-bdr)',background:'var(--amb-bg)',display:'flex',gap:10,alignItems:'flex-start'}},
+              el('i', {className:'ti ti-alert-triangle', style:{color:'var(--amb)',fontSize:16,marginTop:1}}),
+              el('div', {style:{fontSize:12.5,color:'var(--t1)'}}, range.reason)
+            )
+          );
+        }
+
+        const current = AdsCalc.adsAggregate(daysData, range.start, range.end, kpiChannels, todayStr);
+        let comparisonAgg = null, comparisonRange = null;
+        if (adsComparison !== 'none') {
+          comparisonRange = adsComparison === 'previous-year' ? AdsCalc.yearEarlierRange(range.start, range.end) : AdsCalc.previousEquivalentRange(range.start, range.end);
+          comparisonAgg = AdsCalc.adsAggregate(daysData, comparisonRange.start, comparisonRange.end, kpiChannels, todayStr);
+        }
+
+        const kpiMetrics = [
+          {key:'spend', label:'Spend', icon:'ti-currency-pound', color:'var(--amb)'},
+          {key:'conversions', label:'Conversions', icon:'ti-shopping-cart', color:'var(--blu)'},
+          {key:'conversionValue', label:'Conversion Value', icon:'ti-cash', color:'var(--grn)'},
+          {key:'roas', label:'ROAS', icon:'ti-trending-up', color:'var(--pur)'},
+          {key:'cpa', label:'Cost per Conversion', icon:'ti-receipt', color:'var(--amb)'},
+          {key:'clicks', label:'Clicks', icon:'ti-click', color:'var(--blu)'},
+        ];
+
+        const kpiRow = (current.status === 'no-data' || current.status === 'not-occurred')
+          ? el('div', {className:'card', style:{marginBottom:16}},
+              el('div', {style:{fontSize:12.5,color:'var(--t3)'}}, current.note)
+            )
+          : el('div', {className:'fi grid-auto', style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:16}},
+              kpiMetrics.map((m) => {
+                const cmp = comparisonAgg ? AdsCalc.adsCompare(current, comparisonAgg, m.key) : null;
+                const chg = cmp ? adsChangeText(cmp) : null;
+                return el('div', {key:m.key, className:'card'},
+                  el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:12}},
+                    el('div', {style:{width:28,height:28,borderRadius:6,background:m.color+'22',display:'flex',alignItems:'center',justifyContent:'center'}},
+                      el('i', {className:'ti '+m.icon, style:{color:m.color,fontSize:14}})),
+                    el('div', {className:'lbl'}, m.label)
+                  ),
+                  el('div', {style:{fontSize:24,fontWeight:600,color:'var(--t1)',fontFamily:"'DM Mono',monospace",marginBottom:6}}, formatAdsMetric(m.key, current[m.key])),
+                  cmp && el('div', {style:{display:'flex',alignItems:'center',gap:8,fontSize:12}},
+                    el('span', {style:{color:adsToneColor(chg.tone),fontWeight:500}}, chg.text),
+                    current.status === 'partial' && el('span', {className:'badge ba', style:{fontSize:10}}, 'Today')
+                  )
+                );
+              })
+            );
+
+        // ── trend chart ──────────────────────────────────────
+        const availableChartTypes = [
+          {key:'bar',label:'Bar',icon:'ti-chart-bar'},
+          {key:'line',label:'Line',icon:'ti-chart-line'},
+          {key:'stacked-bar',label:'Stacked bar',icon:'ti-stack-2'},
+          {key:'area',label:'Area',icon:'ti-chart-area-line'},
+          {key:'donut',label:'Donut',icon:'ti-chart-donut'},
+        ].filter((t) => t.key !== 'donut' || adsSeriesMode === 'byChannel');
+        const effectiveChartType = availableChartTypes.some((t) => t.key === adsChartType) ? adsChartType : 'bar';
+
+        const seriesGroups = adsSeriesMode === 'byChannel' ? [['meta'], ['google']] : [kpiChannels];
+        const channelLabel = (ch) => ch === 'meta' ? 'Meta' : 'Google';
+        const channelColor = (ch) => ch === 'meta' ? 'var(--blu)' : 'var(--grn)';
+
+        const buckets = AdsCalc.adsBucketsForGranularity(adsGranularity, range.start, range.end);
+        const chartSeries = seriesGroups.map((chGroup) => ({
+          key: chGroup.length === 1 ? chGroup[0] : 'blended',
+          label: chGroup.length === 1 ? channelLabel(chGroup[0]) : 'Blended',
+          color: chGroup.length === 1 ? channelColor(chGroup[0]) : 'var(--amb)',
+          channels: chGroup,
+          points: buckets.map((b) => {
+            const agg = AdsCalc.adsAggregate(daysData, b.start, b.end, chGroup, todayStr);
+            return { bucket: { label: b.label, key: b.key }, value: agg[adsMetric], status: agg.status, note: agg.note };
+          }),
+        }));
+
+        let chartComparisonSeries = null;
+        if (adsComparison !== 'none' && effectiveChartType !== 'donut') {
+          chartComparisonSeries = seriesGroups.map((chGroup) => ({
+            key: (chGroup.length === 1 ? chGroup[0] : 'blended') + ':cmp',
+            label: chGroup.length === 1 ? channelLabel(chGroup[0]) : 'Blended',
+            color: chGroup.length === 1 ? channelColor(chGroup[0]) : 'var(--amb)',
+            channels: chGroup,
+            points: buckets.map((b) => {
+              const cmpB = adsComparison === 'previous-year' ? AdsCalc.adsYearEarlierBucket(b) : AdsCalc.adsPreviousBucket(b);
+              const agg = AdsCalc.adsAggregate(daysData, cmpB.start, cmpB.end, chGroup, todayStr);
+              return { bucket: { label: cmpB.label, key: cmpB.key }, value: agg[adsMetric], status: agg.status, note: agg.note };
+            }),
+          }));
+        }
+
+        const donutSlices = effectiveChartType === 'donut' ? seriesGroups.map((chGroup) => {
+          const agg = AdsCalc.adsAggregate(daysData, range.start, range.end, chGroup, todayStr);
+          return { label: channelLabel(chGroup[0]), value: agg[adsMetric] || 0, color: channelColor(chGroup[0]) };
+        }) : [];
+
+        const explorerCard = el('div', {className:'card', style:{marginBottom:16}},
+          el('div', {style:{marginBottom:16}},
+            el('div', {style:{fontWeight:500,fontSize:14}}, 'Paid ads trend'),
+            el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, 'Real Meta + Google Ads performance — no marketing-mix modelling, just what the platforms report.')
+          ),
+          el('div', {style:{display:'flex',flexWrap:'wrap',gap:14,marginBottom:16}},
+            el('div', null, lbl('Metric'),
+              el('select', {value:adsMetric, onChange:e=>setAdsMetric(e.target.value), style:selectStyle},
+                [['spend','Spend'],['conversions','Conversions'],['conversionValue','Conversion Value'],['roas','ROAS'],['cpa','Cost per Conversion'],['clicks','Clicks']].map(([v,l])=>el('option',{key:v,value:v},l))
+              )
+            ),
+            el('div', null, lbl('Series'),
+              el('select', {value:adsSeriesMode, onChange:e=>setAdsSeriesMode(e.target.value), style:selectStyle},
+                el('option', {value:'combined'}, 'Combined'), el('option', {value:'byChannel'}, 'Separate per channel')
+              )
+            ),
+            el('div', null, lbl('Granularity'),
+              el('select', {value:adsGranularity, onChange:e=>setAdsGranularity(e.target.value), style:selectStyle},
+                el('option', {value:'daily'}, 'Daily'), el('option', {value:'weekly'}, 'Weekly'), el('option', {value:'monthly'}, 'Monthly')
+              )
+            )
+          ),
+          el('div', {className:'tab-bar', style:{marginBottom:16,width:'fit-content'}},
+            availableChartTypes.map((t) => el('div', {key:t.key, className:'tab'+(effectiveChartType===t.key?' active':''), onClick:()=>setAdsChartType(t.key)},
+              el('i', {className:'ti '+t.icon, style:{fontSize:13,marginRight:5}}), t.label
+            ))
+          ),
+          effectiveChartType === 'donut'
+            ? el(RorCharts.SalesChart, {type:'donut', slices:donutSlices, formatValue:(v)=>formatAdsMetric(adsMetric, v)})
+            : el(RorCharts.SalesChart, {type:effectiveChartType, series:chartSeries, comparisonSeries:chartComparisonSeries, formatValue:(v)=>formatAdsMetric(adsMetric, v)})
+        );
+
+        // ── Shopify actuals comparison panel ────────────────
+        const rangeStartMonth = range.start.slice(0, 7);
+        const rangeEndMonth = range.end.slice(0, 7);
+        const overlappingMonths = allMonthsFlat.filter((m) => m.key >= rangeStartMonth && m.key <= rangeEndMonth);
+        const shopifyTotals = overlappingMonths.reduce((acc, m) => ({
+          sessions: acc.sessions + (m.sessions || 0),
+          orders: acc.orders + (m.orders || 0),
+          convertedSessions: acc.convertedSessions + (m.convertedSessions || 0),
+        }), { sessions: 0, orders: 0, convertedSessions: 0 });
+        const hasShopifySessions = overlappingMonths.some((m) => m.sessions != null);
+
+        const shopifyPanel = el('div', {className:'card'},
+          el('div', {style:{marginBottom:14}},
+            el('div', {style:{fontWeight:500,fontSize:14}}, 'Shopify actuals, for comparison'),
+            el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2,lineHeight:1.5}},
+              'Meta/Google "Conversions" are platform-attributed (click/view-through windows, cross-device modelling), so use total Shopify orders as a sanity check: ' +
+              'ads-reported conversions approaching or exceeding total orders means the platforms are over-counting (double-attributing the same sale); a small, plausible share of total orders is a healthier sign. ' +
+              'These Shopify figures come straight from Shopify Analytics — no attribution model applied. ' +
+              'Only available at monthly grain (data.json doesn\'t store daily sessions), so this shows the full months your selected range overlaps: ' +
+              (overlappingMonths.length ? overlappingMonths.map(m=>m.label).join(', ') : 'none yet')
+            )
+          ),
+          overlappingMonths.length === 0
+            ? el('div', {style:{fontSize:12.5,color:'var(--t3)'}}, 'No Shopify monthly data available for this range yet.')
+            : el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:12}},
+                [
+                  {label:'Shopify orders', val: fmt(shopifyTotals.orders,0)},
+                  {label:'Shopify sessions', val: hasShopifySessions ? fmt(shopifyTotals.sessions,0) : '—'},
+                  {label:'Shopify conv. rate', val: hasShopifySessions && shopifyTotals.sessions ? fmtP(shopifyTotals.convertedSessions/shopifyTotals.sessions,2) : '—'},
+                  {label:'Ads-reported conversions (same months, all channels)', val: fmt(current.conversions,0)},
+                ].map((item,i)=>el('div', {key:i, style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'12px 14px',border:'1px solid var(--bdr)'}},
+                  el('div', {className:'lbl', style:{marginBottom:6}}, item.label),
+                  el('div', {style:{fontSize:20,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'var(--t1)'}}, item.val)
+                ))
+              )
+        );
+
+        return el('div', {className:'fi'}, dateRangeControls, kpiRow, explorerCard, shopifyPanel);
+      })(),
+
       // ══ MARGIN ══════════════════════════════════════════════
       activeTab==='margin' && el('div', {className:'fi'},
         summary.ytdCostCoverage != null && el('div', {style:{background: summary.ytdCostCoverage < 0.8 ? 'var(--amb-bg)' : 'var(--grn-bg)', border:'1px solid '+(summary.ytdCostCoverage < 0.8 ? 'var(--amb-bdr)' : 'var(--grn-bdr)'), borderRadius:'var(--rlg)', padding:'16px 20px', marginBottom:16, display:'flex', alignItems:'center', gap:12}},
@@ -1772,6 +2027,11 @@ function App() {
   );
 }
 </script>
+
+<!-- Dashboard 1's own "Paid Ads" tab calculations — see the ads/
+     directory. Loaded here (before App() is actually called) so its
+     AdsCalc global exists by the time App's render runs. -->
+<script src="ads/calculations.js"></script>
 
 <!-- ROR Sales Dashboard ("Dashboard 2") — separate modules, loaded after
      Dashboard 1's script above so they can reuse its el/useState/fmt*
