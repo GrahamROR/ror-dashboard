@@ -19,6 +19,10 @@ ror-dashboard/
 ├── data.json                         ← generated nightly by GitHub Actions (multi-year — see below)
 ├── email-data.json                   ← generated nightly by GitHub Actions (rolling 90-day window)
 ├── ltv-cac.json                      ← generated nightly by GitHub Actions
+├── ads-data.json                     ← generated nightly by GitHub Actions (daily Meta+Google, from first backfill)
+├── ads/                              ← Shopify Growth's "Ads" tab calculations — see below
+│   ├── calculations.js               ← date ranges, aggregation, comparisons — pure functions, unit tested
+│   └── test/calculations.test.js     ← run with `node ads/test/calculations.test.js`
 ├── dashboard2/                       ← "ROR Sales" dashboard — see Dashboard 2 section below
 │   ├── data-model.js                 ← shared constants: channels, financial-year math, granularities
 │   ├── data-adapter.js               ← where sales records come from (today: demo-data.json)
@@ -31,6 +35,8 @@ ror-dashboard/
 │   ├── fetch-data.js                 ← fetches Shopify + GA4, writes data.json
 │   ├── fetch-email-data.js           ← fetches Klaviyo + Shopify, writes email-data.json
 │   ├── fetch-ltv-cac.js              ← fetches Meta/Google ad spend, writes ltv-cac.json
+│   ├── fetch-ads-data.js             ← nightly: appends/refreshes the last 3 days into ads-data.json
+│   ├── backfill-ads-data.js          ← ONE-OFF (manual): bulk-pulls ~400 days of history in one run
 │   ├── build-demo-data.js            ← (re)generates dashboard2/demo-data.json
 │   ├── import-sales-spreadsheet.js   ← LOCAL ONLY: real workbook -> local-data/ (gitignored, never committed)
 │   └── package.json                  ← googleapis + xlsx dependencies
@@ -38,7 +44,9 @@ ror-dashboard/
     └── workflows/
         ├── fetch-data.yml            ← runs daily at 6am BST
         ├── fetch-email-data.yml      ← runs daily at 6am BST, 10 mins after the above
-        └── fetch-ltv-cac.yml         ← runs daily at 6am BST, 25 mins after fetch-data
+        ├── fetch-ltv-cac.yml         ← runs daily at 6am BST, 25 mins after fetch-data
+        ├── fetch-ads-data.yml        ← runs daily at 6am BST, 35 mins after fetch-data
+        └── backfill-ads-data.yml     ← manual trigger only — run once to bootstrap ads-data.json's history
 ```
 
 ---
@@ -231,6 +239,24 @@ If you want to add the Anthropic API key to the file after initial setup:
 2. Find `const HARDCODED_KEY = '';` near the top of the script
 3. Change to `const HARDCODED_KEY = 'sk-ant-your-key';`
 4. Commit — GitHub Pages rebuilds in ~30 seconds
+
+---
+
+## Paid Ads tab (Shopify Growth)
+
+A tab on the **Shopify Growth** dashboard (not ROR Sales — this is marketing/attribution data, out of scope for the sales-only dashboard) showing real daily Meta + Google Ads performance: spend, conversions, conversion value, ROAS, cost-per-conversion and clicks, per channel or blended, with daily/weekly/monthly granularity and previous-period/previous-year comparisons. Matches the columns the paid ads agency's own report actually surfaces — not the full campaign-level breakdown, which stays in Ads Manager / Google Ads where it belongs.
+
+It also shows a **"Shopify actuals" panel** alongside the ad numbers — real Shopify orders/sessions/conversion rate (from `data.json`, monthly grain) next to what the ad platforms claim credit for. Meta/Google's own conversion counts are self-attributed (click/view-through windows, cross-device modelling) and can overstate their real contribution; comparing against total Shopify orders is a quick sanity check on how much to trust the platform number.
+
+### Setup
+
+1. **One-off backfill** (do this once, so you get real trend/YoY comparisons immediately instead of waiting a year): go to **Actions → Backfill Paid Ads History → Run workflow**. Defaults to 400 days; change the `days` input if you want more/less.
+2. From then on, **Actions → Fetch Paid Ads Data** runs nightly (6:35am BST) automatically, re-fetching the last 3 days each time (ad platforms keep finalising attribution for a day or two) and never touching older history.
+3. Uses the same `META_ACCESS_TOKEN`/`META_AD_ACCOUNT_ID`/`GOOGLE_ADS_*` secrets already set up for the Margin tab's LTV:CAC — nothing new to configure.
+
+### Architecture
+
+`ads/calculations.js` is the same kind of pure, unit-tested calculation layer as the rest of this dashboard (date-range resolution, aggregation that always sums raw spend/conversions/clicks before deriving ROAS/CPA — never averages per-day ratios — honest "not-occurred"/"no-data"/"partial" states, never a fabricated number). It's loaded as its own module (not folded into the single Shopify Growth script) purely so it stays testable the same way `dashboard2/calculations.js` is. The tab's chart reuses `dashboard2/charts.js`'s `SalesChart` component — it was already a generic, dashboard-agnostic SVG chart, so this tab passes it its own series with explicit labels/colours rather than duplicating a chart component.
 
 ---
 

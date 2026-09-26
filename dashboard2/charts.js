@@ -33,10 +33,22 @@ const PLOT_W = CHART_W - PAD.left - PAD.right;
 const PLOT_H = CHART_H - PAD.top - PAD.bottom;
 
 function seriesColor(s, idx, fallbackPalette) {
+  if (s.color) return s.color;
   if (s.channels && s.channels.length === 1 && RorModel.CHANNEL_META[s.channels[0]]) {
     return RorModel.CHANNEL_META[s.channels[0]].color;
   }
   return fallbackPalette[idx % fallbackPalette.length];
+}
+
+// A series carries its own `label` when it isn't a sales channel (e.g. the
+// Ads tab's "Meta"/"Google"/"Blended" series) — only sales-dashboard series
+// fall back to deriving a name from RorModel.CHANNEL_META.
+function seriesLabel(s) {
+  if (s.label) return s.label;
+  if (s.channels && s.channels.length === 1 && RorModel.CHANNEL_META[s.channels[0]]) {
+    return RorModel.CHANNEL_META[s.channels[0]].short;
+  }
+  return 'All stores';
 }
 
 const PALETTE = ['var(--amb)', 'var(--blu)', 'var(--pur)', 'var(--grn)', 'var(--red)'];
@@ -97,7 +109,7 @@ function TimeSeriesChart(props) {
 
     series.forEach((s, si) => {
       const color = seriesColor(s, si, PALETTE);
-      legendItems.push({ color, label: s.channels.length === 1 ? RorModel.CHANNEL_META[s.channels[0]].short : 'All stores' });
+      legendItems.push({ color, label: seriesLabel(s) });
 
       s.points.forEach((p, i) => {
         const missing = typeof p.value !== 'number';
@@ -130,7 +142,7 @@ function TimeSeriesChart(props) {
   } else if (type === 'line' || type === 'area') {
     series.forEach((s, si) => {
       const color = seriesColor(s, si, PALETTE);
-      legendItems.push({ color, label: s.channels.length === 1 ? RorModel.CHANNEL_META[s.channels[0]].short : 'All stores' });
+      legendItems.push({ color, label: seriesLabel(s) });
       const pts = s.points.map((p, i) => typeof p.value === 'number' ? [PAD.left + (i + 0.5) * xStep, PAD.top + y(p.value)] : null);
       const validSegs = [];
       let cur = [];
@@ -156,8 +168,8 @@ function TimeSeriesChart(props) {
   // comparison series — always dashed/lighter, rendered as line overlay regardless of main type
   if (comparisonSeries) {
     comparisonSeries.forEach((s, si) => {
-      const baseColor = seriesColor({ channels: s.channels }, si, PALETTE);
-      legendItems.push({ color: baseColor, label: (s.channels.length === 1 ? RorModel.CHANNEL_META[s.channels[0]].short : 'All stores') + ' (comparison)', dashed: true });
+      const baseColor = seriesColor(s, si, PALETTE);
+      legendItems.push({ color: baseColor, label: seriesLabel(s) + ' (comparison)', dashed: true });
       const pts = s.points.map((p, i) => typeof p.value === 'number' ? [PAD.left + (i + 0.5) * xStep, PAD.top + y(p.value)] : null).filter(Boolean);
       if (pts.length > 1) {
         const path = pts.map((pt, i) => (i === 0 ? 'M' : 'L') + pt[0] + ',' + pt[1]).join(' ');
@@ -173,16 +185,16 @@ function TimeSeriesChart(props) {
       const color = seriesColor(s, si, PALETTE);
       rows.push({
         color,
-        label: s.channels.length === 1 ? RorModel.CHANNEL_META[s.channels[0]].short : 'All stores',
+        label: seriesLabel(s),
         text: typeof p.value === 'number' ? formatValue(p.value) : (p.note || 'No data'),
       });
     });
     if (comparisonSeries) comparisonSeries.forEach((s, si) => {
       const p = s.points[hoverIdx];
-      const color = seriesColor({ channels: s.channels }, si, PALETTE);
+      const color = seriesColor(s, si, PALETTE);
       rows.push({
         color, dashed: true,
-        label: (s.channels.length === 1 ? RorModel.CHANNEL_META[s.channels[0]].short : 'All stores') + ' (compare)',
+        label: seriesLabel(s) + ' (compare)',
         text: typeof p.value === 'number' ? formatValue(p.value) : (p.note || 'No data'),
       });
     });
@@ -220,7 +232,7 @@ function DonutChart({ slices, formatValue }) {
   const [hoverIdx, setHoverIdx] = useState(null);
   const total = slices.reduce((s, x) => s + (x.value || 0), 0);
   if (!total) {
-    return el('div', { style: { height: 260, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--t3)', fontSize: 13 } }, 'No revenue to chart for this selection.');
+    return el('div', { style: { height: 260, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--t3)', fontSize: 13 } }, 'No data to chart for this selection.');
   }
   const cx = 130, cy = 130, r = 92, rInner = 56;
   let angle = -90;
