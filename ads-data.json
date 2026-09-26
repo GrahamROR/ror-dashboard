@@ -1,0 +1,7205 @@
+{
+  "updated": "2026-09-26T12:26:02.794Z",
+  "days": {
+    "2025-08-22": {
+      "meta": {
+        "spend": 156.14,
+        "conversions": 96,
+        "conversionValue": 2866.25,
+        "clicks": 527,
+        "impressions": 23201,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.18,
+        "conversions": 4,
+        "conversionValue": 154.65,
+        "clicks": 70,
+        "impressions": 6391,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-23": {
+      "meta": {
+        "spend": 164.17,
+        "conversions": 80,
+        "conversionValue": 2176.72,
+        "clicks": 535,
+        "impressions": 22186,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.28,
+        "conversions": 4,
+        "conversionValue": 137.35,
+        "clicks": 63,
+        "impressions": 5057,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-24": {
+      "meta": {
+        "spend": 177.26,
+        "conversions": 72,
+        "conversionValue": 2121.4,
+        "clicks": 611,
+        "impressions": 25497,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.35,
+        "conversions": 3,
+        "conversionValue": 131.91,
+        "clicks": 87,
+        "impressions": 3550,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-25": {
+      "meta": {
+        "spend": 162.56,
+        "conversions": 104,
+        "conversionValue": 2718.89,
+        "clicks": 612,
+        "impressions": 26108,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.8,
+        "conversions": 5,
+        "conversionValue": 223.23,
+        "clicks": 73,
+        "impressions": 2856,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-26": {
+      "meta": {
+        "spend": 163.17,
+        "conversions": 88,
+        "conversionValue": 2836.73,
+        "clicks": 605,
+        "impressions": 27195,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.54,
+        "conversions": 8,
+        "conversionValue": 274.32,
+        "clicks": 55,
+        "impressions": 2723,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-27": {
+      "meta": {
+        "spend": 171.43,
+        "conversions": 64,
+        "conversionValue": 1836.33,
+        "clicks": 760,
+        "impressions": 28714,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.76,
+        "conversions": 4,
+        "conversionValue": 117.9,
+        "clicks": 55,
+        "impressions": 3985,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-28": {
+      "meta": {
+        "spend": 165.37,
+        "conversions": 72,
+        "conversionValue": 1972.11,
+        "clicks": 657,
+        "impressions": 31014,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.71,
+        "conversions": 4,
+        "conversionValue": 131.35,
+        "clicks": 63,
+        "impressions": 2586,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-29": {
+      "meta": {
+        "spend": 114.98,
+        "conversions": 128,
+        "conversionValue": 4152.01,
+        "clicks": 385,
+        "impressions": 17860,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.16,
+        "conversions": 5,
+        "conversionValue": 164.16,
+        "clicks": 59,
+        "impressions": 4132,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-30": {
+      "meta": {
+        "spend": 132.67,
+        "conversions": 104,
+        "conversionValue": 3267.95,
+        "clicks": 457,
+        "impressions": 20669,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.16,
+        "conversions": 3,
+        "conversionValue": 110.45,
+        "clicks": 54,
+        "impressions": 3690,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-08-31": {
+      "meta": {
+        "spend": 144.9,
+        "conversions": 96,
+        "conversionValue": 3131.51,
+        "clicks": 526,
+        "impressions": 24218,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.28,
+        "conversions": 4,
+        "conversionValue": 119.35,
+        "clicks": 46,
+        "impressions": 4177,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-01": {
+      "meta": {
+        "spend": 130.91,
+        "conversions": 48,
+        "conversionValue": 1808.07,
+        "clicks": 478,
+        "impressions": 23968,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.18,
+        "conversions": 5,
+        "conversionValue": 179.1,
+        "clicks": 75,
+        "impressions": 4255,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-02": {
+      "meta": {
+        "spend": 182.74,
+        "conversions": 72,
+        "conversionValue": 2346.7,
+        "clicks": 579,
+        "impressions": 30265,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.23,
+        "conversions": 7,
+        "conversionValue": 241.76,
+        "clicks": 68,
+        "impressions": 3436,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-03": {
+      "meta": {
+        "spend": 184.52,
+        "conversions": 56,
+        "conversionValue": 1737.39,
+        "clicks": 568,
+        "impressions": 28207,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16.52,
+        "conversions": 4,
+        "conversionValue": 109.5,
+        "clicks": 68,
+        "impressions": 3085,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-04": {
+      "meta": {
+        "spend": 155.35,
+        "conversions": 96,
+        "conversionValue": 3024.71,
+        "clicks": 443,
+        "impressions": 23866,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.46,
+        "conversions": 4,
+        "conversionValue": 131.96,
+        "clicks": 71,
+        "impressions": 4397,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-05": {
+      "meta": {
+        "spend": 124.23,
+        "conversions": 104,
+        "conversionValue": 3605.82,
+        "clicks": 360,
+        "impressions": 17967,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.33,
+        "conversions": 5,
+        "conversionValue": 172.95,
+        "clicks": 66,
+        "impressions": 3991,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-06": {
+      "meta": {
+        "spend": 128.16,
+        "conversions": 96,
+        "conversionValue": 2871.23,
+        "clicks": 330,
+        "impressions": 17490,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.7,
+        "conversions": 4,
+        "conversionValue": 155.2,
+        "clicks": 64,
+        "impressions": 3938,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-07": {
+      "meta": {
+        "spend": 141.56,
+        "conversions": 80,
+        "conversionValue": 2154.82,
+        "clicks": 467,
+        "impressions": 21899,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.39,
+        "conversions": 1,
+        "conversionValue": 35,
+        "clicks": 91,
+        "impressions": 5468,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-08": {
+      "meta": {
+        "spend": 128.82,
+        "conversions": 40,
+        "conversionValue": 1171.82,
+        "clicks": 392,
+        "impressions": 20275,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.05,
+        "conversions": 5,
+        "conversionValue": 203.45,
+        "clicks": 59,
+        "impressions": 4428,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-09": {
+      "meta": {
+        "spend": 134.35,
+        "conversions": 104,
+        "conversionValue": 3143.99,
+        "clicks": 485,
+        "impressions": 21785,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.35,
+        "conversions": 3,
+        "conversionValue": 87,
+        "clicks": 56,
+        "impressions": 4051,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-10": {
+      "meta": {
+        "spend": 126.81,
+        "conversions": 64,
+        "conversionValue": 1997.85,
+        "clicks": 421,
+        "impressions": 20147,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.1,
+        "conversions": 13,
+        "conversionValue": 489.62,
+        "clicks": 74,
+        "impressions": 3623,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-11": {
+      "meta": {
+        "spend": 129.05,
+        "conversions": 104,
+        "conversionValue": 3001.43,
+        "clicks": 443,
+        "impressions": 22838,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.76,
+        "conversions": 4,
+        "conversionValue": 132.15,
+        "clicks": 53,
+        "impressions": 3521,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-12": {
+      "meta": {
+        "spend": 121.24,
+        "conversions": 64,
+        "conversionValue": 1658.61,
+        "clicks": 441,
+        "impressions": 21030,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.34,
+        "conversions": 3,
+        "conversionValue": 105.45,
+        "clicks": 74,
+        "impressions": 4378,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-13": {
+      "meta": {
+        "spend": 127.35,
+        "conversions": 112,
+        "conversionValue": 2819.81,
+        "clicks": 462,
+        "impressions": 21132,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.36,
+        "conversions": 4,
+        "conversionValue": 159.86,
+        "clicks": 83,
+        "impressions": 4471,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-14": {
+      "meta": {
+        "spend": 140.26,
+        "conversions": 120,
+        "conversionValue": 3361.68,
+        "clicks": 529,
+        "impressions": 23701,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.39,
+        "conversions": 6,
+        "conversionValue": 285.6,
+        "clicks": 79,
+        "impressions": 4906,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-15": {
+      "meta": {
+        "spend": 125.8,
+        "conversions": 88,
+        "conversionValue": 2700.29,
+        "clicks": 423,
+        "impressions": 19705,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 34.47,
+        "conversions": 5,
+        "conversionValue": 181.4,
+        "clicks": 87,
+        "impressions": 5350,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-16": {
+      "meta": {
+        "spend": 134.69,
+        "conversions": 48,
+        "conversionValue": 1381.28,
+        "clicks": 361,
+        "impressions": 18997,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 11.02,
+        "conversions": 1,
+        "conversionValue": 63,
+        "clicks": 50,
+        "impressions": 1973,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-17": {
+      "meta": {
+        "spend": 131.07,
+        "conversions": 80,
+        "conversionValue": 2111.14,
+        "clicks": 356,
+        "impressions": 17941,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.98,
+        "conversions": 5,
+        "conversionValue": 184.46,
+        "clicks": 73,
+        "impressions": 3857,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-18": {
+      "meta": {
+        "spend": 127.88,
+        "conversions": 24,
+        "conversionValue": 700.81,
+        "clicks": 378,
+        "impressions": 17592,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.15,
+        "conversions": 6,
+        "conversionValue": 226.5,
+        "clicks": 80,
+        "impressions": 4656,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-19": {
+      "meta": {
+        "spend": 122.46,
+        "conversions": 96,
+        "conversionValue": 2651.56,
+        "clicks": 346,
+        "impressions": 16353,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.07,
+        "conversions": 8,
+        "conversionValue": 290.68,
+        "clicks": 74,
+        "impressions": 4959,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-20": {
+      "meta": {
+        "spend": 127.48,
+        "conversions": 56,
+        "conversionValue": 1554.09,
+        "clicks": 411,
+        "impressions": 17654,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.17,
+        "conversions": 1,
+        "conversionValue": 31.5,
+        "clicks": 84,
+        "impressions": 5566,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-21": {
+      "meta": {
+        "spend": 138.27,
+        "conversions": 48,
+        "conversionValue": 1221.62,
+        "clicks": 469,
+        "impressions": 20438,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.58,
+        "conversions": 1,
+        "conversionValue": 42,
+        "clicks": 101,
+        "impressions": 6409,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-22": {
+      "meta": {
+        "spend": 130.9,
+        "conversions": 96,
+        "conversionValue": 2857.73,
+        "clicks": 449,
+        "impressions": 19910,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.81,
+        "conversions": 6,
+        "conversionValue": 197.2,
+        "clicks": 73,
+        "impressions": 4506,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-23": {
+      "meta": {
+        "spend": 134.26,
+        "conversions": 80,
+        "conversionValue": 2266.96,
+        "clicks": 492,
+        "impressions": 21094,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.77,
+        "conversions": 3,
+        "conversionValue": 162.46,
+        "clicks": 70,
+        "impressions": 3396,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-24": {
+      "meta": {
+        "spend": 129.46,
+        "conversions": 8,
+        "conversionValue": 239.46,
+        "clicks": 427,
+        "impressions": 18093,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.96,
+        "conversions": 1,
+        "conversionValue": 31.5,
+        "clicks": 50,
+        "impressions": 3845,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-25": {
+      "meta": {
+        "spend": 128.82,
+        "conversions": 48,
+        "conversionValue": 1356.8,
+        "clicks": 397,
+        "impressions": 16753,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.31,
+        "conversions": 9,
+        "conversionValue": 376.56,
+        "clicks": 89,
+        "impressions": 4306,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-26": {
+      "meta": {
+        "spend": 174.77,
+        "conversions": 48,
+        "conversionValue": 1507.65,
+        "clicks": 563,
+        "impressions": 22078,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.4,
+        "conversions": 2,
+        "conversionValue": 64.75,
+        "clicks": 56,
+        "impressions": 3286,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-27": {
+      "meta": {
+        "spend": 120.82,
+        "conversions": 112,
+        "conversionValue": 3323.88,
+        "clicks": 473,
+        "impressions": 14331,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.31,
+        "conversions": 5,
+        "conversionValue": 178.41,
+        "clicks": 91,
+        "impressions": 4924,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-28": {
+      "meta": {
+        "spend": 171.72,
+        "conversions": 96,
+        "conversionValue": 2767.61,
+        "clicks": 627,
+        "impressions": 24149,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.67,
+        "conversions": 5,
+        "conversionValue": 158.94,
+        "clicks": 71,
+        "impressions": 4006,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-29": {
+      "meta": {
+        "spend": 170.06,
+        "conversions": 64,
+        "conversionValue": 1721.49,
+        "clicks": 618,
+        "impressions": 23595,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.33,
+        "conversions": 3,
+        "conversionValue": 80.68,
+        "clicks": 79,
+        "impressions": 4290,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-09-30": {
+      "meta": {
+        "spend": 168.19,
+        "conversions": 64,
+        "conversionValue": 1732.53,
+        "clicks": 695,
+        "impressions": 22445,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.17,
+        "conversions": 5,
+        "conversionValue": 317.84,
+        "clicks": 65,
+        "impressions": 2843,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-01": {
+      "meta": {
+        "spend": 165.58,
+        "conversions": 144,
+        "conversionValue": 4533.68,
+        "clicks": 607,
+        "impressions": 23305,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.41,
+        "conversions": 2,
+        "conversionValue": 81.9,
+        "clicks": 78,
+        "impressions": 3364,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-02": {
+      "meta": {
+        "spend": 138.46,
+        "conversions": 40,
+        "conversionValue": 1178.78,
+        "clicks": 517,
+        "impressions": 21073,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.16,
+        "conversions": 2,
+        "conversionValue": 75.95,
+        "clicks": 89,
+        "impressions": 5195,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-03": {
+      "meta": {
+        "spend": 134.75,
+        "conversions": 88,
+        "conversionValue": 2662.96,
+        "clicks": 504,
+        "impressions": 20488,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.25,
+        "conversions": 9,
+        "conversionValue": 304.76,
+        "clicks": 75,
+        "impressions": 3887,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-04": {
+      "meta": {
+        "spend": 132.29,
+        "conversions": 56,
+        "conversionValue": 2001.93,
+        "clicks": 521,
+        "impressions": 22917,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.59,
+        "conversions": 6,
+        "conversionValue": 188.7,
+        "clicks": 91,
+        "impressions": 3740,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-05": {
+      "meta": {
+        "spend": 157.92,
+        "conversions": 64,
+        "conversionValue": 2298.1,
+        "clicks": 722,
+        "impressions": 28446,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.01,
+        "conversions": 6,
+        "conversionValue": 268.35,
+        "clicks": 81,
+        "impressions": 4648,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-06": {
+      "meta": {
+        "spend": 145.91,
+        "conversions": 64,
+        "conversionValue": 1848.51,
+        "clicks": 637,
+        "impressions": 27823,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.51,
+        "conversions": 4,
+        "conversionValue": 133.78,
+        "clicks": 77,
+        "impressions": 4281,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-07": {
+      "meta": {
+        "spend": 149.62,
+        "conversions": 64,
+        "conversionValue": 2538.34,
+        "clicks": 600,
+        "impressions": 29824,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.13,
+        "conversions": 2,
+        "conversionValue": 71.5,
+        "clicks": 84,
+        "impressions": 4652,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-08": {
+      "meta": {
+        "spend": 152.23,
+        "conversions": 80,
+        "conversionValue": 2509.24,
+        "clicks": 500,
+        "impressions": 27089,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16,
+        "conversions": 5,
+        "conversionValue": 162.45,
+        "clicks": 66,
+        "impressions": 3030,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-09": {
+      "meta": {
+        "spend": 148.56,
+        "conversions": 96,
+        "conversionValue": 2598.34,
+        "clicks": 493,
+        "impressions": 23180,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.24,
+        "conversions": 6,
+        "conversionValue": 191.05,
+        "clicks": 94,
+        "impressions": 4513,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-10": {
+      "meta": {
+        "spend": 142.32,
+        "conversions": 112,
+        "conversionValue": 3367.38,
+        "clicks": 539,
+        "impressions": 24310,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.72,
+        "conversions": 13,
+        "conversionValue": 471.08,
+        "clicks": 64,
+        "impressions": 3968,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-11": {
+      "meta": {
+        "spend": 144.82,
+        "conversions": 56,
+        "conversionValue": 1748.55,
+        "clicks": 559,
+        "impressions": 25989,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.28,
+        "conversions": 6,
+        "conversionValue": 254.85,
+        "clicks": 86,
+        "impressions": 4049,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-12": {
+      "meta": {
+        "spend": 163.1,
+        "conversions": 56,
+        "conversionValue": 1641.63,
+        "clicks": 651,
+        "impressions": 29980,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.55,
+        "conversions": 5,
+        "conversionValue": 199.84,
+        "clicks": 101,
+        "impressions": 4503,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-13": {
+      "meta": {
+        "spend": 173.71,
+        "conversions": 56,
+        "conversionValue": 1455.92,
+        "clicks": 716,
+        "impressions": 35912,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.36,
+        "conversions": 6,
+        "conversionValue": 203.27,
+        "clicks": 77,
+        "impressions": 3765,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-14": {
+      "meta": {
+        "spend": 161.59,
+        "conversions": 48,
+        "conversionValue": 1532.43,
+        "clicks": 597,
+        "impressions": 34054,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.32,
+        "conversions": 1,
+        "conversionValue": 33.95,
+        "clicks": 74,
+        "impressions": 3978,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-15": {
+      "meta": {
+        "spend": 151.55,
+        "conversions": 104,
+        "conversionValue": 3167.75,
+        "clicks": 619,
+        "impressions": 31911,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.02,
+        "conversions": 13,
+        "conversionValue": 457.05,
+        "clicks": 85,
+        "impressions": 3986,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-16": {
+      "meta": {
+        "spend": 157.22,
+        "conversions": 72,
+        "conversionValue": 1792.29,
+        "clicks": 626,
+        "impressions": 33346,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.09,
+        "conversions": 6,
+        "conversionValue": 217,
+        "clicks": 75,
+        "impressions": 3860,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-17": {
+      "meta": {
+        "spend": 155.4,
+        "conversions": 40,
+        "conversionValue": 924.32,
+        "clicks": 628,
+        "impressions": 31779,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.05,
+        "conversions": 3,
+        "conversionValue": 96.27,
+        "clicks": 76,
+        "impressions": 3620,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-18": {
+      "meta": {
+        "spend": 156.37,
+        "conversions": 80,
+        "conversionValue": 1748.43,
+        "clicks": 654,
+        "impressions": 31424,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.11,
+        "conversions": 4,
+        "conversionValue": 144.25,
+        "clicks": 103,
+        "impressions": 4620,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-19": {
+      "meta": {
+        "spend": 176.47,
+        "conversions": 80,
+        "conversionValue": 2347,
+        "clicks": 856,
+        "impressions": 33942,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.64,
+        "conversions": 8,
+        "conversionValue": 312.64,
+        "clicks": 104,
+        "impressions": 6247,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-20": {
+      "meta": {
+        "spend": 147.3,
+        "conversions": 32,
+        "conversionValue": 832.81,
+        "clicks": 732,
+        "impressions": 30929,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.07,
+        "conversions": 8,
+        "conversionValue": 373.45,
+        "clicks": 102,
+        "impressions": 4950,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-21": {
+      "meta": {
+        "spend": 145.11,
+        "conversions": 48,
+        "conversionValue": 1431.08,
+        "clicks": 673,
+        "impressions": 26502,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.32,
+        "conversions": 3,
+        "conversionValue": 128.43,
+        "clicks": 94,
+        "impressions": 3503,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-22": {
+      "meta": {
+        "spend": 148.95,
+        "conversions": 64,
+        "conversionValue": 1943.07,
+        "clicks": 675,
+        "impressions": 26376,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.01,
+        "conversions": 3,
+        "conversionValue": 199.21,
+        "clicks": 99,
+        "impressions": 4987,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-23": {
+      "meta": {
+        "spend": 148.89,
+        "conversions": 48,
+        "conversionValue": 1580.31,
+        "clicks": 591,
+        "impressions": 26332,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16.17,
+        "conversions": 8,
+        "conversionValue": 262.12,
+        "clicks": 78,
+        "impressions": 3671,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-24": {
+      "meta": {
+        "spend": 144.62,
+        "conversions": 40,
+        "conversionValue": 1481.12,
+        "clicks": 515,
+        "impressions": 26796,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.16,
+        "conversions": 4,
+        "conversionValue": 152.25,
+        "clicks": 106,
+        "impressions": 3437,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-25": {
+      "meta": {
+        "spend": 115.46,
+        "conversions": 128,
+        "conversionValue": 3600.66,
+        "clicks": 514,
+        "impressions": 18546,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.69,
+        "conversions": 2,
+        "conversionValue": 69.2,
+        "clicks": 100,
+        "impressions": 4126,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-26": {
+      "meta": {
+        "spend": 151.27,
+        "conversions": 80,
+        "conversionValue": 3528.18,
+        "clicks": 605,
+        "impressions": 32540,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.5,
+        "conversions": 10,
+        "conversionValue": 497.22,
+        "clicks": 130,
+        "impressions": 5462,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-27": {
+      "meta": {
+        "spend": 147.56,
+        "conversions": 56,
+        "conversionValue": 1933.65,
+        "clicks": 600,
+        "impressions": 31331,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 14.46,
+        "conversions": 7,
+        "conversionValue": 246.11,
+        "clicks": 87,
+        "impressions": 3903,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-28": {
+      "meta": {
+        "spend": 151.92,
+        "conversions": 152,
+        "conversionValue": 4475.05,
+        "clicks": 743,
+        "impressions": 32377,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.39,
+        "conversions": 4,
+        "conversionValue": 233.25,
+        "clicks": 104,
+        "impressions": 4795,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-29": {
+      "meta": {
+        "spend": 141.57,
+        "conversions": 24,
+        "conversionValue": 761.41,
+        "clicks": 708,
+        "impressions": 31612,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.68,
+        "conversions": 3,
+        "conversionValue": 105,
+        "clicks": 110,
+        "impressions": 6626,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-30": {
+      "meta": {
+        "spend": 149.96,
+        "conversions": 32,
+        "conversionValue": 823.21,
+        "clicks": 699,
+        "impressions": 30935,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.28,
+        "conversions": 9,
+        "conversionValue": 396.1,
+        "clicks": 99,
+        "impressions": 4669,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-10-31": {
+      "meta": {
+        "spend": 150.55,
+        "conversions": 104,
+        "conversionValue": 3276.05,
+        "clicks": 773,
+        "impressions": 32081,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.87,
+        "conversions": 3,
+        "conversionValue": 195.85,
+        "clicks": 88,
+        "impressions": 4886,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-01": {
+      "meta": {
+        "spend": 142.85,
+        "conversions": 160,
+        "conversionValue": 5934.4,
+        "clicks": 602,
+        "impressions": 29407,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.18,
+        "conversions": 9,
+        "conversionValue": 360.62,
+        "clicks": 118,
+        "impressions": 5718,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-02": {
+      "meta": {
+        "spend": 159.03,
+        "conversions": 48,
+        "conversionValue": 1703.13,
+        "clicks": 741,
+        "impressions": 33210,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.01,
+        "conversions": 5,
+        "conversionValue": 354.9,
+        "clicks": 119,
+        "impressions": 6778,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-03": {
+      "meta": {
+        "spend": 151.71,
+        "conversions": 56,
+        "conversionValue": 1403.72,
+        "clicks": 661,
+        "impressions": 31660,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.29,
+        "conversions": 5,
+        "conversionValue": 158.18,
+        "clicks": 102,
+        "impressions": 4871,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-04": {
+      "meta": {
+        "spend": 158.82,
+        "conversions": 112,
+        "conversionValue": 3102.77,
+        "clicks": 706,
+        "impressions": 29711,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.34,
+        "conversions": 9,
+        "conversionValue": 309.04,
+        "clicks": 116,
+        "impressions": 5493,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-05": {
+      "meta": {
+        "spend": 153.97,
+        "conversions": 88,
+        "conversionValue": 3216.35,
+        "clicks": 774,
+        "impressions": 28984,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.66,
+        "conversions": 9,
+        "conversionValue": 299.9,
+        "clicks": 91,
+        "impressions": 5053,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-06": {
+      "meta": {
+        "spend": 146.77,
+        "conversions": 112,
+        "conversionValue": 3761.94,
+        "clicks": 689,
+        "impressions": 28709,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.09,
+        "conversions": 8,
+        "conversionValue": 372.01,
+        "clicks": 139,
+        "impressions": 6266,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-07": {
+      "meta": {
+        "spend": 147.98,
+        "conversions": 80,
+        "conversionValue": 3351.72,
+        "clicks": 645,
+        "impressions": 28388,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.55,
+        "conversions": 6,
+        "conversionValue": 284.5,
+        "clicks": 117,
+        "impressions": 6282,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-08": {
+      "meta": {
+        "spend": 155.12,
+        "conversions": 48,
+        "conversionValue": 1392.92,
+        "clicks": 533,
+        "impressions": 31715,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.13,
+        "conversions": 14,
+        "conversionValue": 819.1,
+        "clicks": 140,
+        "impressions": 7141,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-09": {
+      "meta": {
+        "spend": 148.46,
+        "conversions": 104,
+        "conversionValue": 3813,
+        "clicks": 659,
+        "impressions": 30432,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.75,
+        "conversions": 8,
+        "conversionValue": 328.59,
+        "clicks": 129,
+        "impressions": 5820,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-10": {
+      "meta": {
+        "spend": 144.85,
+        "conversions": 96,
+        "conversionValue": 2770.31,
+        "clicks": 771,
+        "impressions": 22559,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.22,
+        "conversions": 6,
+        "conversionValue": 185.91,
+        "clicks": 115,
+        "impressions": 5792,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-11": {
+      "meta": {
+        "spend": 158.54,
+        "conversions": 40,
+        "conversionValue": 1150.22,
+        "clicks": 807,
+        "impressions": 22065,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.12,
+        "conversions": 8,
+        "conversionValue": 216.35,
+        "clicks": 125,
+        "impressions": 8248,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-12": {
+      "meta": {
+        "spend": 151.47,
+        "conversions": 120,
+        "conversionValue": 3072.83,
+        "clicks": 657,
+        "impressions": 21206,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.25,
+        "conversions": 7,
+        "conversionValue": 297.71,
+        "clicks": 157,
+        "impressions": 7131,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-13": {
+      "meta": {
+        "spend": 121.91,
+        "conversions": 120,
+        "conversionValue": 3731.4,
+        "clicks": 521,
+        "impressions": 17708,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.59,
+        "conversions": 6,
+        "conversionValue": 252.36,
+        "clicks": 143,
+        "impressions": 7478,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-14": {
+      "meta": {
+        "spend": 183.91,
+        "conversions": 80,
+        "conversionValue": 2225.32,
+        "clicks": 1072,
+        "impressions": 25323,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.47,
+        "conversions": 15,
+        "conversionValue": 565.05,
+        "clicks": 171,
+        "impressions": 8470,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-15": {
+      "meta": {
+        "spend": 191.6,
+        "conversions": 88,
+        "conversionValue": 2966.15,
+        "clicks": 1075,
+        "impressions": 28492,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 48.57,
+        "conversions": 11,
+        "conversionValue": 503.33,
+        "clicks": 209,
+        "impressions": 12682,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-16": {
+      "meta": {
+        "spend": 161.29,
+        "conversions": 168,
+        "conversionValue": 6128.68,
+        "clicks": 823,
+        "impressions": 22589,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 40.33,
+        "conversions": 8,
+        "conversionValue": 359.57,
+        "clicks": 205,
+        "impressions": 12196,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-17": {
+      "meta": {
+        "spend": 152.36,
+        "conversions": 64,
+        "conversionValue": 1736.79,
+        "clicks": 801,
+        "impressions": 22088,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.56,
+        "conversions": 4,
+        "conversionValue": 137.1,
+        "clicks": 144,
+        "impressions": 7155,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-18": {
+      "meta": {
+        "spend": 191.55,
+        "conversions": 136,
+        "conversionValue": 3726.84,
+        "clicks": 915,
+        "impressions": 25501,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.68,
+        "conversions": 14,
+        "conversionValue": 463.56,
+        "clicks": 167,
+        "impressions": 6703,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-19": {
+      "meta": {
+        "spend": 181.2,
+        "conversions": 88,
+        "conversionValue": 3231.05,
+        "clicks": 822,
+        "impressions": 23246,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.38,
+        "conversions": 12,
+        "conversionValue": 377.85,
+        "clicks": 147,
+        "impressions": 6661,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-20": {
+      "meta": {
+        "spend": 180.03,
+        "conversions": 128,
+        "conversionValue": 3590.82,
+        "clicks": 609,
+        "impressions": 20999,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.85,
+        "conversions": 7,
+        "conversionValue": 337,
+        "clicks": 107,
+        "impressions": 6013,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-21": {
+      "meta": {
+        "spend": 167.95,
+        "conversions": 88,
+        "conversionValue": 2605.3,
+        "clicks": 628,
+        "impressions": 19241,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.76,
+        "conversions": 4,
+        "conversionValue": 121.85,
+        "clicks": 105,
+        "impressions": 5838,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-22": {
+      "meta": {
+        "spend": 187.41,
+        "conversions": 112,
+        "conversionValue": 3846.48,
+        "clicks": 665,
+        "impressions": 19220,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 35.68,
+        "conversions": 6,
+        "conversionValue": 221.54,
+        "clicks": 192,
+        "impressions": 8104,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-23": {
+      "meta": {
+        "spend": 179.38,
+        "conversions": 88,
+        "conversionValue": 2496.64,
+        "clicks": 632,
+        "impressions": 18083,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 42.36,
+        "conversions": 14,
+        "conversionValue": 489.26,
+        "clicks": 190,
+        "impressions": 6986,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-24": {
+      "meta": {
+        "spend": 191.14,
+        "conversions": 224,
+        "conversionValue": 6648.41,
+        "clicks": 581,
+        "impressions": 20451,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.74,
+        "conversions": 8,
+        "conversionValue": 341.97,
+        "clicks": 101,
+        "impressions": 4780,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-25": {
+      "meta": {
+        "spend": 286.2,
+        "conversions": 120,
+        "conversionValue": 3254.51,
+        "clicks": 850,
+        "impressions": 26275,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 46.14,
+        "conversions": 9,
+        "conversionValue": 390.94,
+        "clicks": 159,
+        "impressions": 6836,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-26": {
+      "meta": {
+        "spend": 273.85,
+        "conversions": 200,
+        "conversionValue": 7419.78,
+        "clicks": 832,
+        "impressions": 26855,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.06,
+        "conversions": 13,
+        "conversionValue": 603.3,
+        "clicks": 145,
+        "impressions": 5488,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-27": {
+      "meta": {
+        "spend": 254.76,
+        "conversions": 208,
+        "conversionValue": 7272.3,
+        "clicks": 750,
+        "impressions": 23148,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.81,
+        "conversions": 7,
+        "conversionValue": 259.76,
+        "clicks": 122,
+        "impressions": 6556,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-28": {
+      "meta": {
+        "spend": 224.61,
+        "conversions": 152,
+        "conversionValue": 5459.79,
+        "clicks": 522,
+        "impressions": 17790,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.71,
+        "conversions": 15,
+        "conversionValue": 577.6,
+        "clicks": 120,
+        "impressions": 6417,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-29": {
+      "meta": {
+        "spend": 252.07,
+        "conversions": 112,
+        "conversionValue": 4191.37,
+        "clicks": 621,
+        "impressions": 18387,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.83,
+        "conversions": 8,
+        "conversionValue": 378.35,
+        "clicks": 156,
+        "impressions": 6131,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-11-30": {
+      "meta": {
+        "spend": 301.68,
+        "conversions": 224,
+        "conversionValue": 7941.61,
+        "clicks": 828,
+        "impressions": 24154,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.98,
+        "conversions": 16,
+        "conversionValue": 703.61,
+        "clicks": 163,
+        "impressions": 8320,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-01": {
+      "meta": {
+        "spend": 344.18,
+        "conversions": 200,
+        "conversionValue": 6009.88,
+        "clicks": 921,
+        "impressions": 29661,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.02,
+        "conversions": 9,
+        "conversionValue": 454.13,
+        "clicks": 151,
+        "impressions": 7836,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-02": {
+      "meta": {
+        "spend": 286,
+        "conversions": 168,
+        "conversionValue": 5894.8,
+        "clicks": 777,
+        "impressions": 28401,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.53,
+        "conversions": 5,
+        "conversionValue": 302.14,
+        "clicks": 147,
+        "impressions": 8333,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-03": {
+      "meta": {
+        "spend": 271.32,
+        "conversions": 104,
+        "conversionValue": 2828.81,
+        "clicks": 912,
+        "impressions": 30661,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 34.66,
+        "conversions": 13,
+        "conversionValue": 572.31,
+        "clicks": 183,
+        "impressions": 8034,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-04": {
+      "meta": {
+        "spend": 245.03,
+        "conversions": 144,
+        "conversionValue": 4208.17,
+        "clicks": 856,
+        "impressions": 29837,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.35,
+        "conversions": 18,
+        "conversionValue": 693.12,
+        "clicks": 106,
+        "impressions": 6354,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-05": {
+      "meta": {
+        "spend": 521.61,
+        "conversions": 304,
+        "conversionValue": 10539.9,
+        "clicks": 2203,
+        "impressions": 69734,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.46,
+        "conversions": 10,
+        "conversionValue": 349.17,
+        "clicks": 140,
+        "impressions": 7318,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-06": {
+      "meta": {
+        "spend": 525.66,
+        "conversions": 320,
+        "conversionValue": 9442.84,
+        "clicks": 2196,
+        "impressions": 69629,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 38.18,
+        "conversions": 11,
+        "conversionValue": 493.37,
+        "clicks": 197,
+        "impressions": 10238,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-07": {
+      "meta": {
+        "spend": 385.28,
+        "conversions": 216,
+        "conversionValue": 5778.46,
+        "clicks": 1283,
+        "impressions": 49897,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 41.4,
+        "conversions": 20,
+        "conversionValue": 754.84,
+        "clicks": 210,
+        "impressions": 10360,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-08": {
+      "meta": {
+        "spend": 386.17,
+        "conversions": 208,
+        "conversionValue": 5418.45,
+        "clicks": 1159,
+        "impressions": 50847,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.62,
+        "conversions": 10,
+        "conversionValue": 365.4,
+        "clicks": 168,
+        "impressions": 8912,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-09": {
+      "meta": {
+        "spend": 425.46,
+        "conversions": 224,
+        "conversionValue": 7149.06,
+        "clicks": 1148,
+        "impressions": 54410,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.23,
+        "conversions": 21,
+        "conversionValue": 793.69,
+        "clicks": 132,
+        "impressions": 6355,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-10": {
+      "meta": {
+        "spend": 383.32,
+        "conversions": 264,
+        "conversionValue": 8393.42,
+        "clicks": 1088,
+        "impressions": 50348,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 49.43,
+        "conversions": 13,
+        "conversionValue": 453.45,
+        "clicks": 175,
+        "impressions": 9899,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-11": {
+      "meta": {
+        "spend": 325.11,
+        "conversions": 176,
+        "conversionValue": 4735.1,
+        "clicks": 1043,
+        "impressions": 51541,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.32,
+        "conversions": 13,
+        "conversionValue": 496.95,
+        "clicks": 150,
+        "impressions": 10053,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-12": {
+      "meta": {
+        "spend": 329.62,
+        "conversions": 80,
+        "conversionValue": 3095.21,
+        "clicks": 1204,
+        "impressions": 55031,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.63,
+        "conversions": 12,
+        "conversionValue": 461.92,
+        "clicks": 144,
+        "impressions": 7562,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-13": {
+      "meta": {
+        "spend": 344.47,
+        "conversions": 176,
+        "conversionValue": 5932.3,
+        "clicks": 1249,
+        "impressions": 57148,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.27,
+        "conversions": 7,
+        "conversionValue": 326.92,
+        "clicks": 173,
+        "impressions": 8083,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-14": {
+      "meta": {
+        "spend": 366.41,
+        "conversions": 216,
+        "conversionValue": 7605.25,
+        "clicks": 1498,
+        "impressions": 63105,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.35,
+        "conversions": 12,
+        "conversionValue": 630.27,
+        "clicks": 184,
+        "impressions": 10971,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-15": {
+      "meta": {
+        "spend": 347.26,
+        "conversions": 168,
+        "conversionValue": 5577.45,
+        "clicks": 1410,
+        "impressions": 59945,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 36.27,
+        "conversions": 9,
+        "conversionValue": 360.34,
+        "clicks": 191,
+        "impressions": 10334,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-16": {
+      "meta": {
+        "spend": 356.89,
+        "conversions": 208,
+        "conversionValue": 6862.73,
+        "clicks": 1490,
+        "impressions": 57795,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.16,
+        "conversions": 13,
+        "conversionValue": 470.98,
+        "clicks": 171,
+        "impressions": 7926,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-17": {
+      "meta": {
+        "spend": 374.52,
+        "conversions": 168,
+        "conversionValue": 5051.6,
+        "clicks": 1670,
+        "impressions": 60291,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 45.23,
+        "conversions": 10,
+        "conversionValue": 392.45,
+        "clicks": 185,
+        "impressions": 11148,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-18": {
+      "meta": {
+        "spend": 319.84,
+        "conversions": 208,
+        "conversionValue": 7072.56,
+        "clicks": 1215,
+        "impressions": 52385,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.81,
+        "conversions": 2,
+        "conversionValue": 93.15,
+        "clicks": 132,
+        "impressions": 6485,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-19": {
+      "meta": {
+        "spend": 260.72,
+        "conversions": 224,
+        "conversionValue": 7272.06,
+        "clicks": 884,
+        "impressions": 39935,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.06,
+        "conversions": 7,
+        "conversionValue": 259.96,
+        "clicks": 117,
+        "impressions": 5663,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-20": {
+      "meta": {
+        "spend": 272.24,
+        "conversions": 184,
+        "conversionValue": 6301.07,
+        "clicks": 1049,
+        "impressions": 42843,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.61,
+        "conversions": 9,
+        "conversionValue": 366.05,
+        "clicks": 114,
+        "impressions": 5762,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-21": {
+      "meta": {
+        "spend": 279.72,
+        "conversions": 72,
+        "conversionValue": 2200.9,
+        "clicks": 1168,
+        "impressions": 46835,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.65,
+        "conversions": 7,
+        "conversionValue": 321.21,
+        "clicks": 116,
+        "impressions": 6623,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-22": {
+      "meta": {
+        "spend": 274.58,
+        "conversions": 200,
+        "conversionValue": 6530.33,
+        "clicks": 1507,
+        "impressions": 54561,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.2,
+        "conversions": 8,
+        "conversionValue": 306.95,
+        "clicks": 102,
+        "impressions": 5239,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-23": {
+      "meta": {
+        "spend": 220.76,
+        "conversions": 56,
+        "conversionValue": 1723.23,
+        "clicks": 1305,
+        "impressions": 42051,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.93,
+        "conversions": 3,
+        "conversionValue": 101.8,
+        "clicks": 87,
+        "impressions": 5523,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-24": {
+      "meta": {
+        "spend": 117.21,
+        "conversions": 48,
+        "conversionValue": 1239.62,
+        "clicks": 569,
+        "impressions": 21374,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.73,
+        "conversions": 2,
+        "conversionValue": 66.5,
+        "clicks": 99,
+        "impressions": 6323,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-25": {
+      "meta": {
+        "spend": 116.29,
+        "conversions": 24,
+        "conversionValue": 811.51,
+        "clicks": 550,
+        "impressions": 21853,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.44,
+        "conversions": 2,
+        "conversionValue": 79.46,
+        "clicks": 113,
+        "impressions": 9275,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-26": {
+      "meta": {
+        "spend": 117.51,
+        "conversions": 72,
+        "conversionValue": 2529.76,
+        "clicks": 460,
+        "impressions": 17207,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 34.36,
+        "conversions": 1,
+        "conversionValue": 30,
+        "clicks": 167,
+        "impressions": 11852,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-27": {
+      "meta": {
+        "spend": 254.97,
+        "conversions": 264,
+        "conversionValue": 8416.4,
+        "clicks": 1179,
+        "impressions": 37534,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.61,
+        "conversions": 8,
+        "conversionValue": 304,
+        "clicks": 131,
+        "impressions": 5790,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-28": {
+      "meta": {
+        "spend": 222.46,
+        "conversions": 152,
+        "conversionValue": 4112.17,
+        "clicks": 1034,
+        "impressions": 32359,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.06,
+        "conversions": 2,
+        "conversionValue": 56.09,
+        "clicks": 124,
+        "impressions": 6088,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-29": {
+      "meta": {
+        "spend": 219.88,
+        "conversions": 136,
+        "conversionValue": 4185.43,
+        "clicks": 1233,
+        "impressions": 37167,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.05,
+        "conversions": 6,
+        "conversionValue": 229.97,
+        "clicks": 104,
+        "impressions": 5503,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-30": {
+      "meta": {
+        "spend": 217.32,
+        "conversions": 104,
+        "conversionValue": 3276.71,
+        "clicks": 1173,
+        "impressions": 33794,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.28,
+        "conversions": 2,
+        "conversionValue": 151.48,
+        "clicks": 112,
+        "impressions": 5091,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2025-12-31": {
+      "meta": {
+        "spend": 203.6,
+        "conversions": 168,
+        "conversionValue": 5528.97,
+        "clicks": 1076,
+        "impressions": 33345,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 14.88,
+        "conversions": 6,
+        "conversionValue": 221.63,
+        "clicks": 71,
+        "impressions": 4232,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-01": {
+      "meta": {
+        "spend": 259.26,
+        "conversions": 176,
+        "conversionValue": 5451.15,
+        "clicks": 1725,
+        "impressions": 55426,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.39,
+        "conversions": 6,
+        "conversionValue": 206.45,
+        "clicks": 109,
+        "impressions": 6391,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-02": {
+      "meta": {
+        "spend": 240.1,
+        "conversions": 160,
+        "conversionValue": 4840.7,
+        "clicks": 1438,
+        "impressions": 49428,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23,
+        "conversions": 7,
+        "conversionValue": 352.31,
+        "clicks": 114,
+        "impressions": 5740,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-03": {
+      "meta": {
+        "spend": 246.97,
+        "conversions": 72,
+        "conversionValue": 2619.64,
+        "clicks": 1405,
+        "impressions": 49082,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.02,
+        "conversions": 3,
+        "conversionValue": 115.48,
+        "clicks": 115,
+        "impressions": 7937,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-04": {
+      "meta": {
+        "spend": 257,
+        "conversions": 112,
+        "conversionValue": 3500.46,
+        "clicks": 1593,
+        "impressions": 50265,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.95,
+        "conversions": 8,
+        "conversionValue": 287.85,
+        "clicks": 109,
+        "impressions": 6193,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-05": {
+      "meta": {
+        "spend": 242.81,
+        "conversions": 72,
+        "conversionValue": 2454.7,
+        "clicks": 1496,
+        "impressions": 48075,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.74,
+        "conversions": 2,
+        "conversionValue": 138,
+        "clicks": 95,
+        "impressions": 5148,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-06": {
+      "meta": {
+        "spend": 256.89,
+        "conversions": 96,
+        "conversionValue": 2893.25,
+        "clicks": 1327,
+        "impressions": 44626,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.25,
+        "conversions": 6,
+        "conversionValue": 224.16,
+        "clicks": 91,
+        "impressions": 4634,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-07": {
+      "meta": {
+        "spend": 261.78,
+        "conversions": 104,
+        "conversionValue": 3009.71,
+        "clicks": 1337,
+        "impressions": 40940,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.49,
+        "conversions": 4,
+        "conversionValue": 249.35,
+        "clicks": 96,
+        "impressions": 4562,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-08": {
+      "meta": {
+        "spend": 257.16,
+        "conversions": 200,
+        "conversionValue": 6386.21,
+        "clicks": 1208,
+        "impressions": 39254,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.3,
+        "conversions": 9,
+        "conversionValue": 422.72,
+        "clicks": 98,
+        "impressions": 5387,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-09": {
+      "meta": {
+        "spend": 240.1,
+        "conversions": 176,
+        "conversionValue": 5407.77,
+        "clicks": 1176,
+        "impressions": 37660,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.92,
+        "conversions": 8,
+        "conversionValue": 379.63,
+        "clicks": 97,
+        "impressions": 6348,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-10": {
+      "meta": {
+        "spend": 265.35,
+        "conversions": 192,
+        "conversionValue": 5816.62,
+        "clicks": 1301,
+        "impressions": 39985,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.75,
+        "conversions": 7,
+        "conversionValue": 263.97,
+        "clicks": 90,
+        "impressions": 4341,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-11": {
+      "meta": {
+        "spend": 267.2,
+        "conversions": 152,
+        "conversionValue": 4903.4,
+        "clicks": 1500,
+        "impressions": 41681,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.26,
+        "conversions": 7,
+        "conversionValue": 259.2,
+        "clicks": 127,
+        "impressions": 4606,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-12": {
+      "meta": {
+        "spend": 244.06,
+        "conversions": 48,
+        "conversionValue": 1177.94,
+        "clicks": 1294,
+        "impressions": 37502,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.99,
+        "conversions": 2,
+        "conversionValue": 85.06,
+        "clicks": 96,
+        "impressions": 4292,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-13": {
+      "meta": {
+        "spend": 256.33,
+        "conversions": 184,
+        "conversionValue": 5753.98,
+        "clicks": 1259,
+        "impressions": 37825,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.72,
+        "conversions": 12,
+        "conversionValue": 415.51,
+        "clicks": 128,
+        "impressions": 6814,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-14": {
+      "meta": {
+        "spend": 264.88,
+        "conversions": 296,
+        "conversionValue": 8590.28,
+        "clicks": 1199,
+        "impressions": 37506,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.09,
+        "conversions": 13,
+        "conversionValue": 537.82,
+        "clicks": 97,
+        "impressions": 6062,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-15": {
+      "meta": {
+        "spend": 245.13,
+        "conversions": 144,
+        "conversionValue": 4172.05,
+        "clicks": 1211,
+        "impressions": 37615,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.84,
+        "conversions": 3,
+        "conversionValue": 97.65,
+        "clicks": 72,
+        "impressions": 4306,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-16": {
+      "meta": {
+        "spend": 238.71,
+        "conversions": 216,
+        "conversionValue": 7104.9,
+        "clicks": 1165,
+        "impressions": 37363,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.04,
+        "conversions": 1,
+        "conversionValue": 50,
+        "clicks": 110,
+        "impressions": 7931,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-17": {
+      "meta": {
+        "spend": 264.05,
+        "conversions": 184,
+        "conversionValue": 5818.6,
+        "clicks": 1490,
+        "impressions": 42137,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.88,
+        "conversions": 9,
+        "conversionValue": 324.88,
+        "clicks": 96,
+        "impressions": 4854,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-18": {
+      "meta": {
+        "spend": 261.94,
+        "conversions": 240,
+        "conversionValue": 6578.45,
+        "clicks": 1582,
+        "impressions": 42982,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.88,
+        "conversions": 13,
+        "conversionValue": 450.41,
+        "clicks": 102,
+        "impressions": 5194,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-19": {
+      "meta": {
+        "spend": 245.27,
+        "conversions": 88,
+        "conversionValue": 3107.93,
+        "clicks": 1322,
+        "impressions": 45518,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.56,
+        "conversions": 4,
+        "conversionValue": 182.48,
+        "clicks": 88,
+        "impressions": 4612,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-20": {
+      "meta": {
+        "spend": 250.28,
+        "conversions": 88,
+        "conversionValue": 2419.54,
+        "clicks": 1094,
+        "impressions": 44174,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.77,
+        "conversions": 7,
+        "conversionValue": 203.5,
+        "clicks": 96,
+        "impressions": 4782,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-21": {
+      "meta": {
+        "spend": 251.21,
+        "conversions": 168,
+        "conversionValue": 4745.48,
+        "clicks": 1018,
+        "impressions": 40344,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.44,
+        "conversions": 14,
+        "conversionValue": 426.63,
+        "clicks": 122,
+        "impressions": 7745,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-22": {
+      "meta": {
+        "spend": 259.9,
+        "conversions": 160,
+        "conversionValue": 5102.49,
+        "clicks": 1175,
+        "impressions": 43496,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.39,
+        "conversions": 5,
+        "conversionValue": 174.91,
+        "clicks": 119,
+        "impressions": 8002,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-23": {
+      "meta": {
+        "spend": 238.28,
+        "conversions": 176,
+        "conversionValue": 5611.17,
+        "clicks": 1005,
+        "impressions": 38997,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.4,
+        "conversions": 13,
+        "conversionValue": 472.94,
+        "clicks": 106,
+        "impressions": 5291,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-24": {
+      "meta": {
+        "spend": 246.84,
+        "conversions": 216,
+        "conversionValue": 7219.14,
+        "clicks": 1141,
+        "impressions": 43523,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.65,
+        "conversions": 8,
+        "conversionValue": 351.65,
+        "clicks": 126,
+        "impressions": 6905,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-25": {
+      "meta": {
+        "spend": 257.46,
+        "conversions": 184,
+        "conversionValue": 5246.31,
+        "clicks": 1113,
+        "impressions": 45355,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.91,
+        "conversions": 14,
+        "conversionValue": 674.37,
+        "clicks": 144,
+        "impressions": 8897,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-26": {
+      "meta": {
+        "spend": 246.21,
+        "conversions": 136,
+        "conversionValue": 4201.57,
+        "clicks": 1072,
+        "impressions": 43150,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.95,
+        "conversions": 11,
+        "conversionValue": 426.37,
+        "clicks": 109,
+        "impressions": 6391,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-27": {
+      "meta": {
+        "spend": 254.7,
+        "conversions": 136,
+        "conversionValue": 4521.56,
+        "clicks": 1122,
+        "impressions": 43360,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.88,
+        "conversions": 2,
+        "conversionValue": 99.6,
+        "clicks": 91,
+        "impressions": 5974,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-28": {
+      "meta": {
+        "spend": 246.63,
+        "conversions": 112,
+        "conversionValue": 3391.56,
+        "clicks": 984,
+        "impressions": 39247,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.51,
+        "conversions": 7,
+        "conversionValue": 310.65,
+        "clicks": 84,
+        "impressions": 4802,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-29": {
+      "meta": {
+        "spend": 219.28,
+        "conversions": 128,
+        "conversionValue": 3256.61,
+        "clicks": 847,
+        "impressions": 37271,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.88,
+        "conversions": 5,
+        "conversionValue": 189.41,
+        "clicks": 115,
+        "impressions": 5071,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-30": {
+      "meta": {
+        "spend": 162.59,
+        "conversions": 96,
+        "conversionValue": 2696.86,
+        "clicks": 695,
+        "impressions": 29811,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.66,
+        "conversions": 2,
+        "conversionValue": 87.3,
+        "clicks": 76,
+        "impressions": 4640,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-01-31": {
+      "meta": {
+        "spend": 177.6,
+        "conversions": 160,
+        "conversionValue": 4863.98,
+        "clicks": 759,
+        "impressions": 31957,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.45,
+        "conversions": 4,
+        "conversionValue": 145.91,
+        "clicks": 128,
+        "impressions": 5973,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-01": {
+      "meta": {
+        "spend": 189.2,
+        "conversions": 128,
+        "conversionValue": 3441.78,
+        "clicks": 891,
+        "impressions": 38719,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.35,
+        "conversions": 4,
+        "conversionValue": 150.06,
+        "clicks": 119,
+        "impressions": 7259,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-02": {
+      "meta": {
+        "spend": 173.43,
+        "conversions": 64,
+        "conversionValue": 1615.65,
+        "clicks": 825,
+        "impressions": 35915,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.6,
+        "conversions": 2,
+        "conversionValue": 66.5,
+        "clicks": 119,
+        "impressions": 6816,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-03": {
+      "meta": {
+        "spend": 178.59,
+        "conversions": 104,
+        "conversionValue": 3138.53,
+        "clicks": 751,
+        "impressions": 33086,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.16,
+        "conversions": 5,
+        "conversionValue": 211.85,
+        "clicks": 113,
+        "impressions": 5806,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-04": {
+      "meta": {
+        "spend": 181.99,
+        "conversions": 56,
+        "conversionValue": 1969.53,
+        "clicks": 732,
+        "impressions": 31891,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.11,
+        "conversions": 10,
+        "conversionValue": 456.14,
+        "clicks": 101,
+        "impressions": 6273,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-05": {
+      "meta": {
+        "spend": 174.01,
+        "conversions": 144,
+        "conversionValue": 3893.22,
+        "clicks": 755,
+        "impressions": 32688,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.56,
+        "conversions": 2,
+        "conversionValue": 107.81,
+        "clicks": 99,
+        "impressions": 6494,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-06": {
+      "meta": {
+        "spend": 150.71,
+        "conversions": 200,
+        "conversionValue": 5609.01,
+        "clicks": 734,
+        "impressions": 31304,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.6,
+        "conversions": 6,
+        "conversionValue": 249.07,
+        "clicks": 108,
+        "impressions": 7654,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-07": {
+      "meta": {
+        "spend": 172.69,
+        "conversions": 104,
+        "conversionValue": 3455.94,
+        "clicks": 826,
+        "impressions": 37144,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.57,
+        "conversions": 1,
+        "conversionValue": 48.72,
+        "clicks": 131,
+        "impressions": 7384,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-08": {
+      "meta": {
+        "spend": 177.64,
+        "conversions": 112,
+        "conversionValue": 3594.66,
+        "clicks": 849,
+        "impressions": 39329,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.46,
+        "conversions": 2,
+        "conversionValue": 93.75,
+        "clicks": 133,
+        "impressions": 7182,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-09": {
+      "meta": {
+        "spend": 169.64,
+        "conversions": 96,
+        "conversionValue": 3353.16,
+        "clicks": 763,
+        "impressions": 38612,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.09,
+        "conversions": 10,
+        "conversionValue": 450.29,
+        "clicks": 99,
+        "impressions": 4438,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-10": {
+      "meta": {
+        "spend": 189.12,
+        "conversions": 128,
+        "conversionValue": 4348.57,
+        "clicks": 724,
+        "impressions": 36811,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.02,
+        "conversions": 2,
+        "conversionValue": 94.5,
+        "clicks": 106,
+        "impressions": 4859,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-11": {
+      "meta": {
+        "spend": 172.09,
+        "conversions": 80,
+        "conversionValue": 2312.86,
+        "clicks": 692,
+        "impressions": 35661,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.83,
+        "conversions": 7,
+        "conversionValue": 222,
+        "clicks": 110,
+        "impressions": 7255,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-12": {
+      "meta": {
+        "spend": 168.23,
+        "conversions": 96,
+        "conversionValue": 2888.51,
+        "clicks": 647,
+        "impressions": 34478,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.39,
+        "conversions": 6,
+        "conversionValue": 216.75,
+        "clicks": 93,
+        "impressions": 5638,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-13": {
+      "meta": {
+        "spend": 171.35,
+        "conversions": 72,
+        "conversionValue": 2364.76,
+        "clicks": 726,
+        "impressions": 34598,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.85,
+        "conversions": 1,
+        "conversionValue": 28.72,
+        "clicks": 82,
+        "impressions": 4196,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-14": {
+      "meta": {
+        "spend": 171.76,
+        "conversions": 136,
+        "conversionValue": 5155.95,
+        "clicks": 731,
+        "impressions": 34603,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.67,
+        "conversions": 5,
+        "conversionValue": 337.85,
+        "clicks": 123,
+        "impressions": 6839,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-15": {
+      "meta": {
+        "spend": 171.91,
+        "conversions": 80,
+        "conversionValue": 2541.1,
+        "clicks": 655,
+        "impressions": 36834,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 36.56,
+        "conversions": 12,
+        "conversionValue": 470.9,
+        "clicks": 160,
+        "impressions": 9078,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-16": {
+      "meta": {
+        "spend": 153.06,
+        "conversions": 96,
+        "conversionValue": 2514.16,
+        "clicks": 644,
+        "impressions": 30681,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.72,
+        "conversions": 6,
+        "conversionValue": 227.7,
+        "clicks": 94,
+        "impressions": 5373,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-17": {
+      "meta": {
+        "spend": 173.3,
+        "conversions": 104,
+        "conversionValue": 3073.61,
+        "clicks": 686,
+        "impressions": 33084,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.2,
+        "conversions": 4,
+        "conversionValue": 113,
+        "clicks": 93,
+        "impressions": 5047,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-18": {
+      "meta": {
+        "spend": 186.14,
+        "conversions": 80,
+        "conversionValue": 2447.62,
+        "clicks": 756,
+        "impressions": 32559,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23,
+        "conversions": 11,
+        "conversionValue": 406,
+        "clicks": 102,
+        "impressions": 5866,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-19": {
+      "meta": {
+        "spend": 177.25,
+        "conversions": 32,
+        "conversionValue": 805.21,
+        "clicks": 680,
+        "impressions": 33262,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.34,
+        "conversions": 2,
+        "conversionValue": 58.95,
+        "clicks": 91,
+        "impressions": 7149,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-20": {
+      "meta": {
+        "spend": 182.33,
+        "conversions": 96,
+        "conversionValue": 2742.41,
+        "clicks": 711,
+        "impressions": 33397,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.97,
+        "conversions": 10,
+        "conversionValue": 321.31,
+        "clicks": 106,
+        "impressions": 5885,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-21": {
+      "meta": {
+        "spend": 174.92,
+        "conversions": 96,
+        "conversionValue": 3410.94,
+        "clicks": 665,
+        "impressions": 32192,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.35,
+        "conversions": 6,
+        "conversionValue": 218.15,
+        "clicks": 116,
+        "impressions": 4940,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-22": {
+      "meta": {
+        "spend": 173.38,
+        "conversions": 48,
+        "conversionValue": 1164.32,
+        "clicks": 655,
+        "impressions": 32669,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.52,
+        "conversions": 9,
+        "conversionValue": 395.03,
+        "clicks": 118,
+        "impressions": 5212,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-23": {
+      "meta": {
+        "spend": 161.72,
+        "conversions": 72,
+        "conversionValue": 2593.36,
+        "clicks": 609,
+        "impressions": 29717,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.23,
+        "conversions": 6,
+        "conversionValue": 255.05,
+        "clicks": 97,
+        "impressions": 4765,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-24": {
+      "meta": {
+        "spend": 181.38,
+        "conversions": 72,
+        "conversionValue": 2606.38,
+        "clicks": 557,
+        "impressions": 28811,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.59,
+        "conversions": 6,
+        "conversionValue": 255.91,
+        "clicks": 77,
+        "impressions": 3323,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-25": {
+      "meta": {
+        "spend": 180.35,
+        "conversions": 72,
+        "conversionValue": 2483.62,
+        "clicks": 627,
+        "impressions": 29225,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.12,
+        "conversions": 7,
+        "conversionValue": 190.2,
+        "clicks": 107,
+        "impressions": 6574,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-26": {
+      "meta": {
+        "spend": 181.17,
+        "conversions": 112,
+        "conversionValue": 3007.61,
+        "clicks": 623,
+        "impressions": 29359,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.73,
+        "conversions": 10,
+        "conversionValue": 452.96,
+        "clicks": 82,
+        "impressions": 4256,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-27": {
+      "meta": {
+        "spend": 174.94,
+        "conversions": 232,
+        "conversionValue": 6932.52,
+        "clicks": 529,
+        "impressions": 27084,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.27,
+        "conversions": 5,
+        "conversionValue": 147.23,
+        "clicks": 90,
+        "impressions": 3575,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-02-28": {
+      "meta": {
+        "spend": 167.16,
+        "conversions": 176,
+        "conversionValue": 4890.26,
+        "clicks": 563,
+        "impressions": 27231,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.81,
+        "conversions": 5,
+        "conversionValue": 140.1,
+        "clicks": 91,
+        "impressions": 6332,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-01": {
+      "meta": {
+        "spend": 185.27,
+        "conversions": 152,
+        "conversionValue": 4861.46,
+        "clicks": 655,
+        "impressions": 33079,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.15,
+        "conversions": 5,
+        "conversionValue": 194.72,
+        "clicks": 91,
+        "impressions": 5295,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-02": {
+      "meta": {
+        "spend": 150.72,
+        "conversions": 96,
+        "conversionValue": 2655.1,
+        "clicks": 480,
+        "impressions": 28617,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.41,
+        "conversions": 3,
+        "conversionValue": 143.73,
+        "clicks": 88,
+        "impressions": 5035,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-03": {
+      "meta": {
+        "spend": 175.42,
+        "conversions": 136,
+        "conversionValue": 3945.61,
+        "clicks": 592,
+        "impressions": 31312,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.1,
+        "conversions": 5,
+        "conversionValue": 172.7,
+        "clicks": 83,
+        "impressions": 4270,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-04": {
+      "meta": {
+        "spend": 182.22,
+        "conversions": 56,
+        "conversionValue": 1796.01,
+        "clicks": 582,
+        "impressions": 29120,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.83,
+        "conversions": 4,
+        "conversionValue": 176.95,
+        "clicks": 70,
+        "impressions": 3081,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-05": {
+      "meta": {
+        "spend": 186.75,
+        "conversions": 96,
+        "conversionValue": 3206.09,
+        "clicks": 617,
+        "impressions": 32102,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.95,
+        "conversions": 4,
+        "conversionValue": 137.41,
+        "clicks": 95,
+        "impressions": 4455,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-06": {
+      "meta": {
+        "spend": 190.48,
+        "conversions": 152,
+        "conversionValue": 4919.78,
+        "clicks": 661,
+        "impressions": 34859,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.86,
+        "conversions": 5,
+        "conversionValue": 223.41,
+        "clicks": 90,
+        "impressions": 4098,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-07": {
+      "meta": {
+        "spend": 149.28,
+        "conversions": 144,
+        "conversionValue": 4464.43,
+        "clicks": 536,
+        "impressions": 27378,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.08,
+        "conversions": 8,
+        "conversionValue": 331.17,
+        "clicks": 110,
+        "impressions": 4215,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-08": {
+      "meta": {
+        "spend": 197.03,
+        "conversions": 192,
+        "conversionValue": 5975.5,
+        "clicks": 738,
+        "impressions": 36710,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.96,
+        "conversions": 14,
+        "conversionValue": 552.16,
+        "clicks": 127,
+        "impressions": 5300,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-09": {
+      "meta": {
+        "spend": 158.24,
+        "conversions": 120,
+        "conversionValue": 3779.64,
+        "clicks": 548,
+        "impressions": 29972,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.61,
+        "conversions": 11,
+        "conversionValue": 344.38,
+        "clicks": 81,
+        "impressions": 3774,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-10": {
+      "meta": {
+        "spend": 183.48,
+        "conversions": 88,
+        "conversionValue": 2429.92,
+        "clicks": 640,
+        "impressions": 31359,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.72,
+        "conversions": 5,
+        "conversionValue": 205.96,
+        "clicks": 78,
+        "impressions": 3777,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-11": {
+      "meta": {
+        "spend": 173.83,
+        "conversions": 96,
+        "conversionValue": 2602.06,
+        "clicks": 516,
+        "impressions": 28918,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.87,
+        "conversions": 7,
+        "conversionValue": 247.31,
+        "clicks": 90,
+        "impressions": 3153,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-12": {
+      "meta": {
+        "spend": 173.18,
+        "conversions": 64,
+        "conversionValue": 1943.19,
+        "clicks": 607,
+        "impressions": 30283,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.26,
+        "conversions": 3,
+        "conversionValue": 106.45,
+        "clicks": 86,
+        "impressions": 3999,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-13": {
+      "meta": {
+        "spend": 163.41,
+        "conversions": 112,
+        "conversionValue": 3375.06,
+        "clicks": 607,
+        "impressions": 29538,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.99,
+        "conversions": 8,
+        "conversionValue": 355.73,
+        "clicks": 113,
+        "impressions": 6055,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-14": {
+      "meta": {
+        "spend": 171.38,
+        "conversions": 120,
+        "conversionValue": 3687.66,
+        "clicks": 635,
+        "impressions": 29373,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.23,
+        "conversions": 3,
+        "conversionValue": 90.88,
+        "clicks": 100,
+        "impressions": 6201,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-15": {
+      "meta": {
+        "spend": 168.03,
+        "conversions": 128,
+        "conversionValue": 3807.42,
+        "clicks": 640,
+        "impressions": 33058,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.38,
+        "conversions": 4,
+        "conversionValue": 236.71,
+        "clicks": 92,
+        "impressions": 5190,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-16": {
+      "meta": {
+        "spend": 178.37,
+        "conversions": 112,
+        "conversionValue": 3928.87,
+        "clicks": 816,
+        "impressions": 37030,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.7,
+        "conversions": 6,
+        "conversionValue": 186.76,
+        "clicks": 95,
+        "impressions": 5789,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-17": {
+      "meta": {
+        "spend": 171.84,
+        "conversions": 88,
+        "conversionValue": 2741.21,
+        "clicks": 782,
+        "impressions": 33090,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.1,
+        "conversions": 1,
+        "conversionValue": 35,
+        "clicks": 75,
+        "impressions": 4998,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-18": {
+      "meta": {
+        "spend": 169.87,
+        "conversions": 96,
+        "conversionValue": 2650.3,
+        "clicks": 714,
+        "impressions": 33059,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.15,
+        "conversions": 5,
+        "conversionValue": 174.8,
+        "clicks": 88,
+        "impressions": 5324,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-19": {
+      "meta": {
+        "spend": 168.51,
+        "conversions": 64,
+        "conversionValue": 1975.83,
+        "clicks": 655,
+        "impressions": 33063,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.46,
+        "conversions": 4,
+        "conversionValue": 146.91,
+        "clicks": 90,
+        "impressions": 6845,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-20": {
+      "meta": {
+        "spend": 171.21,
+        "conversions": 144,
+        "conversionValue": 4051.45,
+        "clicks": 706,
+        "impressions": 33826,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.85,
+        "conversions": 7,
+        "conversionValue": 232.21,
+        "clicks": 89,
+        "impressions": 8310,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-21": {
+      "meta": {
+        "spend": 193.22,
+        "conversions": 88,
+        "conversionValue": 2691.22,
+        "clicks": 674,
+        "impressions": 35665,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.2,
+        "conversions": 3,
+        "conversionValue": 113.86,
+        "clicks": 73,
+        "impressions": 5357,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-22": {
+      "meta": {
+        "spend": 181.71,
+        "conversions": 96,
+        "conversionValue": 3355.56,
+        "clicks": 695,
+        "impressions": 33842,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.79,
+        "conversions": 5,
+        "conversionValue": 204.86,
+        "clicks": 62,
+        "impressions": 6952,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-23": {
+      "meta": {
+        "spend": 160.55,
+        "conversions": 120,
+        "conversionValue": 3851.82,
+        "clicks": 645,
+        "impressions": 32092,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.58,
+        "conversions": 7,
+        "conversionValue": 302.31,
+        "clicks": 56,
+        "impressions": 6747,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-24": {
+      "meta": {
+        "spend": 178.55,
+        "conversions": 104,
+        "conversionValue": 3015.53,
+        "clicks": 694,
+        "impressions": 34107,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.8,
+        "conversions": 9,
+        "conversionValue": 274.01,
+        "clicks": 81,
+        "impressions": 3884,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-25": {
+      "meta": {
+        "spend": 180.76,
+        "conversions": 96,
+        "conversionValue": 2705.63,
+        "clicks": 737,
+        "impressions": 34463,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 32.44,
+        "conversions": 3,
+        "conversionValue": 113.81,
+        "clicks": 113,
+        "impressions": 4838,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-26": {
+      "meta": {
+        "spend": 175.81,
+        "conversions": 56,
+        "conversionValue": 1263.92,
+        "clicks": 673,
+        "impressions": 32063,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.92,
+        "conversions": 0,
+        "conversionValue": 0.34,
+        "clicks": 85,
+        "impressions": 4021,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-27": {
+      "meta": {
+        "spend": 170.01,
+        "conversions": 80,
+        "conversionValue": 2196.94,
+        "clicks": 718,
+        "impressions": 30852,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.87,
+        "conversions": 6,
+        "conversionValue": 178.71,
+        "clicks": 65,
+        "impressions": 2491,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-28": {
+      "meta": {
+        "spend": 172.3,
+        "conversions": 48,
+        "conversionValue": 1264.22,
+        "clicks": 671,
+        "impressions": 29798,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.66,
+        "conversions": 5,
+        "conversionValue": 200.77,
+        "clicks": 90,
+        "impressions": 5256,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-29": {
+      "meta": {
+        "spend": 172.33,
+        "conversions": 72,
+        "conversionValue": 1879.59,
+        "clicks": 593,
+        "impressions": 28507,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.86,
+        "conversions": 10,
+        "conversionValue": 433.39,
+        "clicks": 106,
+        "impressions": 4520,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-30": {
+      "meta": {
+        "spend": 161.98,
+        "conversions": 72,
+        "conversionValue": 2287.84,
+        "clicks": 565,
+        "impressions": 29196,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.58,
+        "conversions": 3,
+        "conversionValue": 104.96,
+        "clicks": 84,
+        "impressions": 4765,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-03-31": {
+      "meta": {
+        "spend": 172.29,
+        "conversions": 56,
+        "conversionValue": 1661.73,
+        "clicks": 676,
+        "impressions": 30801,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.66,
+        "conversions": 6,
+        "conversionValue": 286.16,
+        "clicks": 87,
+        "impressions": 6320,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-01": {
+      "meta": {
+        "spend": 191.63,
+        "conversions": 64,
+        "conversionValue": 1702.11,
+        "clicks": 727,
+        "impressions": 34135,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.38,
+        "conversions": 5,
+        "conversionValue": 176.11,
+        "clicks": 60,
+        "impressions": 3318,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-02": {
+      "meta": {
+        "spend": 178.37,
+        "conversions": 72,
+        "conversionValue": 1996.23,
+        "clicks": 652,
+        "impressions": 30173,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.94,
+        "conversions": 5,
+        "conversionValue": 140.93,
+        "clicks": 65,
+        "impressions": 2920,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-03": {
+      "meta": {
+        "spend": 175.25,
+        "conversions": 56,
+        "conversionValue": 1839.93,
+        "clicks": 661,
+        "impressions": 30574,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.35,
+        "conversions": 0,
+        "conversionValue": 0,
+        "clicks": 60,
+        "impressions": 5993,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-04": {
+      "meta": {
+        "spend": 168.94,
+        "conversions": 120,
+        "conversionValue": 3730.32,
+        "clicks": 751,
+        "impressions": 33306,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 35.42,
+        "conversions": 2,
+        "conversionValue": 67.46,
+        "clicks": 107,
+        "impressions": 7609,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-05": {
+      "meta": {
+        "spend": 184.42,
+        "conversions": 64,
+        "conversionValue": 1878.15,
+        "clicks": 765,
+        "impressions": 34019,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.35,
+        "conversions": 1,
+        "conversionValue": 29.75,
+        "clicks": 69,
+        "impressions": 10425,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-06": {
+      "meta": {
+        "spend": 168.73,
+        "conversions": 112,
+        "conversionValue": 3430.92,
+        "clicks": 777,
+        "impressions": 33708,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 13.41,
+        "conversions": 5,
+        "conversionValue": 174.91,
+        "clicks": 53,
+        "impressions": 2586,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-07": {
+      "meta": {
+        "spend": 172.06,
+        "conversions": 72,
+        "conversionValue": 2277.04,
+        "clicks": 677,
+        "impressions": 32525,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.28,
+        "conversions": 2,
+        "conversionValue": 67.5,
+        "clicks": 87,
+        "impressions": 4769,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-08": {
+      "meta": {
+        "spend": 179.11,
+        "conversions": 104,
+        "conversionValue": 3625.38,
+        "clicks": 633,
+        "impressions": 32116,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.94,
+        "conversions": 4,
+        "conversionValue": 140.5,
+        "clicks": 73,
+        "impressions": 3712,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-09": {
+      "meta": {
+        "spend": 175.23,
+        "conversions": 80,
+        "conversionValue": 2025.63,
+        "clicks": 608,
+        "impressions": 31767,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.81,
+        "conversions": 4,
+        "conversionValue": 142.2,
+        "clicks": 63,
+        "impressions": 3564,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-10": {
+      "meta": {
+        "spend": 167.29,
+        "conversions": 48,
+        "conversionValue": 1267.16,
+        "clicks": 522,
+        "impressions": 29739,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.69,
+        "conversions": 4,
+        "conversionValue": 119.5,
+        "clicks": 95,
+        "impressions": 4615,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-11": {
+      "meta": {
+        "spend": 173.93,
+        "conversions": 120,
+        "conversionValue": 3260.57,
+        "clicks": 596,
+        "impressions": 28854,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.88,
+        "conversions": 10,
+        "conversionValue": 382.57,
+        "clicks": 88,
+        "impressions": 4223,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-12": {
+      "meta": {
+        "spend": 189.48,
+        "conversions": 48,
+        "conversionValue": 1413.32,
+        "clicks": 619,
+        "impressions": 33410,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.28,
+        "conversions": 4,
+        "conversionValue": 178.11,
+        "clicks": 114,
+        "impressions": 6261,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-13": {
+      "meta": {
+        "spend": 162.85,
+        "conversions": 40,
+        "conversionValue": 952.52,
+        "clicks": 545,
+        "impressions": 28477,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.28,
+        "conversions": 2,
+        "conversionValue": 60.2,
+        "clicks": 65,
+        "impressions": 3945,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-14": {
+      "meta": {
+        "spend": 173.98,
+        "conversions": 72,
+        "conversionValue": 1849.47,
+        "clicks": 540,
+        "impressions": 28362,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.42,
+        "conversions": 3,
+        "conversionValue": 98.95,
+        "clicks": 78,
+        "impressions": 10357,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-15": {
+      "meta": {
+        "spend": 182.43,
+        "conversions": 104,
+        "conversionValue": 2652.16,
+        "clicks": 495,
+        "impressions": 28803,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.72,
+        "conversions": 7,
+        "conversionValue": 225.11,
+        "clicks": 76,
+        "impressions": 2751,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-16": {
+      "meta": {
+        "spend": 179.03,
+        "conversions": 72,
+        "conversionValue": 2235.94,
+        "clicks": 565,
+        "impressions": 29654,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.42,
+        "conversions": 0,
+        "conversionValue": 0,
+        "clicks": 70,
+        "impressions": 6098,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-17": {
+      "meta": {
+        "spend": 167.37,
+        "conversions": 104,
+        "conversionValue": 3258.71,
+        "clicks": 610,
+        "impressions": 29130,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.09,
+        "conversions": 2,
+        "conversionValue": 87,
+        "clicks": 94,
+        "impressions": 7040,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-18": {
+      "meta": {
+        "spend": 164.45,
+        "conversions": 112,
+        "conversionValue": 3170.21,
+        "clicks": 612,
+        "impressions": 29062,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.53,
+        "conversions": 4,
+        "conversionValue": 128.51,
+        "clicks": 108,
+        "impressions": 5752,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-19": {
+      "meta": {
+        "spend": 184.16,
+        "conversions": 128,
+        "conversionValue": 3417.72,
+        "clicks": 575,
+        "impressions": 30783,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16.4,
+        "conversions": 6,
+        "conversionValue": 238.86,
+        "clicks": 74,
+        "impressions": 3398,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-20": {
+      "meta": {
+        "spend": 164.92,
+        "conversions": 80,
+        "conversionValue": 2200.3,
+        "clicks": 491,
+        "impressions": 26263,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.78,
+        "conversions": 5,
+        "conversionValue": 212.1,
+        "clicks": 58,
+        "impressions": 3036,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-21": {
+      "meta": {
+        "spend": 177.76,
+        "conversions": 128,
+        "conversionValue": 4574.24,
+        "clicks": 517,
+        "impressions": 27689,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23,
+        "conversions": 7,
+        "conversionValue": 317.36,
+        "clicks": 90,
+        "impressions": 7819,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-22": {
+      "meta": {
+        "spend": 174.75,
+        "conversions": 88,
+        "conversionValue": 2340.64,
+        "clicks": 497,
+        "impressions": 28835,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.98,
+        "conversions": 7,
+        "conversionValue": 233.85,
+        "clicks": 74,
+        "impressions": 4217,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-23": {
+      "meta": {
+        "spend": 179.31,
+        "conversions": 64,
+        "conversionValue": 1592.13,
+        "clicks": 560,
+        "impressions": 34451,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.68,
+        "conversions": 5,
+        "conversionValue": 108.86,
+        "clicks": 69,
+        "impressions": 4731,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-24": {
+      "meta": {
+        "spend": 178.87,
+        "conversions": 136,
+        "conversionValue": 3630.06,
+        "clicks": 500,
+        "impressions": 29807,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.76,
+        "conversions": 5,
+        "conversionValue": 184.4,
+        "clicks": 79,
+        "impressions": 3842,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-25": {
+      "meta": {
+        "spend": 162.18,
+        "conversions": 104,
+        "conversionValue": 2397.1,
+        "clicks": 422,
+        "impressions": 26991,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.9,
+        "conversions": 6,
+        "conversionValue": 178.95,
+        "clicks": 83,
+        "impressions": 4459,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-26": {
+      "meta": {
+        "spend": 187.14,
+        "conversions": 96,
+        "conversionValue": 2758.19,
+        "clicks": 588,
+        "impressions": 32909,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.63,
+        "conversions": 3,
+        "conversionValue": 88.95,
+        "clicks": 83,
+        "impressions": 4146,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-27": {
+      "meta": {
+        "spend": 159.29,
+        "conversions": 48,
+        "conversionValue": 1782.33,
+        "clicks": 487,
+        "impressions": 29416,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.91,
+        "conversions": 7,
+        "conversionValue": 206.06,
+        "clicks": 75,
+        "impressions": 5901,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-28": {
+      "meta": {
+        "spend": 173.24,
+        "conversions": 64,
+        "conversionValue": 1704.45,
+        "clicks": 508,
+        "impressions": 27249,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.94,
+        "conversions": 4,
+        "conversionValue": 201.57,
+        "clicks": 67,
+        "impressions": 2408,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-29": {
+      "meta": {
+        "spend": 178.33,
+        "conversions": 96,
+        "conversionValue": 2289.46,
+        "clicks": 540,
+        "impressions": 27699,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.56,
+        "conversions": 3,
+        "conversionValue": 55.6,
+        "clicks": 89,
+        "impressions": 5290,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-04-30": {
+      "meta": {
+        "spend": 173.61,
+        "conversions": 88,
+        "conversionValue": 2191.24,
+        "clicks": 518,
+        "impressions": 25449,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.34,
+        "conversions": 3,
+        "conversionValue": 131.7,
+        "clicks": 72,
+        "impressions": 4790,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-01": {
+      "meta": {
+        "spend": 184.1,
+        "conversions": 88,
+        "conversionValue": 2107.84,
+        "clicks": 510,
+        "impressions": 27069,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 34.33,
+        "conversions": 9,
+        "conversionValue": 367.21,
+        "clicks": 102,
+        "impressions": 6462,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-02": {
+      "meta": {
+        "spend": 166.51,
+        "conversions": 104,
+        "conversionValue": 3273.41,
+        "clicks": 477,
+        "impressions": 25358,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.34,
+        "conversions": 3,
+        "conversionValue": 102.75,
+        "clicks": 68,
+        "impressions": 4892,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-03": {
+      "meta": {
+        "spend": 194.64,
+        "conversions": 88,
+        "conversionValue": 2232.34,
+        "clicks": 611,
+        "impressions": 31304,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.02,
+        "conversions": 5,
+        "conversionValue": 154.36,
+        "clicks": 100,
+        "impressions": 5554,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-04": {
+      "meta": {
+        "spend": 176.71,
+        "conversions": 104,
+        "conversionValue": 3170.87,
+        "clicks": 559,
+        "impressions": 30986,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.28,
+        "conversions": 6,
+        "conversionValue": 268.95,
+        "clicks": 85,
+        "impressions": 2868,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-05": {
+      "meta": {
+        "spend": 161.29,
+        "conversions": 88,
+        "conversionValue": 2497.6,
+        "clicks": 505,
+        "impressions": 29504,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.87,
+        "conversions": 4,
+        "conversionValue": 118.1,
+        "clicks": 69,
+        "impressions": 2480,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-06": {
+      "meta": {
+        "spend": 185.46,
+        "conversions": 96,
+        "conversionValue": 2883.05,
+        "clicks": 591,
+        "impressions": 31033,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.36,
+        "conversions": 5,
+        "conversionValue": 227.4,
+        "clicks": 84,
+        "impressions": 4382,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-07": {
+      "meta": {
+        "spend": 177.18,
+        "conversions": 72,
+        "conversionValue": 2408.86,
+        "clicks": 556,
+        "impressions": 30662,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.46,
+        "conversions": 3,
+        "conversionValue": 108.53,
+        "clicks": 62,
+        "impressions": 3259,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-08": {
+      "meta": {
+        "spend": 194.44,
+        "conversions": 80,
+        "conversionValue": 2525.26,
+        "clicks": 618,
+        "impressions": 34723,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.97,
+        "conversions": 4,
+        "conversionValue": 165.4,
+        "clicks": 54,
+        "impressions": 2397,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-09": {
+      "meta": {
+        "spend": 201.56,
+        "conversions": 152,
+        "conversionValue": 4047.61,
+        "clicks": 692,
+        "impressions": 35631,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.48,
+        "conversions": 5,
+        "conversionValue": 402.95,
+        "clicks": 72,
+        "impressions": 3174,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-10": {
+      "meta": {
+        "spend": 228.94,
+        "conversions": 112,
+        "conversionValue": 2687.02,
+        "clicks": 811,
+        "impressions": 41584,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.79,
+        "conversions": 5,
+        "conversionValue": 148.17,
+        "clicks": 66,
+        "impressions": 2783,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-11": {
+      "meta": {
+        "spend": 181.42,
+        "conversions": 96,
+        "conversionValue": 3269.99,
+        "clicks": 715,
+        "impressions": 34300,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.05,
+        "conversions": 4,
+        "conversionValue": 132.66,
+        "clicks": 72,
+        "impressions": 4706,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-12": {
+      "meta": {
+        "spend": 199.43,
+        "conversions": 72,
+        "conversionValue": 2307.16,
+        "clicks": 714,
+        "impressions": 34486,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 34.33,
+        "conversions": 2,
+        "conversionValue": 130.43,
+        "clicks": 88,
+        "impressions": 5506,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-13": {
+      "meta": {
+        "spend": 216.63,
+        "conversions": 144,
+        "conversionValue": 3945.13,
+        "clicks": 813,
+        "impressions": 35136,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.52,
+        "conversions": 3,
+        "conversionValue": 83.43,
+        "clicks": 70,
+        "impressions": 4604,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-14": {
+      "meta": {
+        "spend": 191.72,
+        "conversions": 64,
+        "conversionValue": 1789.77,
+        "clicks": 815,
+        "impressions": 32627,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.41,
+        "conversions": 2,
+        "conversionValue": 57.54,
+        "clicks": 57,
+        "impressions": 3388,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-15": {
+      "meta": {
+        "spend": 191.37,
+        "conversions": 88,
+        "conversionValue": 2676.04,
+        "clicks": 700,
+        "impressions": 32132,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.85,
+        "conversions": 6,
+        "conversionValue": 199.3,
+        "clicks": 75,
+        "impressions": 3741,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-16": {
+      "meta": {
+        "spend": 186.46,
+        "conversions": 56,
+        "conversionValue": 1815.75,
+        "clicks": 726,
+        "impressions": 30810,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.35,
+        "conversions": 4,
+        "conversionValue": 248.65,
+        "clicks": 76,
+        "impressions": 3062,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-17": {
+      "meta": {
+        "spend": 209.21,
+        "conversions": 32,
+        "conversionValue": 871.57,
+        "clicks": 814,
+        "impressions": 36692,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 12.55,
+        "conversions": 3,
+        "conversionValue": 119,
+        "clicks": 69,
+        "impressions": 2505,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-18": {
+      "meta": {
+        "spend": 197.63,
+        "conversions": 88,
+        "conversionValue": 2710.67,
+        "clicks": 761,
+        "impressions": 36784,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.82,
+        "conversions": 3,
+        "conversionValue": 158.06,
+        "clicks": 75,
+        "impressions": 2885,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-19": {
+      "meta": {
+        "spend": 191.49,
+        "conversions": 80,
+        "conversionValue": 2456.62,
+        "clicks": 638,
+        "impressions": 33449,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.82,
+        "conversions": 5,
+        "conversionValue": 161.28,
+        "clicks": 90,
+        "impressions": 3605,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-20": {
+      "meta": {
+        "spend": 202.48,
+        "conversions": 72,
+        "conversionValue": 2011.89,
+        "clicks": 557,
+        "impressions": 32691,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.86,
+        "conversions": 5,
+        "conversionValue": 152.6,
+        "clicks": 69,
+        "impressions": 4700,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-21": {
+      "meta": {
+        "spend": 198.54,
+        "conversions": 96,
+        "conversionValue": 2469.76,
+        "clicks": 474,
+        "impressions": 30490,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.26,
+        "conversions": 3,
+        "conversionValue": 125.82,
+        "clicks": 65,
+        "impressions": 4181,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-22": {
+      "meta": {
+        "spend": 194.29,
+        "conversions": 96,
+        "conversionValue": 3212.51,
+        "clicks": 444,
+        "impressions": 28923,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.05,
+        "conversions": 3,
+        "conversionValue": 100.11,
+        "clicks": 70,
+        "impressions": 6104,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-23": {
+      "meta": {
+        "spend": 205.1,
+        "conversions": 88,
+        "conversionValue": 2405.68,
+        "clicks": 434,
+        "impressions": 28779,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.63,
+        "conversions": 4,
+        "conversionValue": 124.55,
+        "clicks": 63,
+        "impressions": 3475,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-24": {
+      "meta": {
+        "spend": 212.52,
+        "conversions": 32,
+        "conversionValue": 917.12,
+        "clicks": 482,
+        "impressions": 30073,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.05,
+        "conversions": 6,
+        "conversionValue": 200.51,
+        "clicks": 72,
+        "impressions": 5274,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-25": {
+      "meta": {
+        "spend": 200.19,
+        "conversions": 104,
+        "conversionValue": 2524.84,
+        "clicks": 451,
+        "impressions": 30073,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.17,
+        "conversions": 4,
+        "conversionValue": 125.8,
+        "clicks": 74,
+        "impressions": 4898,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-26": {
+      "meta": {
+        "spend": 212.12,
+        "conversions": 104,
+        "conversionValue": 2815.01,
+        "clicks": 458,
+        "impressions": 32440,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.47,
+        "conversions": 6,
+        "conversionValue": 184.16,
+        "clicks": 57,
+        "impressions": 2961,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-27": {
+      "meta": {
+        "spend": 239.72,
+        "conversions": 80,
+        "conversionValue": 2064.33,
+        "clicks": 587,
+        "impressions": 35921,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.36,
+        "conversions": 4,
+        "conversionValue": 108.01,
+        "clicks": 55,
+        "impressions": 3320,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-28": {
+      "meta": {
+        "spend": 242,
+        "conversions": 120,
+        "conversionValue": 3446.76,
+        "clicks": 547,
+        "impressions": 37148,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.69,
+        "conversions": 5,
+        "conversionValue": 122.63,
+        "clicks": 70,
+        "impressions": 3190,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-29": {
+      "meta": {
+        "spend": 179.58,
+        "conversions": 72,
+        "conversionValue": 1784.19,
+        "clicks": 460,
+        "impressions": 27422,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.96,
+        "conversions": 6,
+        "conversionValue": 187.06,
+        "clicks": 68,
+        "impressions": 2932,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-30": {
+      "meta": {
+        "spend": 127.85,
+        "conversions": 72,
+        "conversionValue": 1776.27,
+        "clicks": 291,
+        "impressions": 18288,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.66,
+        "conversions": 4,
+        "conversionValue": 126.95,
+        "clicks": 50,
+        "impressions": 3278,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-05-31": {
+      "meta": {
+        "spend": 163.27,
+        "conversions": 104,
+        "conversionValue": 2490.1,
+        "clicks": 450,
+        "impressions": 24806,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.07,
+        "conversions": 3,
+        "conversionValue": 97.7,
+        "clicks": 60,
+        "impressions": 3366,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-01": {
+      "meta": {
+        "spend": 133.55,
+        "conversions": 80,
+        "conversionValue": 2163.04,
+        "clicks": 313,
+        "impressions": 21290,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.59,
+        "conversions": 5,
+        "conversionValue": 122.9,
+        "clicks": 70,
+        "impressions": 2370,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-02": {
+      "meta": {
+        "spend": 136.89,
+        "conversions": 40,
+        "conversionValue": 1184.42,
+        "clicks": 358,
+        "impressions": 20752,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.46,
+        "conversions": 4,
+        "conversionValue": 91.8,
+        "clicks": 58,
+        "impressions": 3784,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-03": {
+      "meta": {
+        "spend": 138.8,
+        "conversions": 56,
+        "conversionValue": 1448.18,
+        "clicks": 389,
+        "impressions": 20679,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.12,
+        "conversions": 5,
+        "conversionValue": 160.12,
+        "clicks": 69,
+        "impressions": 2183,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-04": {
+      "meta": {
+        "spend": 137.69,
+        "conversions": 72,
+        "conversionValue": 2180.14,
+        "clicks": 363,
+        "impressions": 23251,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.68,
+        "conversions": 8,
+        "conversionValue": 353.05,
+        "clicks": 68,
+        "impressions": 3071,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-05": {
+      "meta": {
+        "spend": 136.88,
+        "conversions": 64,
+        "conversionValue": 1887.27,
+        "clicks": 357,
+        "impressions": 20543,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.5,
+        "conversions": 5,
+        "conversionValue": 190.81,
+        "clicks": 76,
+        "impressions": 3867,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-06": {
+      "meta": {
+        "spend": 131.42,
+        "conversions": 80,
+        "conversionValue": 2540.2,
+        "clicks": 435,
+        "impressions": 20605,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.05,
+        "conversions": 8,
+        "conversionValue": 285.45,
+        "clicks": 74,
+        "impressions": 3831,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-07": {
+      "meta": {
+        "spend": 164.01,
+        "conversions": 80,
+        "conversionValue": 2225.56,
+        "clicks": 504,
+        "impressions": 26777,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.97,
+        "conversions": 1,
+        "conversionValue": 35,
+        "clicks": 65,
+        "impressions": 3811,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-08": {
+      "meta": {
+        "spend": 137.09,
+        "conversions": 72,
+        "conversionValue": 1816.59,
+        "clicks": 419,
+        "impressions": 23366,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 14.2,
+        "conversions": 6,
+        "conversionValue": 227.41,
+        "clicks": 57,
+        "impressions": 2393,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-09": {
+      "meta": {
+        "spend": 219.46,
+        "conversions": 120,
+        "conversionValue": 3281.81,
+        "clicks": 641,
+        "impressions": 35424,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.34,
+        "conversions": 4,
+        "conversionValue": 122.91,
+        "clicks": 77,
+        "impressions": 4364,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-10": {
+      "meta": {
+        "spend": 199.96,
+        "conversions": 64,
+        "conversionValue": 1820.13,
+        "clicks": 503,
+        "impressions": 32192,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 33.98,
+        "conversions": 4,
+        "conversionValue": 151.66,
+        "clicks": 77,
+        "impressions": 3339,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-11": {
+      "meta": {
+        "spend": 221.73,
+        "conversions": 96,
+        "conversionValue": 2364.58,
+        "clicks": 699,
+        "impressions": 36517,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 14.49,
+        "conversions": 10,
+        "conversionValue": 310.81,
+        "clicks": 63,
+        "impressions": 2271,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-12": {
+      "meta": {
+        "spend": 179.95,
+        "conversions": 136,
+        "conversionValue": 3187.37,
+        "clicks": 503,
+        "impressions": 29461,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.91,
+        "conversions": 6,
+        "conversionValue": 193.59,
+        "clicks": 87,
+        "impressions": 3243,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-13": {
+      "meta": {
+        "spend": 228.05,
+        "conversions": 48,
+        "conversionValue": 1090.88,
+        "clicks": 564,
+        "impressions": 37237,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 36.64,
+        "conversions": 12,
+        "conversionValue": 429.89,
+        "clicks": 96,
+        "impressions": 4026,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-14": {
+      "meta": {
+        "spend": 213.61,
+        "conversions": 56,
+        "conversionValue": 1220.12,
+        "clicks": 637,
+        "impressions": 35390,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.49,
+        "conversions": 9,
+        "conversionValue": 313,
+        "clicks": 89,
+        "impressions": 4046,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-15": {
+      "meta": {
+        "spend": 184.27,
+        "conversions": 104,
+        "conversionValue": 2505.4,
+        "clicks": 463,
+        "impressions": 31999,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.45,
+        "conversions": 6,
+        "conversionValue": 187.72,
+        "clicks": 81,
+        "impressions": 3789,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-16": {
+      "meta": {
+        "spend": 153.06,
+        "conversions": 88,
+        "conversionValue": 2446.3,
+        "clicks": 364,
+        "impressions": 24475,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.14,
+        "conversions": 13,
+        "conversionValue": 451.18,
+        "clicks": 60,
+        "impressions": 2032,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-17": {
+      "meta": {
+        "spend": 154.31,
+        "conversions": 80,
+        "conversionValue": 2146.9,
+        "clicks": 400,
+        "impressions": 24470,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.58,
+        "conversions": 7,
+        "conversionValue": 309.2,
+        "clicks": 60,
+        "impressions": 2569,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-18": {
+      "meta": {
+        "spend": 107.16,
+        "conversions": 24,
+        "conversionValue": 631.51,
+        "clicks": 343,
+        "impressions": 17645,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.42,
+        "conversions": 5,
+        "conversionValue": 119.55,
+        "clicks": 64,
+        "impressions": 3358,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-19": {
+      "meta": {
+        "spend": 91.33,
+        "conversions": 24,
+        "conversionValue": 752.11,
+        "clicks": 352,
+        "impressions": 17079,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.72,
+        "conversions": 4,
+        "conversionValue": 170.44,
+        "clicks": 50,
+        "impressions": 2448,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-20": {
+      "meta": {
+        "spend": 75.55,
+        "conversions": 64,
+        "conversionValue": 1366.22,
+        "clicks": 308,
+        "impressions": 13337,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.06,
+        "conversions": 7,
+        "conversionValue": 190.06,
+        "clicks": 80,
+        "impressions": 3676,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-21": {
+      "meta": {
+        "spend": 112.75,
+        "conversions": 32,
+        "conversionValue": 718.51,
+        "clicks": 460,
+        "impressions": 21659,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.95,
+        "conversions": 3,
+        "conversionValue": 80.56,
+        "clicks": 71,
+        "impressions": 3575,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-22": {
+      "meta": {
+        "spend": 93.5,
+        "conversions": 48,
+        "conversionValue": 1041.38,
+        "clicks": 349,
+        "impressions": 18056,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 35.48,
+        "conversions": 4,
+        "conversionValue": 97.51,
+        "clicks": 79,
+        "impressions": 3789,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-23": {
+      "meta": {
+        "spend": 101.68,
+        "conversions": 8,
+        "conversionValue": 179.7,
+        "clicks": 316,
+        "impressions": 18502,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.4,
+        "conversions": 4,
+        "conversionValue": 158.15,
+        "clicks": 46,
+        "impressions": 2784,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-24": {
+      "meta": {
+        "spend": 96.1,
+        "conversions": 16,
+        "conversionValue": 402.61,
+        "clicks": 333,
+        "impressions": 17439,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.73,
+        "conversions": 2,
+        "conversionValue": 73.1,
+        "clicks": 38,
+        "impressions": 2047,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-25": {
+      "meta": {
+        "spend": 98.5,
+        "conversions": 32,
+        "conversionValue": 904.82,
+        "clicks": 303,
+        "impressions": 15559,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.81,
+        "conversions": 2,
+        "conversionValue": 63.8,
+        "clicks": 48,
+        "impressions": 3427,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-26": {
+      "meta": {
+        "spend": 117.99,
+        "conversions": 48,
+        "conversionValue": 1038.98,
+        "clicks": 396,
+        "impressions": 19418,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.46,
+        "conversions": 4,
+        "conversionValue": 120.12,
+        "clicks": 45,
+        "impressions": 2855,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-27": {
+      "meta": {
+        "spend": 99.14,
+        "conversions": 136,
+        "conversionValue": 4187.71,
+        "clicks": 407,
+        "impressions": 14998,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.04,
+        "conversions": 3,
+        "conversionValue": 90.35,
+        "clicks": 47,
+        "impressions": 3291,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-28": {
+      "meta": {
+        "spend": 147.57,
+        "conversions": 88,
+        "conversionValue": 2539.54,
+        "clicks": 630,
+        "impressions": 26192,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.24,
+        "conversions": 10,
+        "conversionValue": 259.15,
+        "clicks": 58,
+        "impressions": 3546,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-29": {
+      "meta": {
+        "spend": 87.7,
+        "conversions": 64,
+        "conversionValue": 1655.79,
+        "clicks": 359,
+        "impressions": 16218,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.43,
+        "conversions": 1,
+        "conversionValue": 23.69,
+        "clicks": 49,
+        "impressions": 3369,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-06-30": {
+      "meta": {
+        "spend": 101.28,
+        "conversions": 56,
+        "conversionValue": 1403.54,
+        "clicks": 346,
+        "impressions": 18329,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16.59,
+        "conversions": 2,
+        "conversionValue": 71.06,
+        "clicks": 32,
+        "impressions": 3071,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-01": {
+      "meta": {
+        "spend": 102.97,
+        "conversions": 32,
+        "conversionValue": 873.31,
+        "clicks": 373,
+        "impressions": 20205,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.57,
+        "conversions": 4,
+        "conversionValue": 158.4,
+        "clicks": 58,
+        "impressions": 3891,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-02": {
+      "meta": {
+        "spend": 91.32,
+        "conversions": 48,
+        "conversionValue": 1151.12,
+        "clicks": 353,
+        "impressions": 18249,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16.86,
+        "conversions": 1,
+        "conversionValue": 23.4,
+        "clicks": 45,
+        "impressions": 3335,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-03": {
+      "meta": {
+        "spend": 99.8,
+        "conversions": 64,
+        "conversionValue": 2059.41,
+        "clicks": 395,
+        "impressions": 19341,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.6,
+        "conversions": 3,
+        "conversionValue": 99,
+        "clicks": 47,
+        "impressions": 3438,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-04": {
+      "meta": {
+        "spend": 88.66,
+        "conversions": 80,
+        "conversionValue": 2105.14,
+        "clicks": 363,
+        "impressions": 17517,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.33,
+        "conversions": 2,
+        "conversionValue": 110.4,
+        "clicks": 54,
+        "impressions": 3231,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-05": {
+      "meta": {
+        "spend": 116.53,
+        "conversions": 16,
+        "conversionValue": 317.41,
+        "clicks": 508,
+        "impressions": 21517,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.4,
+        "conversions": 2,
+        "conversionValue": 58.41,
+        "clicks": 45,
+        "impressions": 3296,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-06": {
+      "meta": {
+        "spend": 97.32,
+        "conversions": 56,
+        "conversionValue": 1213.94,
+        "clicks": 366,
+        "impressions": 19476,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.32,
+        "conversions": 1,
+        "conversionValue": 28,
+        "clicks": 53,
+        "impressions": 5440,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-07": {
+      "meta": {
+        "spend": 97.25,
+        "conversions": 80,
+        "conversionValue": 2426.5,
+        "clicks": 267,
+        "impressions": 16432,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.36,
+        "conversions": 4,
+        "conversionValue": 143.6,
+        "clicks": 62,
+        "impressions": 5165,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-08": {
+      "meta": {
+        "spend": 96.65,
+        "conversions": 64,
+        "conversionValue": 1314.38,
+        "clicks": 279,
+        "impressions": 16494,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.13,
+        "conversions": 3,
+        "conversionValue": 78,
+        "clicks": 42,
+        "impressions": 2638,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-09": {
+      "meta": {
+        "spend": 101.32,
+        "conversions": 40,
+        "conversionValue": 1056.44,
+        "clicks": 302,
+        "impressions": 17445,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.23,
+        "conversions": 6,
+        "conversionValue": 217.76,
+        "clicks": 54,
+        "impressions": 3233,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-10": {
+      "meta": {
+        "spend": 95.16,
+        "conversions": 64,
+        "conversionValue": 1507.83,
+        "clicks": 223,
+        "impressions": 15617,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.76,
+        "conversions": 8,
+        "conversionValue": 303.66,
+        "clicks": 51,
+        "impressions": 1482,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-11": {
+      "meta": {
+        "spend": 102.5,
+        "conversions": 48,
+        "conversionValue": 1194.62,
+        "clicks": 204,
+        "impressions": 15437,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 35.97,
+        "conversions": 3,
+        "conversionValue": 110.8,
+        "clicks": 48,
+        "impressions": 3209,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-12": {
+      "meta": {
+        "spend": 137.29,
+        "conversions": 56,
+        "conversionValue": 1276.58,
+        "clicks": 479,
+        "impressions": 24206,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.91,
+        "conversions": 4,
+        "conversionValue": 146.4,
+        "clicks": 58,
+        "impressions": 4007,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-13": {
+      "meta": {
+        "spend": 94.34,
+        "conversions": 72,
+        "conversionValue": 2014.23,
+        "clicks": 336,
+        "impressions": 17058,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.76,
+        "conversions": 4,
+        "conversionValue": 121.3,
+        "clicks": 75,
+        "impressions": 3163,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-14": {
+      "meta": {
+        "spend": 98.5,
+        "conversions": 24,
+        "conversionValue": 671.71,
+        "clicks": 297,
+        "impressions": 16189,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.95,
+        "conversions": 4,
+        "conversionValue": 132.77,
+        "clicks": 51,
+        "impressions": 4170,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-15": {
+      "meta": {
+        "spend": 107.62,
+        "conversions": 64,
+        "conversionValue": 1419.02,
+        "clicks": 340,
+        "impressions": 19148,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.58,
+        "conversions": 1,
+        "conversionValue": 45.32,
+        "clicks": 54,
+        "impressions": 3276,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-16": {
+      "meta": {
+        "spend": 93.45,
+        "conversions": 48,
+        "conversionValue": 1022.18,
+        "clicks": 289,
+        "impressions": 17947,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.3,
+        "conversions": 3,
+        "conversionValue": 125.41,
+        "clicks": 60,
+        "impressions": 3946,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-17": {
+      "meta": {
+        "spend": 99.46,
+        "conversions": 72,
+        "conversionValue": 1882.05,
+        "clicks": 317,
+        "impressions": 18562,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 34.62,
+        "conversions": 3,
+        "conversionValue": 65.93,
+        "clicks": 62,
+        "impressions": 4487,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-18": {
+      "meta": {
+        "spend": 83.05,
+        "conversions": 56,
+        "conversionValue": 1632.03,
+        "clicks": 281,
+        "impressions": 14090,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.96,
+        "conversions": 3,
+        "conversionValue": 91.25,
+        "clicks": 49,
+        "impressions": 3274,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-19": {
+      "meta": {
+        "spend": 146.49,
+        "conversions": 72,
+        "conversionValue": 1809.03,
+        "clicks": 550,
+        "impressions": 26444,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.45,
+        "conversions": 10,
+        "conversionValue": 307.11,
+        "clicks": 87,
+        "impressions": 4446,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-20": {
+      "meta": {
+        "spend": 119.12,
+        "conversions": 80,
+        "conversionValue": 1661.43,
+        "clicks": 465,
+        "impressions": 23234,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.1,
+        "conversions": 7,
+        "conversionValue": 192.9,
+        "clicks": 55,
+        "impressions": 1932,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-21": {
+      "meta": {
+        "spend": 105.29,
+        "conversions": 48,
+        "conversionValue": 1084.22,
+        "clicks": 394,
+        "impressions": 17632,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.18,
+        "conversions": 4,
+        "conversionValue": 107.76,
+        "clicks": 56,
+        "impressions": 2898,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-22": {
+      "meta": {
+        "spend": 99.13,
+        "conversions": 104,
+        "conversionValue": 2365.18,
+        "clicks": 409,
+        "impressions": 18280,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 14.61,
+        "conversions": 4,
+        "conversionValue": 173.71,
+        "clicks": 41,
+        "impressions": 1517,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-23": {
+      "meta": {
+        "spend": 97,
+        "conversions": 56,
+        "conversionValue": 1460.54,
+        "clicks": 324,
+        "impressions": 18038,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.81,
+        "conversions": 4,
+        "conversionValue": 147.95,
+        "clicks": 51,
+        "impressions": 2917,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-24": {
+      "meta": {
+        "spend": 99.38,
+        "conversions": 96,
+        "conversionValue": 2453.8,
+        "clicks": 363,
+        "impressions": 18073,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.99,
+        "conversions": 2,
+        "conversionValue": 48.57,
+        "clicks": 56,
+        "impressions": 3859,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-25": {
+      "meta": {
+        "spend": 88.32,
+        "conversions": 136,
+        "conversionValue": 3645.24,
+        "clicks": 335,
+        "impressions": 14933,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 36.79,
+        "conversions": 12,
+        "conversionValue": 356.51,
+        "clicks": 88,
+        "impressions": 5481,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-26": {
+      "meta": {
+        "spend": 130.46,
+        "conversions": 40,
+        "conversionValue": 1072.82,
+        "clicks": 559,
+        "impressions": 25107,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.87,
+        "conversions": 4,
+        "conversionValue": 149.09,
+        "clicks": 73,
+        "impressions": 3674,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-27": {
+      "meta": {
+        "spend": 139.31,
+        "conversions": 80,
+        "conversionValue": 1715.43,
+        "clicks": 558,
+        "impressions": 26122,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.65,
+        "conversions": 4,
+        "conversionValue": 145.55,
+        "clicks": 53,
+        "impressions": 2802,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-28": {
+      "meta": {
+        "spend": 127.25,
+        "conversions": 152,
+        "conversionValue": 4854.38,
+        "clicks": 616,
+        "impressions": 24202,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 15.5,
+        "conversions": 6,
+        "conversionValue": 374.71,
+        "clicks": 56,
+        "impressions": 2290,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-29": {
+      "meta": {
+        "spend": 131.17,
+        "conversions": 72,
+        "conversionValue": 1808.49,
+        "clicks": 684,
+        "impressions": 26220,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.03,
+        "conversions": 4,
+        "conversionValue": 128.5,
+        "clicks": 70,
+        "impressions": 3428,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-30": {
+      "meta": {
+        "spend": 128.16,
+        "conversions": 80,
+        "conversionValue": 1751.79,
+        "clicks": 701,
+        "impressions": 27800,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.21,
+        "conversions": 2,
+        "conversionValue": 60.26,
+        "clicks": 60,
+        "impressions": 4617,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-07-31": {
+      "meta": {
+        "spend": 145.47,
+        "conversions": 128,
+        "conversionValue": 3243.05,
+        "clicks": 808,
+        "impressions": 30207,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.81,
+        "conversions": 3,
+        "conversionValue": 100.6,
+        "clicks": 69,
+        "impressions": 3992,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-01": {
+      "meta": {
+        "spend": 122.18,
+        "conversions": 112,
+        "conversionValue": 3113.51,
+        "clicks": 709,
+        "impressions": 26759,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.54,
+        "conversions": 5,
+        "conversionValue": 127.26,
+        "clicks": 65,
+        "impressions": 3200,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-02": {
+      "meta": {
+        "spend": 170.37,
+        "conversions": 88,
+        "conversionValue": 2088.69,
+        "clicks": 923,
+        "impressions": 38933,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.98,
+        "conversions": 4,
+        "conversionValue": 186.87,
+        "clicks": 73,
+        "impressions": 3586,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-03": {
+      "meta": {
+        "spend": 119.16,
+        "conversions": 72,
+        "conversionValue": 1836.63,
+        "clicks": 611,
+        "impressions": 29043,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.34,
+        "conversions": 2,
+        "conversionValue": 135.52,
+        "clicks": 78,
+        "impressions": 4685,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-04": {
+      "meta": {
+        "spend": 148.62,
+        "conversions": 40,
+        "conversionValue": 1168.88,
+        "clicks": 849,
+        "impressions": 34291,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.79,
+        "conversions": 3,
+        "conversionValue": 129.39,
+        "clicks": 59,
+        "impressions": 3069,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-05": {
+      "meta": {
+        "spend": 144.73,
+        "conversions": 128,
+        "conversionValue": 3547.32,
+        "clicks": 784,
+        "impressions": 32833,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.03,
+        "conversions": 2,
+        "conversionValue": 63.15,
+        "clicks": 66,
+        "impressions": 4153,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-06": {
+      "meta": {
+        "spend": 174.7,
+        "conversions": 152,
+        "conversionValue": 3529.5,
+        "clicks": 943,
+        "impressions": 35815,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.09,
+        "conversions": 3,
+        "conversionValue": 114.7,
+        "clicks": 86,
+        "impressions": 3060,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-07": {
+      "meta": {
+        "spend": 170.32,
+        "conversions": 152,
+        "conversionValue": 4225.57,
+        "clicks": 1013,
+        "impressions": 37051,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 11.52,
+        "conversions": 7,
+        "conversionValue": 228.81,
+        "clicks": 52,
+        "impressions": 3036,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-08": {
+      "meta": {
+        "spend": 142.46,
+        "conversions": 104,
+        "conversionValue": 2880.11,
+        "clicks": 802,
+        "impressions": 30699,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 36.64,
+        "conversions": 2,
+        "conversionValue": 54,
+        "clicks": 87,
+        "impressions": 5591,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-09": {
+      "meta": {
+        "spend": 204.49,
+        "conversions": 120,
+        "conversionValue": 2669.86,
+        "clicks": 1271,
+        "impressions": 45676,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.15,
+        "conversions": 0,
+        "conversionValue": 0,
+        "clicks": 48,
+        "impressions": 2922,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-10": {
+      "meta": {
+        "spend": 142.97,
+        "conversions": 104,
+        "conversionValue": 2453.5,
+        "clicks": 877,
+        "impressions": 32666,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.16,
+        "conversions": 2,
+        "conversionValue": 119.4,
+        "clicks": 59,
+        "impressions": 3135,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-11": {
+      "meta": {
+        "spend": 170.28,
+        "conversions": 104,
+        "conversionValue": 2552.5,
+        "clicks": 1026,
+        "impressions": 35647,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.54,
+        "conversions": 3,
+        "conversionValue": 126.54,
+        "clicks": 75,
+        "impressions": 4899,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-12": {
+      "meta": {
+        "spend": 144.04,
+        "conversions": 96,
+        "conversionValue": 2154.94,
+        "clicks": 732,
+        "impressions": 28879,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.98,
+        "conversions": 4,
+        "conversionValue": 136.43,
+        "clicks": 64,
+        "impressions": 3349,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-13": {
+      "meta": {
+        "spend": 177.68,
+        "conversions": 64,
+        "conversionValue": 1517.73,
+        "clicks": 924,
+        "impressions": 36135,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.43,
+        "conversions": 5,
+        "conversionValue": 167.48,
+        "clicks": 60,
+        "impressions": 5218,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-14": {
+      "meta": {
+        "spend": 146.28,
+        "conversions": 120,
+        "conversionValue": 3316.56,
+        "clicks": 695,
+        "impressions": 28816,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.76,
+        "conversions": 3,
+        "conversionValue": 102,
+        "clicks": 84,
+        "impressions": 4806,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-15": {
+      "meta": {
+        "spend": 181.8,
+        "conversions": 56,
+        "conversionValue": 1575.33,
+        "clicks": 869,
+        "impressions": 34667,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.08,
+        "conversions": 10,
+        "conversionValue": 456.03,
+        "clicks": 89,
+        "impressions": 4912,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-16": {
+      "meta": {
+        "spend": 179.19,
+        "conversions": 88,
+        "conversionValue": 2394.94,
+        "clicks": 960,
+        "impressions": 36111,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.56,
+        "conversions": 5,
+        "conversionValue": 192.9,
+        "clicks": 161,
+        "impressions": 4675,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-17": {
+      "meta": {
+        "spend": 164.49,
+        "conversions": 120,
+        "conversionValue": 3600.06,
+        "clicks": 914,
+        "impressions": 34791,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.58,
+        "conversions": 3,
+        "conversionValue": 102.95,
+        "clicks": 70,
+        "impressions": 3097,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-18": {
+      "meta": {
+        "spend": 171.78,
+        "conversions": 64,
+        "conversionValue": 1869.69,
+        "clicks": 852,
+        "impressions": 34514,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.44,
+        "conversions": 3,
+        "conversionValue": 132.9,
+        "clicks": 54,
+        "impressions": 2785,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-19": {
+      "meta": {
+        "spend": 169.19,
+        "conversions": 112,
+        "conversionValue": 3090.83,
+        "clicks": 771,
+        "impressions": 31595,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.86,
+        "conversions": 3,
+        "conversionValue": 131.95,
+        "clicks": 62,
+        "impressions": 4468,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-20": {
+      "meta": {
+        "spend": 159.08,
+        "conversions": 120,
+        "conversionValue": 2999.21,
+        "clicks": 795,
+        "impressions": 34464,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.34,
+        "conversions": 4,
+        "conversionValue": 145.4,
+        "clicks": 72,
+        "impressions": 3643,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-21": {
+      "meta": {
+        "spend": 170.27,
+        "conversions": 104,
+        "conversionValue": 2859.17,
+        "clicks": 766,
+        "impressions": 35137,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 16.28,
+        "conversions": 7,
+        "conversionValue": 230.76,
+        "clicks": 81,
+        "impressions": 3479,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-22": {
+      "meta": {
+        "spend": 155.93,
+        "conversions": 96,
+        "conversionValue": 2577.94,
+        "clicks": 843,
+        "impressions": 31538,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.81,
+        "conversions": 8,
+        "conversionValue": 410.93,
+        "clicks": 88,
+        "impressions": 4828,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-23": {
+      "meta": {
+        "spend": 185.29,
+        "conversions": 40,
+        "conversionValue": 1018.52,
+        "clicks": 1007,
+        "impressions": 42796,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.95,
+        "conversions": 6,
+        "conversionValue": 205.44,
+        "clicks": 91,
+        "impressions": 3696,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-24": {
+      "meta": {
+        "spend": 162.42,
+        "conversions": 48,
+        "conversionValue": 1427.18,
+        "clicks": 859,
+        "impressions": 35097,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 18.37,
+        "conversions": 4,
+        "conversionValue": 139.9,
+        "clicks": 76,
+        "impressions": 3496,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-25": {
+      "meta": {
+        "spend": 175.54,
+        "conversions": 88,
+        "conversionValue": 2651.74,
+        "clicks": 941,
+        "impressions": 37493,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.4,
+        "conversions": 4,
+        "conversionValue": 174,
+        "clicks": 82,
+        "impressions": 5078,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-26": {
+      "meta": {
+        "spend": 171.63,
+        "conversions": 144,
+        "conversionValue": 3913.33,
+        "clicks": 877,
+        "impressions": 39424,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.75,
+        "conversions": 6,
+        "conversionValue": 177.1,
+        "clicks": 71,
+        "impressions": 3392,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-27": {
+      "meta": {
+        "spend": 171.22,
+        "conversions": 56,
+        "conversionValue": 1469.48,
+        "clicks": 721,
+        "impressions": 33833,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.41,
+        "conversions": 2,
+        "conversionValue": 54,
+        "clicks": 85,
+        "impressions": 3736,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-28": {
+      "meta": {
+        "spend": 137.94,
+        "conversions": 96,
+        "conversionValue": 3445.86,
+        "clicks": 644,
+        "impressions": 26854,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 20.66,
+        "conversions": 6,
+        "conversionValue": 275.36,
+        "clicks": 78,
+        "impressions": 3785,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-29": {
+      "meta": {
+        "spend": 117.95,
+        "conversions": 144,
+        "conversionValue": 3814.02,
+        "clicks": 549,
+        "impressions": 23214,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.8,
+        "conversions": 8,
+        "conversionValue": 268.53,
+        "clicks": 75,
+        "impressions": 3734,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-30": {
+      "meta": {
+        "spend": 157.53,
+        "conversions": 120,
+        "conversionValue": 2884.85,
+        "clicks": 814,
+        "impressions": 33167,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.3,
+        "conversions": 6,
+        "conversionValue": 199.14,
+        "clicks": 98,
+        "impressions": 3581,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-08-31": {
+      "meta": {
+        "spend": 139.86,
+        "conversions": 112,
+        "conversionValue": 2783.15,
+        "clicks": 698,
+        "impressions": 30184,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.17,
+        "conversions": 6,
+        "conversionValue": 214.26,
+        "clicks": 84,
+        "impressions": 3880,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-01": {
+      "meta": {
+        "spend": 143.8,
+        "conversions": 96,
+        "conversionValue": 3473.82,
+        "clicks": 608,
+        "impressions": 29853,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.26,
+        "conversions": 5,
+        "conversionValue": 199.41,
+        "clicks": 75,
+        "impressions": 4096,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-02": {
+      "meta": {
+        "spend": 142,
+        "conversions": 56,
+        "conversionValue": 1894.23,
+        "clicks": 651,
+        "impressions": 30568,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.19,
+        "conversions": 3,
+        "conversionValue": 89.24,
+        "clicks": 84,
+        "impressions": 4336,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-03": {
+      "meta": {
+        "spend": 143.1,
+        "conversions": 88,
+        "conversionValue": 3079.85,
+        "clicks": 618,
+        "impressions": 28156,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.4,
+        "conversions": 1,
+        "conversionValue": 45.38,
+        "clicks": 78,
+        "impressions": 4738,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-04": {
+      "meta": {
+        "spend": 138.61,
+        "conversions": 80,
+        "conversionValue": 2016.69,
+        "clicks": 663,
+        "impressions": 28400,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.34,
+        "conversions": 5,
+        "conversionValue": 166.02,
+        "clicks": 89,
+        "impressions": 5027,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-05": {
+      "meta": {
+        "spend": 127.66,
+        "conversions": 40,
+        "conversionValue": 1510.23,
+        "clicks": 554,
+        "impressions": 25090,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 29.74,
+        "conversions": 3,
+        "conversionValue": 104,
+        "clicks": 78,
+        "impressions": 4995,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-06": {
+      "meta": {
+        "spend": 153.75,
+        "conversions": 88,
+        "conversionValue": 2088.39,
+        "clicks": 697,
+        "impressions": 32881,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.47,
+        "conversions": 7,
+        "conversionValue": 287.95,
+        "clicks": 100,
+        "impressions": 5759,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-07": {
+      "meta": {
+        "spend": 121.05,
+        "conversions": 80,
+        "conversionValue": 1630.83,
+        "clicks": 542,
+        "impressions": 26004,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 22.64,
+        "conversions": 3,
+        "conversionValue": 67.03,
+        "clicks": 58,
+        "impressions": 4870,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-08": {
+      "meta": {
+        "spend": 146.05,
+        "conversions": 96,
+        "conversionValue": 2321.8,
+        "clicks": 596,
+        "impressions": 29428,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.71,
+        "conversions": 8,
+        "conversionValue": 342.2,
+        "clicks": 74,
+        "impressions": 3234,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-09": {
+      "meta": {
+        "spend": 148.52,
+        "conversions": 136,
+        "conversionValue": 3680.22,
+        "clicks": 646,
+        "impressions": 29041,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 24.58,
+        "conversions": 6,
+        "conversionValue": 225.01,
+        "clicks": 46,
+        "impressions": 2321,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-10": {
+      "meta": {
+        "spend": 150.19,
+        "conversions": 88,
+        "conversionValue": 2505.76,
+        "clicks": 567,
+        "impressions": 27621,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.79,
+        "conversions": 3,
+        "conversionValue": 122,
+        "clicks": 84,
+        "impressions": 3767,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-11": {
+      "meta": {
+        "spend": 142.23,
+        "conversions": 88,
+        "conversionValue": 2318.98,
+        "clicks": 550,
+        "impressions": 26997,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 30.73,
+        "conversions": 3,
+        "conversionValue": 137.36,
+        "clicks": 93,
+        "impressions": 4826,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-12": {
+      "meta": {
+        "spend": 131.75,
+        "conversions": 80,
+        "conversionValue": 2209.84,
+        "clicks": 582,
+        "impressions": 24667,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 31.28,
+        "conversions": 3,
+        "conversionValue": 198.41,
+        "clicks": 99,
+        "impressions": 5322,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-13": {
+      "meta": {
+        "spend": 177.09,
+        "conversions": 104,
+        "conversionValue": 3242.81,
+        "clicks": 757,
+        "impressions": 33902,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.39,
+        "conversions": 5,
+        "conversionValue": 232.71,
+        "clicks": 83,
+        "impressions": 4278,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-14": {
+      "meta": {
+        "spend": 138.66,
+        "conversions": 80,
+        "conversionValue": 1619.73,
+        "clicks": 633,
+        "impressions": 27255,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.97,
+        "conversions": 0,
+        "conversionValue": 0,
+        "clicks": 66,
+        "impressions": 5426,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-15": {
+      "meta": {
+        "spend": 124.06,
+        "conversions": 96,
+        "conversionValue": 2631.64,
+        "clicks": 573,
+        "impressions": 22955,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 28.21,
+        "conversions": 12,
+        "conversionValue": 456.09,
+        "clicks": 88,
+        "impressions": 4441,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-16": {
+      "meta": {
+        "spend": 147.18,
+        "conversions": 40,
+        "conversionValue": 1086.98,
+        "clicks": 651,
+        "impressions": 28679,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.24,
+        "conversions": 1,
+        "conversionValue": 33.27,
+        "clicks": 79,
+        "impressions": 3939,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-17": {
+      "meta": {
+        "spend": 145.13,
+        "conversions": 40,
+        "conversionValue": 1269.02,
+        "clicks": 614,
+        "impressions": 27192,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 25.78,
+        "conversions": 2,
+        "conversionValue": 65.2,
+        "clicks": 83,
+        "impressions": 4683,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-18": {
+      "meta": {
+        "spend": 139.92,
+        "conversions": 64,
+        "conversionValue": 1497.32,
+        "clicks": 601,
+        "impressions": 24704,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 21.21,
+        "conversions": 3,
+        "conversionValue": 88,
+        "clicks": 67,
+        "impressions": 4679,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-19": {
+      "meta": {
+        "spend": 120.67,
+        "conversions": 80,
+        "conversionValue": 2447.26,
+        "clicks": 531,
+        "impressions": 21983,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.68,
+        "conversions": 3,
+        "conversionValue": 126.36,
+        "clicks": 92,
+        "impressions": 6231,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-20": {
+      "meta": {
+        "spend": 158.13,
+        "conversions": 80,
+        "conversionValue": 2436.64,
+        "clicks": 671,
+        "impressions": 29462,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 23.89,
+        "conversions": 7,
+        "conversionValue": 327.62,
+        "clicks": 92,
+        "impressions": 4297,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-21": {
+      "meta": {
+        "spend": 123.75,
+        "conversions": 24,
+        "conversionValue": 654.67,
+        "clicks": 491,
+        "impressions": 23178,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 19.68,
+        "conversions": 4,
+        "conversionValue": 127.55,
+        "clicks": 68,
+        "impressions": 3037,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-22": {
+      "meta": {
+        "spend": 142.98,
+        "conversions": 72,
+        "conversionValue": 1995.33,
+        "clicks": 499,
+        "impressions": 23659,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 26.63,
+        "conversions": 5,
+        "conversionValue": 150.65,
+        "clicks": 78,
+        "impressions": 4876,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-23": {
+      "meta": {
+        "spend": 159,
+        "conversions": 64,
+        "conversionValue": 1881.81,
+        "clicks": 596,
+        "impressions": 27702,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.83,
+        "conversions": 2,
+        "conversionValue": 66.6,
+        "clicks": 69,
+        "impressions": 3272,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-24": {
+      "meta": {
+        "spend": 134.11,
+        "conversions": 64,
+        "conversionValue": 1525.23,
+        "clicks": 449,
+        "impressions": 22804,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 17.49,
+        "conversions": 3,
+        "conversionValue": 84.4,
+        "clicks": 74,
+        "impressions": 3442,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    },
+    "2026-09-25": {
+      "meta": {
+        "spend": 144.1,
+        "conversions": 48,
+        "conversionValue": 1279.82,
+        "clicks": 475,
+        "impressions": 22365,
+        "source": "Meta Marketing API insights (backfill)"
+      },
+      "google": {
+        "spend": 27.73,
+        "conversions": 2,
+        "conversionValue": 62,
+        "clicks": 85,
+        "impressions": 5668,
+        "source": "Google Ads API GAQL (backfill)"
+      }
+    }
+  }
+}
