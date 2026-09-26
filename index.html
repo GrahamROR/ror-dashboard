@@ -196,6 +196,8 @@ const LTV_CAC_WINDOW_FALLBACK = {
 const LTV_CAC_FALLBACK = {
   updated: null,
   rolling: LTV_CAC_WINDOW_FALLBACK,
+  previousRolling: null,
+  rollingComparison: { status: 'insufficient-history', note: 'Waiting on the first LTV:CAC data pull.' },
   cumulative: { ...LTV_CAC_WINDOW_FALLBACK, window: { ...LTV_CAC_WINDOW_FALLBACK.window, monthsCap: 36 } },
   goals: { targetRatio: 3, minRatio: 1 },
 };
@@ -1607,7 +1609,7 @@ function App() {
           const lc = ltvCacData || LTV_CAC_FALLBACK;
           const goals = lc.goals;
 
-          const renderWindow = (title, desc, w) => {
+          const renderWindow = (title, desc, w, comparison) => {
             const hasRatio = w.ratio != null;
             const ratioCol = !hasRatio ? 'var(--t3)' : w.ratio >= goals.targetRatio ? 'var(--grn)' : w.ratio >= goals.minRatio ? 'var(--amb)' : 'var(--red)';
             const ratioBadge = !hasRatio
@@ -1617,6 +1619,28 @@ function App() {
               :                                { cls: 'badge br', text: 'losing money' };
             const metaMissing   = w.adSpend.meta.spend   == null;
             const googleMissing = w.adSpend.google.spend == null;
+
+            // Up/down vs. the prior 12-month window — only ever rendered when
+            // there's a genuine number behind it. "Better/worse" here means the
+            // ratio moved up or down, not a value judgement either way.
+            let comparisonEl = null;
+            if (comparison) {
+              if (comparison.status === 'ok') {
+                const improved = comparison.absoluteChange >= 0;
+                comparisonEl = el('div', { style: { display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, marginTop: 8, color: improved ? 'var(--grn)' : 'var(--red)' } },
+                  el('i', { className: 'ti ' + (improved ? 'ti-arrow-up-right' : 'ti-arrow-down-right'), style: { fontSize: 13 } }),
+                  el('span', { style: { fontWeight: 500 } }, (improved ? '+' : '') + comparison.absoluteChange.toFixed(1)),
+                  comparison.percentChange != null && el('span', { style: { color: 'var(--t3)' } },
+                    '(' + (comparison.percentChange >= 0 ? '+' : '') + comparison.percentChange.toFixed(1) + '%)'
+                  ),
+                  el('span', { style: { color: 'var(--t3)', fontWeight: 400 } }, 'vs. prior 12mo (' + comparison.previousRatio.toFixed(1) + ':1)')
+                );
+              } else {
+                comparisonEl = el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 8, maxWidth: 260, textAlign: 'right', lineHeight: 1.5 } },
+                  comparison.note || 'Comparison with the prior 12 months isn\'t available yet.'
+                );
+              }
+            }
 
             return el('div', { className: 'card', style: { marginBottom: 16 } },
               el('div', { style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap', marginBottom: 16 } },
@@ -1628,7 +1652,10 @@ function App() {
                       : 'Waiting on the first LTV:CAC data pull'
                   )
                 ),
-                el('div', { className: ratioBadge.cls }, ratioBadge.text)
+                el('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'flex-end' } },
+                  el('div', { className: ratioBadge.cls }, ratioBadge.text),
+                  comparisonEl
+                )
               ),
 
               (metaMissing || googleMissing) && el('div', {
@@ -1683,7 +1710,8 @@ function App() {
             renderWindow(
               'LTV : CAC — rolling 12 months',
               w => 'Trailing ' + w.window.monthsUsed + ' completed month' + (w.window.monthsUsed === 1 ? '' : 's') + ' (' + w.window.since + ' → ' + w.window.until + ')',
-              lc.rolling
+              lc.rolling,
+              lc.rollingComparison
             ),
             renderWindow(
               'LTV : CAC — cumulative',

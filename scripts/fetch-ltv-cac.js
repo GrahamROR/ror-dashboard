@@ -56,6 +56,7 @@ const TARGET_RATIO    = 3;    // usual 3:1 benchmark
 const MIN_RATIO        = 1;    // below 1:1 = losing money on every customer
 const ROLLING_MONTHS   = 12;
 const CUMULATIVE_CAP   = 36;   // 3 years
+const PREVIOUS_ROLLING_MONTHS_NEEDED = ROLLING_MONTHS * 2; // need a full second window behind the current one
 
 // ── DATE HELPERS ─────────────────────────────────────────────
 function firstDayOfMonthKey(key) {
@@ -225,6 +226,37 @@ async function buildWindowResult(label, orderSide, monthsCap) {
   };
 }
 
+// ── ROLLING vs. PRIOR ROLLING COMPARISON ────────────────────────
+// Never fabricates a trend: if there isn't a full second 12-month
+// window of history behind the current one, or either window's ratio
+// couldn't be computed, the comparison says so explicitly rather than
+// showing 0%/an arrow pointing nowhere.
+function compareRolling(current, previous, monthsAvailable) {
+  if (!previous) {
+    return {
+      status: 'insufficient-history',
+      note: `Need ${PREVIOUS_ROLLING_MONTHS_NEEDED} completed months of history to compare against a prior 12-month window — have ${monthsAvailable}.`,
+    };
+  }
+  if (current.ratio == null) {
+    return { status: 'current-unavailable', note: 'This period\'s own ratio isn\'t available yet (see card above).' };
+  }
+  if (previous.ratio == null) {
+    return { status: 'previous-unavailable', note: 'Prior period\'s ad spend or margin data wasn\'t available, so no comparison could be made.' };
+  }
+  const absoluteChange = Math.round((current.ratio - previous.ratio) * 100) / 100;
+  const percentChange = previous.ratio !== 0
+    ? Math.round(((current.ratio / previous.ratio) - 1) * 1000) / 10
+    : null;
+  return {
+    status: 'ok',
+    previousRatio: previous.ratio,
+    previousWindow: { since: previous.window.since, until: previous.window.until },
+    absoluteChange,
+    percentChange,
+  };
+}
+
 // ── MAIN ──────────────────────────────────────────────────────
 async function main() {
   console.log('=== ROR Dashboard — LTV:CAC Fetch ===');
@@ -237,16 +269,30 @@ async function main() {
 
   const rollingMonths    = allMonths.slice(-ROLLING_MONTHS);
   const cumulativeMonths = allMonths.slice(-CUMULATIVE_CAP);
+  // The 12 completed months immediately before the current rolling window —
+  // e.g. if rolling is Oct'25–Sep'26, this is Oct'24–Sep'25. Only exists once
+  // a full second window of history has closed.
+  const previousRollingMonths = allMonths.length >= PREVIOUS_ROLLING_MONTHS_NEEDED
+    ? allMonths.slice(-PREVIOUS_ROLLING_MONTHS_NEEDED, -ROLLING_MONTHS)
+    : null;
 
-  const rollingOrderSide    = aggregateWindow(rollingMonths);
-  const cumulativeOrderSide = aggregateWindow(cumulativeMonths);
+  const rollingOrderSide         = aggregateWindow(rollingMonths);
+  const cumulativeOrderSide      = aggregateWindow(cumulativeMonths);
+  const previousRollingOrderSide = previousRollingMonths ? aggregateWindow(previousRollingMonths) : null;
 
-  const rolling    = await buildWindowResult('rolling 12mo', rollingOrderSide, null);
-  const cumulative = await buildWindowResult('cumulative', cumulativeOrderSide, CUMULATIVE_CAP);
+  const rolling         = await buildWindowResult('rolling 12mo', rollingOrderSide, null);
+  const cumulative      = await buildWindowResult('cumulative', cumulativeOrderSide, CUMULATIVE_CAP);
+  const previousRolling = previousRollingOrderSide
+    ? await buildWindowResult('previous rolling 12mo', previousRollingOrderSide, null)
+    : null;
+
+  const rollingComparison = compareRolling(rolling, previousRolling, allMonths.length);
 
   const output = {
     updated: new Date().toISOString(),
     rolling,
+    previousRolling,
+    rollingComparison,
     cumulative,
     goals: { targetRatio: TARGET_RATIO, minRatio: MIN_RATIO },
   };
@@ -257,6 +303,7 @@ async function main() {
   console.log('\n✓ ltv-cac.json written');
   console.log(`  Rolling 12mo    — LTV: ${rolling.ltv != null ? '£' + rolling.ltv : 'n/a'}  CAC: ${rolling.cac != null ? '£' + rolling.cac : 'n/a'}  Ratio: ${rolling.ratio != null ? rolling.ratio + ':1' : 'n/a'}`);
   console.log(`  Cumulative (${cumulativeOrderSide.monthsUsed}mo) — LTV: ${cumulative.ltv != null ? '£' + cumulative.ltv : 'n/a'}  CAC: ${cumulative.cac != null ? '£' + cumulative.cac : 'n/a'}  Ratio: ${cumulative.ratio != null ? cumulative.ratio + ':1' : 'n/a'}`);
+  console.log(`  vs. prior 12mo  — ${rollingComparison.status === 'ok' ? (rollingComparison.absoluteChange >= 0 ? '+' : '') + rollingComparison.absoluteChange + ' (was ' + rollingComparison.previousRatio + ':1)' : rollingComparison.status}`);
 }
 
 main().catch(e => { console.error('\n✗ Fatal error:', e); process.exit(1); });
