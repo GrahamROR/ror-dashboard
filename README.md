@@ -23,6 +23,9 @@ ror-dashboard/
 ├── ads/                              ← Shopify Growth's "Ads" tab calculations — see below
 │   ├── calculations.js               ← date ranges, aggregation, comparisons — pure functions, unit tested
 │   └── test/calculations.test.js     ← run with `node ads/test/calculations.test.js`
+├── insights/                         ← rules-based "What's working, what's not" analysis engine — no API — see below
+│   ├── rules.js                      ← Overview/Email/Ads verdict + bullet logic — pure functions, unit tested
+│   └── test/rules.test.js            ← run with `node insights/test/rules.test.js`
 ├── dashboard2/                       ← "ROR Sales" dashboard — see Dashboard 2 section below
 │   ├── data-model.js                 ← shared constants: channels, financial-year math, granularities
 │   ├── data-adapter.js               ← where sales records come from (today: demo-data.json)
@@ -150,22 +153,6 @@ After this, the Action runs automatically every day at 6am BST.
 
 ---
 
-### Step 6 — Optional: add Anthropic API key for AI analysis
-
-To enable the "Get insight" button in the dashboard:
-
-Open `index.html` in a text editor and paste your key on line 1 of the script:
-
-```js
-const HARDCODED_KEY = 'sk-ant-your-key-here';
-```
-
-Save, commit, push. The AI analysis button will work without asking for a key.
-
-If you leave it blank, team members can enter their own key when they want to use it.
-
----
-
 ## How it works day to day
 
 **Every morning at 6am:**
@@ -232,13 +219,13 @@ Then run **Actions → Test GA4 API Access → Run workflow** in GitHub.
 
 ---
 
-## Adding the AI key later
+## Analysis engine ("What's working, what's not")
 
-If you want to add the Anthropic API key to the file after initial setup:
-1. Edit `index.html` on GitHub (click the file → pencil icon → edit)
-2. Find `const HARDCODED_KEY = '';` near the top of the script
-3. Change to `const HARDCODED_KEY = 'sk-ant-your-key';`
-4. Commit — GitHub Pages rebuilds in ~30 seconds
+Every tab that has enough numbers to reason about — **Overview**, **Email** and **Ads**, on the Shopify Growth dashboard — carries an always-on "What's working, what's not" card: a plain-English verdict plus a handful of ranked bullets explaining why, and what the usual lever is.
+
+This is deliberately **not** an LLM call. There's no API key, no per-request cost, and it works offline. It's a small rules engine (`insights/rules.js`) that looks at numbers already computed on the page — YTD revenue vs goal pace, AOV/conversion/repeat-rate vs goal, month-on-month trend, product concentration, ROAS trend, spend-vs-conversions divergence, per-channel efficiency and CPA drift, and a Shopify-orders sanity check against platform-reported ad conversions — and fires threshold-based findings, each traceable back to a real number on the page. It never invents a cause it has no data on (it won't tell you "creative fatigue on ad set X" — it doesn't know your ad sets), and it never fires a rule on a missing or insufficient sample (a period that hasn't happened yet, or has no ad spend recorded, gets a neutral "nothing to say yet" instead of a fabricated verdict).
+
+An earlier version of this used the Anthropic API with a user-supplied key — that's gone. See `insights/test/rules.test.js` for the full set of behaviours (verdict thresholds, missing-data handling, the over-attribution flag, the channel-gap noise guard, bullet capping/sorting).
 
 ---
 

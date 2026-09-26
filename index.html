@@ -87,8 +87,6 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div id="root"></div>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
-const HARDCODED_KEY = '';            // paste Anthropic key here to skip AI key entry
-const MODEL         = 'claude-haiku-4-5-20251001';
 const DATA_URL      = './data.json'; // served by GitHub Pages
 const EMAIL_DATA_URL = './email-data.json'; // written nightly by fetch-email-data.js
 const LTV_CAC_DATA_URL = './ltv-cac.json'; // written nightly by fetch-ltv-cac.js
@@ -290,57 +288,36 @@ function dateLabel(dateStr) {
   return new Date(dateStr + 'T12:00:00Z').toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'short',year:'numeric'});
 }
 
-// ── ANTHROPIC ─────────────────────────────────────────────────
-async function callClaude(prompt, key) {
-  const r = await fetch('https://api.anthropic.com/v1/messages', {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key': key,
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true',
-    },
-    body: JSON.stringify({
-      model: MODEL, max_tokens:1024,
-      messages:[{role:'user', content:prompt}]
-    })
-  });
-  const d = await r.json();
-  if (d.error) throw new Error(d.error.message);
-  return d.content?.find(b=>b.type==='text')?.text||'';
-}
+// ── ANALYSIS ENGINE (rules-based, no LLM/API — see insights/rules.js) ──
+// Same card shape used on the Overview, Email and Ads tabs. Always-on:
+// no button, no key, no network call — it's computed synchronously from
+// numbers already on the page, so it updates the instant a filter changes.
+const INSIGHT_TONE_COLOR = { good:'var(--grn)', bad:'var(--red)', watch:'var(--amb)', neutral:'var(--t2)' };
+const INSIGHT_TONE_BG    = { good:'var(--grn-bg)', bad:'var(--red-bg)', watch:'var(--amb-bg)', neutral:'var(--s2)' };
+const INSIGHT_TONE_BDR   = { good:'var(--grn-bdr)', bad:'var(--red-bdr)', watch:'var(--amb-bdr)', neutral:'var(--bdr2)' };
+const INSIGHT_TONE_ICON  = { good:'ti-trending-up', bad:'ti-alert-triangle', watch:'ti-eye', neutral:'ti-info-circle' };
 
-async function getInsight(summary, goal, key) {
-  const p = `You are a straight-talking business analyst for Rock On Ruby, a UK personalised clothing and accessories brand (sweatshirts, caps, accessories — all personalised with DTF print or embroidery).
-
-FY26 Performance (Aug 2025 – Jul 2026):
-- Revenue goal: £${fmt(goal)}
-- YTD revenue: £${fmt(summary.ytdRevenue)} vs £${fmt(ytdTarget(goal, 9))} target (Aug–Apr complete + May MTD)
-- YTD orders: ${fmt(summary.ytdOrders)}
-- Avg AOV: £${summary.avgAOV} (goal: £48 — gap of £${(48-summary.avgAOV).toFixed(2)})
-- Repeat rate: ${fmtP(summary.avgRepeatRate)} (goal: 25%)
-- Sessions: ${summary.ytdSessions ? fmt(summary.ytdSessions)+'/year est.' : 'not yet tracked'}
-- Top product: Personalised Year Sweatshirt = 31% of all revenue (concentration risk)
-- Christmas (Nov+Dec): 26% of annual revenue
-- Jun and Jul 2026: future months, not yet complete
-
-Give 4 bullet points — the most important strategic insight or action for right now. Be direct, specific, commercially sharp. No fluff. Format as plain bullet points starting with •`;
-  return callClaude(p, key);
-}
-
-async function getEmailInsight(es, key) {
-  const p = `You are a straight-talking email/SMS marketing analyst for Rock On Ruby, a UK personalised clothing and accessories brand on Klaviyo.
-
-Last 90 days — Email/SMS program vs KPI goals:
-- Campaign conversion rate (per recipient): ${fmtP(es.campaignConversionRate,3)} (goal: 0.07%) — this is per-recipient, not per-open/click, so it will look tiny next to generic "email conversion" benchmarks
-- Campaign AOV: £${es.campaignAOV} · Flow AOV: £${es.flowAOV} · Blended AOV: £${es.blendedAOV} (goal: £48)
-- Flow share of email revenue: ${fmtP(es.flowSharePct)} (flows £${fmt(es.flowRevenue90d)} vs campaigns £${fmt(es.campaignRevenue90d)})
-- Total email+SMS revenue: £${fmt(es.totalEmailRevenue90d)} vs total store revenue £${fmt(es.totalStoreRevenue90d)} = ${fmtP(es.attribution,1)} attribution (goal: 30%)
-- Repeat purchase rate: ${fmtP(es.repeatPurchaseRate,1)} (goal: 30%)
-- List size: ${es.listSize ? fmt(es.listSize) : 'not tracked yet'} (goal: 50,000)
-
-Give 4 bullet points — the most important strategic insight or action for right now, specific to what's actually weak vs strong here. Be direct and commercially sharp, no fluff. Format as plain bullet points starting with •`;
-  return callClaude(p, key);
+function renderInsightCard(title, subtitle, insight) {
+  const v = insight.verdict;
+  return el('div', {className:'card'},
+    el('div', {style:{marginBottom:14}},
+      el('div', {style:{fontWeight:500,fontSize:14}}, title),
+      el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, subtitle)
+    ),
+    v && el('div', {style:{display:'flex',gap:10,alignItems:'flex-start',padding:'12px 14px',marginBottom:insight.bullets.length?12:0,background:INSIGHT_TONE_BG[v.tone],border:'1px solid '+INSIGHT_TONE_BDR[v.tone],borderRadius:'var(--r)'}},
+      el('i', {className:'ti '+INSIGHT_TONE_ICON[v.tone], style:{color:INSIGHT_TONE_COLOR[v.tone],fontSize:16,marginTop:1,flexShrink:0}}),
+      el('div', {style:{fontSize:13,color:'var(--t1)',lineHeight:1.5,fontWeight:500}}, v.text)
+    ),
+    insight.bullets.length > 0 && el('div', {style:{display:'flex',flexDirection:'column',gap:8}},
+      insight.bullets.map((b,i) => el('div', {key:i, style:{display:'flex',gap:9,alignItems:'flex-start',fontSize:12.5,color:'var(--t1)',lineHeight:1.6}},
+        el('i', {className:'ti '+INSIGHT_TONE_ICON[b.tone], style:{color:INSIGHT_TONE_COLOR[b.tone],fontSize:13,marginTop:2,flexShrink:0}}),
+        el('div', null, b.text)
+      ))
+    ),
+    el('div', {style:{fontSize:10.5,color:'var(--t3)',marginTop:14,paddingTop:10,borderTop:'1px solid var(--bdr)'}},
+      'Rules-based analysis of the numbers already on this page — no AI/API call, no extra cost.'
+    )
+  );
 }
 
 // ── REACT APP ─────────────────────────────────────────────────
@@ -741,12 +718,6 @@ function App() {
   const [activeTab,  setActiveTab]  = useState('overview');
   const [campSort, setCampSort] = useState({ key: 'sendTime', dir: -1 });
   const [flowSort, setFlowSort] = useState({ key: 'revenuePerRecipient', dir: -1 });
-  const [apiKey,     setApiKey]     = useState(HARDCODED_KEY);
-  const [keyIn,      setKeyIn]      = useState('');
-  const [showAI,     setShowAI]     = useState(false);
-  const [aiLoading,  setAiLoading]  = useState(false);
-  const [aiInsight,  setAiInsight]  = useState('');
-  const [aiErr,      setAiErr]      = useState('');
 
   // ── WHAT-IF SLIDER STATE ─────────────────────────────────────
   // projCVR / projAOV default to null (= actuals). When a slider
@@ -763,9 +734,6 @@ function App() {
   const [projEmailAOV,     setProjEmailAOV]     = useState(null);
   const [emailConvLocked,  setEmailConvLocked]  = useState(false);
   const [emailAovLocked,   setEmailAovLocked]   = useState(false);
-  const [emailAiLoading,   setEmailAiLoading]   = useState(false);
-  const [emailAiInsight,   setEmailAiInsight]   = useState('');
-  const [emailAiErr,       setEmailAiErr]       = useState('');
 
   // ── LTV:CAC STATE ────────────────────────────────────────────
   const [ltvCacData,       setLtvCacData]       = useState(null);
@@ -787,19 +755,6 @@ function App() {
   function resetEmailProjection() {
     setProjEmailConv(null); setProjEmailAOV(null);
     setEmailConvLocked(false); setEmailAovLocked(false);
-  }
-
-  async function runEmailAI() {
-    if (!apiKey) { setShowAI(true); return; }
-    setEmailAiLoading(true); setEmailAiErr(''); setEmailAiInsight('');
-    try {
-      const txt = await getEmailInsight(emailData?.summary || {}, apiKey);
-      setEmailAiInsight(txt);
-    } catch (e) {
-      setEmailAiErr(e.message || 'Failed to get insight');
-    } finally {
-      setEmailAiLoading(false);
-    }
   }
 
   // Load data.json on mount
@@ -912,16 +867,6 @@ function App() {
   const sessPerDay_cur    = ordersPerDay_cur  / (effectiveCVR || 0.023);
   const sessPerDay_goal   = ordersPerDay_goal / GOALS.conversion;
   const convActual        = summary.avgConversionRate ?? null;
-
-  async function runAI() {
-    if (!apiKey) { setShowAI(true); return; }
-    setAiLoading(true); setAiErr(''); setAiInsight('');
-    try {
-      const txt = await getInsight(summary, goalRev, apiKey);
-      setAiInsight(txt);
-    } catch(e) { setAiErr(e.message); }
-    setAiLoading(false);
-  }
 
   // ── LOADING ────────────────────────────────────────────────
   if (loading) return el('div', {style:{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:16}},
@@ -1174,39 +1119,11 @@ function App() {
           el(ChannelMixCard, { es: (emailData || EMAIL_FALLBACK).summary })
         ),
 
-        // AI analysis
-        el('div', {className:'card'},
-          el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:aiInsight||showAI?16:0,flexWrap:'wrap',gap:10}},
-            el('div', null,
-              el('div', {style:{fontWeight:500,fontSize:14}}, 'AI Strategic Analysis'),
-              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, 'Claude analyses your numbers and tells you where to focus')
-            ),
-            el('div', {style:{display:'flex',gap:8,alignItems:'center'}},
-              !HARDCODED_KEY && !apiKey && el('button', {
-                onClick:()=>setShowAI(v=>!v),
-                style:{fontSize:12,padding:'5px 12px'}
-              }, el('i',{className:'ti ti-key'}), ' Set API key'),
-              el('button', {
-                onClick:runAI, disabled:aiLoading,
-                style:{background:aiLoading?'transparent':'var(--amb-bg)',color:aiLoading?'var(--t3)':'var(--amb)',borderColor:aiLoading?'var(--bdr)':'var(--amb-bdr)'}
-              },
-                aiLoading ? el('span',{className:'spin'},'⟳') : el('i',{className:'ti ti-cpu'}),
-                aiLoading ? ' Analysing…' : ' Get insight'
-              )
-            )
-          ),
-
-          // API key input
-          showAI && !apiKey && el('div', {style:{marginBottom:12,display:'flex',gap:8}},
-            el('input', {type:'password',placeholder:'sk-ant-...',value:keyIn,onChange:e=>setKeyIn(e.target.value),onKeyDown:e=>e.key==='Enter'&&(setApiKey(keyIn),setShowAI(false)),style:{maxWidth:340}}),
-            el('button', {onClick:()=>{setApiKey(keyIn);setShowAI(false);},style:{whiteSpace:'nowrap'}}, 'Save & run')
-          ),
-
-          aiErr && el('div', {style:{fontSize:12,color:'var(--red)',padding:'10px 14px',background:'var(--red-bg)',borderRadius:'var(--r)',border:'1px solid var(--red-bdr)'}}, aiErr),
-          aiInsight && el('div', {style:{fontSize:13,color:'var(--t1)',lineHeight:1.8,whiteSpace:'pre-wrap',padding:14,background:'var(--s2)',borderRadius:'var(--r)',border:'1px solid var(--bdr2)'}}, aiInsight),
-          !aiInsight && !aiLoading && !showAI && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'20px 0',textAlign:'center'}},
-            'Click "Get insight" to analyse your ',(viewData?.fy||''),' performance against the ',fmtC(goalRev,0),' goal.'
-          )
+        // Analysis — rules-based, no API call (see insights/rules.js)
+        renderInsightCard(
+          'What\'s working, what\'s not',
+          'Automatic read of your revenue, AOV, conversion and repeat-rate numbers vs goal.',
+          InsightRules.buildOverviewInsight({ summary, goals: GOALS, ytdGoal, monthly, topProducts, fyLabel: viewData?.fyLabel })
         )
       ),
 
@@ -1581,35 +1498,11 @@ function App() {
               )
             ),
 
-            // AI analysis
-            el('div', {className:'card'},
-              el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:emailAiInsight||showAI?16:0,flexWrap:'wrap',gap:10}},
-                el('div', null,
-                  el('div', {style:{fontWeight:500,fontSize:14}}, 'AI Strategic Analysis — Email/SMS'),
-                  el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, 'Claude analyses the email program against the KPI goals and tells you where to focus')
-                ),
-                el('div', {style:{display:'flex',gap:8,alignItems:'center'}},
-                  !HARDCODED_KEY && !apiKey && el('button', {
-                    onClick:()=>setShowAI(v=>!v), style:{fontSize:12,padding:'5px 12px'}
-                  }, el('i',{className:'ti ti-key'}), ' Set API key'),
-                  el('button', {
-                    onClick:runEmailAI, disabled:emailAiLoading,
-                    style:{background:emailAiLoading?'transparent':'var(--amb-bg)',color:emailAiLoading?'var(--t3)':'var(--amb)',borderColor:emailAiLoading?'var(--bdr)':'var(--amb-bdr)'}
-                  },
-                    emailAiLoading ? el('span',{className:'spin'},'⟳') : el('i',{className:'ti ti-cpu'}),
-                    emailAiLoading ? ' Analysing…' : ' Get insight'
-                  )
-                )
-              ),
-              showAI && !apiKey && el('div', {style:{marginBottom:12,display:'flex',gap:8}},
-                el('input', {type:'password',placeholder:'sk-ant-...',value:keyIn,onChange:e=>setKeyIn(e.target.value),onKeyDown:e=>e.key==='Enter'&&(setApiKey(keyIn),setShowAI(false)),style:{maxWidth:340}}),
-                el('button', {onClick:()=>{setApiKey(keyIn);setShowAI(false);},style:{whiteSpace:'nowrap'}}, 'Save & run')
-              ),
-              emailAiErr && el('div', {style:{fontSize:12,color:'var(--red)',padding:'10px 14px',background:'var(--red-bg)',borderRadius:'var(--r)',border:'1px solid var(--red-bdr)'}}, emailAiErr),
-              emailAiInsight && el('div', {style:{fontSize:13,color:'var(--t1)',lineHeight:1.8,whiteSpace:'pre-wrap',padding:14,background:'var(--s2)',borderRadius:'var(--r)',border:'1px solid var(--bdr2)'}}, emailAiInsight),
-              !emailAiInsight && !emailAiLoading && !showAI && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'20px 0',textAlign:'center'}},
-                'Click "Get insight" to analyse the email/SMS program against the KPI goals.'
-              )
+            // Analysis — rules-based, no API call (see insights/rules.js)
+            renderInsightCard(
+              'What\'s working, what\'s not — Email/SMS',
+              'Automatic read of attribution, list size, flow share and repeat rate vs goal.',
+              InsightRules.buildEmailInsight({ summary: (emailData || EMAIL_FALLBACK).summary, goals: EMAIL_GOALS_CLIENT })
             )
           );
         })()
@@ -1896,7 +1789,38 @@ function App() {
               )
         );
 
-        return el('div', {className:'fi'}, dateRangeControls, kpiRow, explorerCard, tableCard, shopifyPanel);
+        // ── Analysis — rules-based, no API call (see insights/rules.js) ──
+        const metaCurrent = AdsCalc.adsAggregate(daysData, range.start, range.end, ['meta'], todayStr);
+        const googleCurrent = AdsCalc.adsAggregate(daysData, range.start, range.end, ['google'], todayStr);
+        let adsCtxComparisons = null, adsCtxMetaComparisons = null, adsCtxGoogleComparisons = null;
+        if (comparisonAgg) {
+          adsCtxComparisons = {
+            spend: AdsCalc.adsCompare(current, comparisonAgg, 'spend'),
+            conversions: AdsCalc.adsCompare(current, comparisonAgg, 'conversions'),
+            roas: AdsCalc.adsCompare(current, comparisonAgg, 'roas'),
+          };
+          const metaComparisonAgg = AdsCalc.adsAggregate(daysData, comparisonRange.start, comparisonRange.end, ['meta'], todayStr);
+          const googleComparisonAgg = AdsCalc.adsAggregate(daysData, comparisonRange.start, comparisonRange.end, ['google'], todayStr);
+          adsCtxMetaComparisons = { cpa: AdsCalc.adsCompare(metaCurrent, metaComparisonAgg, 'cpa') };
+          adsCtxGoogleComparisons = { cpa: AdsCalc.adsCompare(googleCurrent, googleComparisonAgg, 'cpa') };
+        }
+        const adsInsightCard = renderInsightCard(
+          'What\'s working, what\'s not',
+          'Automatic read of ROAS trend, spend-vs-results, channel efficiency and Shopify-attribution sanity for the selection above.',
+          InsightRules.buildAdsInsight({
+            current, comparisons: adsCtxComparisons,
+            comparisonLabel: adsComparison === 'previous-year' ? 'the same period last year' : 'the previous period',
+            meta: metaCurrent, google: googleCurrent,
+            metaComparisons: adsCtxMetaComparisons, googleComparisons: adsCtxGoogleComparisons,
+            shopify: {
+              orders: shopifyTotals.orders,
+              sessions: hasShopifySessions ? shopifyTotals.sessions : null,
+              convRate: hasShopifySessions && shopifyTotals.sessions ? shopifyTotals.convertedSessions / shopifyTotals.sessions : null,
+            },
+          })
+        );
+
+        return el('div', {className:'fi'}, dateRangeControls, kpiRow, explorerCard, tableCard, shopifyPanel, adsInsightCard);
       })(),
 
       // ══ MARGIN ══════════════════════════════════════════════
@@ -2098,6 +2022,13 @@ function App() {
      directory. Loaded here (before App() is actually called) so its
      AdsCalc global exists by the time App's render runs. -->
 <script src="ads/calculations.js"></script>
+
+<!-- Rules-based "analysis brain" — plain-English verdicts and suggestions
+     derived from numbers already on the page. Deliberately NOT an LLM/API
+     call (no key, no per-request cost, works offline): see insights/rules.js
+     and insights/test/rules.test.js. Used by the Ads, Overview and Email
+     tabs below. -->
+<script src="insights/rules.js"></script>
 
 <!-- ROR Sales Dashboard ("Dashboard 2") — separate modules, loaded after
      Dashboard 1's script above so they can reuse its el/useState/fmt*
