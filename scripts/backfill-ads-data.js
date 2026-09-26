@@ -36,6 +36,20 @@ function pad(n) { return String(n).padStart(2, '0'); }
 function dateKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
 function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d; }
 
+// See fetch-ads-data.js for why this can't just sum every action_type
+// matching /purchase/i — Meta reports the same sale under several
+// overlapping types (omni_purchase, offsite_conversion.fb_pixel_purchase,
+// purchase, ...), so summing them all double/triple counts.
+const PURCHASE_ACTION_PRIORITY = ['omni_purchase', 'offsite_conversion.fb_pixel_purchase', 'purchase'];
+function extractPurchaseMetrics(actions, actionValues) {
+  const availableTypes = new Set((actions || []).map((a) => a.action_type));
+  const chosenType = PURCHASE_ACTION_PRIORITY.find((t) => availableTypes.has(t));
+  if (!chosenType) return { conversions: 0, conversionValue: 0 };
+  const countRow = (actions || []).find((a) => a.action_type === chosenType);
+  const valueRow = (actionValues || []).find((a) => a.action_type === chosenType);
+  return { conversions: Number(countRow?.value || 0), conversionValue: Number(valueRow?.value || 0) };
+}
+
 // ── META — one bulk call, time_increment=1 gives one row per day ──
 async function fetchMetaRange(since, until) {
   if (!META_ACCESS_TOKEN || !META_AD_ACCOUNT_ID) {
@@ -50,16 +64,13 @@ async function fetchMetaRange(since, until) {
   const json = await resp.json();
   if (!resp.ok || json.error) throw new Error(json.error?.message || `HTTP ${resp.status}`);
 
-  const sumPurchaseActions = (arr) => (arr || [])
-    .filter((a) => /purchase/i.test(a.action_type))
-    .reduce((s, a) => s + Number(a.value || 0), 0);
-
   const byDate = {};
   for (const row of json.data || []) {
+    const { conversions, conversionValue } = extractPurchaseMetrics(row.actions, row.action_values);
     byDate[row.date_start] = {
       spend: Math.round(Number(row.spend || 0) * 100) / 100,
-      conversions: Math.round(sumPurchaseActions(row.actions)),
-      conversionValue: Math.round(sumPurchaseActions(row.action_values) * 100) / 100,
+      conversions: Math.round(conversions),
+      conversionValue: Math.round(conversionValue * 100) / 100,
       clicks: Number(row.clicks || 0),
       impressions: Number(row.impressions || 0),
       source: 'Meta Marketing API insights (backfill)',

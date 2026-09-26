@@ -37,6 +37,23 @@ const GOOGLE_ADS_API_VERSION       = process.env.GOOGLE_ADS_API_VERSION       ||
 const REFRESH_WINDOW_DAYS = 3;
 const OUT_PATH = path.join(__dirname, '..', 'ads-data.json');
 
+// Meta's `actions`/`action_values` arrays report purchases under SEVERAL
+// overlapping action_types at once (omni_purchase, offsite_conversion.
+// fb_pixel_purchase, purchase, onsite_web_purchase, ...) — these are not
+// additive, they're different views of the same sale. Summing every type
+// whose name contains "purchase" double/triple counts. Pick ONE canonical
+// type instead, preferring the cross-device "omni_purchase" Ads Manager
+// itself defaults to, falling back only if an account doesn't report it.
+const PURCHASE_ACTION_PRIORITY = ['omni_purchase', 'offsite_conversion.fb_pixel_purchase', 'purchase'];
+function extractPurchaseMetrics(actions, actionValues) {
+  const availableTypes = new Set((actions || []).map((a) => a.action_type));
+  const chosenType = PURCHASE_ACTION_PRIORITY.find((t) => availableTypes.has(t));
+  if (!chosenType) return { conversions: 0, conversionValue: 0 };
+  const countRow = (actions || []).find((a) => a.action_type === chosenType);
+  const valueRow = (actionValues || []).find((a) => a.action_type === chosenType);
+  return { conversions: Number(countRow?.value || 0), conversionValue: Number(valueRow?.value || 0) };
+}
+
 function pad(n) { return String(n).padStart(2, '0'); }
 function dateKey(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
 function daysAgo(n) { const d = new Date(); d.setDate(d.getDate() - n); return d; }
@@ -64,14 +81,12 @@ async function fetchMetaDay(dateStr) {
     const row = (json.data || [])[0];
     if (!row) return { spend: 0, conversions: 0, conversionValue: 0, clicks: 0, impressions: 0, source: 'Meta Marketing API insights' };
 
-    const sumPurchaseActions = (arr) => (arr || [])
-      .filter((a) => /purchase/i.test(a.action_type))
-      .reduce((s, a) => s + Number(a.value || 0), 0);
+    const { conversions, conversionValue } = extractPurchaseMetrics(row.actions, row.action_values);
 
     return {
       spend: Math.round(Number(row.spend || 0) * 100) / 100,
-      conversions: Math.round(sumPurchaseActions(row.actions)),
-      conversionValue: Math.round(sumPurchaseActions(row.action_values) * 100) / 100,
+      conversions: Math.round(conversions),
+      conversionValue: Math.round(conversionValue * 100) / 100,
       clicks: Number(row.clicks || 0),
       impressions: Number(row.impressions || 0),
       source: 'Meta Marketing API insights',

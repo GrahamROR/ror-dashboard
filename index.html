@@ -1793,6 +1793,72 @@ function App() {
             : el(RorCharts.SalesChart, {type:effectiveChartType, series:chartSeries, comparisonSeries:chartComparisonSeries, formatValue:(v)=>formatAdsMetric(adsMetric, v)})
         );
 
+        // ── period-by-period table — same layout as the agency's
+        // "KPIs by Month" / "12 Month Overview" reports: Google and Meta
+        // side by side plus a blended Total when Series is "Separate per
+        // channel"; a single Total column set when it's "Combined".
+        const TABLE_METRICS = ['spend', 'conversions', 'conversionValue', 'roas'];
+        const TABLE_METRIC_LABEL = { spend: 'Cost', conversions: 'Conversions', conversionValue: 'Conv. Value', roas: 'ROAS' };
+        const TABLE_MAX_ROWS = 60;
+
+        const tableRows = buckets.map((b) => adsSeriesMode === 'byChannel'
+          ? {
+              bucket: b,
+              google: AdsCalc.adsAggregate(daysData, b.start, b.end, ['google'], todayStr),
+              meta: AdsCalc.adsAggregate(daysData, b.start, b.end, ['meta'], todayStr),
+              total: AdsCalc.adsAggregate(daysData, b.start, b.end, ['meta', 'google'], todayStr),
+            }
+          : { bucket: b, combined: AdsCalc.adsAggregate(daysData, b.start, b.end, kpiChannels, todayStr) }
+        );
+        const tableTotals = adsSeriesMode === 'byChannel'
+          ? {
+              google: AdsCalc.adsAggregate(daysData, range.start, range.end, ['google'], todayStr),
+              meta: AdsCalc.adsAggregate(daysData, range.start, range.end, ['meta'], todayStr),
+              total: AdsCalc.adsAggregate(daysData, range.start, range.end, ['meta', 'google'], todayStr),
+            }
+          : { combined: current };
+        const tableGroups = adsSeriesMode === 'byChannel' ? ['google', 'meta', 'total'] : ['combined'];
+        const tableGroupLabel = { google: 'Google', meta: 'Meta', total: 'Total', combined: kpiChannels.length === 2 ? 'Blended' : channelLabel(kpiChannels[0]) };
+        const tableGroupColor = { google: 'var(--blu)', meta: 'var(--grn)', total: 'var(--amb)', combined: 'var(--amb)' };
+
+        const tableCard = el('div', {className:'card', style:{marginBottom:16}},
+          el('div', {style:{marginBottom:14}},
+            el('div', {style:{fontWeight:500,fontSize:14}}, 'Paid ads by period'),
+            el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}},
+              adsSeriesMode === 'byChannel'
+                ? 'Google and Meta side by side, plus blended totals — same layout as the agency report.'
+                : 'Totals for the selected channel. Switch "Series" above to "Separate per channel" for the Google/Meta breakdown.'
+            )
+          ),
+          buckets.length > TABLE_MAX_ROWS
+            ? el('div', {style:{fontSize:12.5,color:'var(--t3)'}}, `This range at ${adsGranularity} granularity would be ${buckets.length} rows — pick a coarser granularity or a shorter range to see the table.`)
+            : el('div', {className:'scroll-x-fade', style:{overflowX:'auto'}},
+                el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:12.5,minWidth: adsSeriesMode === 'byChannel' ? 980 : 520}},
+                  el('thead', null,
+                    adsSeriesMode === 'byChannel' && el('tr', {style:{borderBottom:'1px solid var(--bdr)'}},
+                      el('th', {style:{padding:'6px 10px'}}),
+                      tableGroups.map((g) => el('th', {key:g, colSpan:TABLE_METRICS.length, style:{padding:'6px 10px',textAlign:'center',color:tableGroupColor[g],fontSize:11,borderLeft:'1px solid var(--bdr)'}}, tableGroupLabel[g]))
+                    ),
+                    el('tr', {style:{borderBottom:'1px solid var(--bdr2)'}},
+                      el('th', {style:{padding:'6px 10px',textAlign:'left',color:'var(--t3)',fontSize:11}}, 'Period'),
+                      tableGroups.flatMap((g) => TABLE_METRICS.map((m, mi) => el('th', {key:g+m, style:{padding:'6px 10px',textAlign:'right',color:'var(--t3)',fontSize:11,borderLeft: mi === 0 ? '1px solid var(--bdr)' : undefined}}, TABLE_METRIC_LABEL[m])))
+                    )
+                  ),
+                  el('tbody', null,
+                    tableRows.map((row) => el('tr', {key:row.bucket.key, style:{borderBottom:'1px solid var(--bdr)'}},
+                      el('td', {style:{padding:'7px 10px',whiteSpace:'nowrap'}}, row.bucket.label),
+                      tableGroups.flatMap((g) => TABLE_METRICS.map((m, mi) => el('td', {key:g+m, style:{padding:'7px 10px',textAlign:'right',fontFamily:"'DM Mono',monospace",borderLeft: mi === 0 ? '1px solid var(--bdr)' : undefined}}, formatAdsMetric(m, row[g][m]))))
+                    )),
+                    el('tr', {style:{borderTop:'2px solid var(--bdr2)',fontWeight:600}},
+                      el('td', {style:{padding:'8px 10px'}}, 'Total / weighted avg'),
+                      tableGroups.flatMap((g) => TABLE_METRICS.map((m, mi) => el('td', {key:'tot'+g+m, style:{padding:'8px 10px',textAlign:'right',fontFamily:"'DM Mono',monospace",borderLeft: mi === 0 ? '1px solid var(--bdr)' : undefined}}, formatAdsMetric(m, tableTotals[g][m]))))
+                    )
+                  )
+                )
+              ),
+          el('div', {style:{fontSize:11,color:'var(--t3)',marginTop:10}}, 'ROAS totals are total conversion value ÷ total spend for the period — never an average of the per-row ROAS figures.')
+        );
+
         // ── Shopify actuals comparison panel ────────────────
         const rangeStartMonth = range.start.slice(0, 7);
         const rangeEndMonth = range.end.slice(0, 7);
@@ -1830,7 +1896,7 @@ function App() {
               )
         );
 
-        return el('div', {className:'fi'}, dateRangeControls, kpiRow, explorerCard, shopifyPanel);
+        return el('div', {className:'fi'}, dateRangeControls, kpiRow, explorerCard, tableCard, shopifyPanel);
       })(),
 
       // ══ MARGIN ══════════════════════════════════════════════
