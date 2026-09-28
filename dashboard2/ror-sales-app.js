@@ -20,7 +20,7 @@ const C = RorCalc;
 // ── formatting helpers (metric-aware; reuse dashboard1's fmt/fmtC/fmtP) ──
 function formatMetric(metric, v, short) {
   if (v == null) return '—';
-  if (metric === 'orders') return short ? fmt(v, 0) : fmt(Math.round(v), 0);
+  if (metric === 'orders' || metric === 'units') return fmt(Math.round(v), 0);
   if (metric === 'aov') return fmtC(v, 2);
   return short ? fmtC(v, 0) : fmtC(v, 2);
 }
@@ -53,28 +53,24 @@ function FilterLabel({ children }) {
   return el('div', { className: 'lbl', style: { marginBottom: 4 } }, children);
 }
 
-function StoreSelect({ value, onChange, includeLegacyToggle, includeLegacy, onToggleLegacy }) {
+function StoreSelect({ value, onChange }) {
   const opts = [{ value: 'all', label: 'All Stores' }].concat(
     M.ACTIVE_CHANNELS.map((c) => ({ value: c, label: M.CHANNEL_META[c].label }))
   );
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
     el(FilterLabel, null, 'Store'),
-    el(Select, { value, onChange, options: opts }),
-    includeLegacyToggle && el('label', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--t3)', marginTop: 2, cursor: 'pointer' } },
-      el('input', { type: 'checkbox', checked: includeLegacy, onChange: (e) => onToggleLegacy(e.target.checked) }),
-      'Include closed channels (SilkFred, ASOS)'
-    )
+    el(Select, { value, onChange, options: opts })
   );
 }
 
-function DateRangeSelect({ value, onChange, custom, onCustomChange }) {
+function DateRangeSelect({ value, onChange, custom, onCustomChange, availableStart, availableEnd }) {
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
     el(FilterLabel, null, 'Date range'),
     el(Select, { value, onChange, options: C.DATE_PRESETS.map((p) => ({ value: p.key, label: p.label })) }),
     value === 'custom' && el('div', { style: { display: 'flex', gap: 6, marginTop: 4 } },
-      el('input', { type: 'month', value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
+      el('input', { type: 'date', min: availableStart, max: availableEnd, value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } }),
-      el('input', { type: 'month', value: custom.end || '', onChange: (e) => onCustomChange({ ...custom, end: e.target.value }),
+      el('input', { type: 'date', min: availableStart, max: availableEnd, value: custom.end || '', onChange: (e) => onCustomChange({ ...custom, end: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } })
     )
   );
@@ -118,24 +114,24 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
   );
 }
 
-function KpiSection({ records, channels, range, comparisonMode, setComparisonMode }) {
-  const nowPeriod = C.monthKeyFromDate(new Date());
-  const revAgg = C.aggregate(records, { channels, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowPeriod });
+function KpiSection({ records, channels, range, comparisonMode, setComparisonMode, latestDate }) {
+  const revAgg = C.aggregate(records, { channels, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: latestDate });
   const ordAgg = revAgg; // same aggregate carries both revenue+orders
 
   const prevEq = C.previousEquivalentRange(range.startPeriod, range.endPeriod);
-  const prevAgg = C.aggregate(records, { channels, startPeriod: prevEq.startPeriod, endPeriod: prevEq.endPeriod, nowPeriod });
+  const prevAgg = C.aggregate(records, { channels, startPeriod: prevEq.startPeriod, endPeriod: prevEq.endPeriod, nowDate: latestDate });
 
   const yoyRange = C.yearEarlierRange(range.startPeriod, range.endPeriod);
-  const yoyAgg = C.aggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowPeriod });
+  const yoyAgg = C.aggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowDate: latestDate });
 
   const growthBasisAgg = comparisonMode === 'yoy' ? yoyAgg : prevAgg;
   const growthCmp = C.compareAggregates(revAgg, growthBasisAgg, 'revenue');
 
-  return el('div', { className: 'fi grid-auto', style: { display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }, key: 'kpis' },
+  return el('div', { className: 'fi grid-auto', style: { display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12 }, key: 'kpis' },
     el(KpiCard, { label: 'Revenue', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'revenue'), accentCol: 'var(--amb)' }),
     el(KpiCard, { label: 'Orders', icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'orders'), accentCol: 'var(--blu)' }),
     el(KpiCard, { label: 'Average Order Value', icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'aov'), accentCol: 'var(--pur)' }),
+    el(KpiCard, { label: 'Units', icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'units'), accentCol: 'var(--grn)' }),
     el('div', { className: 'card', style: { display: 'flex', flexDirection: 'column', gap: 0 } },
       el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 } },
         el('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
@@ -155,16 +151,16 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
 }
 
 // ── comparison table (§6) ───────────────────────────────────
-function ComparisonTable({ records, channels }) {
+function ComparisonTable({ records, channels, meta }) {
   const [metric, setMetric] = useState('revenue');
   const [granularity, setGranularity] = useState('monthly');
   const [rangePreset, setRangePreset] = useState('last12Months');
 
-  const range = C.resolveDateRange(rangePreset === 'custom' ? 'last12Months' : rangePreset);
+  const range = C.resolveDateRange(rangePreset, { availableStart: meta.earliest, availableEnd: meta.latest });
   const table = useMemo(() => {
     if (range.unsupported) return null;
     return C.buildComparisonTable(records, {
-      channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod, metric,
+      channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod, metric, nowDate: meta.latest,
     });
   }, [records, channels.join(','), granularity, range.startPeriod, range.endPeriod, metric]);
 
@@ -188,7 +184,7 @@ function ComparisonTable({ records, channels }) {
         el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Replaces the manual month-by-month spreadsheet comparison.')),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
-        el(Select, { value: metric, onChange: setMetric, options: [{ value: 'revenue', label: 'Revenue' }, { value: 'orders', label: 'Orders' }, { value: 'aov', label: 'AOV' }] })),
+        el(Select, { value: metric, onChange: setMetric, options: [{ value: 'revenue', label: 'Revenue' }, { value: 'orders', label: 'Orders' }, { value: 'aov', label: 'AOV' }, { value: 'units', label: 'Units' }] })),
       el(GranularitySelect, { value: granularity, onChange: setGranularity }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Range'),
@@ -196,8 +192,8 @@ function ComparisonTable({ records, channels }) {
           value: rangePreset, onChange: setRangePreset,
           options: [
             { value: 'last12Months', label: 'Last 12 months' },
-            { value: 'thisYear', label: 'This year' },
-            { value: 'lastYear', label: 'Last year' },
+            { value: 'year2025', label: '2025 full year' },
+            { value: 'year2026YTD', label: '2026 year to date' },
             { value: 'currentFY', label: 'Current financial year' },
             { value: 'previousFY', label: 'Previous financial year' },
           ],
@@ -208,7 +204,7 @@ function ComparisonTable({ records, channels }) {
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 720 } },
         el('thead', null,
           el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-            ['Period', metric === 'orders' ? 'Orders' : 'Revenue', 'Previous period', 'Δ (MoM-style)', '% change'].map((h, i) =>
+            ['Period', metric === 'revenue' ? 'Revenue' : metric === 'aov' ? 'AOV' : metric === 'orders' ? 'Orders' : 'Units', 'Previous period', 'Δ (MoM-style)', '% change'].map((h, i) =>
               el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontWeight: 500, fontSize: 11, whiteSpace: 'nowrap' } }, h)
             ),
             showYoyCol && el('th', { key: 'yoyd', style: { textAlign: 'right', padding: '6px 10px', color: 'var(--t3)', fontWeight: 500, fontSize: 11 } }, 'Δ (YoY)'),
@@ -243,11 +239,10 @@ function ComparisonTable({ records, channels }) {
 }
 
 // ── channel contribution (§9) ────────────────────────────────
-function ChannelContribution({ records, range }) {
+function ChannelContribution({ records, range, latestDate }) {
   const [view, setView] = useState('donut');
-  const nowPeriod = C.monthKeyFromDate(new Date());
   const contrib = useMemo(() => C.channelContribution(records, {
-    channels: M.ACTIVE_CHANNELS, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowPeriod,
+    channels: M.ACTIVE_CHANNELS, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: latestDate,
   }), [records, range.startPeriod, range.endPeriod]);
 
   const slices = contrib.channels.map((c) => ({
@@ -277,7 +272,7 @@ function ChannelContribution({ records, range }) {
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto', marginTop: 16 } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 480 } },
         el('thead', null, el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-          ['Channel', 'Revenue', '% of total', 'Orders', 'AOV'].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
+          ['Channel', 'Revenue', '% of total', 'Orders', 'Units', 'AOV'].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
         el('tbody', null, contrib.channels.map((c) => el('tr', { key: c.channel, style: { borderBottom: '1px solid var(--bdr)' } },
           el('td', { style: { padding: '7px 10px', display: 'flex', alignItems: 'center', gap: 6 } },
             el('div', { style: { width: 8, height: 8, borderRadius: 2, background: M.CHANNEL_META[c.channel].color } }),
@@ -285,6 +280,7 @@ function ChannelContribution({ records, range }) {
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.revenue != null ? fmtC(c.revenue, 0) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.pctOfRevenue != null ? fmtP(c.pctOfRevenue) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.orders != null ? fmt(c.orders, 0) : '—'),
+          el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.units != null ? fmt(c.units, 0) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.aov != null ? fmtC(c.aov, 2) : '—')
         )))
       )
@@ -301,7 +297,7 @@ const CHART_TYPES = [
   { key: 'donut', label: 'Donut', icon: 'ti-chart-donut' },
 ];
 
-function SalesExplorer({ records }) {
+function SalesExplorer({ records, meta }) {
   const [metric, setMetric] = useState('revenue');
   const [storeMode, setStoreMode] = useState('all'); // 'all' | channel key | 'byChannel'
   const [rangePreset, setRangePreset] = useState('last12Months');
@@ -309,12 +305,13 @@ function SalesExplorer({ records }) {
   const [granularity, setGranularity] = useState('monthly');
   const [comparison, setComparison] = useState('none');
   const [chartType, setChartType] = useState('bar');
-  const [includeLegacy, setIncludeLegacy] = useState(false);
-
-  const range = C.resolveDateRange(rangePreset, { customStart: customRange.start, customEnd: customRange.end });
+  const range = C.resolveDateRange(rangePreset, {
+    customStart: customRange.start, customEnd: customRange.end,
+    availableStart: meta.earliest, availableEnd: meta.latest,
+  });
 
   const channels = storeMode === 'all' || storeMode === 'byChannel'
-    ? (includeLegacy ? M.ALL_CHANNELS : M.ACTIVE_CHANNELS)
+    ? M.ACTIVE_CHANNELS
     : [storeMode];
   const seriesMode = storeMode === 'byChannel' ? 'byChannel' : 'combined';
 
@@ -323,12 +320,11 @@ function SalesExplorer({ records }) {
   const availableChartTypes = CHART_TYPES.filter((t) => t.key !== 'donut' || seriesMode === 'byChannel');
   const effectiveChartType = availableChartTypes.some((t) => t.key === chartType) ? chartType : 'bar';
 
-  const nowPeriod = C.monthKeyFromDate(new Date());
   const seriesData = useMemo(() => {
     if (range.unsupported) return null;
     return C.buildSeries(records, {
       channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod,
-      metric, seriesMode, comparison, nowPeriod,
+      metric, seriesMode, comparison, nowDate: meta.latest,
     });
   }, [records, channels.join(','), granularity, range.startPeriod, range.endPeriod, metric, seriesMode, comparison]);
 
@@ -349,11 +345,10 @@ function SalesExplorer({ records }) {
     el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 18 } },
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
-        el(Select, { value: metric, onChange: setMetric, options: [{ value: 'revenue', label: 'Revenue' }, { value: 'orders', label: 'Orders' }, { value: 'aov', label: 'AOV' }] })),
+        el(Select, { value: metric, onChange: setMetric, options: [{ value: 'revenue', label: 'Revenue' }, { value: 'orders', label: 'Orders' }, { value: 'aov', label: 'AOV' }, { value: 'units', label: 'Units' }] })),
       el(StoreSelect, {
         value: storeMode === 'byChannel' ? 'all' : storeMode,
         onChange: setStoreMode,
-        includeLegacyToggle: true, includeLegacy, onToggleLegacy: setIncludeLegacy,
       }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Series'),
@@ -361,7 +356,7 @@ function SalesExplorer({ records }) {
           value: seriesMode, onChange: (v) => setStoreMode(v === 'byChannel' ? 'byChannel' : 'all'),
           options: [{ value: 'combined', label: 'Combined' }, { value: 'byChannel', label: 'Separate per store' }],
         })),
-      el(DateRangeSelect, { value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange }),
+      el(DateRangeSelect, { value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange, availableStart: meta.earliest, availableEnd: meta.latest }),
       el(GranularitySelect, { value: granularity, onChange: setGranularity }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Comparison'),
@@ -395,16 +390,20 @@ function RorSalesApp() {
   const [records, setRecords] = useState([]);
   const [topStore, setTopStore] = useState('all');
   const [topRangePreset, setTopRangePreset] = useState('currentFY');
+  const [topCustomRange, setTopCustomRange] = useState({ start: '', end: '' });
   const [comparisonMode, setComparisonMode] = useState('mom');
 
   useEffect(() => {
-    const adapter = RorDataAdapter.createDemoAdapter('dashboard2/demo-data.json');
+    const adapter = RorDataAdapter.createProductionAdapter('dashboard2/sales-data.json');
     adapter.load()
       .then((d) => { setMeta(d.meta); setRecords(d.records); setLoading(false); })
       .catch((e) => { setLoadErr(e.message || 'Failed to load sales data'); setLoading(false); });
   }, []);
 
-  const range = C.resolveDateRange(topRangePreset);
+  const range = meta ? C.resolveDateRange(topRangePreset, {
+    customStart: topCustomRange.start, customEnd: topCustomRange.end,
+    availableStart: meta.earliest, availableEnd: meta.latest,
+  }) : { unsupported: true, reason: 'Sales data is unavailable.' };
   const channels = topStore === 'all' ? M.ACTIVE_CHANNELS : [topStore];
 
   if (loading) {
@@ -417,29 +416,29 @@ function RorSalesApp() {
     el('div', { style: { padding: 16, display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 1280, width: '100%', margin: '0 auto' } },
       meta && el('div', { style: {
         display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px', borderRadius: 20,
-        background: 'var(--amb-bg)', border: '1px solid var(--amb-bdr)', fontSize: 11.5, color: 'var(--amb)', width: 'fit-content',
+        background: 'var(--grn-bg)', border: '1px solid var(--grn)', fontSize: 11.5, color: 'var(--grn)', width: 'fit-content',
       } },
-        el('i', { className: 'ti ti-flask', style: { fontSize: 12 } }),
-        el('span', null, meta.label)
+        el('i', { className: 'ti ti-database', style: { fontSize: 12 } }),
+        el('span', null, `Production sales · ${meta.earliest} to ${meta.latest}`)
       ),
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
-        el(DateRangeSelect, { value: topRangePreset, onChange: setTopRangePreset, custom: {}, onCustomChange: () => {} }),
+        el(DateRangeSelect, { value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
           'KPI cards and channel contribution below use these two filters. The sales explorer and comparison table further down have their own independent controls.')
       ),
 
       range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
-        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode }),
+        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode, latestDate: meta.latest }),
 
-      el(ComparisonTable, { records, channels }),
+      meta && el(ComparisonTable, { records, channels, meta }),
 
-      !range.unsupported && el(ChannelContribution, { records, range }),
+      !range.unsupported && el(ChannelContribution, { records, range, latestDate: meta.latest }),
 
-      el(SalesExplorer, { records }),
+      meta && el(SalesExplorer, { records, meta }),
 
       el('div', { style: { fontSize: 11, color: 'var(--t3)', padding: '4px 4px 24px', lineHeight: 1.7 } },
         el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Revenue definitions differ by channel — see build brief §13:'),

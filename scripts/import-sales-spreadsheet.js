@@ -18,10 +18,9 @@
 //   node import-sales-spreadsheet.js [path/to/workbook.xlsx]
 //     (defaults to ../local-data/Sales Revenue Cashflow.xlsx)
 //
-// Output: local-data/dashboard2-real-data.json — same shape as
-// dashboard2/demo-data.json, so it can be dropped in as a like-for-
-// like swap when eyeballing the dashboard against real figures
-// (again, only ever locally — never point the deployed site at it).
+// Output: local-data/dashboard2-real-data.json — a legacy monthly format that
+// can still be used for local workbook reconciliation. The deployed dashboard
+// reads the production D1 daily export instead.
 //
 // How it parses each channel sheet (Shopify / NOTHS / Etsy /
 // Silk Fred / ASOS): every sheet in the workbook lays months out

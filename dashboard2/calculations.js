@@ -1,359 +1,231 @@
-// ============================================================
-// ROR SALES DASHBOARD 2 — calculations
-// ------------------------------------------------------------
-// Pure functions only (no DOM, no React) so they can be unit
-// tested from plain Node — see dashboard2/test/calculations.test.js.
-//
-// Ground rules encoded here (see build brief §5–§7):
-//  - AOV is always revenue / orders, summed first — never an
-//    average of per-store or per-month AOVs.
-//  - A missing period is never silently treated as zero.
-//  - A future period is "not occurred", not zero, not "no data".
-//  - A percentage change is never computed against a zero or
-//    missing denominator — those return null with a reason.
-//  - A comparison against a month still in progress is labelled
-//    incomplete rather than silently compared to a full period.
-// ============================================================
-
+// Pure commercial reporting calculations over daily D1 sales aggregates.
 (function (root, factory) {
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = factory(require('./data-model.js'));
-  } else {
-    root.RorCalc = factory(root.RorModel);
-  }
+  if (typeof module !== 'undefined' && module.exports) module.exports = factory(require('./data-model.js'));
+  else root.RorCalc = factory(root.RorModel);
 })(typeof window !== 'undefined' ? window : globalThis, function (RorModel) {
 
-const { addMonths, compareMonthKeys, fyInfoForDate, fyInfoForMonth, quarterOfMonth } = RorModel;
-
-function monthKeyFromDate(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`; }
-
-function periodsInRange(startPeriod, endPeriod) {
-  const out = [];
-  let p = startPeriod;
-  while (compareMonthKeys(p, endPeriod) <= 0) { out.push(p); p = addMonths(p, 1); }
-  return out;
+const DAY_MS = 86400000;
+const pad = (n) => String(n).padStart(2, '0');
+function dateKeyFromDate(d) { return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; }
+function monthKeyFromDate(d) { return dateKeyFromDate(d).slice(0, 7); }
+function parseDate(key) {
+  const parts = String(key).slice(0, 10).split('-').map(Number);
+  return new Date(Date.UTC(parts[0], (parts[1] || 1) - 1, parts[2] || 1));
 }
-
-// ── date-range presets ──────────────────────────────────────
-const DAILY_UNSUPPORTED_REASON =
-  "Daily/short-window figures aren't available yet — the connected source data (spreadsheet import + demo fixture) only holds monthly totals. " +
-  "This will switch on once StockHub's daily sales-history export is connected (Phase 2).";
-
-const DAILY_PRESETS = new Set(['today', 'yesterday', 'last7', 'last30']);
+function dateKey(d) { return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`; }
+function addDays(key, n) { const d = parseDate(key); d.setUTCDate(d.getUTCDate() + n); return dateKey(d); }
+function addMonthsDate(key, n) {
+  const d = parseDate(key); const wantedDay = d.getUTCDate();
+  d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() + n);
+  const last = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+  d.setUTCDate(Math.min(wantedDay, last)); return dateKey(d);
+}
+function endOfMonth(key) { const d = parseDate(key); return dateKey(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0))); }
+function startOfMonth(key) { return key.slice(0, 7) + '-01'; }
+function minKey(a, b) { return a < b ? a : b; }
+function maxKey(a, b) { return a > b ? a : b; }
+function normalizeStart(key) { return String(key).length === 7 ? key + '-01' : String(key).slice(0, 10); }
+function normalizeEnd(key) { return String(key).length === 7 ? endOfMonth(key + '-01') : String(key).slice(0, 10); }
 
 const DATE_PRESETS = [
-  { key: 'today', label: 'Today' },
-  { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 days' },
-  { key: 'last30', label: 'Last 30 days' },
+  { key: 'currentFY', label: 'Current financial year' },
+  { key: 'last12Months', label: 'Last 12 months' },
+  { key: 'year2025', label: '2025 full year' },
+  { key: 'year2026YTD', label: '2026 year to date' },
   { key: 'thisMonth', label: 'This month' },
   { key: 'lastMonth', label: 'Last month' },
-  { key: 'thisYear', label: 'This year' },
-  { key: 'lastYear', label: 'Last year' },
-  { key: 'currentFY', label: 'Current financial year' },
-  { key: 'previousFY', label: 'Previous financial year' },
-  { key: 'last12Months', label: 'Last 12 months' },
+  { key: 'last30', label: 'Last 30 days' },
+  { key: 'last7', label: 'Last 7 days' },
   { key: 'custom', label: 'Custom range' },
 ];
 
 function resolveDateRange(presetKey, opts) {
   opts = opts || {};
-  const now = opts.nowDate || new Date();
-  const nowPeriod = monthKeyFromDate(now);
-
-  if (DAILY_PRESETS.has(presetKey)) {
-    return { unsupported: true, reason: DAILY_UNSUPPORTED_REASON, presetKey };
-  }
+  const availableStart = opts.availableStart || '0001-01-01';
+  const availableEnd = opts.availableEnd || dateKeyFromDate(opts.nowDate || new Date());
+  const today = dateKeyFromDate(opts.nowDate || new Date());
+  const anchor = minKey(today, availableEnd);
+  const y = Number(anchor.slice(0, 4));
+  let startDate, endDate, label;
 
   switch (presetKey) {
-    case 'thisMonth':
-      return { startPeriod: nowPeriod, endPeriod: nowPeriod, label: 'This month', presetKey };
+    case 'today': startDate = endDate = anchor; label = 'Today'; break;
+    case 'yesterday': startDate = endDate = addDays(anchor, -1); label = 'Yesterday'; break;
+    case 'last7': startDate = addDays(anchor, -6); endDate = anchor; label = 'Last 7 days'; break;
+    case 'last30': startDate = addDays(anchor, -29); endDate = anchor; label = 'Last 30 days'; break;
+    case 'thisMonth': startDate = startOfMonth(anchor); endDate = anchor; label = 'This month'; break;
     case 'lastMonth': {
-      const p = addMonths(nowPeriod, -1);
-      return { startPeriod: p, endPeriod: p, label: 'Last month', presetKey };
+      const p = addMonthsDate(startOfMonth(anchor), -1);
+      startDate = startOfMonth(p); endDate = endOfMonth(p); label = 'Last month'; break;
     }
-    case 'thisYear': {
-      const y = now.getFullYear();
-      return { startPeriod: `${y}-01`, endPeriod: nowPeriod, label: `This year (Jan–date, ${y})`, presetKey };
-    }
-    case 'lastYear': {
-      const y = now.getFullYear() - 1;
-      return { startPeriod: `${y}-01`, endPeriod: `${y}-12`, label: `Last year (${y})`, presetKey };
-    }
+    case 'thisYear': startDate = `${y}-01-01`; endDate = anchor; label = `${y} year to date`; break;
+    case 'lastYear': startDate = `${y - 1}-01-01`; endDate = `${y - 1}-12-31`; label = String(y - 1); break;
+    case 'year2025': startDate = '2025-01-01'; endDate = '2025-12-31'; label = '2025 full year'; break;
+    case 'year2026YTD': startDate = '2026-01-01'; endDate = minKey(anchor, '2026-12-31'); label = '2026 year to date'; break;
     case 'currentFY': {
-      const fy = fyInfoForDate(now);
-      return { startPeriod: fy.startPeriod, endPeriod: nowPeriod, label: `${fy.fyKey} (to date)`, presetKey };
+      const month = Number(anchor.slice(5, 7)); const startYear = month >= 8 ? y : y - 1;
+      startDate = `${startYear}-08-01`; endDate = anchor; label = `FY${String(startYear + 1).slice(-2)} (to date)`; break;
     }
     case 'previousFY': {
-      const fy = fyInfoForDate(now);
-      const startPeriod = addMonths(fy.startPeriod, -12);
-      const endPeriod = addMonths(fy.endPeriod, -12);
-      const prevFy = fyInfoForMonth(startPeriod);
-      return { startPeriod, endPeriod, label: prevFy.fyKey, presetKey };
+      const month = Number(anchor.slice(5, 7)); const currentStart = month >= 8 ? y : y - 1;
+      startDate = `${currentStart - 1}-08-01`; endDate = `${currentStart}-07-31`; label = `FY${String(currentStart).slice(-2)}`; break;
     }
-    case 'last12Months': {
-      const startPeriod = addMonths(nowPeriod, -11);
-      return { startPeriod, endPeriod: nowPeriod, label: 'Last 12 months', presetKey };
-    }
-    case 'custom': {
-      if (!opts.customStart || !opts.customEnd) {
-        return { unsupported: true, reason: 'Pick a start and end month.', presetKey };
-      }
-      if (compareMonthKeys(opts.customStart, opts.customEnd) > 0) {
-        return { unsupported: true, reason: 'Start month must be before end month.', presetKey };
-      }
-      return { startPeriod: opts.customStart, endPeriod: opts.customEnd, label: 'Custom range', presetKey };
-    }
-    default:
-      return { unsupported: true, reason: 'Unknown date range.', presetKey };
+    case 'last12Months': startDate = addDays(addMonthsDate(anchor, -12), 1); endDate = anchor; label = 'Last 12 months'; break;
+    case 'custom':
+      if (!opts.customStart || !opts.customEnd) return { unsupported: true, reason: 'Pick a start and end date.', presetKey };
+      startDate = normalizeStart(opts.customStart); endDate = normalizeEnd(opts.customEnd); label = 'Custom range'; break;
+    default: return { unsupported: true, reason: 'Unknown date range.', presetKey };
   }
+  if (startDate > endDate) return { unsupported: true, reason: 'Start date must be before end date.', presetKey };
+  if (endDate < availableStart || startDate > availableEnd) {
+    return { unsupported: true, reason: `No imported sales exist outside ${availableStart} to ${availableEnd}.`, presetKey };
+  }
+  startDate = maxKey(startDate, availableStart);
+  endDate = minKey(endDate, availableEnd);
+  return { startDate, endDate, startPeriod: startDate, endPeriod: endDate, label, presetKey };
 }
 
-// ── aggregation ──────────────────────────────────────────────
-// Sums revenue and orders first, THEN divides for AOV — never
-// averages per-record or per-channel AOVs.
 function aggregate(records, opts) {
-  const { channels, startPeriod, endPeriod } = opts;
-  const nowPeriod = opts.nowPeriod || monthKeyFromDate(new Date());
-  const allPeriods = periodsInRange(startPeriod, endPeriod);
-  const occurredPeriods = allPeriods.filter((p) => compareMonthKeys(p, nowPeriod) <= 0);
-
-  if (occurredPeriods.length === 0) {
-    return {
-      revenue: null, orders: null, aov: null,
-      status: 'not-occurred', recordCount: 0, expectedCount: allPeriods.length * channels.length,
-      channels, startPeriod, endPeriod,
-      note: 'This period is in the future.',
-    };
+  const channels = opts.channels;
+  const startDate = normalizeStart(opts.startDate || opts.startPeriod);
+  const endDate = normalizeEnd(opts.endDate || opts.endPeriod);
+  const nowDate = normalizeEnd(opts.nowDate || opts.nowPeriod || dateKeyFromDate(new Date()));
+  if (startDate > nowDate) {
+    return { revenue: null, orders: null, units: null, aov: null, status: 'not-occurred', recordCount: 0, channels, startDate, endDate, note: 'This period is in the future.' };
   }
-
-  const matches = records.filter((r) =>
-    channels.includes(r.channel) &&
-    compareMonthKeys(r.period, startPeriod) >= 0 &&
-    compareMonthKeys(r.period, endPeriod) <= 0
-  );
-
-  const expectedCount = occurredPeriods.length * channels.length;
-  const foundCount = matches.length;
-  const revenue = matches.reduce((s, r) => s + r.revenue, 0);
-  const orders = matches.reduce((s, r) => s + r.orders, 0);
-  const hasPartial = matches.some((r) => r.completeness === 'partial');
-
-  let status;
-  if (foundCount === 0) status = 'no-data';
-  else if (hasPartial) status = 'partial';
-  else if (foundCount < expectedCount) status = 'incomplete-data';
-  else status = 'complete';
-
-  let note = null;
-  if (status === 'no-data') note = 'No data recorded for this period/channel selection.';
-  else if (status === 'incomplete-data') note = `Data missing for ${expectedCount - foundCount} of ${expectedCount} channel-months in this range.`;
-  else if (status === 'partial') note = 'Period still in progress — figures are month-to-date.';
-
+  const matches = records.filter((r) => {
+    const d = r.date || normalizeStart(r.period);
+    return channels.includes(r.channel) && d >= startDate && d <= endDate;
+  });
+  if (!matches.length) {
+    return { revenue: null, orders: null, units: null, aov: null, status: 'no-data', recordCount: 0, channels, startDate, endDate, note: 'No imported sales recorded for this selection.' };
+  }
+  const revenue = matches.reduce((s, r) => s + Number(r.revenue || 0), 0);
+  const orders = matches.reduce((s, r) => s + Number(r.orders || 0), 0);
+  const units = matches.reduce((s, r) => s + Number(r.units || 0), 0);
+  const partial = matches.some((r) => r.completeness === 'partial');
   return {
-    revenue: foundCount ? revenue : null,
-    orders: foundCount ? orders : null,
-    aov: (foundCount && orders > 0) ? revenue / orders : null,
-    status, recordCount: foundCount, expectedCount,
-    channels, startPeriod, endPeriod, note,
+    revenue, orders, units, aov: orders > 0 ? revenue / orders : null,
+    status: partial ? 'partial' : 'complete', recordCount: matches.length,
+    channels, startDate, endDate,
+    note: partial ? 'Includes the latest partially completed sales day.' : null,
   };
 }
 
-// ── comparisons (MoM / YoY / any two aggregates) ────────────
 function compareAggregates(currentAgg, previousAgg, metric) {
   const cur = currentAgg ? currentAgg[metric] : null;
   const prev = previousAgg ? previousAgg[metric] : null;
-
-  if (!currentAgg || currentAgg.status === 'not-occurred') {
-    return { status: 'not-occurred', current: null, previous: prev, absoluteChange: null, percentChange: null,
-      note: 'This period has not happened yet.' };
-  }
-  if (currentAgg.status === 'no-data') {
-    return { status: 'no-comparison-data', current: null, previous: prev, absoluteChange: null, percentChange: null,
-      note: 'No data recorded for the current period.' };
-  }
-  if (!previousAgg || previousAgg.status === 'no-data' || previousAgg.status === 'not-occurred') {
-    return { status: 'no-comparison-data', current: cur, previous: null, absoluteChange: null, percentChange: null,
-      note: 'No comparable data available for the prior period.' };
-  }
-
-  const absoluteChange = (cur != null && prev != null) ? cur - prev : null;
-  let status = 'ok';
-  let percentChange = null;
-  let note = null;
-
-  if (prev === 0) {
-    status = 'zero-denominator';
-    note = 'Prior period is zero — percentage change is not meaningful.';
-  } else if (prev != null && cur != null) {
-    percentChange = (cur / prev - 1) * 100;
-  }
-
-  if (currentAgg.status === 'partial') {
-    status = status === 'ok' ? 'incomplete-current' : status;
-    note = (note ? note + ' ' : '') + 'Current period is still in progress (month-to-date) — not a like-for-like comparison yet.';
-  }
-
-  return { status, current: cur, previous: prev, absoluteChange, percentChange, note };
+  if (!currentAgg || currentAgg.status === 'not-occurred') return { status: 'not-occurred', current: null, previous: prev, absoluteChange: null, percentChange: null, note: 'This period has not happened yet.' };
+  if (currentAgg.status === 'no-data') return { status: 'no-comparison-data', current: null, previous: prev, absoluteChange: null, percentChange: null, note: 'No data recorded for the current period.' };
+  if (!previousAgg || previousAgg.status === 'no-data' || previousAgg.status === 'not-occurred') return { status: 'no-comparison-data', current: cur, previous: null, absoluteChange: null, percentChange: null, note: 'No comparable data available for the prior period.' };
+  const absoluteChange = cur - prev;
+  if (prev === 0) return { status: 'zero-denominator', current: cur, previous: prev, absoluteChange, percentChange: null, note: 'Prior period is zero — percentage change is not meaningful.' };
+  return { status: currentAgg.status === 'partial' ? 'incomplete-current' : 'ok', current: cur, previous: prev, absoluteChange, percentChange: (cur / prev - 1) * 100, note: currentAgg.note };
 }
 
-// ── granularity buckets (monthly / quarterly / FY / calendar-year) ──
-const BUCKET_MONTHS = { monthly: 1, quarterly: 3, 'financial-year': 12, 'calendar-year': 12 };
-
-function alignBucketStart(granularity, periodKey) {
-  const [y, m] = periodKey.split('-').map(Number);
-  if (granularity === 'monthly') return periodKey;
-  if (granularity === 'quarterly') {
-    const q = quarterOfMonth(m);
-    return `${y}-${String((q - 1) * 3 + 1).padStart(2, '0')}`;
-  }
-  if (granularity === 'calendar-year') return `${y}-01`;
-  if (granularity === 'financial-year') {
-    const fy = fyInfoForMonth(periodKey);
-    return fy.startPeriod;
-  }
+function alignBucketStart(granularity, key) {
+  const d = parseDate(normalizeStart(key)); const y = d.getUTCFullYear(); const m = d.getUTCMonth();
+  if (granularity === 'daily') return dateKey(d);
+  if (granularity === 'weekly') { const day = d.getUTCDay() || 7; d.setUTCDate(d.getUTCDate() - day + 1); return dateKey(d); }
+  if (granularity === 'monthly') return `${y}-${pad(m + 1)}-01`;
+  if (granularity === 'quarterly') return `${y}-${pad(Math.floor(m / 3) * 3 + 1)}-01`;
+  if (granularity === 'calendar-year') return `${y}-01-01`;
+  if (granularity === 'financial-year') return `${m >= 7 ? y : y - 1}-08-01`;
   throw new Error('Unknown granularity: ' + granularity);
 }
-
-function makeBucket(granularity, alignedStartPeriod) {
-  const len = BUCKET_MONTHS[granularity];
-  const endPeriod = addMonths(alignedStartPeriod, len - 1);
-  const [y, m] = alignedStartPeriod.split('-').map(Number);
-  let label, key;
-  if (granularity === 'monthly') {
-    label = RorModel.monthLabel(alignedStartPeriod);
-    key = alignedStartPeriod;
-  } else if (granularity === 'quarterly') {
-    const q = quarterOfMonth(m);
-    label = `Q${q} ${y}`;
-    key = `${y}-Q${q}`;
-  } else if (granularity === 'calendar-year') {
-    label = String(y);
-    key = String(y);
-  } else if (granularity === 'financial-year') {
-    const fy = fyInfoForMonth(alignedStartPeriod);
-    label = fy.fyKey;
-    key = fy.fyKey;
-  }
-  return { key, label, startPeriod: alignedStartPeriod, endPeriod, granularity };
+function bucketEnd(granularity, start) {
+  if (granularity === 'daily') return start;
+  if (granularity === 'weekly') return addDays(start, 6);
+  if (granularity === 'monthly') return endOfMonth(start);
+  if (granularity === 'quarterly') return addDays(addMonthsDate(start, 3), -1);
+  return addDays(addMonthsDate(start, 12), -1);
 }
-
-function bucketsForGranularity(granularity, fromPeriod, toPeriod) {
-  const buckets = [];
-  let start = alignBucketStart(granularity, fromPeriod);
-  const len = BUCKET_MONTHS[granularity];
-  while (compareMonthKeys(start, toPeriod) <= 0) {
-    buckets.push(makeBucket(granularity, start));
-    start = addMonths(start, len);
-  }
-  return buckets;
+function nextBucket(granularity, start) {
+  if (granularity === 'daily') return addDays(start, 1);
+  if (granularity === 'weekly') return addDays(start, 7);
+  if (granularity === 'monthly') return addMonthsDate(start, 1);
+  if (granularity === 'quarterly') return addMonthsDate(start, 3);
+  return addMonthsDate(start, 12);
 }
-
-function previousBucket(bucket) {
-  const len = BUCKET_MONTHS[bucket.granularity];
-  return makeBucket(bucket.granularity, addMonths(bucket.startPeriod, -len));
+function bucketLabel(granularity, start) {
+  const d = parseDate(start); const y = d.getUTCFullYear(); const m = d.getUTCMonth() + 1;
+  if (granularity === 'daily') return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  if (granularity === 'weekly') return 'w/c ' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  if (granularity === 'monthly') return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+  if (granularity === 'quarterly') return `Q${Math.floor((m - 1) / 3) + 1} ${y}`;
+  if (granularity === 'calendar-year') return String(y);
+  return 'FY' + String(y + 1).slice(-2);
 }
-
-function yearEarlierBucket(bucket) {
-  return makeBucket(bucket.granularity, addMonths(bucket.startPeriod, -12));
+function makeBucket(granularity, start) { return { key: start, label: bucketLabel(granularity, start), startDate: start, endDate: bucketEnd(granularity, start), startPeriod: start, endPeriod: bucketEnd(granularity, start), granularity }; }
+function bucketsForGranularity(granularity, from, to) {
+  const out = []; let start = alignBucketStart(granularity, from); const end = normalizeEnd(to);
+  while (start <= end) { out.push(makeBucket(granularity, start)); start = nextBucket(granularity, start); }
+  return out;
 }
+function shiftBucket(bucket, direction) {
+  let start;
+  if (bucket.granularity === 'daily') start = addDays(bucket.startDate, direction);
+  else if (bucket.granularity === 'weekly') start = addDays(bucket.startDate, direction * 7);
+  else if (bucket.granularity === 'monthly') start = addMonthsDate(bucket.startDate, direction);
+  else if (bucket.granularity === 'quarterly') start = addMonthsDate(bucket.startDate, direction * 3);
+  else start = addMonthsDate(bucket.startDate, direction * 12);
+  return makeBucket(bucket.granularity, start);
+}
+function previousBucket(bucket) { return shiftBucket(bucket, -1); }
+function yearEarlierBucket(bucket) { return makeBucket(bucket.granularity, addMonthsDate(bucket.startDate, -12)); }
 
-// ── comparison table rows ───────────────────────────────────
-// One row per bucket: current aggregate + MoM-analog (previous
-// bucket) + YoY-analog (same bucket one year earlier). For
-// financial-year / calendar-year granularity these two collapse
-// to the same thing — callers should only show one column then.
 function buildComparisonTable(records, opts) {
-  const { channels, granularity, fromPeriod, toPeriod, metric, nowPeriod } = opts;
-  const buckets = bucketsForGranularity(granularity, fromPeriod, toPeriod);
-
+  const buckets = bucketsForGranularity(opts.granularity, opts.fromPeriod, opts.toPeriod);
   const rows = buckets.map((bucket) => {
-    const current = aggregate(records, { channels, startPeriod: bucket.startPeriod, endPeriod: bucket.endPeriod, nowPeriod });
-    const prevB = previousBucket(bucket);
-    const yoyB = yearEarlierBucket(bucket);
-    const previous = aggregate(records, { channels, startPeriod: prevB.startPeriod, endPeriod: prevB.endPeriod, nowPeriod });
-    const yearAgo = aggregate(records, { channels, startPeriod: yoyB.startPeriod, endPeriod: yoyB.endPeriod, nowPeriod });
-    return {
-      bucket,
-      current,
-      mom: compareAggregates(current, previous, metric),
-      yoy: compareAggregates(current, yearAgo, metric),
-    };
+    const current = aggregate(records, { channels: opts.channels, startDate: bucket.startDate, endDate: bucket.endDate, nowDate: opts.nowDate || opts.nowPeriod });
+    const prev = previousBucket(bucket); const yoy = yearEarlierBucket(bucket);
+    const previous = aggregate(records, { channels: opts.channels, startDate: prev.startDate, endDate: prev.endDate, nowDate: opts.nowDate || opts.nowPeriod });
+    const yearAgo = aggregate(records, { channels: opts.channels, startDate: yoy.startDate, endDate: yoy.endDate, nowDate: opts.nowDate || opts.nowPeriod });
+    return { bucket, current, mom: compareAggregates(current, previous, opts.metric), yoy: compareAggregates(current, yearAgo, opts.metric) };
   });
-
-  // Totals row — summed from underlying records over the whole
-  // range, never by summing/averaging the per-bucket AOV figures.
-  const totalAgg = aggregate(records, { channels, startPeriod: fromPeriod, endPeriod: toPeriod, nowPeriod });
-
-  return { rows, totals: totalAgg, metric, granularity };
+  const totals = aggregate(records, { channels: opts.channels, startDate: opts.fromPeriod, endDate: opts.toPeriod, nowDate: opts.nowDate || opts.nowPeriod });
+  return { rows, totals, metric: opts.metric, granularity: opts.granularity };
 }
 
-// ── arbitrary-range shifts (for KPI-card comparisons, where the
-// selected range isn't necessarily a single aligned bucket) ────
-function rangeLengthMonths(startPeriod, endPeriod) { return periodsInRange(startPeriod, endPeriod).length; }
-
-function previousEquivalentRange(startPeriod, endPeriod) {
-  const len = rangeLengthMonths(startPeriod, endPeriod);
-  const prevEnd = addMonths(startPeriod, -1);
-  const prevStart = addMonths(prevEnd, -(len - 1));
-  return { startPeriod: prevStart, endPeriod: prevEnd };
+function previousEquivalentRange(start, end) {
+  const s = normalizeStart(start), e = normalizeEnd(end);
+  const days = Math.round((parseDate(e) - parseDate(s)) / DAY_MS) + 1;
+  const endDate = addDays(s, -1); const startDate = addDays(endDate, -(days - 1));
+  return { startDate, endDate, startPeriod: startDate, endPeriod: endDate };
 }
-
-function yearEarlierRange(startPeriod, endPeriod) {
-  return { startPeriod: addMonths(startPeriod, -12), endPeriod: addMonths(endPeriod, -12) };
+function yearEarlierRange(start, end) {
+  const startDate = addMonthsDate(normalizeStart(start), -12), endDate = addMonthsDate(normalizeEnd(end), -12);
+  return { startDate, endDate, startPeriod: startDate, endPeriod: endDate };
 }
+function rangeLengthMonths(start, end) { const s = parseDate(normalizeStart(start)), e = parseDate(normalizeEnd(end)); return (e.getUTCFullYear() - s.getUTCFullYear()) * 12 + e.getUTCMonth() - s.getUTCMonth() + 1; }
 
-// ── channel contribution ────────────────────────────────────
 function channelContribution(records, opts) {
-  const { channels, startPeriod, endPeriod, nowPeriod } = opts;
-  const perChannel = channels.map((channel) => {
-    const agg = aggregate(records, { channels: [channel], startPeriod, endPeriod, nowPeriod });
-    return { channel, ...agg };
-  });
-  const totalRevenue = perChannel.reduce((s, c) => s + (c.revenue || 0), 0);
-  const withPct = perChannel.map((c) => ({
-    ...c,
-    pctOfRevenue: (c.revenue != null && totalRevenue > 0) ? c.revenue / totalRevenue : null,
-  }));
-  const totals = aggregate(records, { channels, startPeriod, endPeriod, nowPeriod });
-  return { channels: withPct, totals };
+  const channels = opts.channels.map((channel) => ({ channel, ...aggregate(records, { ...opts, channels: [channel] }) }));
+  const totalRevenue = channels.reduce((s, c) => s + (c.revenue || 0), 0);
+  return {
+    channels: channels.map((c) => ({ ...c, pctOfRevenue: c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
+    totals: aggregate(records, opts),
+  };
 }
 
-// ── chart series ─────────────────────────────────────────────
-// seriesMode: 'combined' (one "All Stores" series) or 'byChannel'
-// (one series per channel). comparison: 'none' | 'previous-period' | 'previous-year'.
 function buildSeries(records, opts) {
-  const { channels, granularity, fromPeriod, toPeriod, metric, seriesMode, comparison, nowPeriod } = opts;
-  const buckets = bucketsForGranularity(granularity, fromPeriod, toPeriod);
-  const seriesChannelGroups = seriesMode === 'byChannel' ? channels.map((c) => [c]) : [channels];
-
-  const series = seriesChannelGroups.map((chGroup) => {
-    const points = buckets.map((bucket) => {
-      const agg = aggregate(records, { channels: chGroup, startPeriod: bucket.startPeriod, endPeriod: bucket.endPeriod, nowPeriod });
-      return { bucket, value: agg[metric], status: agg.status, note: agg.note };
-    });
-    return { key: chGroup.length === 1 ? chGroup[0] : 'all', channels: chGroup, points };
-  });
-
-  let comparisonSeries = null;
-  if (comparison && comparison !== 'none') {
-    comparisonSeries = seriesChannelGroups.map((chGroup) => {
-      const points = buckets.map((bucket) => {
-        const cmpB = comparison === 'previous-year' ? yearEarlierBucket(bucket) : previousBucket(bucket);
-        const agg = aggregate(records, { channels: chGroup, startPeriod: cmpB.startPeriod, endPeriod: cmpB.endPeriod, nowPeriod });
-        return { bucket: cmpB, value: agg[metric], status: agg.status, note: agg.note };
-      });
-      return { key: (chGroup.length === 1 ? chGroup[0] : 'all') + ':compare', channels: chGroup, points };
-    });
-  }
-
-  return { buckets, series, comparisonSeries, metric, granularity };
+  const buckets = bucketsForGranularity(opts.granularity, opts.fromPeriod, opts.toPeriod);
+  const groups = opts.seriesMode === 'byChannel' ? opts.channels.map((c) => [c]) : [opts.channels];
+  const makeSeries = (comparison) => groups.map((channels) => ({
+    key: (channels.length === 1 ? channels[0] : 'all') + (comparison ? ':compare' : ''),
+    channels,
+    points: buckets.map((bucket) => {
+      const target = comparison === 'previous-year' ? yearEarlierBucket(bucket) : comparison === 'previous-period' ? previousBucket(bucket) : bucket;
+      const agg = aggregate(records, { channels, startDate: target.startDate, endDate: target.endDate, nowDate: opts.nowDate || opts.nowPeriod });
+      return { bucket: target, value: agg[opts.metric], status: agg.status, note: agg.note };
+    }),
+  }));
+  return { buckets, series: makeSeries(null), comparisonSeries: opts.comparison && opts.comparison !== 'none' ? makeSeries(opts.comparison) : null, metric: opts.metric, granularity: opts.granularity };
 }
 
 return {
-  monthKeyFromDate, periodsInRange,
-  DATE_PRESETS, DAILY_UNSUPPORTED_REASON, resolveDateRange,
-  aggregate, compareAggregates,
+  dateKeyFromDate, monthKeyFromDate, addDays, addMonthsDate,
+  DATE_PRESETS, resolveDateRange, aggregate, compareAggregates,
   bucketsForGranularity, previousBucket, yearEarlierBucket, alignBucketStart, makeBucket,
   previousEquivalentRange, yearEarlierRange, rangeLengthMonths,
   buildComparisonTable, channelContribution, buildSeries,
