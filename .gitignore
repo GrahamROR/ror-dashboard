@@ -1,4 +1,6 @@
 scripts/node_modules/
+historical-import-worker/node_modules/
+historical-import-worker/.wrangler/
 scripts/package-lock.json
 
 # Real (non-demo) business data — never publish this to the public repo.

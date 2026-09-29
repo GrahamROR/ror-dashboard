@@ -371,3 +371,14 @@ It needs `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_D1_DATABASE_ID` and a read-only
 `CLOUDFLARE_API_TOKEN` as repository secrets. The exporter intentionally queries
 `sales_history_items` without a mapping-status condition, so unmapped sales remain
 in revenue, orders, AOV, units, channel contribution and growth comparisons.
+
+### Background historical imports and reusable archives
+
+`historical-import-worker/` contains the persistent, non-interactive backfill
+system for ROR Sales. It uses a D1 job queue, processes one source/calendar-month
+per hourly run, refreshes recent months daily and weekly, and writes private,
+idempotently regenerated raw JSONL and normalised CSV archives to R2. The 2023
+wave and future 2022–2017 waves are seeded paused, so deployment alone does not
+start historical API usage. See
+[`historical-import-worker/README.md`](historical-import-worker/README.md) for
+deployment, pause/resume, retry, archive and audit instructions.

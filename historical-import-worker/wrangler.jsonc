@@ -1,0 +1,72 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "ror-sales-historical-import",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-29",
+  "services": [
+    {
+      "binding": "STOCKHUB",
+      "service": "stockhub"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "stockhub",
+      "database_id": "c6e4a666-5f90-4747-a9a5-ab57ade5350f",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "SALES_ARCHIVE",
+      "bucket_name": "ror-sales-history-archive"
+    }
+  ],
+  "triggers": {
+    "crons": [
+      "7 * * * *",
+      "15 5 * * *",
+      "45 5 * * 0"
+    ]
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1
+    },
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.05
+    }
+  },
+  "env": {
+    "staging": {
+      "name": "ror-sales-historical-import-staging",
+      "services": [
+        {
+          "binding": "STOCKHUB",
+          "service": "stockhub-staging"
+        }
+      ],
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "stockhub-staging",
+          "database_id": "d0d6d41a-722d-4ba0-9ff0-adcd6f0a80eb",
+          "migrations_dir": "migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "SALES_ARCHIVE",
+          "bucket_name": "ror-sales-history-archive-staging"
+        }
+      ],
+      "triggers": {
+        "crons": []
+      }
+    }
+  }
+}
