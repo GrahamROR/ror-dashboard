@@ -1,21 +1,21 @@
 {
-  "updated": "2026-09-29T09:20:34.296Z",
+  "updated": "2026-09-30T09:11:07.566Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-09-28",
+    "date": "2026-09-29",
     "monthKey": "2026-09",
-    "revenue": 581.46,
-    "orders": 17,
-    "customers": 17,
-    "returning": 3,
-    "repeatRate": 0.176,
-    "aov": 25.68,
-    "sessions": 543,
-    "convertedSessions": 16,
-    "conversionRate": 0.029465930018416207,
-    "shopifyConversionRate": 0.029465930018416207,
-    "margin": 0.51,
-    "profit": 222.73,
+    "revenue": 840.16,
+    "orders": 14,
+    "customers": 14,
+    "returning": 1,
+    "repeatRate": 0.071,
+    "aov": 47.86,
+    "sessions": 514,
+    "convertedSessions": 14,
+    "conversionRate": 0.027237354085603113,
+    "shopifyConversionRate": 0.027237354085603113,
+    "margin": 0.449,
+    "profit": 303.89,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -388,24 +388,24 @@
         {
           "key": "2026-09",
           "label": "Sep 26",
-          "revenue": 16883.51,
-          "netSales": 13036.71,
-          "orders": 437,
-          "aov": 30.2,
-          "customers": 428,
-          "returning": 80,
-          "sessions": 17083,
+          "revenue": 17662.42,
+          "netSales": 13658.3,
+          "orders": 451,
+          "aov": 30.62,
+          "customers": 441,
+          "returning": 81,
+          "sessions": 17600,
           "complete": false,
           "mtd": true,
           "future": false,
-          "convertedSessions": 361,
-          "conversionRate": 0.021132119651115142,
-          "shopifyConversionRate": 0.021132119651115142,
-          "costOfGoodsSold": 5781.2,
-          "grossProfit": 6157.87,
-          "marginPctCovered": 0.516,
-          "costCoverage": 0.916,
-          "estGrossProfit": 6724
+          "convertedSessions": 375,
+          "conversionRate": 0.02130681818181818,
+          "shopifyConversionRate": 0.02130681818181818,
+          "costOfGoodsSold": 6088.2,
+          "grossProfit": 6384.56,
+          "marginPctCovered": 0.512,
+          "costCoverage": 0.913,
+          "estGrossProfit": 6991.41
         },
         {
           "key": "2026-10",
@@ -531,18 +531,18 @@
       "topProducts": [
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 4785.83,
-          "orders": 127
+          "revenue": 4821.83,
+          "orders": 128
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
-          "revenue": 2939.35,
-          "orders": 116
+          "revenue": 3009.55,
+          "orders": 119
         },
         {
           "name": "Personalised Initial Leopard Print Cross Body Bag",
-          "revenue": 2802.42,
-          "orders": 109
+          "revenue": 2830.42,
+          "orders": 110
         },
         {
           "name": "Personalised Initial Leopard Print Backpack",
@@ -550,9 +550,14 @@
           "orders": 41
         },
         {
+          "name": "Personalised 'Only Here For...' Cap",
+          "revenue": 1245.4,
+          "orders": 42
+        },
+        {
           "name": "Happy Hour Slogan Sweatshirt",
-          "revenue": 1163.71,
-          "orders": 32
+          "revenue": 1232.11,
+          "orders": 34
         },
         {
           "name": "Book Lover Mystery Bag",
@@ -560,14 +565,9 @@
           "orders": 26
         },
         {
-          "name": "Personalised 'Only Here For...' Cap",
-          "revenue": 1034.2,
-          "orders": 41
-        },
-        {
           "name": "Personalised Initial Leopard print Tote Bag",
-          "revenue": 933.4,
-          "orders": 37
+          "revenue": 956.8,
+          "orders": 38
         },
         {
           "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
@@ -576,21 +576,21 @@
         }
       ],
       "summary": {
-        "ytdRevenue": 38866.36,
-        "ytdNetSales": 29912.96,
-        "ytdOrders": 1028,
-        "ytdSessions": 41899,
-        "ytdConvertedSessions": 822,
-        "avgConversionRate": 0.0196,
-        "avgAOV": 29.37,
-        "avgRepeatRate": 0.169,
-        "ytdReturning": 171,
-        "ytdCustomers": 1009,
-        "ytdCostOfGoodsSold": 14303.5,
-        "ytdGrossProfit": 14042.89,
-        "ytdMarginPct": 0.495,
-        "ytdCostCoverage": 0.948,
-        "ytdEstGrossProfit": 14806.92
+        "ytdRevenue": 39645.27,
+        "ytdNetSales": 30534.55,
+        "ytdOrders": 1042,
+        "ytdSessions": 42416,
+        "ytdConvertedSessions": 836,
+        "avgConversionRate": 0.0197,
+        "avgAOV": 29.57,
+        "avgRepeatRate": 0.168,
+        "ytdReturning": 172,
+        "ytdCustomers": 1022,
+        "ytdCostOfGoodsSold": 14610.5,
+        "ytdGrossProfit": 14269.58,
+        "ytdMarginPct": 0.494,
+        "ytdCostCoverage": 0.946,
+        "ytdEstGrossProfit": 15084.07
       }
     },
     "FY24": {
