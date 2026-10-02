@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-01T10:16:45.789Z",
+  "updated": "2026-10-02T09:54:04.739Z",
   "rolling": {
     "window": {
       "since": "2025-10-01",
@@ -8,14 +8,14 @@
     },
     "adSpend": {
       "meta": {
-        "spend": 65397.03,
+        "spend": 65397.06,
         "source": "Meta Marketing API insights"
       },
       "google": {
         "spend": 9156.58,
         "source": "Google Ads API GAQL"
       },
-      "blended": 74553.61
+      "blended": 74553.64
     },
     "customerMetrics": {
       "avgAOV": 31.43,
@@ -77,14 +77,14 @@
     },
     "adSpend": {
       "meta": {
-        "spend": 133917.22,
+        "spend": 133917.25,
         "source": "Meta Marketing API insights"
       },
       "google": {
         "spend": 25609.33,
         "source": "Google Ads API GAQL"
       },
-      "blended": 159526.55
+      "blended": 159526.58
     },
     "customerMetrics": {
       "avgAOV": 33.49,
