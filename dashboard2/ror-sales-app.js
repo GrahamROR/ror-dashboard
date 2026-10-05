@@ -124,14 +124,14 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
   const yoyRange = C.yearEarlierRange(range.startPeriod, range.endPeriod);
   const yoyAgg = C.aggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowDate: latestDate });
 
-  const growthBasisAgg = comparisonMode === 'yoy' ? yoyAgg : prevAgg;
-  const growthCmp = C.compareAggregates(revAgg, growthBasisAgg, 'revenue');
+  const comparisonAgg = comparisonMode === 'yoy' ? yoyAgg : prevAgg;
+  const growthCmp = C.compareAggregates(revAgg, comparisonAgg, 'revenue');
 
   return el('div', { className: 'fi grid-auto', style: { display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12 }, key: 'kpis' },
-    el(KpiCard, { label: 'Revenue', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'revenue'), accentCol: 'var(--amb)' }),
-    el(KpiCard, { label: 'Orders', icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'orders'), accentCol: 'var(--blu)' }),
-    el(KpiCard, { label: 'Average Order Value', icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'aov'), accentCol: 'var(--pur)' }),
-    el(KpiCard, { label: 'Units', icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, prevAgg, 'units'), accentCol: 'var(--grn)' }),
+    el(KpiCard, { label: 'Revenue', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
+    el(KpiCard, { label: 'Orders', icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
+    el(KpiCard, { label: 'Average Order Value', icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'aov'), accentCol: 'var(--pur)' }),
+    el(KpiCard, { label: 'Units', icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'units'), accentCol: 'var(--grn)' }),
     el('div', { className: 'card', style: { display: 'flex', flexDirection: 'column', gap: 0 } },
       el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 } },
         el('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
@@ -200,7 +200,7 @@ function ComparisonTable({ records, channels, meta }) {
         }))
     ),
     !table ? el(UnavailableNotice, { reason: range.reason }) :
-    el('div', { className: 'scroll-x-fade table-scroll-hint', style: { overflowX: 'auto' } },
+    el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto' } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 720 } },
         el('thead', null,
           el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
