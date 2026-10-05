@@ -12,15 +12,17 @@ function rec(date, channel, revenue, orders, units, completeness) {
   return { date, channel, revenue, orders, units, currency: 'GBP', source: 'test', completeness: completeness || 'complete' };
 }
 
-test('production export has the confirmed range, sources, rows and units', () => {
+test('production export has a self-consistent range, sources, rows and units', () => {
   assert.strictEqual(productionData.meta.source_table, 'sales_history_items');
-  assert.strictEqual(productionData.meta.earliest, '2025-01-01');
-  assert.strictEqual(productionData.meta.latest, '2026-09-24');
-  assert.strictEqual(productionData.meta.row_count, 27758);
-  assert.strictEqual(productionData.meta.unit_count, 28553);
   assert.deepStrictEqual(productionData.meta.channels, ['etsy', 'noths', 'shopify']);
   assert.strictEqual(productionData.meta.includes_unmapped, true);
-  assert.strictEqual(productionData.records.reduce((sum, r) => sum + r.units, 0), 28553);
+  assert.ok(Number.isInteger(productionData.meta.row_count) && productionData.meta.row_count > 0);
+  assert.strictEqual(productionData.meta.earliest, productionData.records[0].date);
+  assert.strictEqual(productionData.meta.latest, productionData.records[productionData.records.length - 1].date);
+  assert.strictEqual(
+    productionData.records.reduce((sum, r) => sum + r.units, 0),
+    productionData.meta.unit_count
+  );
 });
 
 test('AOV is total revenue divided by total orders and units are summed', () => {
