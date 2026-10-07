@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -41,7 +43,22 @@ jobs:
           git config user.name  "ror-dashboard[bot]"
           git config user.email "dashboard@rockonruby.co.uk"
           git add ltv-cac.json
-          git diff --staged --quiet && echo "No changes to commit" || (
-            git commit -m "chore: LTV:CAC update $(date +'%Y-%m-%d %H:%M %Z')"
-            git push
-          )
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: LTV:CAC update $(date +'%Y-%m-%d %H:%M %Z')"
+
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME:-main}" && git push; then
+              exit 0
+            fi
+
+            echo "Push failed because the remote moved; retrying after rebase (attempt ${attempt}/3)"
+            sleep $((attempt * 5))
+          done
+
+          echo "Failed to push after rebasing remote changes."
+          exit 1
