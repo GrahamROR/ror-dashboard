@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -28,7 +30,22 @@ jobs:
           git config user.name "ror-dashboard[bot]"
           git config user.email "dashboard@rockonruby.co.uk"
           git add dashboard2/sales-data.json
-          git diff --staged --quiet && echo "No changes to commit" || (
-            git commit -m "chore: refresh ROR sales data $(date +'%Y-%m-%d %H:%M UTC')"
-            git push
-          )
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          git commit -m "chore: refresh ROR sales data $(date +'%Y-%m-%d %H:%M UTC')"
+
+          for attempt in 1 2 3; do
+            if git pull --rebase --autostash origin "${GITHUB_REF_NAME:-main}" && git push; then
+              exit 0
+            fi
+
+            echo "Push failed because the remote moved; retrying after rebase (attempt ${attempt}/3)"
+            sleep $((attempt * 5))
+          done
+
+          echo "Failed to push after rebasing remote changes."
+          exit 1
