@@ -1,6 +1,6 @@
 {
-  "snapshot_id": "1bc29cc2b9b08b1dc73155dbac134aa72df5dd4c331d082e2c72732d37786bbe",
-  "source_as_of": "2026-10-08T15:53:39.849Z",
+  "snapshot_id": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
+  "source_as_of": "2026-10-08T20:58:01.441Z",
   "units": "Money in GBP pennies except native AOV in pounds; orders integer",
   "native_periods_verified": 44,
   "benchmark": {
@@ -21,7 +21,7 @@
       "native": 2221046,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -34,7 +34,7 @@
       "native": -193182,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -47,7 +47,7 @@
       "native": -26630,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -60,7 +60,7 @@
       "native": 2001234,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -73,7 +73,7 @@
       "native": 202758,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -86,7 +86,7 @@
       "native": 0,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -99,7 +99,7 @@
       "native": 2203992,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -112,7 +112,7 @@
       "native": 563,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -125,7 +125,7 @@
       "native": 35.919,
       "staged_variance": 0,
       "change_from_growth": -0.001,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-08",
@@ -147,7 +147,7 @@
       "native": 2007472,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -160,7 +160,7 @@
       "native": -171513,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -173,7 +173,7 @@
       "native": -17488,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -186,7 +186,7 @@
       "native": 1818471,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -199,7 +199,7 @@
       "native": 168042,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -212,7 +212,7 @@
       "native": 156707,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -225,7 +225,7 @@
       "native": 2143220,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -238,7 +238,7 @@
       "native": 526,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -251,7 +251,7 @@
       "native": 34.866,
       "staged_variance": 0,
       "change_from_growth": -0.004,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-09",
@@ -273,7 +273,7 @@
       "native": 1801533,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -286,7 +286,7 @@
       "native": -147828,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -299,7 +299,7 @@
       "native": -18432,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -312,7 +312,7 @@
       "native": 1635273,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -325,7 +325,7 @@
       "native": 151508,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -338,7 +338,7 @@
       "native": 322555,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -351,7 +351,7 @@
       "native": 2109336,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -364,7 +364,7 @@
       "native": 515,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -377,7 +377,7 @@
       "native": 32.071,
       "staged_variance": 0,
       "change_from_growth": 0.001,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-10",
@@ -399,7 +399,7 @@
       "native": 3527785,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -412,7 +412,7 @@
       "native": -323395,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -425,7 +425,7 @@
       "native": -52908,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -438,7 +438,7 @@
       "native": 3151482,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -451,7 +451,7 @@
       "native": 250223,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -464,7 +464,7 @@
       "native": 574464,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -477,7 +477,7 @@
       "native": 3976169,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -490,7 +490,7 @@
       "native": 923,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -503,7 +503,7 @@
       "native": 34.662,
       "staged_variance": 0,
       "change_from_growth": 0.002,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-11",
@@ -525,7 +525,7 @@
       "native": 4255470,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -538,7 +538,7 @@
       "native": -323398,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -551,7 +551,7 @@
       "native": -134979,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -564,7 +564,7 @@
       "native": 3797093,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -577,7 +577,7 @@
       "native": 361565,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -590,7 +590,7 @@
       "native": 661156,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -603,7 +603,7 @@
       "native": 4819814,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -616,7 +616,7 @@
       "native": 1159,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -629,7 +629,7 @@
       "native": 33.917,
       "staged_variance": 0,
       "change_from_growth": -0.003,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2025-12",
@@ -651,7 +651,7 @@
       "native": 3190848,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -664,7 +664,7 @@
       "native": -249822,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -677,7 +677,7 @@
       "native": -64960,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -690,7 +690,7 @@
       "native": 2876066,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -703,7 +703,7 @@
       "native": 248349,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -716,7 +716,7 @@
       "native": 567393,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -729,7 +729,7 @@
       "native": 3691808,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -742,7 +742,7 @@
       "native": 901,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -755,7 +755,7 @@
       "native": 32.601,
       "staged_variance": 0,
       "change_from_growth": 0.001,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-01",
@@ -777,7 +777,7 @@
       "native": 1891593,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -790,7 +790,7 @@
       "native": -168003,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -803,7 +803,7 @@
       "native": -40707,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -816,7 +816,7 @@
       "native": 1682883,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -829,7 +829,7 @@
       "native": 155356,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -842,7 +842,7 @@
       "native": 324652,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -855,7 +855,7 @@
       "native": 2162891,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -868,7 +868,7 @@
       "native": 538,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -881,7 +881,7 @@
       "native": 31.976,
       "staged_variance": 0,
       "change_from_growth": -0.004,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-02",
@@ -903,7 +903,7 @@
       "native": 2306243,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -916,7 +916,7 @@
       "native": -195300,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -929,7 +929,7 @@
       "native": -33557,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -942,7 +942,7 @@
       "native": 2077386,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -955,7 +955,7 @@
       "native": 201708,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -968,7 +968,7 @@
       "native": 404934,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -981,7 +981,7 @@
       "native": 2684028,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -994,7 +994,7 @@
       "native": 671,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -1007,7 +1007,7 @@
       "native": 31.429,
       "staged_variance": 0,
       "change_from_growth": -0.001,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-03",
@@ -1029,7 +1029,7 @@
       "native": 1689906,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1042,7 +1042,7 @@
       "native": -144993,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1055,7 +1055,7 @@
       "native": -17544,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1068,7 +1068,7 @@
       "native": 1527369,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1081,7 +1081,7 @@
       "native": 158810,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1094,7 +1094,7 @@
       "native": 305999,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1107,7 +1107,7 @@
       "native": 1992178,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1120,7 +1120,7 @@
       "native": 521,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1133,7 +1133,7 @@
       "native": 29.652,
       "staged_variance": 0,
       "change_from_growth": 0.002,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-04",
@@ -1155,7 +1155,7 @@
       "native": 1811065,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1168,7 +1168,7 @@
       "native": -154529,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1181,7 +1181,7 @@
       "native": -17230,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1194,7 +1194,7 @@
       "native": 1639306,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1207,7 +1207,7 @@
       "native": 171628,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1220,7 +1220,7 @@
       "native": 334871,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1233,7 +1233,7 @@
       "native": 2145805,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1246,7 +1246,7 @@
       "native": 565,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1259,7 +1259,7 @@
       "native": 29.319,
       "staged_variance": 0,
       "change_from_growth": -0.001,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-05",
@@ -1281,7 +1281,7 @@
       "native": 1604301,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1294,7 +1294,7 @@
       "native": -156203,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1307,7 +1307,7 @@
       "native": -16662,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1320,7 +1320,7 @@
       "native": 1431436,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1333,7 +1333,7 @@
       "native": 160521,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1346,7 +1346,7 @@
       "native": 280881,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1359,7 +1359,7 @@
       "native": 1872838,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1372,7 +1372,7 @@
       "native": 505,
       "staged_variance": 0,
       "change_from_growth": 0,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1385,7 +1385,7 @@
       "native": 28.675,
       "staged_variance": 0,
       "change_from_growth": -0.005,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-06",
@@ -1407,7 +1407,7 @@
       "native": 1314839,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1420,7 +1420,7 @@
       "native": -131956,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1433,7 +1433,7 @@
       "native": -20916,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1446,7 +1446,7 @@
       "native": 1161967,
       "staged_variance": 0,
       "change_from_growth": 45825,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1459,7 +1459,7 @@
       "native": 136620,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1472,7 +1472,7 @@
       "native": 243040,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1485,7 +1485,7 @@
       "native": 1541627,
       "staged_variance": 0,
       "change_from_growth": 60884,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1498,7 +1498,7 @@
       "native": 445,
       "staged_variance": 0,
       "change_from_growth": 19,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1511,7 +1511,7 @@
       "native": 26.529,
       "staged_variance": 0,
       "change_from_growth": -0.001,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "2026-07",
@@ -1533,7 +1533,7 @@
       "native": 27622101,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1546,7 +1546,7 @@
       "native": -2360122,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1559,7 +1559,7 @@
       "native": -462013,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1572,7 +1572,7 @@
       "native": 24799966,
       "staged_variance": 0,
       "change_from_growth": 45825,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1585,7 +1585,7 @@
       "native": 2367088,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1598,7 +1598,7 @@
       "native": 4176652,
       "staged_variance": 0,
       "change_from_growth": null,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1611,7 +1611,7 @@
       "native": 31343706,
       "staged_variance": 0,
       "change_from_growth": 60884,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1624,7 +1624,7 @@
       "native": 7832,
       "staged_variance": 0,
       "change_from_growth": 19,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",
@@ -1637,7 +1637,7 @@
       "native": 32.22,
       "staged_variance": 0,
       "change_from_growth": -0.01,
-      "status": "Native aggregate matched; legacy order-ID reconciliation pending"
+      "status": "Native aggregate matched; legacy count basis resolved in order-count-reconciliation.json"
     },
     {
       "period": "FY26",

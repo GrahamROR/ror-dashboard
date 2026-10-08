@@ -35,7 +35,7 @@
     sales_reversals:
       "Native signed reversals, including returns and cancellations, on the date Shopify records the adjustment.",
     net_sales:
-      "Gross merchandise sales plus signed discounts and sales reversals; excludes shipping and taxes. Proposed management default, accountant mapping pending.",
+      "Gross merchandise sales plus signed discounts and sales reversals; preserves Shopify’s reported product-sales and tax treatment. Proposed commercial reporting default; not asserted to be VAT-exclusive accounting turnover.",
     shipping_charges:
       "Native shipping charges after shipping discounts and reversals; excludes taxes.",
     taxes:
@@ -43,7 +43,7 @@
     total_sales:
       "Original Shopify total sales, including shipping, taxes and any additional native components.",
     orders:
-      "Native orders on order date. Shopify includes pending, unpaid and cancelled orders; excludes test and deleted orders. Never summed across product groups.",
+      "Shopify sales report eligible orders on order date. Pending, unpaid and cancelled orders follow native reporting; test/deleted and gift-voucher-only sales are excluded by the source. Never summed across product groups.",
     average_order_value:
       "Original Shopify-reported AOV for this exact interval, before post-order adjustments. Never an average of daily or monthly AOVs.",
     net_aov:
@@ -100,7 +100,7 @@
       missingDays: missing,
       status: missing ? "missing" : "actual",
       reconciliation_status:
-        "native-aggregate-verified; legacy-order-variance-open",
+        "native-aggregate-verified; legacy-counting-basis-difference",
       warnings: [],
     };
     for (const k of ADDITIVE) result[k] = missing ? null : sum(rows, k);

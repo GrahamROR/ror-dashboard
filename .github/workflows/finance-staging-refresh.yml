@@ -1,0 +1,36 @@
+name: Validate Shopify finance refresh in staging
+# Deliberately no schedule and no production write. Enablement needs separate approval.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  staging-refresh:
+    if: github.ref_name == 'codex/pr2-canonical-shopify-finance'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Europe/London
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Refresh through existing fetch entry point (staging only)
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+        run: node scripts/fetch-data.js --finance-staging
+      - name: Verify protected exports remain unchanged
+        run: git diff --exit-code -- data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json
+      - name: Preserve staging audit and rollback evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shopify-finance-staging-${{ github.run_id }}
+          path: |
+            finance/staging/manifest.json
+            finance/staging/refresh-status.json
+            finance/staging/snapshots/
+          retention-days: 30

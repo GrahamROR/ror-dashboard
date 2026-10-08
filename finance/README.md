@@ -1,60 +1,40 @@
-# Canonical Shopify financial reporting — staging
+# Shared Shopify finance behind the existing dashboards
 
-This module implements one Shopify-native aggregate contract for both dashboard entry points. Preview locally with `python3 -m http.server 8767` and open `http://localhost:8767/?finance=staging`. Without that query parameter, existing dashboards and exports retain their original behavior. No deployment, production writer, historical record, Etsy/NOTHS calculation or attribution formula is changed.
+The original Shopify Growth and ROR Sales applications remain the only interface. `index.html` renders their existing components; `?finance=staging` has no routing effect. There is no finance navigation, replacement application or link to an original application. The small Net Sales / Gross Sales / Total Sales selectors share state. The default is proposed net merchandise sales, without claiming VAT-exclusive accounting turnover. The source's tax treatment and native AOV precision are preserved.
 
-The staging financial workspace replaces the financial surfaces in both entry points: overview KPIs, preceding-period comparison, yesterday, monthly explorer, product reporting, Shopify channel amount, and explicit-basis goal scenarios. The original marketing, marketplace, conversion, margin and LTV reports remain reachable via the original-dashboard link. Those estimates are not certified by the new financial reconciliation. A combined-channel net total is deliberately unavailable pending marketplace reconciliation.
+`integration.js` adapts the verified contract to existing KPI, monthly, product, yesterday, comparison, contribution and explorer components. `loader.js` verifies a shared immutable snapshot against its manifest SHA-256. Missing or failed sources display unavailable finance while retaining the original tabs and nonfinancial features. Units retain the original imported calculation and coverage status. Etsy and NOTHS retain their imported amounts; combined revenue/AOV and stacked revenue/share views remain unavailable until their bases are reconciled. Separate channel amounts and charts remain available.
 
-## Files and contract
+Existing annual targets and forecast sliders stay on Total Sales, with the same targets. The model uses total sales per eligible order to project compatible Total Sales. Shopify native AOV remains an independently reported metric; selected-basis sales per order and Net AOV remain separate. Ads platform spend, conversions, conversion value and attribution calculations are unchanged. Only its Shopify actual-order comparison now uses canonical eligible orders for the exact selected interval; sessions/conversion retain the existing monthly source.
 
-- `contract.js`: integer-penny additive measures, definitions, date filtering, monthly/product projections and identical Growth/ROR selectors. Native AOV stays in pounds at source precision; net AOV divides period net sales by period orders. Money is rounded only for display, never for aggregation. Missing observations stay null; absent days suppress period totals and comparisons.
-- `dashboard.js`: shared staging UI and a single cached, SHA-256-verified immutable snapshot loader. Both entry points share selection state. Failed/incompatible/tampered sources show errors instead of falling back to stale financial numbers.
-- `collect.js`: read-only ShopifyQL collector; explicit dates/capture name; API `2026-10`; `read_reports` scope; strict store/currency/timezone checks; bounded retry; failure/row-cap detection; atomic capture. Requires a Node runtime with `fetch` (22 used in CI).
-- `build-staging.js`: validates independently queried monthly/period controls and product totals against daily facts; rejects duplicates, reconciliation failures, unsafe precision and capped extracts. Captured query text, retrieval timestamps and evidence-file hashes accompany each snapshot. Replay of the same evidence is deterministic and cannot duplicate facts.
-- `staging/manifest.json`: the only mutable staging pointer; snapshot file checksum and previous snapshot ID. `snapshots/` retains immutable aggregate versions. Publication/accounting approval remains pending.
-- `reconcile.js`: generates the monthly and FY26 before/after Markdown/JSON report and checks both projections against native control queries. User benchmarks are independent test comparisons; they never enter the calculation path.
-- `rollback.js`: validates snapshot identity and atomically restores an existing staging pointer while retaining both versions.
+## Validation and refresh
 
-Every selected observation carries its store, currency, timezone, interval (inclusive dates and exclusive end), snapshot ID, definition version, missing-day count, data/reconciliation status and warnings. Basis is determined by the metric ID in `DEFINITIONS`. Source identity, adjustment/count policy, retrieval/query provenance and source hashes are inherited from the referenced immutable snapshot. Units and a source-side last-updated timestamp were not returned: they are not inferred. Retrieval time is not claimed to be source update time.
-
-## Safe capture and refresh
-
-Credentials are environment variables and are never committed or sent to the browser:
+- `contract.js`: signed integer-penny financial measures, inclusive London reporting dates, missing-day detection, native orders, independent native AOV, calculated net AOV and product reconciliation.
+- `build-staging.js`: independently queried monthly/FY controls, product totals, source identity, duplicates, truncation/row-cap detection and provenance. Same evidence replays deterministically.
+- `refresh.js`: existing Shopify client credentials, full retained history partitioned by calendar year, London yesterday cutoff, independent native monthly/FY controls, atomic publication only after validation. Late refunds and historical adjustments produce a new immutable snapshot. Failed imports retain the last good pointer and record failure status. Row caps fail closed.
+- `scripts/fetch-data.js --finance-staging`: staged financial path through the existing fetch entry point. Without this flag, the existing production fetch behavior is unchanged.
+- `.github/workflows/finance-staging-refresh.yml`: manual staging-only candidate using existing Shopify secrets and read-only GitHub permissions. Publishes review artifacts only, without committing exports or deploying. No new production schedule is enabled.
+- `reconcile.js`: reproducible original/corrected/native report; supplied benchmarks are comparisons only.
+- `rollback.js`: validate and atomically restore a retained snapshot, preserving both versions.
 
 ```sh
-# Set SHOPIFY_DOMAIN and SHOPIFY_ACCESS_TOKEN in your secure environment first.
-node finance/collect.js --since 2024-01-01 --until 2026-10-07 --capture review-20261008
-node finance/build-staging.js finance/staging/source/review-20261008
+# Secure environment: existing SHOPIFY_STORE, SHOPIFY_CLIENT_ID, SHOPIFY_CLIENT_SECRET,
+# or SHOPIFY_DOMAIN and SHOPIFY_ACCESS_TOKEN. Never put credentials in source/UI.
+node scripts/fetch-data.js --finance-staging
+# Replay an independently captured source without contacting Shopify:
+node scripts/fetch-data.js --finance-staging --from-capture finance/staging/source
 node finance/reconcile.js
-node --test finance/test/finance.test.js
-```
-
-The collector reads source data only. A capture is limited to 1–1,100 days and 25,000 product/day rows; reaching the limit fails instead of publishing an incomplete result. Larger ranges need explicitly partitioned/paginated capture work before publication. No adjustment-lookback duration or automatic closed-year rewrite is chosen as accounting policy. An exact dated capture is the deliberate staged closed-year refresh mechanism. The production `scripts/fetch-data.js` writer is untouched.
-
-`finance/staging/source/` and `finance/local-data/` are gitignored. Preserve raw captures in the private evidence archive; the public snapshot contains only day/product aggregates, native aggregate controls and provenance (no customer/order identifiers). The initial 8 October capture used the connected read-only Shopify API, not the standalone collector. That connector did not expose its Admin API version or source-side update timestamp; those fields remain unverified. Collector transport is separately schema-validated and mock-tested; a direct credentialed collector run has not been claimed.
-
-Native exact-period AOV is captured for all source days, months, FY25/26/27, calendar 2024/2025/2026-to-date, last 12 months/30 days/7 days and the tested custom interval. Other arbitrary intervals still have complete additive financial measures and net AOV, but show unavailable for native AOV until an exact native period query is captured. Never manufacture native AOV from a daily/monthly average.
-
-## Rollback
-
-```sh
+node --test finance/test/*.test.js
 node finance/rollback.js EXISTING_64_CHARACTER_SNAPSHOT_ID
 ```
 
-The current first capture has no predecessor. Automated tests create a second version in an isolated temporary staging directory, switch back and verify both snapshots survive. Remove `?finance=staging` to immediately return to the preserved original local reports. A future production rollout requires a separately approved release/pointer and matching rollback package; this PR has no production publication path.
+The current snapshot contains fresh connected read-only source evidence captured 8 October 2026, through 7 October, with 44 native controls. A previous snapshot is retained. Private captures and order-ID reconciliation are gitignored and archived separately; public snapshots contain aggregates and hashes only. Connected transport did not expose its API version or source-side last-update timestamp; retrieval time is recorded without claiming it is source update time. Partitioned direct Admin transport uses API 2026-10 and is mock-tested end-to-end, including cross-year controls. The actual refresh entry point was replay-tested against fresh connected source; a live GitHub secret-backed run is not claimed.
 
-## Verification
+Exact native AOV is available for captured source periods. Arbitrary custom intervals retain correct additive sales, orders and net/selected-basis AOV; native AOV is unavailable until an exact native query is captured. Never average monthly AOV to invent Shopify's period AOV.
 
-```sh
-node --test finance/test/finance.test.js
-node finance/reconcile.js
-node dashboard2/test/calculations.test.js
-node dashboard2/test/reporting-contract.test.js
-node dashboard2/test/date-controls.test.js
-node ads/test/calculations.test.js
-node insights/test/rules.test.js
-shasum -a 256 -c docs/pr2/production-data.sha256
-```
+## Review and release
 
-Run `finance/test/browser-check.js` with Playwright's `browser_run_code` against port 8767; screenshot output is relative to the runner working directory. Run the P1 browser suite on the same server after changing its local port from 8766 to 8767. Browser coverage includes all 33 preset/basis combinations across both entry points, all five financial sections, source/error states, missing dates, invalid dates, four control months and mobile layouts. Browser tests are recorded locally; the GitHub workflow runs the dependency-free automated suites and reproducible reconciliation. CI skips the two private raw-source replay/validation tests when the private evidence directory is absent; all public snapshot/control tests still run.
+Production exports, workflows/schedules, attribution, Etsy/NOTHS data/calculations and StockHub code/data remain unchanged. No Xero integration exists. Approval is required before merge, deployment, production financial publication or enabling a production canonical refresh. A future approved rollout must publish one shared validated manifest and retain its predecessor for rollback; full-history refresh must continue to cover historical adjustments.
 
-The production checksum baseline is the current PR's preservation evidence. A future independently authorized production-data update must deliberately review/update that baseline; silently refreshing it would defeat this check.
+Automated cases run in `.github/workflows/finance-tests.yml`; raw evidence replay/validation cases run locally and skip in CI if private captures are absent. Existing suites cover ROR calculations/reporting/P1 selectors, Ads and insights. `finance/test/browser-check.js` exercises both original interfaces, all financial bases, all 99 preset-selector combinations, goals/sliders, charts, mobile layouts and source errors, with paired P1/P2 screenshots.
+
+Use `shasum -a 256 -c docs/pr2/production-data.sha256` to verify preserved exports. Never silently replace this baseline.

@@ -1,4 +1,4 @@
-// Select an existing immutable STAGING snapshot. Default production readers are unchanged.
+// Select an existing immutable STAGING snapshot. Existing dashboard readers share this validated pointer; no production data is overwritten.
 const fs = require("node:fs"),
   path = require("node:path");
 const { ROOT, hash, publish } = require("./build-staging");

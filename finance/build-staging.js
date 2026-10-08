@@ -47,6 +47,9 @@ function build(sourceDir) {
       query: raw[name].query || null,
       retrieved_at: raw[name].retrieved_at,
       transport: raw[name].transport,
+      ...(raw[name].partitions
+        ? { partitions: raw[name].partitions, query_executed: false }
+        : {}),
     });
   }
   const shop = raw["shop.json"].data.shop;
@@ -121,7 +124,8 @@ function build(sourceDir) {
       counting:
         "Shopify native sales.orders; order date; no product count summation",
       adjustment: "Shopify native sales event/adjustment date",
-      accounting: "Pending accountant approval; no Xero mapping",
+      accounting:
+        "Commercial reporting; source tax treatment retained, no accounting-turnover assertion",
       money:
         "Integer GBP pennies; native AOV retained at returned decimal precision",
       units: "Unavailable; not inferred",

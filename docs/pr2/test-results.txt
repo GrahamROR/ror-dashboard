@@ -1,35 +1,52 @@
-✔ Money precision is exact, signed and nullable; excessive precision is rejected (0.753459ms)
-✔ Native discounts, partial/full returns and cancellations retain signed adjustments without altering order counts (1.535042ms)
-✔ Shipping-only refunds and mixed/zero tax preserve actual tax; no VAT factor (0.148459ms)
-✔ Missing whole day, full month, tax and reversals stay unavailable, never zero (0.199542ms)
-✔ Native AOV requires exact native interval; zero-price eligible orders have zero net AOV (0.119ms)
-✔ Products preserve unassigned money and do not sum product orders (0.181666ms)
-✔ Unknown total components remain explicit residuals (0.117708ms)
-✔ London calendar dates survive spring/autumn DST, leap day and FY boundaries (12.807875ms)
-✔ Every shared preset returns identical financial projections, including custom and absent 2023 (12.954ms)
-✔ All daily, monthly, annual and custom source controls match both dashboards exactly (62.979625ms)
-✔ Every month and FY product components reconcile at penny precision (150.678292ms)
-✔ Monthly explorer clips custom first and last months (0.358209ms)
-✔ Snapshot payload and file hashes match manifest; no order/customer identifiers (22.02725ms)
-✔ Source parser rejects truncated tables, duplicate count formats and nullable money stays missing (0.35125ms)
-✔ Read-only transport retries rate limits and rejects parser/GraphQL failures without publishing (0.39825ms)
-✔ Collector rejects FX/store changes and failed batches leave staging manifest intact (1.583084ms)
-✔ Production exports, attribution and marketplace inputs remain byte-identical (2.645958ms)
-✔ Idempotent staging replay and rollback preserve immutable facts (92.7155ms)
-✔ Actual native source build is repeatable and source edits fail reconciliation (363.075125ms)
-✔ Rollback switches between two versioned snapshots and retains both histories (133.513917ms)
-✔ Collector assembles a complete custom-period capture; partial batches never become visible (1.915459ms)
-✔ Parse failure midway through capture retains previous snapshot and leaves no capture directory (0.230709ms)
-✔ Duplicate daily facts and changed source currency are rejected by the builder (21.882125ms)
-ℹ tests 23
+P2 corrected existing-interface verification — 8 October 2026
+126 automated cases passed; 0 failed; 0 skipped locally.
+
+finance
+✔ Money precision is exact, signed and nullable; excessive precision is rejected (0.761292ms)
+✔ Native discounts, partial/full returns and cancellations retain signed adjustments without altering order counts (1.341375ms)
+✔ Shipping-only refunds and mixed/zero tax preserve actual tax; no VAT factor (0.142292ms)
+✔ Missing whole day, full month, tax and reversals stay unavailable, never zero (0.240917ms)
+✔ Native AOV requires exact native interval; zero-price eligible orders have zero net AOV (0.127ms)
+✔ Products preserve unassigned money and do not sum product orders (0.22ms)
+✔ Unknown total components remain explicit residuals (0.141708ms)
+✔ London calendar dates survive spring/autumn DST, leap day and FY boundaries (14.023416ms)
+✔ Every shared preset returns identical financial projections, including custom and absent 2023 (12.832583ms)
+✔ All daily, monthly, annual and custom source controls match both dashboards exactly (73.744416ms)
+✔ Every month and FY product components reconcile at penny precision (127.141333ms)
+✔ Monthly explorer clips custom first and last months (0.347625ms)
+✔ Snapshot payload and file hashes match manifest; no order/customer identifiers (18.063834ms)
+✔ Source parser rejects truncated tables, duplicate count formats and nullable money stays missing (0.32875ms)
+✔ Read-only transport retries rate limits and rejects parser/GraphQL failures without publishing (0.396125ms)
+✔ Collector rejects FX/store changes and failed batches leave staging manifest intact (1.575333ms)
+✔ Production exports, attribution and marketplace inputs remain byte-identical (1.820708ms)
+✔ Idempotent staging replay and rollback preserve immutable facts (85.151542ms)
+✔ Actual native source build is repeatable and source edits fail reconciliation (335.094125ms)
+✔ Rollback switches between two versioned snapshots and retains both histories (122.669958ms)
+✔ Collector assembles a complete custom-period capture; partial batches never become visible (1.931459ms)
+✔ Parse failure midway through capture retains previous snapshot and leaves no capture directory (0.223875ms)
+✔ Duplicate daily facts and changed source currency are rejected by the builder (20.3655ms)
+✔ FY26 original Growth sections and ROR all consume identical canonical values for each basis (123.23925ms)
+✔ All eleven presets and custom intervals preserve consistent existing ROR KPIs/table/explorer totals for all three bases (291.480542ms)
+✔ Basis changes do not change orders, purchased units, sessions, conversions, attribution or fixed goal input (20.362625ms)
+✔ Etsy and NOTHS retain byte-equivalent imported aggregates and combined net/total revenue is never shown (31.23375ms)
+✔ Missing finance cannot fall back to stale financial facts; units/marketplace facts remain (1.1365ms)
+✔ Missing dates and partial imported units suppress comparison without changing verified financial counts (3.8145ms)
+✔ Yesterday financial fields use the same source and basis while session/margin inputs retain existing behavior (4.167042ms)
+✔ Late adjustments refresh all retained history, preserve old immutable snapshots and rollback safely (8.579541ms)
+✔ Failed reconciliation keeps last good pointer, records failure and never changes production exports (3.888417ms)
+✔ Full-history partitioning includes all prior dates and London reporting-day boundaries (0.56625ms)
+✔ Refresh uses existing client credentials without logging secrets and reports auth failures safely (0.405667ms)
+✔ Transport refresh partitions full history and validates independent monthly/FY/product controls before publishing (5.069209ms)
+ℹ tests 35
 ℹ suites 0
-ℹ pass 23
+ℹ pass 35
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 972.454542
-Reconciled 44 native control periods; wrote 130 before/after rows.
+ℹ duration_ms 921.318667
+
+ror-calculations
   ok  - production export has a self-consistent range, sources, rows and units
   ok  - AOV is total revenue divided by total orders and units are summed
   ok  - mapping state cannot affect totals because the reporting contract ignores it
@@ -44,6 +61,8 @@ Reconciled 44 native control periods; wrote 130 before/after rows.
   ok  - previous equivalent range uses the same number of days
 
 12 passed, 0 failed
+
+reporting-contract
   ok - all eleven ordered presets work through one resolver
   ok - previous FY is exactly August–July, even with stale history
   ok - FY boundary keeps new FY identity before its first completed day
@@ -64,7 +83,11 @@ Reconciled 44 native control periods; wrote 130 before/after rows.
   ok - metric dictionary distinguishes gross imports, Shopify total sales, attribution and estimates
 
 18 reporting contract tests passed
+
+date-controls
 11 presets × 3 rendered selectors passed; all 6 custom inputs and 4 period labels verified
+
+ads
   ok  - resolveAdsDateRange: today/yesterday/last7/last30 line up
   ok  - resolveAdsDateRange: thisMonth/lastMonth/thisQuarter/thisYear
   ok  - resolveAdsDateRange: custom validates start<=end and requires both dates
@@ -83,6 +106,8 @@ Reconciled 44 native control periods; wrote 130 before/after rows.
   ok  - Ads trailing 365-day legacy preset is labelled accurately
 
 16 passed, 0 failed
+
+insights
   ok - ads: not-occurred period returns neutral verdict, no bullets
   ok - ads: no-data period returns neutral verdict, no bullets
   ok - ads: missing current entirely is treated like not-occurred
@@ -119,13 +144,8 @@ Reconciled 44 native control periods; wrote 130 before/after rows.
   ok - ads: incomplete and partial coverage suppress performance conclusions
 
 34 passed, 0 failed
-data.json: OK
-dashboard2/sales-data.json: OK
-ads-data.json: OK
-email-data.json: OK
-ltv-cac.json: OK
 
-Browser integration (Playwright, 8 October 2026, localhost:8767)
-P2: 33 preset/basis comparisons across both dashboards; 10 dashboard sections; 4 source control months; 5 mobile sections; 2 source failure states; 0 page errors.
-Legacy/P1: 33 preset selections; independent dates verified; no mobile overflow; all 7 Growth tabs; 0 page errors.
-Screenshots in docs/pr2/screenshots.
+Browser PASS: 3 cross-dashboard FY26 bases; 99 preset-selector/basis selections; all 7 Growth tabs; 4 ROR metrics; 6 granularities; 4 explorer chart types; 3 comparisons; goals/CVR/AOV sliders and goal lock/unlock; Email table sorting; Ads platforms, metrics, grains, comparisons and charts; canonical Ads Shopify orders; Margin LTV display. Desktop 1440x1100/mobile390x844: no page overflow. 22 paired screenshots. Manifest fetch and checksum failures preserve original navigation. Failed-refresh status appears in both dashboards while retaining the last validated snapshot. 0 page errors. Expected HTTP503 console entry during intentional failure injection.
+44 independent native control periods and130 before/after rows; zero staged/native financial variance.
+Protected five export SHA-256 checks all OK. Main refreshed: 9fdb6e367589bf47181a5ecb8ad9835848ba7c34, unchanged.
+Earlier browser harness assumptions (P1 store aria labels, goal disabled property, table footer structure, trailing function semicolon) failed during development; corrected harness matches actual original UI. Final suite passes.

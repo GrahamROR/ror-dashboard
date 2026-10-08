@@ -16,7 +16,7 @@
 
 const M = RorModel;
 const C = RorCalc;
-const metricOptions = ['revenue', 'orders', 'aov', 'units'].map((key) => ({ value: key, label: M.METRICS[key].label }));
+const metricOptions = (basis) => ['revenue','orders','aov','units'].map(key=>({value:key,label:key==='revenue'?'Revenue (selected source basis)':key==='orders'?'Orders (source eligible)':key==='aov'?'Sales per order':M.METRICS[key].label}));
 
 // ── formatting helpers (metric-aware; reuse dashboard1's fmt/fmtC/fmtP) ──
 function formatMetric(metric, v, short) {
@@ -24,6 +24,11 @@ function formatMetric(metric, v, short) {
   if (metric === 'orders' || metric === 'units') return fmt(Math.round(v), 0);
   if (metric === 'aov') return fmtC(v, 2);
   return short ? fmtC(v, 0) : fmtC(v, 2);
+}
+
+function metricLabel(metric,channels,basis) {
+  if(channels.length===1&&channels[0]==='shopify')return metric==='revenue'?ShopifyFinance.LABELS[basis]:metric==='orders'?'Shopify eligible orders':metric==='aov'?ShopifyIntegration.aovLabel(basis):M.METRICS[metric].label;
+  return metric==='revenue'&&channels.includes('shopify')?'Sales (channel bases)':M.METRICS[metric].label;
 }
 
 function changeText(cmp) {
@@ -55,13 +60,13 @@ function FilterLabel({ children }) {
   return el('div', { className: 'lbl', style: { marginBottom: 4 } }, children);
 }
 
-function StoreSelect({ value, onChange }) {
+function StoreSelect({ value, onChange, section='Page' }) {
   const opts = [{ value: 'all', label: 'All Stores' }].concat(
     M.ACTIVE_CHANNELS.map((c) => ({ value: c, label: M.CHANNEL_META[c].label }))
   );
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
     el(FilterLabel, null, 'Store'),
-    el(Select, { value, onChange, options: opts })
+    el(Select, { value, onChange, options: opts, ariaLabel:section+' store' })
   );
 }
 
@@ -78,11 +83,11 @@ function DateRangeSelect({ value, onChange, custom, onCustomChange, section = 'R
   );
 }
 
-function GranularitySelect({ value, onChange }) {
+function GranularitySelect({ value, onChange, section='Report' }) {
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
     el(FilterLabel, null, 'Granularity'),
     el(Select, {
-      value, onChange,
+      value, onChange, ariaLabel:section+' granularity',
       options: M.GRANULARITIES.map((g) => ({ value: g.key, label: g.label + (g.supported ? '' : ' (unavailable)'), disabled: !g.supported })),
     })
   );
@@ -107,13 +112,16 @@ function PeriodNotice({ range, records, channels, section }) {
   );
 }
 
-function MetricDefinitions({ meta }) {
-  return el('details', { className: 'card', style: { fontSize: 12, lineHeight: 1.7 } },
-    el('summary', { style: { cursor: 'pointer', color: 'var(--amb)' } }, 'Financial basis: imported gross line sales · Pending reconciliation'),
-    el('div', null, 'These are existing imported amounts. Net merchandise sales ex VAT are not yet verified. Currency is labelled GBP by the exporter; source currency treatment is unverified.'),
-    ['revenue', 'orders', 'aov', 'units'].map((key) => el('div', { key }, M.METRICS[key].label + ': ' + M.METRICS[key].basis)),
-    el('div', null, 'Source: D1 sales_history_items · Exported: ' + (meta.generated_at || 'unknown') + ' · Last reconciled: not yet reconciled.'),
-    el('div', null, 'Presets use Europe/London calendar dates through yesterday. Source days use the stored placed_at date prefix; UTC/BST boundary alignment is unverified. Absent day/channel rows are not assumed to be zero.')
+function MetricDefinitions({ meta, basis, snapshot }) {
+  return el('details', {className:'card',style:{fontSize:12,lineHeight:1.7}},
+    el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},'Financial basis: Shopify '+ShopifyIntegration.labels[basis]+' · Etsy/NOTHS imported gross line sales'),
+    el('div',null,ShopifyFinance.DEFINITIONS[basis]),
+    el('div',null,'Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = net merchandise / orders. Shopify-reported AOV is a separate native metric.'),
+    el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
+    el('div',null,'Etsy/NOTHS revenue, orders and purchased units retain the existing imported definitions. Combined revenue and AOV are unavailable until their financial bases reconcile.'),
+    el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
+    el('div',null,'Legacy ROR FY26 count: 7,834 includes two gift-voucher-only orders. Shopify native sales reporting counts 7,832 eligible merchandise orders. All native eligible IDs match the import; no local order exclusions are applied.'),
+    el('div',null,'Imported export: '+(meta.generated_at||'unknown')+' · Reporting dates use Europe/London through yesterday; absent marketplace rows remain coverage unverified.')
   );
 }
 
@@ -121,13 +129,14 @@ function MetricDefinitions({ meta }) {
 function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
   const value = agg.status === 'not-occurred' ? '—' : agg.status === 'no-data' ? '—' : formatMetric(metric, agg[metric]);
   const chg = changeText(cmp);
-  return el('div', { className: 'card', style: { display: 'flex', flexDirection: 'column', gap: 0 } },
+  return el('div', { className: 'card', 'data-ror-metric':metric, style: { display: 'flex', flexDirection: 'column', gap: 0 } },
     el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 } },
       el('div', { style: { width: 28, height: 28, borderRadius: 6, background: accentCol + '22', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
         el('i', { className: 'ti ' + icon, style: { color: accentCol, fontSize: 14 } })),
-      el('div', { className: 'lbl', title: M.METRICS[metric].basis }, label)
+      el('div', { className: 'lbl', title: agg.financialBasis ? (metric==='revenue'?ShopifyFinance.DEFINITIONS[agg.financialBasis]:metric==='orders'?ShopifyFinance.DEFINITIONS.orders:metric==='aov'?'Selected sales divided by Shopify eligible orders':M.METRICS[metric].basis) : M.METRICS[metric].basis }, label)
     ),
     el('div', { style: { fontSize: 26, fontWeight: 600, color: 'var(--t1)', fontFamily: "'DM Mono',monospace", letterSpacing: '-0.02em', marginBottom: 6 } }, value),
+    metric==='aov' && agg.nativeAov!=null && el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:6}}, 'Shopify-reported AOV: '+fmtC(agg.nativeAov,2)),
     (agg.status === 'no-data' || agg.status === 'not-occurred' || agg.status === 'incomplete-data' || agg.status === 'partial')
       ? el('div', { style: { fontSize: 11, color: 'var(--amb)' }, title: agg.note }, agg.status === 'incomplete-data' ? 'Recorded subtotal · Coverage unverified' : agg.note)
       : el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 } },
@@ -138,7 +147,7 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
   );
 }
 
-function KpiSection({ records, channels, range, comparisonMode, setComparisonMode }) {
+function KpiSection({ records, channels, range, comparisonMode, setComparisonMode, basis }) {
   const revAgg = C.aggregate(records, { channels, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
   const ordAgg = revAgg; // same aggregate carries both revenue+orders
 
@@ -152,9 +161,9 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
   const growthCmp = C.compareAggregates(revAgg, comparisonAgg, 'revenue');
 
   return el('div', { className: 'fi grid-auto', style: { display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12 }, key: 'kpis' },
-    el(KpiCard, { label: M.METRICS.revenue.label, icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
-    el(KpiCard, { label: M.METRICS.orders.label, icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
-    el(KpiCard, { label: M.METRICS.aov.label, icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'aov'), accentCol: 'var(--pur)' }),
+    el(KpiCard, { label: channels.length===1&&channels[0]==='shopify'?ShopifyFinance.LABELS[basis]:'Imported / mixed-basis sales', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
+    el(KpiCard, { label: channels.includes('shopify')?'Eligible / imported orders':M.METRICS.orders.label, icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
+    el(KpiCard, { label: channels.length===1&&channels[0]==='shopify'?ShopifyIntegration.aovLabel(basis):M.METRICS.aov.label, icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'aov'), accentCol: 'var(--pur)' }),
     el(KpiCard, { label: M.METRICS.units.label, icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'units'), accentCol: 'var(--grn)' }),
     el('div', { className: 'card', style: { display: 'flex', flexDirection: 'column', gap: 0 } },
       el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
@@ -175,7 +184,7 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
 }
 
 // ── comparison table (§6) ───────────────────────────────────
-function ComparisonTable({ records, channels, meta }) {
+function ComparisonTable({ records, channels, meta, basis }) {
   const [metric, setMetric] = useState('revenue');
   const [granularity, setGranularity] = useState('monthly');
   const [rangePreset, setRangePreset] = useState('last12Months');
@@ -202,15 +211,15 @@ function ComparisonTable({ records, channels, meta }) {
     );
   }
 
-  return el('div', { className: 'card' },
+  return el('div', { className: 'card','data-ror-section':'comparison' },
     el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end', marginBottom: 16 } },
       el('div', { style: { flex: 1, minWidth: 160 } },
         el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Sales comparison table'),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Own date range; store follows the page filter. Growth is unavailable for incomplete or truncated buckets.')),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
-        el(Select, { value: metric, onChange: setMetric, options: metricOptions })),
-      el(GranularitySelect, { value: granularity, onChange: setGranularity }),
+        el(Select, { value: metric, onChange: setMetric, options: metricOptions(basis),ariaLabel:'Sales comparison metric' })),
+      el(GranularitySelect, { value: granularity, onChange: setGranularity,section:'Sales comparison' }),
       el(DateRangeSelect, { section: 'Sales comparison', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange })
     ),
     el(PeriodNotice, { range, records, channels, section: 'Sales comparison (independent dates; page store filter)' }),
@@ -219,7 +228,7 @@ function ComparisonTable({ records, channels, meta }) {
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 720 } },
         el('thead', null,
           el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-            ['Period', M.METRICS[metric].label, 'Previous period', granularity === 'monthly' ? 'Δ (MoM)' : 'Δ (previous period)', '% change'].map((h, i) =>
+            ['Period', metricLabel(metric,channels,basis), 'Previous period', granularity === 'monthly' ? 'Δ (MoM)' : 'Δ (previous period)', '% change'].map((h, i) =>
               el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontWeight: 500, fontSize: 11, whiteSpace: 'nowrap' } }, h)
             ),
             showYoyCol && el('th', { key: 'yoyd', style: { textAlign: 'right', padding: '6px 10px', color: 'var(--t3)', fontWeight: 500, fontSize: 11 } }, 'Δ (YoY)'),
@@ -242,14 +251,14 @@ function ComparisonTable({ records, channels, meta }) {
           )),
           el('tr', { style: { borderTop: '2px solid var(--bdr2)', fontWeight: 600 } },
             el('td', { style: { padding: '8px 10px' } }, 'Total / weighted avg'),
-            el('td', { style: { padding: '8px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, table.totals.revenue != null ? formatMetric(metric, table.totals[metric]) : '—'),
+            el('td', { style: { padding: '8px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, table.totals[metric] != null ? formatMetric(metric, table.totals[metric]) : '—'),
             el('td', { colSpan: showYoyCol ? 5 : 3 })
           )
         )
       )
     ),
     metric === 'aov' && el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 10 } },
-      M.METRICS.aov.basis + ' Range AOV is weighted by orders.')
+      'Selected sales ÷ eligible/source orders for the interval. Shopify-reported AOV remains independent; mixed-basis combined AOV is unavailable.')
   );
 }
 
@@ -272,7 +281,7 @@ function ChannelContribution({ records, channels, range }) {
     points: [{ bucket: contributionBucket, value: c.revenue, status: c.status, note: c.note }],
   }));
 
-  return el('div', { className: 'card' },
+  return el('div', { className: 'card','data-ror-section':'contribution' },
     el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, marginBottom: 16 } },
       el('div', null,
         el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Channel contribution'),
@@ -288,12 +297,12 @@ function ChannelContribution({ records, channels, range }) {
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto', marginTop: 16 } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 480 } },
         el('thead', null, el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-          ['Channel', M.METRICS.revenue.label, '% of total', M.METRICS.orders.label, M.METRICS.units.label, M.METRICS.aov.label].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
+          ['Channel', 'Sales (channel basis)', '% of comparable total', 'Eligible / imported orders', M.METRICS.units.label, 'Sales per order (channel basis)'].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
         el('tbody', null, contrib.channels.map((c) => el('tr', { key: c.channel, style: { borderBottom: '1px solid var(--bdr)' } },
           el('td', { style: { padding: '7px 10px', display: 'flex', alignItems: 'center', gap: 6 } },
             el('div', { style: { width: 8, height: 8, borderRadius: 2, background: M.CHANNEL_META[c.channel].color } }),
-            M.CHANNEL_META[c.channel].label),
-          el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.revenue != null ? fmtC(c.revenue, 0) : '—'),
+            M.CHANNEL_META[c.channel].label + (c.channel==='shopify'?' · '+ShopifyIntegration.labels[records.finance?.basis||'net_sales']:' · imported gross lines')),
+          el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.revenue != null ? fmtC(c.revenue, 2) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.pctOfRevenue != null ? fmtP(c.pctOfRevenue) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.orders != null ? fmt(c.orders, 0) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.units != null ? fmt(c.units, 0) : '—'),
@@ -313,7 +322,7 @@ const CHART_TYPES = [
   { key: 'donut', label: 'Donut', icon: 'ti-chart-donut' },
 ];
 
-function SalesExplorer({ records, meta }) {
+function SalesExplorer({ records, meta, basis }) {
   const [metric, setMetric] = useState('revenue');
   const [storeMode, setStoreMode] = useState('all'); // 'all' | channel key | 'byChannel'
   const [rangePreset, setRangePreset] = useState('last12Months');
@@ -353,7 +362,7 @@ function SalesExplorer({ records, meta }) {
     });
   }, [seriesData, effectiveChartType]);
 
-  return el('div', { className: 'card' },
+  return el('div', { className: 'card','data-ror-section':'explorer' },
     el('div', { style: { marginBottom: 16 } },
       el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Sales explorer'),
       el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'One chart, many views — switch metric, store, granularity, comparison and chart type without losing your place.')
@@ -361,23 +370,23 @@ function SalesExplorer({ records, meta }) {
     el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 18 } },
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
-        el(Select, { value: metric, onChange: setMetric, options: metricOptions })),
+        el(Select, { value: metric, onChange: setMetric, options: metricOptions(basis),ariaLabel:'Sales explorer metric' })),
       el(StoreSelect, {
-        value: storeMode === 'byChannel' ? 'all' : storeMode,
+        section:'Sales explorer',value: storeMode === 'byChannel' ? 'all' : storeMode,
         onChange: setStoreMode,
       }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Series'),
         el(Select, {
-          value: seriesMode, onChange: (v) => setStoreMode(v === 'byChannel' ? 'byChannel' : 'all'),
+          ariaLabel:'Sales explorer series',value: seriesMode, onChange: (v) => setStoreMode(v === 'byChannel' ? 'byChannel' : 'all'),
           options: [{ value: 'combined', label: 'Combined' }, { value: 'byChannel', label: 'Separate per store' }],
         })),
       el(DateRangeSelect, { section: 'Sales explorer', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange, availableStart: meta.earliest, availableEnd: meta.latest }),
-      el(GranularitySelect, { value: granularity, onChange: setGranularity }),
+      el(GranularitySelect, { value: granularity, onChange: setGranularity,section:'Sales explorer' }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Comparison'),
         el(Select, {
-          value: comparison, onChange: setComparison,
+          ariaLabel:'Sales explorer comparison',value: comparison, onChange: setComparison,
           options: [{ value: 'none', label: 'No comparison' }, { value: 'previous-period', label: 'Previous period' }, { value: 'previous-year', label: 'Previous year' }],
         }))
     ),
@@ -391,6 +400,7 @@ function SalesExplorer({ records, meta }) {
     granularity === 'weekly' && comparison === 'previous-year' && el('div', { style: { color: 'var(--t2)', fontSize: 12 } }, 'Weekly year-on-year aligns weekdays using a 364-day (52-week) shift.'),
     range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
     !seriesData ? null :
+    metric==='revenue' && channels.includes('shopify') && channels.length>1 && (seriesMode==='combined' || effectiveChartType==='stacked-bar' || effectiveChartType==='donut') ? el(UnavailableNotice,{reason:'Combined revenue, stacked revenue and revenue shares require reconciled channel bases. Separate per-store bar/line/area views remain available.'}) :
     effectiveChartType === 'donut'
       ? (C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate }).status !== 'complete' ? el(UnavailableNotice, { reason: 'Complete channel coverage is required for contribution charts.' }) : el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) }))
       : el(RorCharts.SalesChart, {
@@ -401,11 +411,12 @@ function SalesExplorer({ records, meta }) {
 }
 
 // ── top-level Dashboard 2 ────────────────────────────────────
-function RorSalesApp() {
+function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBasis=()=>{},financeError}={}) {
   const [loading, setLoading] = useState(true);
   const [loadErr, setLoadErr] = useState('');
   const [meta, setMeta] = useState(null);
-  const [records, setRecords] = useState([]);
+  const [importedRecords, setRecords] = useState([]);
+  const records = useMemo(()=>ShopifyIntegration.rorRecords(importedRecords,financeSnapshot,financialBasis,financeError),[importedRecords,financeSnapshot,financialBasis,financeError]);
   const [topStore, setTopStore] = useState('all');
   const [topRangePreset, setTopRangePreset] = useState('currentFY');
   const [topCustomRange, setTopCustomRange] = useState({ start: '', end: '' });
@@ -441,11 +452,15 @@ function RorSalesApp() {
       ),
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
-      meta && el(MetricDefinitions, { meta }),
+      meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot }),
+      (financeError || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || 'Latest financial refresh failed; showing the last validated snapshot.'),
 
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
+        el('div',{style:{display:'flex',flexDirection:'column',gap:4}},
+          el(FilterLabel,null,'Shopify financial basis'),
+          el(Select,{value:financialBasis,onChange:setFinancialBasis,ariaLabel:'ROR Shopify financial basis',options:ShopifyIntegration.BASIS.map(k=>({value:k,label:ShopifyIntegration.labels[k]}))})),
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
           'KPI cards and channel contribution use these filters. Comparison dates are independent; its store follows this filter. Sales explorer has independent dates and stores.')
@@ -453,17 +468,17 @@ function RorSalesApp() {
 
       el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
       range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
-        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode }),
+        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode, basis:financialBasis }),
 
-      meta && el(ComparisonTable, { records, channels, meta }),
+      meta && el(ComparisonTable, { records, channels, meta, basis:financialBasis }),
 
       !range.unsupported && el(ChannelContribution, { records, channels, range }),
 
-      meta && el(SalesExplorer, { records, meta }),
+      meta && el(SalesExplorer, { records, meta, basis:financialBasis }),
 
       el('div', { style: { fontSize: 11, color: 'var(--t3)', padding: '4px 4px 24px', lineHeight: 1.7 } },
-        el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Imported gross line sales by source — financial reconciliation pending:'),
-        M.ACTIVE_CHANNELS.map((c) => el('div', { key: c }, M.CHANNEL_META[c].label + ': ' + M.CHANNEL_META[c].revenueDefinition))
+        el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Shopify uses the selected verified financial basis; Etsy/NOTHS retain imported gross lines:'),
+        M.ACTIVE_CHANNELS.map((c) => el('div', { key: c }, M.CHANNEL_META[c].label + ': ' + (c==='shopify'?ShopifyFinance.DEFINITIONS[financialBasis]:M.CHANNEL_META[c].revenueDefinition)))
       )
     )
   );

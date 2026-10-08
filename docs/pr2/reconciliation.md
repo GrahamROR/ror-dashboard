@@ -1,6 +1,6 @@
 # P2 staged financial reconciliation
 
-Snapshot: `1bc29cc2b9b08b1dc73155dbac134aa72df5dd4c331d082e2c72732d37786bbe`. Source captured 2026-10-08T15:53:39.849Z; completed reporting days through 2026-10-07. Both dashboard projections agree with 44 independent native monthly/period controls for all eight additive measures and exact-period native AOV. Products reconcile including unassigned amounts.
+Snapshot: `ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d`. Source captured 2026-10-08T20:58:01.441Z; completed reporting days through 2026-10-07. Both dashboard projections agree with 44 independent native monthly/period controls for all eight additive measures and exact-period native AOV. Products reconcile including unassigned amounts.
 
 Production exports remain unchanged. Staged correction is a separate immutable snapshot, not a historical-record edit.
 
@@ -146,10 +146,10 @@ Production exports remain unchanged. Staged correction is a separate immutable s
 
 All eleven pre-July FY26 Growth months match native total sales, net merchandise sales and orders. July was frozen as MTD (426 orders), while the completed native month has 445. The staged change is £608.84 total, £458.25 net and 19 orders. The remaining £150.59 is the combined shipping/tax/other component difference: the legacy export did not store those components separately, so a more detailed historic split cannot be established from this file. Native July shipping is £1,366.20 and taxes £2,430.40; no balancing amount has been inserted.
 
-ROR’s FY26 7,834 imported orders versus 7,832 native remains an unresolved +2. Neither export contains order IDs. The 19-order frozen/live difference and the +2 imported/native difference need separate secure ID ledgers, native statuses and adjustment events; aggregate agreement does not establish ID-level reconciliation. Original £318,134.63 imported gross lines is a different basis from native gross merchandise £276,221.01, net £247,999.66 or total £313,437.06. No legacy amount was renamed or divided by a VAT factor.
+ROR’s FY26 7,834 imported orders versus 7,832 native is now explained by secure ID-level reconciliation. All 7,832 native eligible IDs occur in the import, with no cross-day duplicates. The two extra imported IDs are paid, non-test, uncancelled gift-voucher-only orders; their native sales orders measure is zero. The native sales report excludes gift card products. No local exclusion or benchmark balancing was added. Public counts and private evidence hashes are in order-count-reconciliation.json; customer/order identifiers are not committed. Original £318,134.63 imported gross lines is a different basis from native gross merchandise £276,221.01, net £247,999.66 or total £313,437.06. No legacy amount was renamed or divided by a VAT factor.
 
 Native AOV is independently reported, including source precision: FY26 £32.22 and July £26.529. The original FY26 summary £32.23 does not equal the current native period measure. Net AOV is £247,999.66 / 7,832 = £31.66492084. Arbitrary custom intervals without a captured native AOV show unavailable rather than an average of monthly AOVs.
 
-VAT treatment and Xero account mapping require accountant approval. Native recorded tax (including historical zeros) is preserved; tax-inclusive shop pricing alone does not establish historical accounting treatment. No attribution, Etsy, NOTHS, fulfilment or production data has changed.
+Approval of net merchandise as the management default and any assertion of VAT-exclusive accounting turnover remain separate decisions. Xero is outside scope; there is no connection, import, interface or account mapping. Native recorded tax (including historical zeros) is preserved; tax-inclusive shop pricing alone does not establish historical accounting treatment. No attribution, Etsy, NOTHS, fulfilment or production data has changed.
 
 Definitions: [Shopify sales reports](https://help.shopify.com/en/manual/reports-and-analytics/shopify-reports/report-types/default-reports/sales-report), [native sales schema](https://shopify.dev/docs/api/shopifyql/latest/schemas/sales_revenue/sales).
