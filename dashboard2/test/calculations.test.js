@@ -44,14 +44,14 @@ test('mapping state cannot affect totals because the reporting contract ignores 
 });
 
 test('MoM and YoY comparisons compute valid changes', () => {
-  const jan = RorCalc.aggregate([rec('2026-01-01', 'shopify', 100, 4, 5)], { channels: ['shopify'], startDate: '2026-01-01', endDate: '2026-01-31', nowDate: '2026-06-01' });
-  const feb = RorCalc.aggregate([rec('2026-02-01', 'shopify', 120, 5, 6)], { channels: ['shopify'], startDate: '2026-02-01', endDate: '2026-02-28', nowDate: '2026-06-01' });
+  const jan = RorCalc.aggregate(Array.from({length: 31}, (_, i) => rec(RorCalc.addDays('2026-01-01', i), 'shopify', i ? 0 : 100, i ? 0 : 4, i ? 0 : 5)), { channels: ['shopify'], startDate: '2026-01-01', endDate: '2026-01-31', nowDate: '2026-06-01' });
+  const feb = RorCalc.aggregate(Array.from({length: 28}, (_, i) => rec(RorCalc.addDays('2026-02-01', i), 'shopify', i ? 0 : 120, i ? 0 : 5, i ? 0 : 6)), { channels: ['shopify'], startDate: '2026-02-01', endDate: '2026-02-28', nowDate: '2026-06-01' });
   const cmp = RorCalc.compareAggregates(feb, jan, 'revenue');
   assert.strictEqual(cmp.absoluteChange, 20);
   assert.ok(Math.abs(cmp.percentChange - 20) < 1e-9);
 });
 
-test('date presets are clipped to the real data window', () => {
+test('date presets retain requested completed days when exports lag', () => {
   const opts = { nowDate: new Date(2026, 8, 28), availableStart: '2025-01-01', availableEnd: '2026-09-24' };
   assert.deepStrictEqual(
     [RorCalc.resolveDateRange('year2025', opts).startDate, RorCalc.resolveDateRange('year2025', opts).endDate],
@@ -59,17 +59,17 @@ test('date presets are clipped to the real data window', () => {
   );
   assert.deepStrictEqual(
     [RorCalc.resolveDateRange('year2026YTD', opts).startDate, RorCalc.resolveDateRange('year2026YTD', opts).endDate],
-    ['2026-01-01', '2026-09-24']
+    ['2026-01-01', '2026-09-27']
   );
   const fy = RorCalc.resolveDateRange('currentFY', opts);
-  assert.deepStrictEqual([fy.startDate, fy.endDate], ['2026-08-01', '2026-09-24']);
+  assert.deepStrictEqual([fy.startDate, fy.endDate], ['2026-08-01', '2026-09-27']);
 });
 
-test('custom ranges before 2025 are rejected and overlapping ranges are clipped', () => {
-  const base = { availableStart: '2025-01-01', availableEnd: '2026-09-24' };
-  assert.strictEqual(RorCalc.resolveDateRange('custom', { ...base, customStart: '2024-01-01', customEnd: '2024-12-31' }).unsupported, true);
-  const clipped = RorCalc.resolveDateRange('custom', { ...base, customStart: '2024-12-01', customEnd: '2025-02-01' });
-  assert.deepStrictEqual([clipped.startDate, clipped.endDate], ['2025-01-01', '2025-02-01']);
+test('custom ranges retain requested dates and warn about unavailable coverage', () => {
+  const base = { availableStart: '2024-01-01', availableEnd: '2026-09-24' };
+  assert.strictEqual(RorCalc.resolveDateRange('custom', { ...base, customStart: '2023-01-01', customEnd: '2023-12-31' }).outsideCoverage, true);
+  const clipped = RorCalc.resolveDateRange('custom', { ...base, customStart: '2023-12-01', customEnd: '2024-02-01' });
+  assert.deepStrictEqual([clipped.startDate, clipped.endDate], ['2023-12-01', '2024-02-01']);
 });
 
 test('daily and weekly buckets are supported', () => {

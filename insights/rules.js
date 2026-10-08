@@ -47,6 +47,9 @@ function buildAdsInsight(ctx) {
   if (current.status === 'no-data') {
     return { verdict: bullet('neutral', 'No ad data recorded for this period.'), bullets: [] };
   }
+  if (current.status === 'incomplete-data' || current.status === 'partial') {
+    return { verdict: bullet('neutral', 'Ad coverage is incomplete; performance conclusions are unavailable.'), bullets: [] };
+  }
 
   // ── verdict — driven by the ROAS trend when available ───────
   let verdict;
@@ -113,11 +116,11 @@ function buildAdsInsight(ctx) {
   if (shopify && shopify.orders != null && shopify.orders > 0 && current.conversions != null) {
     const ratio = current.conversions / shopify.orders;
     if (ratio >= 1) {
-      candidates.push(bullet('bad', `Meta + Google are claiming ${num(current.conversions)} conversions — more than the ${num(shopify.orders)} total Shopify orders recorded for the overlapping months. That's over-counted attribution (platforms double-crediting the same sale), not a real sales signal — judge performance by actual Shopify revenue, not platform conversions, until this settles.`, 1000));
+      candidates.push(bullet('watch', `Platform-attributed conversions (${num(current.conversions)}) reach or exceed Shopify orders (${num(shopify.orders)}) for overlapping months. Attribution may overlap; conversion actions and reporting windows differ. This is not a reconciled sales comparison.`, 1000));
     } else if (ratio <= 0.85) {
-      candidates.push(bullet('good', `Platform-reported conversions (${num(current.conversions)}) are a plausible ${pctOf(ratio, 0)} share of total Shopify orders (${num(shopify.orders)}) — attribution looks reasonably trustworthy this period.`, 50));
+      candidates.push(bullet('neutral', `Platform-attributed conversions (${num(current.conversions)}) are ${pctOf(ratio, 0)} of Shopify orders (${num(shopify.orders)}) for overlapping months. A lower ratio does not verify attribution accuracy; conversion actions and dates must be checked.`, 50));
     } else {
-      candidates.push(bullet('watch', `Platform conversions are ${pctOf(ratio, 0)} of total Shopify orders — on the high side. Worth watching whether this creeps toward or past 100% (a sign of over-attribution).`, 200));
+      candidates.push(bullet('watch', `Platform-attributed conversions are ${pctOf(ratio, 0)} of Shopify orders for overlapping months. Attribution can overlap and Google conversions may include non-purchase actions; this is not a reconciled sales comparison.`, 200));
     }
   }
 
@@ -190,7 +193,7 @@ function buildEmailInsight(ctx) {
   let verdict;
   if (es.attribution != null && goals.attribution) {
     const d = (es.attribution / goals.attribution - 1) * 100;
-    if (d >= 0) verdict = bullet('good', `Email/SMS is driving ${pctOf(es.attribution, 1)} of store revenue — at or above the ${pctOf(goals.attribution, 0)} goal.`);
+    if (d >= 0) verdict = bullet('good', `Klaviyo-attributed value is ${pctOf(es.attribution, 1)} of Shopify total sales — at or above the ${pctOf(goals.attribution, 0)} attribution goal; not a measure of incremental sales.`);
     else if (d <= -30) verdict = bullet('bad', `Email/SMS attribution is ${pctOf(es.attribution, 1)}, well below the ${pctOf(goals.attribution, 0)} goal.`);
     else verdict = bullet('neutral', `Email/SMS attribution is ${pctOf(es.attribution, 1)} vs the ${pctOf(goals.attribution, 0)} goal.`);
   } else {
