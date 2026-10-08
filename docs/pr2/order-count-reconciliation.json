@@ -1,0 +1,32 @@
+{
+  "retrieved_at": "2026-10-08T21:03:31.657Z",
+  "period": {
+    "start": "2025-08-01",
+    "end": "2026-07-31"
+  },
+  "imported_unique_orders": 7834,
+  "native_eligible_orders": 7832,
+  "native_missing_from_import": 0,
+  "imported_extra_orders": 2,
+  "cross_day_duplicates": 0,
+  "extra_order_evidence": {
+    "gift_card_only": 2,
+    "paid": 2,
+    "not_cancelled": 2,
+    "non_test": 2,
+    "native_orders_measure_for_each": 0
+  },
+  "finding": "Imported count includes two gift-voucher-only orders; Shopify sales report excludes gift card products. No local eligibility override applied.",
+  "database_access": {
+    "rows_written": 0,
+    "changed_db": false
+  },
+  "private_evidence_hashes": {
+    "shopify-fy26-orders.json": "1577aaac7bae20ea983f3c829a1a1e62f82310758ded3e7f7d35a509bfd751a1",
+    "d1-schema.json": "a219aa2c4f8d36494ce9ad9de97305fec0481658a34ada07a23688a796053c7f",
+    "extra-order-details.json": "03e419fbe88ce85352d3ff6cbd1b71c85ad9aa2ff3f3abcbc341955593b6eadf",
+    "order-difference.json": "47677c3742140aede566e47884f587709d3b65abc2ad19eb1a6870f779ca2342",
+    "d1-fy26-orders.json": "5d7d8b57727890e00bc20662915319b86251eeb4435052500e2285cfd1006054"
+  },
+  "privacy": "Only counts and hashes published; order identifiers remain in private evidence archive."
+}

@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const M = require('../data-model.js'), C = require('../calculations.js');
 const data = require('../sales-data.json');
 const context = vm.createContext({
-  window: {}, RorModel:M, RorCalc:C, React:{ Fragment:'fragment' }, RorCharts:{SalesChart:'chart'},
+  window: {}, ShopifyIntegration:require('../../finance/integration'), ShopifyFinance:require('../../finance/contract'), RorModel:M, RorCalc:C, React:{ Fragment:'fragment' }, RorCharts:{SalesChart:'chart'},
   RorDataAdapter:{}, useEffect:()=>{}, useMemo:fn=>fn(),
   el:(type,props,...children)=>({type,props:props || {},children}),
   fmt:String, fmtC:String, fmtP:String,

@@ -371,3 +371,12 @@ It needs `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_D1_DATABASE_ID` and a read-only
 `CLOUDFLARE_API_TOKEN` as repository secrets. The exporter intentionally queries
 `sales_history_items` without a mapping-status condition, so unmapped sales remain
 in revenue, orders, AOV, units, channel contribution and growth comparisons.
+
+### P2 Shopify finance staging preview
+
+The optional `?finance=staging` workspace gives both dashboard entry points the
+same Shopify-native financial snapshot, definitions, date presets and metric
+selection. It preserves the original dashboard mode and all existing exports.
+See [finance/README.md](finance/README.md) for local preview, immutable capture,
+reconciliation and rollback, and [P2 review report](docs/pr2/implementation-report.md)
+for evidence and the outstanding accounting/publication gates.
