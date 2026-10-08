@@ -2054,12 +2054,17 @@ function App() {
 <script src="dashboard2/charts.js"></script>
 <script src="dashboard2/ror-sales-app.js"></script>
 
+<link rel="stylesheet" href="finance/dashboard.css">
+<script src="finance/contract.js"></script>
+<script src="finance/dashboard.js"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify'); // 'shopify' | 'ror-sales'
+  const staging = new URLSearchParams(window.location.search).get('finance') === 'staging';
+  const [financeState, setFinanceState] = useState({preset:'previousFY',start:'2025-08-01',end:'2026-07-31',metric:'net_sales',section:'overview',goal:'',goalMetric:'net_sales'});
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, { active: activeDashboard, onChange: setActiveDashboard }),
-    activeDashboard === 'ror-sales' ? el(RorSalesApp) : el(App)
+    staging ? el(CanonicalFinanceDashboard, {dashboard:activeDashboard,state:financeState,setState:setFinanceState}) : activeDashboard === 'ror-sales' ? el(RorSalesApp) : el(App)
   );
 }
 

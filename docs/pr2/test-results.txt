@@ -1,0 +1,131 @@
+✔ Money precision is exact, signed and nullable; excessive precision is rejected (0.753459ms)
+✔ Native discounts, partial/full returns and cancellations retain signed adjustments without altering order counts (1.535042ms)
+✔ Shipping-only refunds and mixed/zero tax preserve actual tax; no VAT factor (0.148459ms)
+✔ Missing whole day, full month, tax and reversals stay unavailable, never zero (0.199542ms)
+✔ Native AOV requires exact native interval; zero-price eligible orders have zero net AOV (0.119ms)
+✔ Products preserve unassigned money and do not sum product orders (0.181666ms)
+✔ Unknown total components remain explicit residuals (0.117708ms)
+✔ London calendar dates survive spring/autumn DST, leap day and FY boundaries (12.807875ms)
+✔ Every shared preset returns identical financial projections, including custom and absent 2023 (12.954ms)
+✔ All daily, monthly, annual and custom source controls match both dashboards exactly (62.979625ms)
+✔ Every month and FY product components reconcile at penny precision (150.678292ms)
+✔ Monthly explorer clips custom first and last months (0.358209ms)
+✔ Snapshot payload and file hashes match manifest; no order/customer identifiers (22.02725ms)
+✔ Source parser rejects truncated tables, duplicate count formats and nullable money stays missing (0.35125ms)
+✔ Read-only transport retries rate limits and rejects parser/GraphQL failures without publishing (0.39825ms)
+✔ Collector rejects FX/store changes and failed batches leave staging manifest intact (1.583084ms)
+✔ Production exports, attribution and marketplace inputs remain byte-identical (2.645958ms)
+✔ Idempotent staging replay and rollback preserve immutable facts (92.7155ms)
+✔ Actual native source build is repeatable and source edits fail reconciliation (363.075125ms)
+✔ Rollback switches between two versioned snapshots and retains both histories (133.513917ms)
+✔ Collector assembles a complete custom-period capture; partial batches never become visible (1.915459ms)
+✔ Parse failure midway through capture retains previous snapshot and leaves no capture directory (0.230709ms)
+✔ Duplicate daily facts and changed source currency are rejected by the builder (21.882125ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 972.454542
+Reconciled 44 native control periods; wrote 130 before/after rows.
+  ok  - production export has a self-consistent range, sources, rows and units
+  ok  - AOV is total revenue divided by total orders and units are summed
+  ok  - mapping state cannot affect totals because the reporting contract ignores it
+  ok  - MoM and YoY comparisons compute valid changes
+  ok  - date presets retain requested completed days when exports lag
+  ok  - custom ranges retain requested dates and warn about unavailable coverage
+  ok  - daily and weekly buckets are supported
+  ok  - financial year runs August through July
+  ok  - latest partial day is labelled rather than treated as a complete period
+  ok  - missing and future periods remain distinct from zero
+  ok  - channel contribution includes all three sources and totals to 100%
+  ok  - previous equivalent range uses the same number of days
+
+12 passed, 0 failed
+  ok - all eleven ordered presets work through one resolver
+  ok - previous FY is exactly August–July, even with stale history
+  ok - FY boundary keeps new FY identity before its first completed day
+  ok - month boundary does not mislabel last month as this month
+  ok - London clock handles both DST transitions and BST midnight independently of host TZ
+  ok - rolling calendar months include leap day, not a hard-coded 365 days
+  ok - 2024 stays available and 2023 stays no-data without clipping
+  ok - invalid dates, missing dates and reversed custom dates are rejected
+  ok - a single missing day or missing channel suppresses both comparison directions
+  ok - an absent entire month cannot produce complete multi-month growth
+  ok - known zero differs from unknown amounts and zero-order AOV is unavailable
+  ok - adapter preserves null instead of converting it to zero
+  ok - partial data never produces growth
+  ok - monthly table and chart respect custom endpoints and reconcile to the selected total
+  ok - end-exclusive filtering excludes next-day facts
+  ok - weekly YoY shifts 52 weeks and preserves Monday
+  ok - incomplete contribution never reports apparently complete shares
+  ok - metric dictionary distinguishes gross imports, Shopify total sales, attribution and estimates
+
+18 reporting contract tests passed
+11 presets × 3 rendered selectors passed; all 6 custom inputs and 4 period labels verified
+  ok  - resolveAdsDateRange: today/yesterday/last7/last30 line up
+  ok  - resolveAdsDateRange: thisMonth/lastMonth/thisQuarter/thisYear
+  ok  - resolveAdsDateRange: custom validates start<=end and requires both dates
+  ok  - previousEquivalentRange shifts back by the range's own length (day-precision)
+  ok  - yearEarlierRange shifts both ends back exactly one calendar year
+  ok  - adsAggregate: sums raw components then derives ROAS/CPA/CTR/CPC — never averages ratios
+  ok  - adsAggregate: missing days are "no-data", never zero
+  ok  - adsAggregate: a future range is "not-occurred"
+  ok  - adsAggregate: today included in range is flagged "partial"
+  ok  - adsCompare: zero-denominator never produces Infinity/NaN
+  ok  - adsBucketsForGranularity: daily/weekly/monthly produce sane, non-overlapping buckets
+  ok  - adsPreviousBucket / adsYearEarlierBucket: monthly bucket steps to the correct prior month/year
+  ok  - adsPreviousBucket / adsYearEarlierBucket: daily bucket steps by exactly 1 day / 1 year
+  ok  - one missing channel-day takes precedence over a partial current day
+  ok  - incomplete current or prior ads periods never produce growth
+  ok  - Ads trailing 365-day legacy preset is labelled accurately
+
+16 passed, 0 failed
+  ok - ads: not-occurred period returns neutral verdict, no bullets
+  ok - ads: no-data period returns neutral verdict, no bullets
+  ok - ads: missing current entirely is treated like not-occurred
+  ok - ads: ROAS up >=10% vs comparison gives good verdict
+  ok - ads: ROAS down <=-10% vs comparison gives bad verdict
+  ok - ads: ROAS change within +/-10% gives neutral "roughly steady" verdict
+  ok - ads: no comparison data at all falls back to standalone-period verdict
+  ok - ads: comparison previous had zero spend (percentChange null) is called out explicitly
+  ok - ads: spend up sharply with disproportionately low conversion growth flags as bad
+  ok - ads: spend down while conversions hold is flagged as good efficiency
+  ok - ads: channel efficiency gap >=40% surfaces a watch bullet naming the stronger channel
+  ok - ads: channel gap below MIN_CHANNEL_SPEND guard is suppressed as noise
+  ok - ads: per-channel CPA rise >=25% flags bad, fall <=-20% flags good
+  ok - ads: platform conversions >= real Shopify orders triggers a caveat without claiming proven double attribution
+  ok - ads: platform conversions comfortably below Shopify orders does not imply trustworthy attribution
+  ok - ads: platform conversions in the 85-100% band of Shopify orders is a watch, not bad or good
+  ok - ads: bullets are capped at 6 and sorted by score descending
+  ok - overview: ahead of YTD goal pace by >=5% gives good verdict
+  ok - overview: behind YTD goal pace by >=5% gives bad verdict
+  ok - overview: no ytdGoal available falls back to neutral, no-pace-to-compare verdict
+  ok - overview: AOV well below goal flags bad; conversion rate well below goal flags bad
+  ok - overview: repeat rate well below goal flags a watch bullet
+  ok - overview: month-on-month revenue drop >=15% between last two completed months flags watch
+  ok - overview: top product concentration >=25% of YTD revenue flags a watch bullet
+  ok - overview: bullets capped at 5
+  ok - email: attribution at/above goal gives good verdict
+  ok - email: attribution well below goal gives bad verdict
+  ok - email: missing attribution data gives neutral "not enough data" verdict
+  ok - email: list size well below goal flags a watch bullet; null list size flags neutral tracked-status bullet
+  ok - email: flow share below 50% flags watch (campaigns outperforming flows); above 70% flags good
+  ok - email: repeat purchase rate well below goal flags watch
+  ok - email: lower of campaign/flow AOV well below goal flags watch, names the weaker one
+  ok - email: bullets capped at 5
+  ok - ads: incomplete and partial coverage suppress performance conclusions
+
+34 passed, 0 failed
+data.json: OK
+dashboard2/sales-data.json: OK
+ads-data.json: OK
+email-data.json: OK
+ltv-cac.json: OK
+
+Browser integration (Playwright, 8 October 2026, localhost:8767)
+P2: 33 preset/basis comparisons across both dashboards; 10 dashboard sections; 4 source control months; 5 mobile sections; 2 source failure states; 0 page errors.
+Legacy/P1: 33 preset selections; independent dates verified; no mobile overflow; all 7 Growth tabs; 0 page errors.
+Screenshots in docs/pr2/screenshots.
