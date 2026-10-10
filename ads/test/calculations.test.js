@@ -131,5 +131,27 @@ test('adsPreviousBucket / adsYearEarlierBucket: daily bucket steps by exactly 1 
   assert.strictEqual(C.adsYearEarlierBucket(b).key, '2025-09-26');
 });
 
+test('one missing channel-day takes precedence over a partial current day', () => {
+  const rows = { '2026-09-25': { meta: day(10, 1, 20, 2, 100) }, '2026-09-26': { meta: day(10, 1, 20, 2, 100), google: day(10, 1, 20, 2, 100) } };
+  const agg = C.adsAggregate(rows, '2026-09-25', '2026-09-26', ['meta','google'], TODAY);
+  assert.strictEqual(agg.status, 'incomplete-data');
+  assert.strictEqual(agg.expectedCount - agg.foundCount, 1);
+  assert.match(agg.note, /1 of 4/);
+});
+
+test('incomplete current or prior ads periods never produce growth', () => {
+  const complete = {status:'complete', spend:100};
+  for (const status of ['incomplete-data','partial']) {
+    assert.strictEqual(C.adsCompare(complete, {status, spend:50}, 'spend').percentChange, null);
+    assert.strictEqual(C.adsCompare({status, spend:50}, complete, 'spend').absoluteChange, null);
+  }
+});
+
+test('Ads trailing 365-day legacy preset is labelled accurately', () => {
+  assert.strictEqual(C.ADS_DATE_PRESETS.find(p=>p.key === 'last12Months').label, 'Last 365 days');
+  const range = C.resolveAdsDateRange('last12Months', {todayStr:'2024-03-01'});
+  assert.strictEqual(C.rangeLengthDays(range.start,range.end),365);
+});
+
 console.log(`\n${passed} passed, ${failed} failed`);
 if (failed > 0) process.exit(1);

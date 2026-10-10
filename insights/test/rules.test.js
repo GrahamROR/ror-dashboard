@@ -136,24 +136,24 @@ test('ads: per-channel CPA rise >=25% flags bad, fall <=-20% flags good', () => 
   assert.match(texts, /Google's cost per conversion fell/);
 });
 
-test('ads: platform conversions >= real Shopify orders triggers top-priority over-attribution flag', () => {
+test('ads: platform conversions >= real Shopify orders triggers a caveat without claiming proven double attribution', () => {
   const r = InsightRules.buildAdsInsight({
     current: { status: 'ok', roas: 3.0, spend: 1000, conversions: 120 },
     comparisons: { roas: { status: 'ok', percentChange: 0, previous: 3.0 } },
     shopify: { orders: 100, sessions: 5000, convRate: 0.02 },
   });
-  assert.strictEqual(r.bullets[0].tone, 'bad');
-  assert.match(r.bullets[0].text, /over-counted attribution/);
+  assert.strictEqual(r.bullets[0].tone, 'watch');
+  assert.match(r.bullets[0].text, /not a reconciled sales comparison/);
 });
 
-test('ads: platform conversions comfortably below Shopify orders is flagged as trustworthy (good)', () => {
+test('ads: platform conversions comfortably below Shopify orders does not imply trustworthy attribution', () => {
   const r = InsightRules.buildAdsInsight({
     current: { status: 'ok', roas: 3.0, spend: 1000, conversions: 60 },
     comparisons: { roas: { status: 'ok', percentChange: 0, previous: 3.0 } },
     shopify: { orders: 100, sessions: 5000, convRate: 0.02 },
   });
   const texts = r.bullets.map((b) => b.text).join(' | ');
-  assert.match(texts, /reasonably trustworthy/);
+  assert.match(texts, /does not verify attribution accuracy/);
 });
 
 test('ads: platform conversions in the 85-100% band of Shopify orders is a watch, not bad or good', () => {
@@ -162,7 +162,7 @@ test('ads: platform conversions in the 85-100% band of Shopify orders is a watch
     comparisons: { roas: { status: 'ok', percentChange: 0, previous: 3.0 } },
     shopify: { orders: 100, sessions: 5000, convRate: 0.02 },
   });
-  const watchBullet = r.bullets.find((b) => /on the high side/.test(b.text));
+  const watchBullet = r.bullets.find((b) => /not a reconciled sales comparison/.test(b.text));
   assert.ok(watchBullet);
 });
 
@@ -181,7 +181,7 @@ test('ads: bullets are capped at 6 and sorted by score descending', () => {
     shopify: { orders: 50, sessions: 5000, convRate: 0.02 },
   });
   assert.ok(r.bullets.length <= 6);
-  assert.strictEqual(r.bullets[0].tone, 'bad'); // over-attribution, score 1000, should sort first
+  assert.strictEqual(r.bullets[0].tone, 'watch'); // over-attribution, score 1000, should sort first
 });
 
 // ── buildOverviewInsight ─────────────────────────────────────
@@ -382,6 +382,15 @@ test('email: bullets capped at 5', () => {
     goals: EMAIL_GOALS,
   });
   assert.ok(r.bullets.length <= 5);
+});
+
+test('ads: incomplete and partial coverage suppress performance conclusions', () => {
+  for (const status of ['partial', 'incomplete-data']) {
+    const result = InsightRules.buildAdsInsight({current:{status,spend:500,roas:5,conversions:100}});
+    assert.strictEqual(result.verdict.tone,'neutral');
+    assert.deepStrictEqual(result.bullets,[]);
+    assert.match(result.verdict.text,/incomplete/);
+  }
 });
 
 console.log(`\n${pass} passed, ${fail} failed`);
