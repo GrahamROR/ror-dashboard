@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-10T09:58:45.257Z",
+  "updated": "2026-10-11T10:08:16.774Z",
   "rolling": {
     "window": {
       "since": "2025-10-01",
@@ -12,10 +12,10 @@
         "source": "Meta Marketing API insights"
       },
       "google": {
-        "spend": 9156.58,
-        "source": "Google Ads API GAQL"
+        "spend": null,
+        "source": "error: fetch failed"
       },
-      "blended": 74553.64
+      "blended": 65397.06
     },
     "customerMetrics": {
       "avgAOV": 31.43,
@@ -26,8 +26,8 @@
       "totalOrders": 7783
     },
     "ltv": 17.93,
-    "cac": 11.92,
-    "ratio": 1.5
+    "cac": 10.46,
+    "ratio": 1.71
   },
   "previousRolling": {
     "window": {
@@ -65,8 +65,8 @@
       "since": "2024-10-01",
       "until": "2025-09-30"
     },
-    "absoluteChange": -0.76,
-    "percentChange": -33.6
+    "absoluteChange": -0.55,
+    "percentChange": -24.3
   },
   "cumulative": {
     "window": {
