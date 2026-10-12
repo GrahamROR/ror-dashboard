@@ -41,7 +41,7 @@ const ADS_DATE_PRESETS = [
   { key: 'lastMonth', label: 'Last month' },
   { key: 'thisQuarter', label: 'This quarter' },
   { key: 'thisYear', label: 'This year' },
-  { key: 'last12Months', label: 'Last 12 months' },
+  { key: 'last12Months', label: 'Last 365 days' },
   { key: 'custom', label: 'Custom range' },
 ];
 
@@ -57,7 +57,7 @@ function resolveAdsDateRange(preset, opts) {
     case 'lastMonth': { const lm = addDays(startOfMonth(today), -1); return { start: startOfMonth(lm), end: endOfMonth(lm), label: 'Last month' }; }
     case 'thisQuarter': return { start: startOfQuarter(today), end: today, label: 'This quarter' };
     case 'thisYear': return { start: startOfYear(today), end: today, label: 'This year' };
-    case 'last12Months': return { start: addDays(today, -364), end: today, label: 'Last 12 months' };
+    case 'last12Months': return { start: addDays(today, -364), end: today, label: 'Last 365 days' };
     case 'custom':
       if (!opts.customStart || !opts.customEnd) return { unsupported: true, reason: 'Pick a start and end date.' };
       if (compareDates(opts.customStart, opts.customEnd) > 0) return { unsupported: true, reason: 'Start date must be before end date.' };
@@ -106,12 +106,12 @@ function adsAggregate(daysData, start, end, channels, todayStr) {
 
   let status;
   if (foundCount === 0) status = 'no-data';
-  else if (isPartial) status = 'partial';
   else if (foundCount < expectedCount) status = 'incomplete-data';
+  else if (isPartial) status = 'partial';
   else status = 'complete';
 
   let note = null;
-  if (status === 'no-data') note = 'No ad data recorded for this period.';
+  if (status === 'no-data') note = `No ad data recorded for this period: ${expectedCount} channel-days missing.`;
   else if (status === 'incomplete-data') note = `Data missing for ${expectedCount - foundCount} of ${expectedCount} channel-days in this range.`;
   else if (status === 'partial') note = 'Today is still in progress — figures are so-far-today.';
 
@@ -137,6 +137,7 @@ function adsCompare(current, previous, metric) {
   if (!current || current.status === 'not-occurred') return { status: 'not-occurred', current: null, previous: prev, absoluteChange: null, percentChange: null, note: 'This period has not happened yet.' };
   if (current.status === 'no-data') return { status: 'no-comparison-data', current: null, previous: prev, absoluteChange: null, percentChange: null, note: 'No data recorded for the current period.' };
   if (!previous || previous.status === 'no-data' || previous.status === 'not-occurred') return { status: 'no-comparison-data', current: cur, previous: null, absoluteChange: null, percentChange: null, note: 'No comparable data for the prior period.' };
+  if (current.status !== 'complete' || previous.status !== 'complete') return { status: 'incomplete-data', current: cur, previous: prev, absoluteChange: null, percentChange: null, note: 'Comparison unavailable: incomplete daily coverage.' };
 
   const absoluteChange = (cur != null && prev != null) ? cur - prev : null;
   let status = 'ok', percentChange = null, note = null;

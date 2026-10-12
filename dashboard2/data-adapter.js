@@ -4,7 +4,7 @@
 function normalizeRecord(r) {
   return {
     date: r.date, period: r.date, channel: r.channel,
-    revenue: Number(r.revenue), orders: Number(r.orders), units: Number(r.units),
+    revenue: r.revenue == null ? null : Number(r.revenue), orders: r.orders == null ? null : Number(r.orders), units: r.units == null ? null : Number(r.units),
     currency: r.currency || 'GBP', source: r.source || 'sales_history_items',
     completeness: r.completeness || 'complete',
   };

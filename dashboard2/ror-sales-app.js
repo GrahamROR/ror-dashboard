@@ -16,6 +16,7 @@
 
 const M = RorModel;
 const C = RorCalc;
+const metricOptions = ['revenue', 'orders', 'aov', 'units'].map((key) => ({ value: key, label: M.METRICS[key].label }));
 
 // ── formatting helpers (metric-aware; reuse dashboard1's fmt/fmtC/fmtP) ──
 function formatMetric(metric, v, short) {
@@ -28,6 +29,7 @@ function formatMetric(metric, v, short) {
 function changeText(cmp) {
   if (cmp.status === 'not-occurred') return { text: 'Not yet occurred', tone: 'muted' };
   if (cmp.status === 'no-comparison-data') return { text: 'No comparison data', tone: 'muted' };
+  if (cmp.status === 'incomplete-data') return { text: 'Incomplete comparison', tone: 'muted' };
   if (cmp.status === 'zero-denominator') return { text: '—', tone: 'muted' };
   if (cmp.percentChange == null) return { text: '—', tone: 'muted' };
   const up = cmp.percentChange >= 0;
@@ -39,12 +41,12 @@ function toneColor(tone) {
 }
 
 // ── shared filter widgets ───────────────────────────────────
-function Select({ value, onChange, options, style }) {
+function Select({ value, onChange, options, style, ariaLabel }) {
   return el('select', {
-    value, onChange: (e) => onChange(e.target.value),
+    value, 'aria-label': ariaLabel, onChange: (e) => onChange(e.target.value),
     style: Object.assign({
       background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)',
-      borderRadius: 'var(--r)', padding: '7px 10px', fontFamily: 'inherit', fontSize: 12.5, outline: 'none',
+      borderRadius: 'var(--r)', padding: '7px 10px', maxWidth: '100%', minWidth: 0, fontFamily: 'inherit', fontSize: 12.5, outline: 'none',
     }, style || {}),
   }, options.map((o) => el('option', { key: o.value, value: o.value, disabled: o.disabled }, o.label)));
 }
@@ -63,14 +65,14 @@ function StoreSelect({ value, onChange }) {
   );
 }
 
-function DateRangeSelect({ value, onChange, custom, onCustomChange, availableStart, availableEnd }) {
+function DateRangeSelect({ value, onChange, custom, onCustomChange, section = 'Report' }) {
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
     el(FilterLabel, null, 'Date range'),
-    el(Select, { value, onChange, options: C.DATE_PRESETS.map((p) => ({ value: p.key, label: p.label })) }),
-    value === 'custom' && el('div', { style: { display: 'flex', gap: 6, marginTop: 4 } },
-      el('input', { type: 'date', min: availableStart, max: availableEnd, value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
+    el(Select, { value, onChange, ariaLabel: section + ' date range', options: C.REPORT_DATE_PRESETS.map((p) => ({ value: p.key, label: p.label })) }),
+    value === 'custom' && el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 } },
+      el('input', { type: 'date', 'aria-label': section + ' start date', value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } }),
-      el('input', { type: 'date', min: availableStart, max: availableEnd, value: custom.end || '', onChange: (e) => onCustomChange({ ...custom, end: e.target.value }),
+      el('input', { type: 'date', 'aria-label': section + ' end date', value: custom.end || '', onChange: (e) => onCustomChange({ ...custom, end: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } })
     )
   );
@@ -93,6 +95,28 @@ function UnavailableNotice({ reason }) {
   );
 }
 
+// Every independent section states its actual period and coverage beside its values.
+function PeriodNotice({ range, records, channels, section }) {
+  if (range.unsupported) return null;
+  const agg = C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate });
+  return el('div', { 'data-report-period': section, style: { margin: '10px 0', fontSize: 12, lineHeight: 1.6, color: 'var(--t2)' } },
+    el('strong', null, section + ': ' + range.label + ' · ' + range.startDate + ' → ' + range.endDate + ' (inclusive)'),
+    el('div', null, channels.map((c) => M.CHANNEL_META[c].short).join(' · ')),
+    range.warning && el('div', { style: { color: 'var(--amb)' } }, range.warning),
+    agg.note && el('div', { style: { color: 'var(--amb)' } }, agg.note)
+  );
+}
+
+function MetricDefinitions({ meta }) {
+  return el('details', { className: 'card', style: { fontSize: 12, lineHeight: 1.7 } },
+    el('summary', { style: { cursor: 'pointer', color: 'var(--amb)' } }, 'Financial basis: imported gross line sales · Pending reconciliation'),
+    el('div', null, 'These are existing imported amounts. Net merchandise sales ex VAT are not yet verified. Currency is labelled GBP by the exporter; source currency treatment is unverified.'),
+    ['revenue', 'orders', 'aov', 'units'].map((key) => el('div', { key }, M.METRICS[key].label + ': ' + M.METRICS[key].basis)),
+    el('div', null, 'Source: D1 sales_history_items · Exported: ' + (meta.generated_at || 'unknown') + ' · Last reconciled: not yet reconciled.'),
+    el('div', null, 'Presets use Europe/London calendar dates through yesterday. Source days use the stored placed_at date prefix; UTC/BST boundary alignment is unverified. Absent day/channel rows are not assumed to be zero.')
+  );
+}
+
 // ── KPI cards (§5) ───────────────────────────────────────────
 function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
   const value = agg.status === 'not-occurred' ? '—' : agg.status === 'no-data' ? '—' : formatMetric(metric, agg[metric]);
@@ -101,11 +125,11 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
     el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 } },
       el('div', { style: { width: 28, height: 28, borderRadius: 6, background: accentCol + '22', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
         el('i', { className: 'ti ' + icon, style: { color: accentCol, fontSize: 14 } })),
-      el('div', { className: 'lbl' }, label)
+      el('div', { className: 'lbl', title: M.METRICS[metric].basis }, label)
     ),
     el('div', { style: { fontSize: 26, fontWeight: 600, color: 'var(--t1)', fontFamily: "'DM Mono',monospace", letterSpacing: '-0.02em', marginBottom: 6 } }, value),
-    (agg.status === 'no-data' || agg.status === 'not-occurred' || agg.status === 'incomplete-data')
-      ? el('div', { style: { fontSize: 11, color: 'var(--t3)' } }, agg.note)
+    (agg.status === 'no-data' || agg.status === 'not-occurred' || agg.status === 'incomplete-data' || agg.status === 'partial')
+      ? el('div', { style: { fontSize: 11, color: 'var(--amb)' }, title: agg.note }, agg.status === 'incomplete-data' ? 'Recorded subtotal · Coverage unverified' : agg.note)
       : el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 } },
           el('span', { style: { color: toneColor(chg.tone), fontWeight: 500 } }, chg.text),
           cmp.absoluteChange != null && el('span', { style: { color: 'var(--t3)' } }, '(' + (cmp.absoluteChange >= 0 ? '+' : '') + formatMetric(metric, cmp.absoluteChange) + ')'),
@@ -114,35 +138,35 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
   );
 }
 
-function KpiSection({ records, channels, range, comparisonMode, setComparisonMode, latestDate }) {
-  const revAgg = C.aggregate(records, { channels, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: latestDate });
+function KpiSection({ records, channels, range, comparisonMode, setComparisonMode }) {
+  const revAgg = C.aggregate(records, { channels, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
   const ordAgg = revAgg; // same aggregate carries both revenue+orders
 
   const prevEq = C.previousEquivalentRange(range.startPeriod, range.endPeriod);
-  const prevAgg = C.aggregate(records, { channels, startPeriod: prevEq.startPeriod, endPeriod: prevEq.endPeriod, nowDate: latestDate });
+  const prevAgg = C.aggregate(records, { channels, startPeriod: prevEq.startPeriod, endPeriod: prevEq.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
 
   const yoyRange = C.yearEarlierRange(range.startPeriod, range.endPeriod);
-  const yoyAgg = C.aggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowDate: latestDate });
+  const yoyAgg = C.aggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
 
   const comparisonAgg = comparisonMode === 'yoy' ? yoyAgg : prevAgg;
   const growthCmp = C.compareAggregates(revAgg, comparisonAgg, 'revenue');
 
   return el('div', { className: 'fi grid-auto', style: { display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12 }, key: 'kpis' },
-    el(KpiCard, { label: 'Revenue', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
-    el(KpiCard, { label: 'Orders', icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
-    el(KpiCard, { label: 'Average Order Value', icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'aov'), accentCol: 'var(--pur)' }),
-    el(KpiCard, { label: 'Units', icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'units'), accentCol: 'var(--grn)' }),
+    el(KpiCard, { label: M.METRICS.revenue.label, icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
+    el(KpiCard, { label: M.METRICS.orders.label, icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
+    el(KpiCard, { label: M.METRICS.aov.label, icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'aov'), accentCol: 'var(--pur)' }),
+    el(KpiCard, { label: M.METRICS.units.label, icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'units'), accentCol: 'var(--grn)' }),
     el('div', { className: 'card', style: { display: 'flex', flexDirection: 'column', gap: 0 } },
-      el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 } },
+      el('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
         el('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
           el('div', { style: { width: 28, height: 28, borderRadius: 6, background: 'var(--grn-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
             el('i', { className: 'ti ti-trending-up', style: { color: 'var(--grn)', fontSize: 14 } })),
           el('div', { className: 'lbl' }, 'Growth')),
-        el('div', { className: 'tab-bar', style: { padding: 2 } },
+        el('div', { className: 'tab-bar', style: { padding: 2, flexWrap: 'wrap' } },
           ['mom', 'yoy'].map((k) => el('div', {
             key: k, className: 'tab' + (comparisonMode === k ? ' active' : ''), style: { padding: '3px 8px', fontSize: 10.5 },
             onClick: () => setComparisonMode(k),
-          }, k.toUpperCase())))
+          }, k === 'mom' ? 'Previous equivalent period' : 'Year on year')))
       ),
       el('div', { style: { fontSize: 26, fontWeight: 600, color: toneColor(changeText(growthCmp).tone), fontFamily: "'DM Mono',monospace", marginBottom: 6 } }, changeText(growthCmp).text),
       el('div', { style: { fontSize: 11, color: 'var(--t3)' } }, comparisonMode === 'yoy' ? 'vs. same period last year' : 'vs. previous equivalent period')
@@ -156,11 +180,12 @@ function ComparisonTable({ records, channels, meta }) {
   const [granularity, setGranularity] = useState('monthly');
   const [rangePreset, setRangePreset] = useState('last12Months');
 
-  const range = C.resolveDateRange(rangePreset, { availableStart: meta.earliest, availableEnd: meta.latest });
+  const [customRange, setCustomRange] = useState({ start: '', end: '' });
+  const range = C.resolveDateRange(rangePreset, { customStart: customRange.start, customEnd: customRange.end, availableStart: meta.earliest, availableEnd: meta.latest });
   const table = useMemo(() => {
     if (range.unsupported) return null;
     return C.buildComparisonTable(records, {
-      channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod, metric, nowDate: meta.latest,
+      channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod, metric, nowDate: C.dateKeyFromDate(new Date()),
     });
   }, [records, channels.join(','), granularity, range.startPeriod, range.endPeriod, metric]);
 
@@ -181,30 +206,20 @@ function ComparisonTable({ records, channels, meta }) {
     el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end', marginBottom: 16 } },
       el('div', { style: { flex: 1, minWidth: 160 } },
         el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Sales comparison table'),
-        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Replaces the manual month-by-month spreadsheet comparison.')),
+        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Own date range; store follows the page filter. Growth is unavailable for incomplete or truncated buckets.')),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
-        el(Select, { value: metric, onChange: setMetric, options: [{ value: 'revenue', label: 'Revenue' }, { value: 'orders', label: 'Orders' }, { value: 'aov', label: 'AOV' }, { value: 'units', label: 'Units' }] })),
+        el(Select, { value: metric, onChange: setMetric, options: metricOptions })),
       el(GranularitySelect, { value: granularity, onChange: setGranularity }),
-      el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
-        el(FilterLabel, null, 'Range'),
-        el(Select, {
-          value: rangePreset, onChange: setRangePreset,
-          options: [
-            { value: 'last12Months', label: 'Last 12 months' },
-            { value: 'year2025', label: '2025 full year' },
-            { value: 'year2026YTD', label: '2026 year to date' },
-            { value: 'currentFY', label: 'Current financial year' },
-            { value: 'previousFY', label: 'Previous financial year' },
-          ],
-        }))
+      el(DateRangeSelect, { section: 'Sales comparison', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange })
     ),
+    el(PeriodNotice, { range, records, channels, section: 'Sales comparison (independent dates; page store filter)' }),
     !table ? el(UnavailableNotice, { reason: range.reason }) :
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto' } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 720 } },
         el('thead', null,
           el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-            ['Period', metric === 'revenue' ? 'Revenue' : metric === 'aov' ? 'AOV' : metric === 'orders' ? 'Orders' : 'Units', 'Previous period', 'Δ (MoM-style)', '% change'].map((h, i) =>
+            ['Period', M.METRICS[metric].label, 'Previous period', granularity === 'monthly' ? 'Δ (MoM)' : 'Δ (previous period)', '% change'].map((h, i) =>
               el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontWeight: 500, fontSize: 11, whiteSpace: 'nowrap' } }, h)
             ),
             showYoyCol && el('th', { key: 'yoyd', style: { textAlign: 'right', padding: '6px 10px', color: 'var(--t3)', fontWeight: 500, fontSize: 11 } }, 'Δ (YoY)'),
@@ -213,7 +228,7 @@ function ComparisonTable({ records, channels, meta }) {
         ),
         el('tbody', null,
           table.rows.map((row) => el('tr', { key: row.bucket.key, style: { borderBottom: '1px solid var(--bdr)' } },
-            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' } }, row.bucket.label),
+            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' } }, row.bucket.label + ' · ' + row.bucket.startDate + ' → ' + row.bucket.endDate + (row.current.status !== 'complete' || row.bucket.truncated ? ' · incomplete period' : '')),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } },
               row.current.status === 'not-occurred' ? '—' : row.current.status === 'no-data' ? el('span', { style: { color: 'var(--t3)' } }, 'no data') : formatMetric(metric, row.current[metric])),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace", color: 'var(--t3)' } },
@@ -234,16 +249,16 @@ function ComparisonTable({ records, channels, meta }) {
       )
     ),
     metric === 'aov' && el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 10 } },
-      'AOV total is total revenue ÷ total orders for the range — never an average of the per-row AOVs.')
+      M.METRICS.aov.basis + ' Range AOV is weighted by orders.')
   );
 }
 
 // ── channel contribution (§9) ────────────────────────────────
-function ChannelContribution({ records, range, latestDate }) {
+function ChannelContribution({ records, channels, range }) {
   const [view, setView] = useState('donut');
   const contrib = useMemo(() => C.channelContribution(records, {
-    channels: M.ACTIVE_CHANNELS, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: latestDate,
-  }), [records, range.startPeriod, range.endPeriod]);
+    channels, startPeriod: range.startPeriod, endPeriod: range.endPeriod, nowDate: C.dateKeyFromDate(new Date()),
+  }), [records, channels.join(','), range.startPeriod, range.endPeriod]);
 
   const slices = contrib.channels.map((c) => ({
     label: M.CHANNEL_META[c.channel].short, value: c.revenue || 0, color: M.CHANNEL_META[c.channel].color,
@@ -261,18 +276,19 @@ function ChannelContribution({ records, range, latestDate }) {
     el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, marginBottom: 16 } },
       el('div', null,
         el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Channel contribution'),
-        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Shopify · NOTHS · Etsy — the three active stores, for the date range selected above.')),
+        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Uses the page date and store filters. Shares require complete coverage.')),
       el('div', { className: 'tab-bar' },
         [['donut', 'ti-chart-donut'], ['bar', 'ti-chart-bar'], ['stacked-bar', 'ti-stack-2']].map(([k, ic]) =>
           el('div', { key: k, className: 'tab' + (view === k ? ' active' : ''), onClick: () => setView(k) }, el('i', { className: 'ti ' + ic, style: { fontSize: 13 } }))))
     ),
-    contrib.totals.status === 'no-data' ? el(UnavailableNotice, { reason: 'No revenue recorded for the active channels in this period.' }) :
+    el(PeriodNotice, { range, records, channels, section: 'Channel contribution' }),
+    contrib.totals.status !== 'complete' ? el(UnavailableNotice, { reason: contrib.totals.note || 'Complete channel coverage is required for contribution charts.' }) :
     view === 'donut' ? el(RorCharts.SalesChart, { type: 'donut', slices, formatValue: (v) => fmtC(v, 0) }) :
     el(RorCharts.SalesChart, { type: view === 'bar' ? 'bar' : 'stacked-bar', series: barSeries, formatValue: (v, short) => short ? fmtC(v, 0) : fmtC(v, 0) }),
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto', marginTop: 16 } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 480 } },
         el('thead', null, el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-          ['Channel', 'Revenue', '% of total', 'Orders', 'Units', 'AOV'].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
+          ['Channel', M.METRICS.revenue.label, '% of total', M.METRICS.orders.label, M.METRICS.units.label, M.METRICS.aov.label].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
         el('tbody', null, contrib.channels.map((c) => el('tr', { key: c.channel, style: { borderBottom: '1px solid var(--bdr)' } },
           el('td', { style: { padding: '7px 10px', display: 'flex', alignItems: 'center', gap: 6 } },
             el('div', { style: { width: 8, height: 8, borderRadius: 2, background: M.CHANNEL_META[c.channel].color } }),
@@ -317,14 +333,14 @@ function SalesExplorer({ records, meta }) {
 
   // donut only makes sense as a channel-revenue-contribution snapshot —
   // restrict it to byChannel mode so it isn't offered where it can't mean anything.
-  const availableChartTypes = CHART_TYPES.filter((t) => t.key !== 'donut' || seriesMode === 'byChannel');
+  const availableChartTypes = CHART_TYPES.filter((t) => t.key !== 'donut' || (seriesMode === 'byChannel' && metric === 'revenue'));
   const effectiveChartType = availableChartTypes.some((t) => t.key === chartType) ? chartType : 'bar';
 
   const seriesData = useMemo(() => {
     if (range.unsupported) return null;
     return C.buildSeries(records, {
       channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod,
-      metric, seriesMode, comparison, nowDate: meta.latest,
+      metric, seriesMode, comparison, nowDate: C.dateKeyFromDate(new Date()),
     });
   }, [records, channels.join(','), granularity, range.startPeriod, range.endPeriod, metric, seriesMode, comparison]);
 
@@ -345,7 +361,7 @@ function SalesExplorer({ records, meta }) {
     el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 18 } },
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
-        el(Select, { value: metric, onChange: setMetric, options: [{ value: 'revenue', label: 'Revenue' }, { value: 'orders', label: 'Orders' }, { value: 'aov', label: 'AOV' }, { value: 'units', label: 'Units' }] })),
+        el(Select, { value: metric, onChange: setMetric, options: metricOptions })),
       el(StoreSelect, {
         value: storeMode === 'byChannel' ? 'all' : storeMode,
         onChange: setStoreMode,
@@ -356,7 +372,7 @@ function SalesExplorer({ records, meta }) {
           value: seriesMode, onChange: (v) => setStoreMode(v === 'byChannel' ? 'byChannel' : 'all'),
           options: [{ value: 'combined', label: 'Combined' }, { value: 'byChannel', label: 'Separate per store' }],
         })),
-      el(DateRangeSelect, { value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange, availableStart: meta.earliest, availableEnd: meta.latest }),
+      el(DateRangeSelect, { section: 'Sales explorer', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange, availableStart: meta.earliest, availableEnd: meta.latest }),
       el(GranularitySelect, { value: granularity, onChange: setGranularity }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Comparison'),
@@ -371,10 +387,12 @@ function SalesExplorer({ records, meta }) {
         onClick: () => setChartType(t.key),
       }, el('i', { className: 'ti ' + t.icon, style: { fontSize: 13, marginRight: 5 } }), t.label))
     ),
+    el(PeriodNotice, { range, records, channels, section: 'Sales explorer (independent dates and stores)' }),
+    granularity === 'weekly' && comparison === 'previous-year' && el('div', { style: { color: 'var(--t2)', fontSize: 12 } }, 'Weekly year-on-year aligns weekdays using a 364-day (52-week) shift.'),
     range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
     !seriesData ? null :
     effectiveChartType === 'donut'
-      ? el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) })
+      ? (C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate }).status !== 'complete' ? el(UnavailableNotice, { reason: 'Complete channel coverage is required for contribution charts.' }) : el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) }))
       : el(RorCharts.SalesChart, {
           type: effectiveChartType, series: seriesData.series, comparisonSeries: seriesData.comparisonSeries,
           formatValue: (v, short) => formatMetric(metric, v, short),
@@ -423,25 +441,28 @@ function RorSalesApp() {
       ),
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
+      meta && el(MetricDefinitions, { meta }),
+
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
-        el(DateRangeSelect, { value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
+        el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
-          'KPI cards and channel contribution below use these two filters. The sales explorer and comparison table further down have their own independent controls.')
+          'KPI cards and channel contribution use these filters. Comparison dates are independent; its store follows this filter. Sales explorer has independent dates and stores.')
       ),
 
+      el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
       range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
-        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode, latestDate: meta.latest }),
+        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode }),
 
       meta && el(ComparisonTable, { records, channels, meta }),
 
-      !range.unsupported && el(ChannelContribution, { records, range, latestDate: meta.latest }),
+      !range.unsupported && el(ChannelContribution, { records, channels, range }),
 
       meta && el(SalesExplorer, { records, meta }),
 
       el('div', { style: { fontSize: 11, color: 'var(--t3)', padding: '4px 4px 24px', lineHeight: 1.7 } },
-        el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Revenue definitions differ by channel — see build brief §13:'),
+        el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Imported gross line sales by source — financial reconciliation pending:'),
         M.ACTIVE_CHANNELS.map((c) => el('div', { key: c }, M.CHANNEL_META[c].label + ': ' + M.CHANNEL_META[c].revenueDefinition))
       )
     )
