@@ -234,7 +234,7 @@ function channelContribution(records, opts) {
   const channels = opts.channels.map((channel) => ({ channel, ...aggregate(channelRecords, { ...opts, channels: [channel] }), ...(legacyAll ? {financialBasis:'legacy-imported-gross'} : {}) }));
   const totalRevenue = channels.reduce((s, c) => s + (c.revenue || 0), 0);
   return {
-    channels: channels.map((c) => ({ ...c, pctOfRevenue: channels.every((a) => a.status === 'complete') && aggregate(records, opts).revenue != null && c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
+    channels: channels.map((c) => ({ ...c, pctOfRevenue: (channels.every((a) => a.status === 'complete') || (legacyAll && channels.every(a=>a.revenue!=null))) && aggregate(records, opts).revenue != null && c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
     totals: aggregate(records, opts),
   };
 }

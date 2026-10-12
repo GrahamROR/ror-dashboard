@@ -1,8 +1,8 @@
 {
-  "snapshot_id": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
-  "source_as_of": "2026-10-08T20:58:01.441Z",
+  "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+  "source_as_of": "2026-10-12T09:00:04.503Z",
   "units": "Money in GBP pennies except native AOV in pounds; orders integer",
-  "native_periods_verified": 44,
+  "native_periods_verified": 41,
   "benchmark": {
     "gross_sales": 27622101,
     "net_sales": 24799966,

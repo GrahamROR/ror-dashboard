@@ -146,14 +146,60 @@ test("All Stores preserves consistent legacy gross totals, AOV, contribution and
       ...opts,
       channels: ["shopify", "etsy", "noths"],
     });
-    const original=C.aggregate(legacy,{...opts,channels:["shopify","etsy","noths"]});
-    for(const metric of ["revenue","orders","aov","units","status"])assert.equal(all[metric],original[metric]);
-    assert.equal(all.financialBasis,"legacy-imported-gross");assert.match(all.note,/not reconciled net sales/);
-    const contribution=C.channelContribution(records,{...opts,channels:["shopify","etsy","noths"]});
-    const originalContribution=C.channelContribution(legacy,{...opts,channels:["shopify","etsy","noths"]});
-    for(let i=0;i<contribution.channels.length;i++)for(const metric of ["revenue","orders","aov","pctOfRevenue"])assert.equal(contribution.channels[i][metric],originalContribution.channels[i][metric]);
-    for(const mode of ["combined","byChannel"])assert.deepEqual(C.buildSeries(records,{...opts,channels:["shopify","etsy","noths"],fromPeriod:opts.startDate,toPeriod:opts.endDate,granularity:"monthly",metric:"revenue",seriesMode:mode}),C.buildSeries(legacy,{...opts,channels:["shopify","etsy","noths"],fromPeriod:opts.startDate,toPeriod:opts.endDate,granularity:"monthly",metric:"revenue",seriesMode:mode}));
-
+    const original = C.aggregate(legacy, {
+      ...opts,
+      channels: ["shopify", "etsy", "noths"],
+    });
+    for (const metric of ["revenue", "orders", "aov", "units", "status"])
+      assert.equal(all[metric], original[metric]);
+    assert.equal(all.financialBasis, "legacy-imported-gross");
+    assert.match(all.note, /not reconciled net sales/);
+    const contribution = C.channelContribution(records, {
+      ...opts,
+      channels: ["shopify", "etsy", "noths"],
+    });
+    const originalContribution = C.channelContribution(legacy, {
+      ...opts,
+      channels: ["shopify", "etsy", "noths"],
+    });
+    for (let i = 0; i < contribution.channels.length; i++)
+      for (const metric of ["revenue", "orders", "aov"])
+        assert.equal(
+          contribution.channels[i][metric],
+          originalContribution.channels[i][metric],
+        );
+    for (const channel of contribution.channels)
+      assert.ok(
+        Math.abs(channel.pctOfRevenue - channel.revenue / original.revenue) <
+          1e-12,
+      );
+    assert.ok(
+      Math.abs(
+        contribution.channels.reduce((n, c) => n + c.pctOfRevenue, 0) - 1,
+      ) < 1e-12,
+    );
+    assert.equal(C.compareAggregates(all, all, "revenue").percentChange, null);
+    for (const mode of ["combined", "byChannel"])
+      assert.deepEqual(
+        C.buildSeries(records, {
+          ...opts,
+          channels: ["shopify", "etsy", "noths"],
+          fromPeriod: opts.startDate,
+          toPeriod: opts.endDate,
+          granularity: "monthly",
+          metric: "revenue",
+          seriesMode: mode,
+        }),
+        C.buildSeries(legacy, {
+          ...opts,
+          channels: ["shopify", "etsy", "noths"],
+          fromPeriod: opts.startDate,
+          toPeriod: opts.endDate,
+          granularity: "monthly",
+          metric: "revenue",
+          seriesMode: mode,
+        }),
+      );
   }
 });
 test("Missing finance cannot fall back to stale financial facts; units/marketplace facts remain", () => {
@@ -488,9 +534,111 @@ test("Transport refresh partitions full history and validates independent monthl
     fs.rmSync(temp, { recursive: true });
   }
 });
-test('Credential-backed refresh respects Retry-After and GraphQL throttle refill metadata',async()=>{
- const request=require('../collect').request,waits=[];let calls=0;
- const result=await request('test.myshopify.com','fixture','query {}',{},async()=>++calls===1?{status:429,headers:{get:()=> '30'}}:calls===2?{ok:true,json:async()=>({errors:[{extensions:{code:'THROTTLED'}}],extensions:{cost:{requestedQueryCost:100,throttleStatus:{maximumAvailable:1000,currentlyAvailable:0,restoreRate:2}}}})}:{ok:true,json:async()=>({data:{verified:true}})},async ms=>waits.push(ms));
- assert.equal(result.verified,true);assert.deepEqual(waits,[30000,51000]);
- await assert.rejects(request('test.myshopify.com','fixture','query {}',{},async()=>({ok:true,json:async()=>({errors:[{extensions:{code:'THROTTLED'}}],extensions:{cost:{requestedQueryCost:2000,throttleStatus:{maximumAvailable:1000}}}})}),async()=>{}),/reduce the query partition/);
+test("Credential-backed refresh respects Retry-After and GraphQL throttle refill metadata", async () => {
+  const request = require("../collect").request,
+    waits = [];
+  let calls = 0;
+  const result = await request(
+    "test.myshopify.com",
+    "fixture",
+    "query {}",
+    {},
+    async () =>
+      ++calls === 1
+        ? { status: 429, headers: { get: () => "30" } }
+        : calls === 2
+          ? {
+              ok: true,
+              json: async () => ({
+                errors: [{ extensions: { code: "THROTTLED" } }],
+                extensions: {
+                  cost: {
+                    requestedQueryCost: 100,
+                    throttleStatus: {
+                      maximumAvailable: 1000,
+                      currentlyAvailable: 0,
+                      restoreRate: 2,
+                    },
+                  },
+                },
+              }),
+            }
+          : { ok: true, json: async () => ({ data: { verified: true } }) },
+    async (ms) => waits.push(ms),
+  );
+  assert.equal(result.verified, true);
+  assert.deepEqual(waits, [30000, 51000]);
+  await assert.rejects(
+    request(
+      "test.myshopify.com",
+      "fixture",
+      "query {}",
+      {},
+      async () => ({
+        ok: true,
+        json: async () => ({
+          errors: [{ extensions: { code: "THROTTLED" } }],
+          extensions: {
+            cost: {
+              requestedQueryCost: 2000,
+              throttleStatus: { maximumAvailable: 1000 },
+            },
+          },
+        }),
+      }),
+      async () => {},
+    ),
+    /reduce the query partition/,
+  );
+});
+test("ShopifyQL-specific window reset is respected even with full Admin GraphQL budget", async () => {
+  let calls = 0;
+  const waits = [];
+  await require("../collect").request(
+    "test.myshopify.com",
+    "fixture",
+    "query {}",
+    {},
+    async () =>
+      ++calls === 1
+        ? {
+            ok: true,
+            json: async () => ({
+              errors: [{ extensions: { code: "THROTTLED" } }],
+              extensions: {
+                cost: {
+                  requestedQueryCost: 3,
+                  throttleStatus: {
+                    maximumAvailable: 2000,
+                    currentlyAvailable: 1999,
+                    restoreRate: 100,
+                  },
+                },
+                shopifyqlCost: {
+                  requestedQueryCost: 500,
+                  maximumAvailable: 1000,
+                  currentlyAvailable: 0,
+                  windowResetAt: new Date(Date.now() + 60000).toISOString(),
+                },
+              },
+            }),
+          }
+        : { ok: true, json: async () => ({ data: { verified: true } }) },
+    async (ms) => waits.push(ms),
+  );
+  assert.equal(calls, 2);
+  assert.ok(waits[0] >= 60000 && waits[0] <= 62000);
+});
+test("Refreshed Yesterday uses the London prior day without relabelling stale marketing or cost facts", () => {
+  const date = new Date("2026-10-12T12:00:00Z"),
+    v = I.growthView(view("FY27"), s, "net_sales", date),
+    expected = I.report(s, "2026-10-11", "2026-10-11", "net_sales");
+  assert.equal(v.yesterday.date, "2026-10-11");
+  assert.equal(v.yesterday.revenue, expected.revenue);
+  assert.equal(v.yesterday.orders, expected.orders);
+  assert.equal(v.yesterday.sessions, null);
+  assert.equal(v.yesterday.margin, null);
+  assert.equal(v.yesterday.profit, null);
+  assert.equal(v.yesterday.importedMarketingDate, "2026-10-07");
+  assert.equal(raw.yesterday.sessions, 674);
 });

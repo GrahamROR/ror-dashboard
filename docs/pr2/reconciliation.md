@@ -1,6 +1,6 @@
 # P2 staged financial reconciliation
 
-Snapshot: `ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d`. Source captured 2026-10-08T20:58:01.441Z; completed reporting days through 2026-10-07. Both dashboard projections agree with 44 independent native monthly/period controls for all eight additive measures and exact-period native AOV. Products reconcile including unassigned amounts.
+Snapshot: `dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1`. Source captured 2026-10-12T09:00:04.503Z; completed reporting days through 2026-10-11. Both dashboard projections agree with 41 independent native monthly/period controls for all eight additive measures and exact-period native AOV. Products reconcile including unassigned amounts.
 
 Production exports remain unchanged. Staged correction is a separate immutable snapshot, not a historical-record edit.
 

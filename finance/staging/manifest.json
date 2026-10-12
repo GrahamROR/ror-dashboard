@@ -1,7 +1,7 @@
 {
-  "snapshot_id": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
-  "file": "snapshots/ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d.json",
-  "sha256": "74e9255793f904b4b8c7dcde33b491e911cc53b84db5397cd9b181df52e847af",
-  "previous_snapshot_id": "1bc29cc2b9b08b1dc73155dbac134aa72df5dd4c331d082e2c72732d37786bbe",
+  "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+  "file": "snapshots/dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1.json",
+  "sha256": "60304d0ae66356c251cdaf0a68d49770f838e2677f6593a468f20f2e5bbd8dc6",
+  "previous_snapshot_id": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
   "approval": "STAGING ONLY — publication and accounting approval pending"
 }

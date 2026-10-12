@@ -1,5 +1,7 @@
 # Original dashboard before/after evidence
 
+Latest All Stores restoration (12 October): [desktop](all-stores-legacy-20261012.jpg), [mobile](all-stores-legacy-mobile-20261012.jpg). Legacy gross totals, AOV, contribution and explorer remain available, with pending-P3 and coverage labels. Earlier pairs below were captured on 8 October.
+
 P1 original interface versus corrected P2, both using the same FY selection and viewport. Desktop 1440×1100; mobile 390×844. P2 displays Net Sales by default, while P1 displays its original imported/total basis. Layout, navigation and existing controls are preserved.
 
 | View | Before (P1) | After (P2) |

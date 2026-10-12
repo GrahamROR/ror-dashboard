@@ -332,7 +332,9 @@ test(
   "Actual native source build is repeatable and source edits fail reconciliation",
   { skip: !fs.existsSync(path.join(B.ROOT, "source/daily.json")) },
   () => {
-    assert.equal(B.build(path.join(B.ROOT, "source")).id, live.id);
+    const captured = B.build(path.join(B.ROOT, "source"));
+    // Retained raw evidence replays to its own immutable snapshot after a later refresh.
+    assert.deepEqual(captured, JSON.parse(fs.readFileSync(path.join(B.ROOT,"snapshots",captured.id+".json"))));
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), "ror-native-test-"));
     try {
       for (const name of fs

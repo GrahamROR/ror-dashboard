@@ -1,0 +1,59 @@
+{
+  "prior_snapshot": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
+  "refreshed_snapshot": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+  "prior_coverage": {
+    "start": "2024-01-01",
+    "end": "2026-10-07"
+  },
+  "refreshed_coverage": {
+    "start": "2024-01-01",
+    "end": "2026-10-11"
+  },
+  "historical_value_changes": [],
+  "added_days": [
+    {
+      "day": "2026-10-08",
+      "gross_sales": 35508,
+      "discounts": -300,
+      "sales_reversals": 0,
+      "net_sales": 35208,
+      "shipping_charges": 4855,
+      "taxes": 7282,
+      "total_sales": 47345,
+      "orders": 14
+    },
+    {
+      "day": "2026-10-09",
+      "gross_sales": 48232,
+      "discounts": -2205,
+      "sales_reversals": -3375,
+      "net_sales": 42652,
+      "shipping_charges": 4212,
+      "taxes": 4206,
+      "total_sales": 51070,
+      "orders": 14
+    },
+    {
+      "day": "2026-10-10",
+      "gross_sales": 27369,
+      "discounts": -2490,
+      "sales_reversals": 0,
+      "net_sales": 24879,
+      "shipping_charges": 2816,
+      "taxes": 5361,
+      "total_sales": 33056,
+      "orders": 8
+    },
+    {
+      "day": "2026-10-11",
+      "gross_sales": 39240,
+      "discounts": -2949,
+      "sales_reversals": 0,
+      "net_sales": 36291,
+      "shipping_charges": 3955,
+      "taxes": 7964,
+      "total_sales": 48210,
+      "orders": 13
+    }
+  ]
+}

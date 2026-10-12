@@ -122,22 +122,46 @@
       snapshot && range.start <= range.end
         ? F.products(snapshot, range.start, range.end, basis)
         : { rows: [], status: "missing", residual: null };
-    const topProducts = grouped.rows
-      .slice(0, 10)
-      .map((p) => ({
-        ...originalProducts.get(p.title),
-        name: p.title,
-        revenue: pounds(p.value),
-        orders: originalProducts.get(p.title)?.orders ?? null,
-      }));
+    const topProducts = grouped.rows.slice(0, 10).map((p) => ({
+      ...originalProducts.get(p.title),
+      name: p.title,
+      revenue: pounds(p.value),
+      orders: originalProducts.get(p.title)?.orders ?? null,
+    }));
     const y = view.yesterday;
-    const yr = y ? report(snapshot, y.date, y.date, basis) : null;
+    const yesterdayDate = F.next(range.today, -1);
+    const yr = y ? report(snapshot, yesterdayDate, yesterdayDate, basis) : null;
+    const sameMarketingDate = y?.date === yesterdayDate;
+    const marketing = y ? { ...y } : null;
+    if (marketing && !sameMarketingDate)
+      for (const field of [
+        "customers",
+        "returning",
+        "repeatRate",
+        "sessions",
+        "convertedSessions",
+        "conversionRate",
+        "shopifyConversionRate",
+        "margin",
+        "profit",
+        "costCoverage",
+      ])
+        marketing[field] = null;
     return {
       ...view,
       monthly,
       summary,
       topProducts,
-      yesterday: y ? { ...y, ...yr } : null,
+      yesterday: y
+        ? {
+            ...marketing,
+            ...yr,
+            date: yesterdayDate,
+            monthKey: yesterdayDate.slice(0, 7),
+            importedMarketingDate: y.date,
+            marketingAvailable: sameMarketingDate,
+          }
+        : null,
       finance: {
         ...result,
         ...range,
@@ -173,12 +197,18 @@
     const imported = legacyAggregate(legacy, { ...opts, channels: requested });
     // Consolidated commercial reporting stays wholly on the preserved legacy import until P3.
     // Never blend canonical Shopify amounts/counts with unreconciled marketplace inputs.
-    if (other.length) return {
-      ...imported,
-      financialBasis: "legacy-imported-gross",
-      unitsStatus: imported.status,
-      note: [imported.note, "Legacy imported gross figures across all selected stores; not reconciled net sales. AOV uses the same imported orders. Pending P3."].filter(Boolean).join(" "),
-    };
+    if (other.length)
+      return {
+        ...imported,
+        financialBasis: "legacy-imported-gross",
+        unitsStatus: imported.status,
+        note: [
+          imported.note,
+          "Legacy imported gross figures across all selected stores; not reconciled net sales. AOV uses the same imported orders. Pending P3.",
+        ]
+          .filter(Boolean)
+          .join(" "),
+      };
     const native = report(snapshot, start, end, basis),
       shops = legacy.filter(
         (r) => r.channel === "shopify" && r.date >= start && r.date <= end,

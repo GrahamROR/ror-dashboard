@@ -8,6 +8,37 @@ const QUERY =
   "query FinanceSource($query: String!) { shopifyqlQuery(query: $query) { tableData { columns { name dataType } rows } parseErrors } }";
 const SHOP =
   "query { shop { id myshopifyDomain currencyCode ianaTimezone taxesIncluded } }";
+function throttleWait(response, json, attempt) {
+  const ql = json?.extensions?.shopifyqlCost;
+  if (ql?.requestedQueryCost > ql?.maximumAvailable)
+    throw Error(
+      "Native query complexity exceeds ShopifyQL budget; reduce the query partition",
+    );
+  const reset = ql?.windowResetAt
+    ? Date.parse(ql.windowResetAt) - Date.now() + 1000
+    : 0;
+  const cost = json?.extensions?.cost,
+    throttle = cost?.throttleStatus;
+  if (cost?.requestedQueryCost > throttle?.maximumAvailable)
+    throw Error(
+      "Native query cost exceeds throttle bucket; reduce the query partition",
+    );
+  const refill =
+    throttle?.restoreRate > 0
+      ? Math.max(
+          0,
+          ((cost.requestedQueryCost - throttle.currentlyAvailable) /
+            throttle.restoreRate) *
+            1000,
+        ) + 1000
+      : 0;
+  return Math.max(
+    Math.min(1000 * 2 ** attempt, 60000),
+    Number.isFinite(reset) ? reset : 0,
+    refill,
+    Number(response.headers?.get("retry-after") || 0) * 1000,
+  );
+}
 async function request(
   domain,
   token,
@@ -31,19 +62,25 @@ async function request(
       },
     );
     if (response.status === 429) {
-      await delay(Math.max(Math.min(1000 * 2 ** attempt,60000), Number(response.headers?.get("retry-after")||0)*1000));
+      let limited = null;
+      try {
+        limited = await response.json?.();
+      } catch {}
+      await delay(throttleWait(response, limited, attempt));
       continue;
     }
     if (!response.ok)
       throw Error("Read-only Shopify request failed: HTTP " + response.status);
     const json = await response.json();
     if (json.errors?.some((e) => e.extensions?.code === "THROTTLED")) {
-      const cost=json.extensions?.cost||json.errors.find(e=>e.extensions?.code==="THROTTLED")?.extensions?.cost;
-      const throttle=cost?.throttleStatus;
-      if(cost?.requestedQueryCost>throttle?.maximumAvailable)throw Error("Native query cost exceeds throttle bucket; reduce the query partition");
-      const refill=throttle?.restoreRate>0?Math.max(0,(cost.requestedQueryCost-throttle.currentlyAvailable)/throttle.restoreRate*1000)+1000:0;
-      const wait=Math.max(Math.min(1000*2**attempt,60000),refill,Number(response.headers?.get("retry-after")||0)*1000);
-      console.warn("Shopify read throttled; retry "+(attempt+1)+", waiting "+Math.ceil(wait/1000)+"s"+(cost?", requested="+cost.requestedQueryCost+", available="+throttle?.currentlyAvailable+", restore="+throttle?.restoreRate:""));
+      const wait = throttleWait(response, json, attempt);
+      console.warn(
+        "Shopify read throttled; retry " +
+          (attempt + 1) +
+          ", waiting " +
+          Math.ceil(wait / 1000) +
+          "s",
+      );
       await delay(wait);
       continue;
     }

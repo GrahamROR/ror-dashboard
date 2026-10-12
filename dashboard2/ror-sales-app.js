@@ -116,7 +116,7 @@ function MetricDefinitions({ meta, basis, snapshot, channels }) {
   return el('details', {className:'card',style:{fontSize:12,lineHeight:1.7}},
     el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},channels.length>1?'All Stores: legacy imported gross figures · Pending P3 · Not reconciled net sales':'Financial basis: Shopify '+ShopifyIntegration.labels[basis]+' · Etsy/NOTHS imported gross line sales'),
     el('div',null,ShopifyFinance.DEFINITIONS[basis]),
-    el('div',null,'Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = net merchandise / orders. Shopify-reported AOV is a separate native metric.'),
+    el('div',null,'In Shopify-only views, Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = net merchandise / orders. Shopify-reported AOV is a separate native metric.'),
     el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
     el('div',null,'Etsy/NOTHS revenue, orders and purchased units retain the existing imported definitions. All Stores revenue, AOV and contribution retain legacy imported gross figures and orders, not reconciled net sales. Pending P3.'),
     el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
@@ -285,19 +285,19 @@ function ChannelContribution({ records, channels, range }) {
     el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 10, marginBottom: 16 } },
       el('div', null,
         el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Channel contribution'),
-        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Uses the page date and store filters. Shares require complete coverage.')),
+        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, channels.length>1?'Legacy imported gross contribution; shares of recorded subtotals, coverage unverified pending P3.':'Uses the page date and store filters. Shares require complete coverage.')),
       el('div', { className: 'tab-bar' },
         [['donut', 'ti-chart-donut'], ['bar', 'ti-chart-bar'], ['stacked-bar', 'ti-stack-2']].map(([k, ic]) =>
-          el('div', { key: k, className: 'tab' + (view === k ? ' active' : ''), onClick: () => setView(k) }, el('i', { className: 'ti ' + ic, style: { fontSize: 13 } }))))
+          el('div', { key: k, role:'button', 'aria-label':'Contribution '+k, className: 'tab' + (view === k ? ' active' : ''), onClick: () => setView(k) }, el('i', { className: 'ti ' + ic, style: { fontSize: 13 } }))))
     ),
     el(PeriodNotice, { range, records, channels, section: 'Channel contribution' }),
-    contrib.totals.status !== 'complete' ? el(UnavailableNotice, { reason: contrib.totals.note || 'Complete channel coverage is required for contribution charts.' }) :
+    contrib.totals.status !== 'complete' && !(contrib.totals.financialBasis==='legacy-imported-gross' && contrib.channels.every(c=>c.revenue!=null)) ? el(UnavailableNotice, { reason: contrib.totals.note || 'Complete channel coverage is required for contribution charts.' }) :
     view === 'donut' ? el(RorCharts.SalesChart, { type: 'donut', slices, formatValue: (v) => fmtC(v, 0) }) :
     el(RorCharts.SalesChart, { type: view === 'bar' ? 'bar' : 'stacked-bar', series: barSeries, formatValue: (v, short) => short ? fmtC(v, 0) : fmtC(v, 0) }),
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto', marginTop: 16 } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 480 } },
         el('thead', null, el('tr', { style: { borderBottom: '1px solid var(--bdr2)' } },
-          ['Channel', 'Sales (channel basis)', '% of comparable total', 'Eligible / imported orders', M.METRICS.units.label, 'Sales per order (channel basis)'].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
+          ['Channel', 'Sales (channel basis)', channels.length>1?'% of recorded legacy gross':'% of comparable total', channels.length>1?'Imported orders':'Eligible / imported orders', M.METRICS.units.label, 'Sales per order (channel basis)'].map((h, i) => el('th', { key: h, style: { textAlign: i === 0 ? 'left' : 'right', padding: '6px 10px', color: 'var(--t3)', fontSize: 11, fontWeight: 500 } }, h)))),
         el('tbody', null, contrib.channels.map((c) => el('tr', { key: c.channel, style: { borderBottom: '1px solid var(--bdr)' } },
           el('td', { style: { padding: '7px 10px', display: 'flex', alignItems: 'center', gap: 6 } },
             el('div', { style: { width: 8, height: 8, borderRadius: 2, background: M.CHANNEL_META[c.channel].color } }),
@@ -401,7 +401,7 @@ function SalesExplorer({ records, meta, basis }) {
     range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
     !seriesData ? null :
     effectiveChartType === 'donut'
-      ? (C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate }).status !== 'complete' ? el(UnavailableNotice, { reason: 'Complete channel coverage is required for contribution charts.' }) : el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) }))
+      ? (C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate }).status !== 'complete' && !(channels.length>1 && C.channelContribution(records,{channels,startDate:range.startDate,endDate:range.endDate}).channels.every(c=>c.revenue!=null)) ? el(UnavailableNotice, { reason: 'Complete channel coverage is required for contribution charts.' }) : el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) }))
       : el(RorCharts.SalesChart, {
           type: effectiveChartType, series: seriesData.series, comparisonSeries: seriesData.comparisonSeries,
           formatValue: (v, short) => formatMetric(metric, v, short),
@@ -458,7 +458,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBas
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
         el('div',{style:{display:'flex',flexDirection:'column',gap:4}},
-          el(FilterLabel,null,'Shopify financial basis'),
+          el(FilterLabel,null,'Shopify-only financial basis'),
           el(Select,{value:financialBasis,onChange:setFinancialBasis,ariaLabel:'ROR Shopify financial basis',options:ShopifyIntegration.BASIS.map(k=>({value:k,label:ShopifyIntegration.labels[k]}))})),
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
@@ -476,7 +476,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBas
       meta && el(SalesExplorer, { records, meta, basis:financialBasis }),
 
       el('div', { style: { fontSize: 11, color: 'var(--t3)', padding: '4px 4px 24px', lineHeight: 1.7 } },
-        el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Shopify uses the selected verified financial basis; Etsy/NOTHS retain imported gross lines:'),
+        el('div', { style: { fontWeight: 600, color: 'var(--t2)', marginBottom: 4 } }, 'Shopify-only uses verified finance. All Stores uses legacy imported gross figures for every channel, pending P3; not reconciled net sales:'),
         M.ACTIVE_CHANNELS.map((c) => el('div', { key: c }, M.CHANNEL_META[c].label + ': ' + (c==='shopify'?ShopifyFinance.DEFINITIONS[financialBasis]:M.CHANNEL_META[c].revenueDefinition)))
       )
     )
