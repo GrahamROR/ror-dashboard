@@ -23,6 +23,8 @@ The first [real run 38226532016](https://github.com/GrahamROR/ror-dashboard/acti
 
 The staging workflow is manual or triggered by relevant collector/refresh/workflow updates to this same-repository P2 branch only. It has read-only repository permissions, uploads review artifacts, and never commits, deploys, overwrites production exports or enables a production schedule.
 
+The final transport implementation also passed a second [real credential-backed run 38229158874](https://github.com/GrahamROR/ror-dashboard/actions/runs/38229158874) at branch commit `9b1bb23f11cda388e7a2d5e2694cc4e7ccf566ab`. Its artifact checksum was independently verified and every day, native control period and product fact is identical to the committed review snapshot. It passed rollback from snapshot `20384ecbd5214a0cbcfc7a832c8dab30e61c807e166bf6f84ded7001e260324b` back to the committed `dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1` and forward again, preserving both. [Final refresh validation](github-final-refresh-validation-20261012.json). The committed source snapshot remains the reviewed first successful capture; the repeat run changes capture provenance, with identical financial facts.
+
 ## Dashboard and regression verification
 
 129 automated cases pass locally: 38 finance/integration, 12 ROR calculations, 18 reporting contract, 11 rendered date presets, 16 Ads and 34 insights. Latest-source financial tests use the downloaded GitHub snapshot. Retained private raw evidence is independently replayed to its own immutable predecessor, rather than incorrectly assuming it should match a newer capture. CI skips two private raw-evidence tests when those captures are absent.
