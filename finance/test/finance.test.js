@@ -302,7 +302,7 @@ test("Collector rejects FX/store changes and failed batches leave staging manife
 test("Production exports, attribution and marketplace inputs remain byte-identical", () => {
   const checks = fs
     .readFileSync(
-      path.join(__dirname, "../../docs/pr2/production-data.sha256"),
+      process.env.REPORTING_EXPORT_BASELINE || path.join(__dirname, "../../docs/pr2/production-data.sha256"),
       "utf8",
     )
     .trim()

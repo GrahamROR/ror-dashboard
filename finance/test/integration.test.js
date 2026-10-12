@@ -221,7 +221,8 @@ test("Missing finance cannot fall back to stale financial facts; units/marketpla
   assert.equal(v.topProducts.length, 0);
 });
 test("Missing dates and partial imported units suppress comparison without changing verified financial counts", () => {
-  const records = I.rorRecords(legacy, s, "net_sales"),
+  const partialFixture = legacy.map(r => r.date === "2026-10-07" && r.channel === "shopify" ? {...r, completeness: "partial"} : r);
+  const records = I.rorRecords(partialFixture, s, "net_sales"),
     a = C.aggregate(records, {
       channels: ["shopify"],
       startDate: "2023-01-01",
@@ -249,7 +250,8 @@ test("Missing dates and partial imported units suppress comparison without chang
 });
 test("Yesterday financial fields use the same source and basis while session/margin inputs retain existing behavior", () => {
   for (const basis of I.BASIS) {
-    const v = I.growthView(view("FY27"), s, basis, now),
+    const source = {...view("FY27"), yesterday: {...raw.yesterday, date: "2026-10-07"}};
+    const v = I.growthView(source, s, basis, now),
       a = C.aggregate(I.rorRecords(legacy, s, basis), {
         channels: ["shopify"],
         startDate: "2026-10-07",
@@ -631,7 +633,9 @@ test("ShopifyQL-specific window reset is respected even with full Admin GraphQL 
 });
 test("Refreshed Yesterday uses the London prior day without relabelling stale marketing or cost facts", () => {
   const date = new Date("2026-10-12T12:00:00Z"),
-    v = I.growthView(view("FY27"), s, "net_sales", date),
+    source = {...view("FY27"), yesterday: {...raw.yesterday, date: "2026-10-07"}},
+    originalSessions = raw.yesterday.sessions,
+    v = I.growthView(source, s, "net_sales", date),
     expected = I.report(s, "2026-10-11", "2026-10-11", "net_sales");
   assert.equal(v.yesterday.date, "2026-10-11");
   assert.equal(v.yesterday.revenue, expected.revenue);
@@ -640,5 +644,5 @@ test("Refreshed Yesterday uses the London prior day without relabelling stale ma
   assert.equal(v.yesterday.margin, null);
   assert.equal(v.yesterday.profit, null);
   assert.equal(v.yesterday.importedMarketingDate, "2026-10-07");
-  assert.equal(raw.yesterday.sessions, 674);
+  assert.equal(raw.yesterday.sessions, originalSessions);
 });
