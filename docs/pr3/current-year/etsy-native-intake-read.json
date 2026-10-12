@@ -1,0 +1,12 @@
+{
+  "collected_at": "2026-10-12T14:52:57.317Z",
+  "scope_start": "2026-08-01T00:00:00+01:00",
+  "scope_end_exclusive": "2026-10-01T00:00:00+01:00",
+  "receipt_count": 177,
+  "pages": 2,
+  "promoted": false,
+  "independent_stats_controls_available": false,
+  "paired_exports_available": false,
+  "stockhub_rows_written": 0,
+  "stockhub_changed_db": false
+}

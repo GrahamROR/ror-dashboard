@@ -42,7 +42,7 @@ All 3,786 native orders read, all statuses. The native monthly gross report reco
 | 2026-06 | £7,150.20 | £266.56 | £7,416.76 | £0.00 |
 | 2026-07 | £6,583.68 | £256.26 | £6,839.94 | £0.00 |
 
-Native item gross £116,150.70 + delivery £6,325.64 = report £122,476.34. Native original order total after source discounts: £120,868.56. Product report £119,478.24 differs from that by £-1,390.32. Dispatched-only order total £119,490.27 is still £12.03 above the product report; no exclusions forced.
+Native item gross £116,150.70 + delivery £6,325.64 = report £122,476.34. Native original order total after source discounts: £120,868.56. Product report £119,478.24 differs from that by £-1,390.32. Dispatched-only order total £119,490.27 is still £12.03 above the product report; no exclusions forced. The subsequent product-level investigation shows every trading product count/units matches the whole cohort, so this near-match does not establish dispatched-only report eligibility. See docs/pr3/current-year/evidence-and-rollout.md.
 
 Native statuses: dispatched 3750; declined 9; refunded 18; expired 8; archived 1. Native refund_total sums £941.81; no refund-posting chronology or merchandise/shipping allocation is established. Source commissions £36,928.35 are separate expenses, not deducted from sales. Native tax components are preserved; 4899 record-field identities differ, with signed aggregate £-46.05 across overlapping fields, not an adjustment to sales.
 

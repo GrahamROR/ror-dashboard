@@ -7,13 +7,17 @@
   "use strict";
   const VERSION = "marketplace-sales-v1";
   const LABELS = {
+    legacy_gross: "Etsy legacy imported gross — unreconciled",
     net_sales: "Etsy Stats merchandise sales",
     gross_sales: "Etsy original merchandise value",
     total_sales: "Etsy Sold Orders total",
   };
+  const BASIS = ["net_sales", "gross_sales", "total_sales", "legacy_gross"];
   const DEFINITIONS = {
+    legacy_gross:
+      "Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback.",
     net_sales:
-      "Etsy Sold Orders Order Value minus Discount Amount. Verified against supplied FY26 Stats controls. Fully refunded payments absent from Sold Orders are excluded; partial refunds are not subtracted again. Preserves source tax treatment; not asserted VAT-exclusive accounting turnover.",
+      "Etsy Sold Orders Order Value minus Discount Amount. Validated against independent Stats controls for each covered period. New-year eligibility and source treatment must be verified before import. Fully refunded payments absent from Sold Orders are excluded; partial refunds are not subtracted again. Preserves source tax treatment; not asserted VAT-exclusive accounting turnover.",
     gross_sales:
       "Original merchandise Order Value for Etsy Sold Orders, before discounts; excludes fully refunded payment-only records. Different from StockHub imported gross.",
     total_sales:
@@ -42,6 +46,19 @@
       records.finance?.legacy || Array.from(records),
       { ...opts, channels: ["etsy"] },
     );
+    if (basis === "legacy_gross")
+      return {
+        ...imported,
+        financialSource: "etsy",
+        financialBasis: "legacy-imported-gross",
+        definition: DEFINITIONS.legacy_gross,
+        unitsStatus: imported.status,
+        unitsNote: imported.note,
+        nativeAov: null,
+        note:
+          "Explicitly selected legacy imported gross; not verified net sales. " +
+          (imported.note || ""),
+      };
     const base = {
       ...imported,
       revenue: null,
@@ -52,6 +69,7 @@
       financialSource: "etsy",
       definition: DEFINITIONS[basis],
       unitsStatus: imported.status,
+      unitsNote: imported.note,
     };
     if (!LABELS[basis]) throw Error("Unknown Etsy financial basis");
     if (imported.status === "not-occurred") return base;
@@ -68,6 +86,7 @@
       return {
         ...base,
         status: chosen.length ? "incomplete-data" : "no-data",
+        gapCount: missing,
         note:
           error ||
           `Etsy financial coverage unavailable for ${missing} selected days. No imported gross fallback or estimated net sales. Last validated complete month: ${snapshot?.channels?.etsy?.months?.at(-1)?.month || "none"}.`,
@@ -85,5 +104,5 @@
       note: `Etsy historical source-validated CSV coverage; live refresh requires new paired exports and Stats controls. ${error ? "Latest refresh failed; last-good data retained. " : ""}Purchased units remain imported; unit coverage is independent.`,
     };
   }
-  return { VERSION, LABELS, DEFINITIONS, attach, aggregate };
+  return { VERSION, BASIS, LABELS, DEFINITIONS, attach, aggregate };
 });

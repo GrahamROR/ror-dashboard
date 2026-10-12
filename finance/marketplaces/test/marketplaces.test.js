@@ -112,7 +112,7 @@ test("Annual source-derived Etsy totals, eligible orders and weighted AOV", () =
   assert.equal(r.aov.toFixed(2), "28.92");
 });
 test("Every basis and daily/monthly/quarterly/annual/custom section uses identical metrics", () => {
-  for (const basis of Object.keys(MP.LABELS)) {
+  for (const basis of FI.BASIS) {
     const r = records(basis),
       a = C.aggregate(r, opts);
     const expected =
@@ -272,7 +272,7 @@ test("Tax and residual source values are preserved rather than reconstructed at 
   assert.equal(m.net_sales, 800);
 });
 test("Legacy All Stores revenue/orders/AOV, contributions and Explorer remain unchanged across every basis", () => {
-  for (const basis of Object.keys(MP.LABELS)) {
+  for (const basis of FI.BASIS) {
     const r = records(basis),
       all = { ...opts, channels: ["shopify", "etsy", "noths"] },
       a = C.aggregate(r, all),
@@ -308,7 +308,7 @@ test("Legacy All Stores revenue/orders/AOV, contributions and Explorer remain un
   }
 });
 test("P2 Shopify-only projections and NOTHS legacy remain unchanged", () => {
-  for (const basis of Object.keys(MP.LABELS)) {
+  for (const basis of FI.BASIS) {
     const r = records(basis),
       original = FI.rorRecords(legacy, r.finance.snapshot, basis);
     assert.deepEqual(
@@ -525,4 +525,289 @@ test("Extra native receipt absent from paired exports blocks incomplete source c
   const x = synthetic();
   x.native.set("3", { ...x.native.get("1") });
   assert.throws(() => build(x), /missing paired/);
+});
+test("Explicit legacy Etsy selection preserves imported metrics in all four current-year presets; default never falls back", () => {
+  const nowDate = new Date("2026-10-12T12:00:00Z");
+  for (const key of ["currentFY", "thisMonth", "last30", "last7"]) {
+    const range = C.resolveDateRange(key, { nowDate });
+    const opts = { channels: ["etsy"], ...range };
+    const native = C.aggregate(records(), opts);
+    assert.equal(native.revenue, null);
+    assert.equal(native.orders, null);
+    assert.equal(native.aov, null);
+    const old = C.aggregate(legacy, opts),
+      explicit = C.aggregate(records("legacy_gross"), opts);
+    for (const metric of ["revenue", "orders", "aov", "units"])
+      assert.equal(explicit[metric], old[metric]);
+    assert.equal(explicit.financialBasis, "legacy-imported-gross");
+    assert.match(explicit.note, /Explicitly selected/);
+    const table = C.buildComparisonTable(records("legacy_gross"), {
+      channels: ["etsy"],
+      fromPeriod: range.startDate,
+      toPeriod: range.endDate,
+      metric: "revenue",
+      granularity: "monthly",
+    });
+    assert.equal(table.totals.revenue, old.revenue);
+    const optsSeries = {
+      channels: ["etsy"],
+      fromPeriod: range.startDate,
+      toPeriod: range.endDate,
+      metric: "revenue",
+      granularity: "monthly",
+    };
+    const values = (r) =>
+      C.buildSeries(r, optsSeries).series.map((s) =>
+        s.points.map((p) => ({
+          bucket: p.bucket,
+          value: p.value,
+          status: p.status,
+        })),
+      );
+    assert.deepEqual(values(records("legacy_gross")), values(legacy));
+  }
+});
+test("Cross-definition financial or eligible-order comparisons are rejected, without changing unit comparisons", () => {
+  const a = {
+      status: "complete",
+      revenue: 100,
+      orders: 10,
+      aov: 10,
+      units: 20,
+      financialSource: "etsy",
+      financialBasis: "net_sales",
+    },
+    b = { ...a, financialBasis: "legacy-imported-gross" };
+  for (const metric of ["revenue", "orders", "aov"]) {
+    const result = C.compareAggregates(a, b, metric);
+    assert.equal(result.status, "incompatible-basis");
+    assert.equal(result.percentChange, null);
+  }
+  assert.equal(C.compareAggregates(a, b, "units").status, "ok");
+});
+test("New-year controls require independent Stats, reviewed policy and actual financial evidence", () => {
+  const { prepare } = require("../prepare-etsy-controls");
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), "ror-p3-intake-"));
+  try {
+    const x = synthetic();
+    fs.writeFileSync(
+      path.join(out, "EtsySoldOrders2026-8.csv"),
+      x.sold.replaceAll("05/09/26", "08/09/26"),
+    );
+    fs.writeFileSync(
+      path.join(out, "EtsyDirectCheckoutPayments2026-8.csv"),
+      x.payment.replaceAll("05/09/2026", "08/09/2026"),
+    );
+    const stat = {
+      month: "2026-08",
+      start: "2026-08-01",
+      end_inclusive: "2026-08-31",
+      revenue_gbp: "8.00",
+      orders: 1,
+      currency: "GBP",
+      reporting_timezone: "Europe/London",
+      stats_evidence_reference: "synthetic-independent-stats",
+      captured_at: "2026-09-02T12:00:00Z",
+      source_policy_verified: true,
+      review_reference: "synthetic policy review",
+    };
+    const opts = {
+      soldDir: out,
+      paymentDir: out,
+      stats: { schema: "etsy-stats-controls-v1", months: [stat] },
+    };
+    const controls = prepare(opts);
+    assert.equal(controls.monthly_controls["2026-08"].net_sales, 800);
+    assert.equal(controls.native_stats_orders, 1);
+    assert.throws(
+      () =>
+        prepare({
+          ...opts,
+          stats: { ...opts.stats, months: [{ ...stat, revenue_gbp: null }] },
+        }),
+      /Missing independent/,
+    );
+    assert.throws(
+      () =>
+        prepare({
+          ...opts,
+          stats: { ...opts.stats, months: [{ ...stat, revenue_gbp: "7.99" }] },
+        }),
+      /Stats mismatch/,
+    );
+    assert.throws(
+      () =>
+        prepare({
+          ...opts,
+          stats: {
+            ...opts.stats,
+            months: [{ ...stat, source_policy_verified: false }],
+          },
+        }),
+      /verification/,
+    );
+    assert.throws(
+      () =>
+        prepare({
+          ...opts,
+          stats: require("../../../docs/pr3/current-year/etsy-stats-intake-template.json"),
+        }),
+      /verification/,
+    );
+  } finally {
+    fs.rmSync(out, { recursive: true, force: true });
+  }
+});
+test("Staged August/September intake retains FY26, rejects unverified policy and partial scope, and preserves last-good on failure", () => {
+  const { prepare } = require("../prepare-etsy-controls"),
+    { run } = require("../import-etsy");
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), "ror-p3-fy27-import-"));
+  try {
+    const x = synthetic();
+    for (const [m, id, pid] of [
+      ["08", "1", "2"],
+      ["09", "3", "4"],
+    ]) {
+      fs.writeFileSync(
+        path.join(out, "EtsySoldOrders2026-" + Number(m) + ".csv"),
+        x.sold
+          .replaceAll("05/09/26", m + "/09/26")
+          .replace(",1,GBP", "," + id + ",GBP"),
+      );
+      fs.writeFileSync(
+        path.join(out, "EtsyDirectCheckoutPayments2026-" + Number(m) + ".csv"),
+        x.payment
+          .replaceAll("05/09/2026", m + "/09/2026")
+          .replace("2,1,GBP", pid + "," + id + ",GBP"),
+      );
+    }
+    const months = ["08", "09"].map((m) => ({
+      month: "2026-" + m,
+      start: "2026-" + m + "-01",
+      end_inclusive: "2026-" + m + (m === "08" ? "-31" : "-30"),
+      revenue_gbp: "8.00",
+      orders: 1,
+      currency: "GBP",
+      reporting_timezone: "Europe/London",
+      stats_evidence_reference: "synthetic Stats capture",
+      review_reference: "synthetic source-policy review",
+      captured_at: "2026-10-02T12:00:00Z",
+      source_policy_verified: true,
+    }));
+    const prepared = prepare({
+      soldDir: out,
+      paymentDir: out,
+      stats: { schema: "etsy-stats-controls-v1", months },
+    });
+    const controls = path.join(out, "controls.json"),
+      nativeFile = path.join(out, "native.json"),
+      stage = path.join(out, "staging");
+    fs.writeFileSync(controls, JSON.stringify(prepared));
+    const native = {
+      count: 2,
+      start: "2026-08-01T00:00:00+01:00",
+      end: "2026-10-01T00:00:00+01:00",
+      rows: ["08", "09"].map((m, i) => ({
+        ...x.native.get("1"),
+        receipt_id: i ? "3" : "1",
+        create_timestamp: Date.parse("2026-" + m + "-09T23:30:00Z") / 1000,
+      })),
+    };
+    fs.writeFileSync(nativeFile, JSON.stringify(native));
+    S.publish(stage, snapshot);
+    const args = {
+      soldDir: out,
+      paymentDir: out,
+      controls,
+      nativeFile,
+      out: stage,
+    };
+    run(args);
+    const combined = S.read(stage);
+    assert.equal(combined.channels.etsy.months.length, 14);
+    assert.deepEqual(
+      combined.channels.etsy.daily.filter((d) => d.date <= "2026-07-31"),
+      snapshot.channels.etsy.daily,
+    );
+    const manifest = fs.readFileSync(path.join(stage, "manifest.json"), "utf8");
+    delete prepared.monthly_controls["2026-08"].independent_stats;
+    fs.writeFileSync(controls, JSON.stringify(prepared));
+    assert.throws(() => run(args), /independent Stats/);
+    assert.equal(
+      fs.readFileSync(path.join(stage, "manifest.json"), "utf8"),
+      manifest,
+    );
+    prepared.monthly_controls["2026-08"].independent_stats = {
+      source_policy_verified: true,
+      evidence: "synthetic",
+      review: "synthetic",
+      captured_at: "2026-10-02T12:00:00Z",
+    };
+    fs.writeFileSync(controls, JSON.stringify(prepared));
+    native.end = "2026-09-12T00:00:00+01:00";
+    fs.writeFileSync(nativeFile, JSON.stringify(native));
+    assert.throws(() => run(args), /complete declared month/);
+    assert.equal(
+      fs.readFileSync(path.join(stage, "manifest.json"), "utf8"),
+      manifest,
+    );
+  } finally {
+    fs.rmSync(out, { recursive: true, force: true });
+  }
+});
+test("NOTHS product evidence supports original gross cohort and keeps refund and rounding gaps unpromoted", () => {
+  const r = require("../../../docs/pr3/current-year/noths-product-refund-investigation.json");
+  assert.equal(r.gross_bridge_preserved, true);
+  assert.equal(
+    r.native_gross_total,
+    r.source_gross.item + r.source_gross.delivery,
+  );
+  assert.equal(r.all_order_and_unit_count_matches, 233);
+  assert.equal(r.dispatched_count_mismatches, 22);
+  assert.equal(r.missing_report_products, 60);
+  assert.equal(r.diagnostic_delivery_allocation.matched_product_values, 231);
+  assert.equal(
+    r.diagnostic_delivery_allocation.remaining_product_differences.length,
+    2,
+  );
+  assert.notEqual(
+    r.diagnostic_delivery_allocation.candidate_report_total,
+    r.product_report_total,
+  );
+  assert.equal(
+    r.refunds.total,
+    r.refunds.refunded_state_cumulative_refunds +
+      r.refunds.other_state_cumulative_refunds,
+  );
+  assert.equal(r.refunds.posting_dates_available, false);
+  assert.match(r.status, /not verified net/);
+});
+test("Imported unit cards, comparison rows and Explorer remain independent of unavailable financial coverage", () => {
+  const opts = {
+      channels: ["etsy"],
+      fromPeriod: "2026-08-01",
+      toPeriod: "2026-10-11",
+      metric: "units",
+      granularity: "monthly",
+    },
+    r = records();
+  const native = C.buildComparisonTable(r, opts),
+    old = C.buildComparisonTable(legacy, opts);
+  assert.equal(native.totals.units, old.totals.units);
+  assert.equal(native.totals.status, old.totals.status);
+  assert.deepEqual(
+    native.rows.map((x) => ({
+      units: x.current.units,
+      status: x.current.status,
+    })),
+    old.rows.map((x) => ({ units: x.current.units, status: x.current.status })),
+  );
+  assert.deepEqual(
+    C.buildSeries(r, opts).series.map((s) =>
+      s.points.map((p) => ({ value: p.value, status: p.status })),
+    ),
+    C.buildSeries(legacy, opts).series.map((s) =>
+      s.points.map((p) => ({ value: p.value, status: p.status })),
+    ),
+  );
 });

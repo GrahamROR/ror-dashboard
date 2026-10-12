@@ -124,7 +124,7 @@ function render(r) {
     )
     .join(
       "\n",
-    )}\n\nNative item gross ${gbp(r.noths.totals.item_gross)} + delivery ${gbp(r.noths.totals.delivery)} = report ${gbp(r.noths.totals.native_report_gross)}. Native original order total after source discounts: ${gbp(r.noths.totals.order_total)}. Product report ${gbp(r.noths.product_report_gross)} differs from that by ${gbp(r.noths.product_vs_order_total_difference)}. Dispatched-only order total ${gbp(r.noths.states.dispatched.order_total)} is still ${gbp(r.noths.states.dispatched.order_total - r.noths.product_report_gross)} above the product report; no exclusions forced.\n\nNative statuses: ${Object.entries(
+    )}\n\nNative item gross ${gbp(r.noths.totals.item_gross)} + delivery ${gbp(r.noths.totals.delivery)} = report ${gbp(r.noths.totals.native_report_gross)}. Native original order total after source discounts: ${gbp(r.noths.totals.order_total)}. Product report ${gbp(r.noths.product_report_gross)} differs from that by ${gbp(r.noths.product_vs_order_total_difference)}. Dispatched-only order total ${gbp(r.noths.states.dispatched.order_total)} is still ${gbp(r.noths.states.dispatched.order_total - r.noths.product_report_gross)} above the product report; no exclusions forced. The subsequent product-level investigation shows every trading product count/units matches the whole cohort, so this near-match does not establish dispatched-only report eligibility. See docs/pr3/current-year/evidence-and-rollout.md.\n\nNative statuses: ${Object.entries(
     r.noths.states,
   )
     .map(([k, v]) => k + " " + v.orders)

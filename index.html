@@ -2062,19 +2062,20 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
      of this. -->
 <script src="dashboard2/data-model.js"></script>
 <script src="dashboard2/data-adapter.js"></script>
-<script src="dashboard2/calculations.js?v=marketplace-v1"></script>
-<script src="dashboard2/charts.js?v=marketplace-v1"></script>
-<script src="dashboard2/ror-sales-app.js?v=marketplace-v1"></script>
+<script src="dashboard2/calculations.js?v=marketplace-v6"></script>
+<script src="dashboard2/charts.js?v=marketplace-v6"></script>
+<script src="dashboard2/ror-sales-app.js?v=marketplace-v6"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/integration.js"></script>
 <script src="finance/loader.js"></script>
-<script src="finance/marketplaces/contract.js"></script>
+<script src="finance/marketplaces/contract.js?v=current-year-v4"></script>
 <script src="finance/marketplaces/loader.js"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');
   const [financialBasis, setFinancialBasis] = useState('net_sales');
+  const [etsyBasis, setEtsyBasis] = useState('net_sales');
   const [financeSnapshot, setFinanceSnapshot] = useState(null);
   const [financeError, setFinanceError] = useState('');
   const [marketplaceSnapshot, setMarketplaceSnapshot] = useState(null);
@@ -2084,7 +2085,7 @@ function RootApp() {
   const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError};
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
-    activeDashboard === 'ror-sales' ? el(RorSalesApp, {...financeProps,marketplaceSnapshot,marketplaceError}) : el(App, financeProps)
+    activeDashboard === 'ror-sales' ? el(RorSalesApp, {...financeProps,marketplaceSnapshot,marketplaceError,etsyBasis,setEtsyBasis}) : el(App, financeProps)
   );
 }
 

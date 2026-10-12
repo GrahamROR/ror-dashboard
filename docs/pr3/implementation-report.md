@@ -1,5 +1,7 @@
 # P3 review report — Etsy financial accuracy and NOTHS evidence
 
+**Current follow-up:** [Current-year behavior, new evidence requests, NOTHS product/refund findings and separate release gates](current-year/evidence-and-rollout.md). This supersedes any dispatched-only inference from the early aggregate comparison; the underlying historical benchmarks remain unchanged.
+
 P3 uses the existing ROR Sales interface and P2 shared penny/date primitives. It adds no dashboard or navigation. P1/P2 remain open and unmerged; P3 is stacked on P2 commit `00593ec3d563c5a61761ddc64ff699d18446a1b9`. Latest main was inspected: `02e2f3c750acaefaebbca733e62efa9cd44910fd`; its five newer daily exports were used in a separate browser fixture, never copied over branch/production exports.
 
 ## Financial outcome

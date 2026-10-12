@@ -30,6 +30,16 @@ function run({ soldDir, paymentDir, controls, out, nativeFile }) {
     const paymentIds = new Set();
     const supplied = Object.entries(c.monthly_controls).map(
       ([month, control]) => {
+        if (
+          (month < "2025-08" || month > "2026-07") &&
+          (!control.independent_stats?.source_policy_verified ||
+            !control.independent_stats.evidence ||
+            !control.independent_stats.review ||
+            !Number.isFinite(Date.parse(control.independent_stats.captured_at)))
+        )
+          throw Error(
+            "New-period independent Stats/source-policy evidence required",
+          );
         const nextMonth = new Date(
           Date.UTC(+month.slice(0, 4), +month.slice(5), 1),
         )

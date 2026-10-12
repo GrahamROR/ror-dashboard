@@ -147,6 +147,8 @@ function compareAggregates(currentAgg, previousAgg, metric) {
   if (currentAgg.status === 'no-data') return { status: 'no-comparison-data', current: null, previous: prev, absoluteChange: null, percentChange: null, note: 'No data recorded for the current period.' };
   if (!previousAgg || previousAgg.status === 'no-data' || previousAgg.status === 'not-occurred') return { status: 'no-comparison-data', current: cur, previous: null, absoluteChange: null, percentChange: null, note: 'No comparable data available for the prior period.' };
   if (currentAgg.status !== 'complete' || previousAgg.status !== 'complete' || cur == null || prev == null || currentAgg.truncated || previousAgg.truncated) return { status: 'incomplete-data', current: cur, previous: prev, absoluteChange: null, percentChange: null, note: 'Comparison unavailable: both periods must have complete, comparable coverage.' };
+  const curBasis=currentAgg.financialBasis||'legacy-imported-gross',prevBasis=previousAgg.financialBasis||'legacy-imported-gross';
+  if(metric!=='units' && ((curBasis!==prevBasis && (metric!=='orders'||curBasis==='legacy-imported-gross'||prevBasis==='legacy-imported-gross')) || (currentAgg.financialSource&&previousAgg.financialSource&&currentAgg.financialSource!==previousAgg.financialSource)))return {status:'incompatible-basis',current:cur,previous:prev,absoluteChange:null,percentChange:null,note:'Comparison unavailable: financial definitions or order eligibility differ.'};
   const absoluteChange = cur - prev;
   if (prev === 0) return { status: 'zero-denominator', current: cur, previous: prev, absoluteChange, percentChange: null, note: 'Prior period is zero — percentage change is not meaningful.' };
   return { status: 'ok', current: cur, previous: prev, absoluteChange, percentChange: (cur / prev - 1) * 100, note: currentAgg.note };
@@ -209,17 +211,19 @@ function selectedBucket(bucket, from, to) {
     truncated: startDate !== bucket.startDate || endDate !== bucket.endDate };
 }
 
+function metricCoverage(agg,metric){return metric==='units'&&agg.unitsStatus?{...agg,status:agg.unitsStatus,note:agg.unitsNote||'Imported units have independent coverage.'}:agg;}
+
 function buildComparisonTable(records, opts) {
   const buckets = bucketsForGranularity(opts.granularity, opts.fromPeriod, opts.toPeriod);
   const rows = buckets.map((bucket) => {
     const selected = selectedBucket(bucket, opts.fromPeriod, opts.toPeriod);
-    const current = { ...aggregate(records, { channels: opts.channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }), truncated: selected.truncated };
+    const current = { ...metricCoverage(aggregate(records, { channels: opts.channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }),opts.metric), truncated: selected.truncated };
     const prev = previousBucket(bucket); const yoy = yearEarlierBucket(bucket);
     const previous = aggregate(records, { channels: opts.channels, startDate: prev.startDate, endDate: prev.endDate, nowDate: opts.nowDate || opts.nowPeriod });
     const yearAgo = aggregate(records, { channels: opts.channels, startDate: yoy.startDate, endDate: yoy.endDate, nowDate: opts.nowDate || opts.nowPeriod });
     return { bucket: selected, current, mom: compareAggregates(current, previous, opts.metric), yoy: compareAggregates(current, yearAgo, opts.metric) };
   });
-  const totals = aggregate(records, { channels: opts.channels, startDate: opts.fromPeriod, endDate: opts.toPeriod, nowDate: opts.nowDate || opts.nowPeriod });
+  const totals = metricCoverage(aggregate(records, { channels: opts.channels, startDate: opts.fromPeriod, endDate: opts.toPeriod, nowDate: opts.nowDate || opts.nowPeriod }),opts.metric);
   return { rows, totals, metric: opts.metric, granularity: opts.granularity };
 }
 
@@ -241,7 +245,7 @@ function channelContribution(records, opts) {
   const channels = opts.channels.map((channel) => ({ channel, ...aggregate(channelRecords, { ...opts, channels: [channel] }), ...(legacyAll ? {financialBasis:'legacy-imported-gross'} : {}) }));
   const totalRevenue = channels.reduce((s, c) => s + (c.revenue || 0), 0);
   return {
-    channels: channels.map((c) => ({ ...c, pctOfRevenue: (channels.every((a) => a.status === 'complete') || (legacyAll && channels.every(a=>a.revenue!=null))) && aggregate(records, opts).revenue != null && c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
+    channels: channels.map((c) => ({ ...c, pctOfRevenue: (channels.every((a) => a.status === 'complete') || ((legacyAll || records.marketplaces?.basis==='legacy_gross') && channels.every(a=>a.revenue!=null))) && aggregate(records, opts).revenue != null && c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
     totals: aggregate(records, opts),
   };
 }
@@ -257,7 +261,7 @@ function buildSeries(records, opts) {
     points: buckets.map((bucket) => {
       const selected = selectedBucket(bucket, opts.fromPeriod, opts.toPeriod);
       const target = comparison === 'previous-year' ? yearEarlierBucket(bucket) : comparison === 'previous-period' ? previousBucket(bucket) : selected;
-      const agg = aggregate(records, { channels, startDate: target.startDate, endDate: target.endDate, nowDate: opts.nowDate || opts.nowPeriod });
+      const agg = metricCoverage(aggregate(records, { channels, startDate: target.startDate, endDate: target.endDate, nowDate: opts.nowDate || opts.nowPeriod }),opts.metric);
       if (comparison) {
         const current = { ...aggregate(records, { channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }), truncated: selected.truncated };
         if (compareAggregates(current, agg, opts.metric).status !== 'ok') return { bucket: target, value: null, status: 'incomplete-data', note: 'Comparison unavailable for incomplete periods.' };
