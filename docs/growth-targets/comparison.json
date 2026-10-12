@@ -1,0 +1,81 @@
+{
+  "main": "95608afe717e7342b4e8e4889b6e60d158b34e10",
+  "goal": 500000,
+  "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+  "rows": [
+    {
+      "month": "Aug",
+      "before": 37000,
+      "after": 38541.67
+    },
+    {
+      "month": "Sep",
+      "before": 33500,
+      "after": 34895.84
+    },
+    {
+      "month": "Oct",
+      "before": 30000,
+      "after": 31250
+    },
+    {
+      "month": "Nov",
+      "before": 58500,
+      "after": 60937.5
+    },
+    {
+      "month": "Dec",
+      "before": 71000,
+      "after": 73958.33
+    },
+    {
+      "month": "Jan",
+      "before": 53000,
+      "after": 55208.33
+    },
+    {
+      "month": "Feb",
+      "before": 31500,
+      "after": 32812.5
+    },
+    {
+      "month": "Mar",
+      "before": 38500,
+      "after": 40104.17
+    },
+    {
+      "month": "Apr",
+      "before": 28000,
+      "after": 29166.67
+    },
+    {
+      "month": "May",
+      "before": 33500,
+      "after": 34895.83
+    },
+    {
+      "month": "Jun",
+      "before": 35000,
+      "after": 36458.33
+    },
+    {
+      "month": "Jul",
+      "before": 30500,
+      "after": 31770.83
+    }
+  ],
+  "fy26": {
+    "target_before": 480000,
+    "target_after": 500000,
+    "actual": 313437.06,
+    "variance_before": -166562.94,
+    "variance_after": -186562.94
+  },
+  "fy27": {
+    "cutoff": "2026-10-11",
+    "target_before": 100500,
+    "target_after": 84526.22,
+    "actual": 45693.26,
+    "variance_after": -38832.96
+  }
+}

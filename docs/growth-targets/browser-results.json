@@ -1,0 +1,153 @@
+[
+  {
+    "scenario": "FY26 overview net_sales",
+    "selectedActual": true,
+    "goalActual": true,
+    "annualTarget": true,
+    "variance": true,
+    "basisLabel": true
+  },
+  {
+    "scenario": "FY26 overview gross_sales",
+    "selectedActual": true,
+    "goalActual": true,
+    "annualTarget": true,
+    "variance": true,
+    "basisLabel": true
+  },
+  {
+    "scenario": "FY26 overview total_sales",
+    "selectedActual": true,
+    "goalActual": true,
+    "annualTarget": true,
+    "variance": true,
+    "basisLabel": true
+  },
+  {
+    "scenario": "FY26 monthly",
+    "annualTarget": true,
+    "totalActual": true,
+    "signedVariance": true,
+    "explicitBasis": true
+  },
+  {
+    "scenario": "final FY26 net_sales",
+    "annual": true,
+    "variance": true,
+    "modelLabel": true
+  },
+  {
+    "scenario": "final FY26 gross_sales",
+    "annual": true,
+    "variance": true,
+    "modelLabel": true
+  },
+  {
+    "scenario": "final FY26 total_sales",
+    "annual": true,
+    "variance": true,
+    "modelLabel": true
+  },
+  {
+    "scenario": "FY27 October MTD",
+    "fullMonth": true,
+    "paced": true,
+    "net": true,
+    "target": true,
+    "variance": true
+  },
+  {
+    "scenario": "mobile FY26 net_sales",
+    "annual": true,
+    "variance": true
+  },
+  {
+    "scenario": "mobile FY26 gross_sales",
+    "annual": true,
+    "variance": true
+  },
+  {
+    "scenario": "mobile FY26 total_sales",
+    "annual": true,
+    "variance": true
+  },
+  {
+    "scenario": "mobile FY27 monthly",
+    "paced": true,
+    "partial": true
+  },
+  {
+    "scenario": "mobile Yesterday",
+    "verifiedFinance": true,
+    "timestamp": true
+  },
+  {
+    "scenario": "simulated marketing 10 Oct vs financial 11 Oct",
+    "financeRetained": true,
+    "explicitCutoffs": true,
+    "marketingWithheld": true
+  },
+  {
+    "scenario": "mismatched-cutoff forecast",
+    "comparisonWithheld": true,
+    "totalSalesProjection": true
+  },
+  {
+    "scenario": "annual slider",
+    "goalChanged": true,
+    "targetChanged": true,
+    "actualRetained": true
+  },
+  {
+    "scenario": "forecast slider",
+    "projection": true,
+    "basis": true
+  },
+  {
+    "scenario": "tab Products",
+    "rendered": true
+  },
+  {
+    "scenario": "tab Email",
+    "rendered": true
+  },
+  {
+    "scenario": "tab Ads",
+    "rendered": true
+  },
+  {
+    "scenario": "tab Margin",
+    "rendered": true
+  },
+  {
+    "scenario": "tab Monthly",
+    "rendered": true
+  },
+  {
+    "scenario": "tab Yesterday",
+    "rendered": true
+  },
+  {
+    "scenario": "tab Overview",
+    "rendered": true
+  },
+  {
+    "scenario": "retained 7 October snapshot stale fixture",
+    "cutoff": true,
+    "paced": true,
+    "warning": true,
+    "analysisWithheld": true
+  },
+  {
+    "scenario": "P1/P2 All Stores preservation",
+    "revenue": true,
+    "orders": true,
+    "aov": true,
+    "legacyLabel": true
+  },
+  {
+    "scenario": "Shopify-only ROR preservation",
+    "net": true,
+    "orders": true
+  }
+]
