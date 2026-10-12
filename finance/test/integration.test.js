@@ -488,3 +488,9 @@ test("Transport refresh partitions full history and validates independent monthl
     fs.rmSync(temp, { recursive: true });
   }
 });
+test('Credential-backed refresh respects Retry-After and GraphQL throttle refill metadata',async()=>{
+ const request=require('../collect').request,waits=[];let calls=0;
+ const result=await request('test.myshopify.com','fixture','query {}',{},async()=>++calls===1?{status:429,headers:{get:()=> '30'}}:calls===2?{ok:true,json:async()=>({errors:[{extensions:{code:'THROTTLED'}}],extensions:{cost:{requestedQueryCost:100,throttleStatus:{maximumAvailable:1000,currentlyAvailable:0,restoreRate:2}}}})}:{ok:true,json:async()=>({data:{verified:true}})},async ms=>waits.push(ms));
+ assert.equal(result.verified,true);assert.deepEqual(waits,[30000,51000]);
+ await assert.rejects(request('test.myshopify.com','fixture','query {}',{},async()=>({ok:true,json:async()=>({errors:[{extensions:{code:'THROTTLED'}}],extensions:{cost:{requestedQueryCost:2000,throttleStatus:{maximumAvailable:1000}}}})}),async()=>{}),/reduce the query partition/);
+});

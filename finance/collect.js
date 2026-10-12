@@ -18,7 +18,7 @@ async function request(
 ) {
   if (!/^[a-z0-9-]+\.myshopify\.com$/.test(domain) || !token)
     throw Error("Shop domain and access token required");
-  for (let attempt = 0; attempt < 4; attempt++) {
+  for (let attempt = 0; attempt < 8; attempt++) {
     const response = await transport(
       `https://${domain}/admin/api/${API_VERSION}/graphql.json`,
       {
@@ -31,14 +31,20 @@ async function request(
       },
     );
     if (response.status === 429) {
-      await delay(1000 * 2 ** attempt);
+      await delay(Math.max(Math.min(1000 * 2 ** attempt,60000), Number(response.headers?.get("retry-after")||0)*1000));
       continue;
     }
     if (!response.ok)
       throw Error("Read-only Shopify request failed: HTTP " + response.status);
     const json = await response.json();
     if (json.errors?.some((e) => e.extensions?.code === "THROTTLED")) {
-      await delay(1000 * 2 ** attempt);
+      const cost=json.extensions?.cost||json.errors.find(e=>e.extensions?.code==="THROTTLED")?.extensions?.cost;
+      const throttle=cost?.throttleStatus;
+      if(cost?.requestedQueryCost>throttle?.maximumAvailable)throw Error("Native query cost exceeds throttle bucket; reduce the query partition");
+      const refill=throttle?.restoreRate>0?Math.max(0,(cost.requestedQueryCost-throttle.currentlyAvailable)/throttle.restoreRate*1000)+1000:0;
+      const wait=Math.max(Math.min(1000*2**attempt,60000),refill,Number(response.headers?.get("retry-after")||0)*1000);
+      console.warn("Shopify read throttled; retry "+(attempt+1)+", waiting "+Math.ceil(wait/1000)+"s"+(cost?", requested="+cost.requestedQueryCost+", available="+throttle?.currentlyAvailable+", restore="+throttle?.restoreRate:""));
+      await delay(wait);
       continue;
     }
     if (json.errors || !json.data)
