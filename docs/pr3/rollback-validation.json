@@ -1,0 +1,12 @@
+{
+  "tested_at": "2026-10-12T13:24:38.695Z",
+  "scope": "Private dashboard staging only; actual source-derived August and full-year snapshots",
+  "first_snapshot": "a3e321e9897ba966201deba902b99887fe14ff6092713c161f0119e733870d3c",
+  "complete_snapshot": "c724cf6a191c0d6183042b0df017a2a8e89ec516e70595021ce3333b7d92be3c",
+  "failed_import_blocked": true,
+  "last_good_manifest_preserved": true,
+  "rollback_to_august_verified": true,
+  "roll_forward_to_full_year_identical": true,
+  "immutable_snapshots_retained": true,
+  "production_writes": 0
+}

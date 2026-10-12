@@ -195,7 +195,7 @@ async (page) => {
   let selections = 0;
   for (const basis of ["net_sales", "gross_sales", "total_sales"]) {
     await page
-      .getByLabel("ROR Shopify financial basis", { exact: true })
+      .getByLabel(/^ROR (?:Shopify )?financial basis$/, { exact: true })
       .selectOption(basis);
     for (const preset of presets) {
       for (const name of ["Page", "Sales comparison", "Sales explorer"]) {

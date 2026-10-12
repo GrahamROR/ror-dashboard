@@ -1,0 +1,27 @@
+{
+  "results": [
+    {
+      "channel": "etsy",
+      "collected_at": "2026-10-12T13:06:08.957Z",
+      "orders_read": 24,
+      "pages": 1,
+      "scope_start": "2026-10-01T00:00:00+01:00",
+      "scope_end_exclusive": "2026-10-12T00:00:00+01:00",
+      "validation": "candidate; requires independent native report controls before promotion",
+      "promoted": false
+    },
+    {
+      "channel": "noths",
+      "collected_at": "2026-10-12T13:06:20.824Z",
+      "orders_read": 72,
+      "pages": 1,
+      "scope_start": "2026-10-01T00:00:00+01:00",
+      "scope_end_exclusive": "2026-10-12T00:00:00+01:00",
+      "validation": "candidate; requires independent native report controls before promotion",
+      "promoted": false
+    }
+  ],
+  "stockhub_rows_written": 0,
+  "stockhub_changed_db": false,
+  "oauth_refresh": false
+}

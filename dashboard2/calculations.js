@@ -92,6 +92,13 @@ function resolveDateRange(presetKey, opts) {
 }
 
 function aggregate(records, opts) {
+  if(records.marketplaces && opts.channels.length===1 && opts.channels[0]==='etsy'){
+    const mp=typeof module!=='undefined'&&module.exports?require('../finance/marketplaces/contract.js'):window.MarketplaceFinance;
+    return mp.aggregate(records,opts,aggregate);
+  }
+  if(records.marketplaces && opts.channels.includes('etsy') && opts.channels.length>1 && !opts.channels.includes('shopify')){
+    return {...aggregate(records.finance?.legacy||Array.from(records),opts),financialBasis:'legacy-imported-gross',note:'Legacy imported gross across selected marketplaces; not reconciled net sales.'};
+  }
   if (records.finance && opts.channels.includes('shopify')) {
     const integration = typeof module !== 'undefined' && module.exports ? require('../finance/integration.js') : window.ShopifyIntegration;
     return integration.aggregateRor(records, opts, aggregate);
@@ -229,7 +236,7 @@ function yearEarlierRange(start, end) {
 function rangeLengthMonths(start, end) { const s = parseDate(normalizeStart(start)), e = parseDate(normalizeEnd(end)); return (e.getUTCFullYear() - s.getUTCFullYear()) * 12 + e.getUTCMonth() - s.getUTCMonth() + 1; }
 
 function channelContribution(records, opts) {
-  const legacyAll = records.finance && opts.channels.includes('shopify') && opts.channels.length > 1;
+  const legacyAll = records.finance && (opts.channels.includes('shopify') || (records.marketplaces && opts.channels.includes('etsy'))) && opts.channels.length > 1;
   const channelRecords = legacyAll ? records.finance.legacy : records;
   const channels = opts.channels.map((channel) => ({ channel, ...aggregate(channelRecords, { ...opts, channels: [channel] }), ...(legacyAll ? {financialBasis:'legacy-imported-gross'} : {}) }));
   const totalRevenue = channels.reduce((s, c) => s + (c.revenue || 0), 0);
@@ -241,7 +248,7 @@ function channelContribution(records, opts) {
 
 function buildSeries(records, opts) {
   // All Stores, including separate series, must use one consistent legacy import basis.
-  if (records.finance && opts.channels.includes('shopify') && opts.channels.length > 1) records = records.finance.legacy;
+  if (records.finance && (opts.channels.includes('shopify') || (records.marketplaces && opts.channels.includes('etsy'))) && opts.channels.length > 1) records = records.finance.legacy;
   const buckets = bucketsForGranularity(opts.granularity, opts.fromPeriod, opts.toPeriod);
   const groups = opts.seriesMode === 'byChannel' ? opts.channels.map((c) => [c]) : [opts.channels];
   const makeSeries = (comparison) => groups.map((channels) => ({
