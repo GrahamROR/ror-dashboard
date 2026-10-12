@@ -6,3 +6,8 @@ scripts/package-lock.json
 local-data/
 *.xlsx
 *.xls
+
+# Read-only native report evidence stays local; public snapshots contain aggregates only.
+finance/staging/source/
+finance/staging/manifest.json.tmp
+finance/local-data/

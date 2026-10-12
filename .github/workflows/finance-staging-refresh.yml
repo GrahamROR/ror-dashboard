@@ -1,0 +1,64 @@
+name: Validate Shopify finance refresh in staging
+# Deliberately no schedule and no production write. Enablement needs separate approval.
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [synchronize]
+    paths:
+      - finance/collect.js
+      - finance/refresh.js
+      - finance/publication.js
+      - finance/publication-simulation.js
+      - finance/pages-publication.js
+      - scripts/publish-data.js
+      - .github/workflows/fetch-data.yml
+      - .github/workflows/finance-staging-refresh.yml
+concurrency:
+  group: finance-staging-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  staging-refresh:
+    if: >-
+      (github.head_ref || github.ref_name) == 'codex/pr2-canonical-shopify-finance' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TZ: Europe/London
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Refresh through existing fetch entry point (staging only)
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+        run: node scripts/fetch-data.js --finance-staging
+      - name: Validate native controls and isolated snapshot rollback
+        run: node finance/validate-refresh.js
+      - name: Simulate publication, failed refresh, real recovery and rollback on latest main
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+        run: node finance/publication-simulation.js
+      - name: Verify protected exports remain unchanged
+        run: git diff --exit-code -- data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json
+      - name: Preserve staging audit and rollback evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shopify-finance-staging-${{ github.run_id }}
+          path: |
+            finance/staging/manifest.json
+            finance/staging/refresh-status.json
+            finance/staging/validation.json
+            finance/staging/publication-simulation.json
+            finance/staging/snapshots/
+          retention-days: 30

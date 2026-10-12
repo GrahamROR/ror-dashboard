@@ -92,6 +92,10 @@ function resolveDateRange(presetKey, opts) {
 }
 
 function aggregate(records, opts) {
+  if (records.finance && opts.channels.includes('shopify')) {
+    const integration = typeof module !== 'undefined' && module.exports ? require('../finance/integration.js') : window.ShopifyIntegration;
+    return integration.aggregateRor(records, opts, aggregate);
+  }
   const channels = opts.channels;
   const startDate = normalizeStart(opts.startDate || opts.startPeriod);
   const endDate = normalizeEnd(opts.endDate || opts.endPeriod);
@@ -126,6 +130,10 @@ function aggregate(records, opts) {
 }
 
 function compareAggregates(currentAgg, previousAgg, metric) {
+  if(metric==='units') {
+    if(currentAgg?.unitsStatus)currentAgg={...currentAgg,status:currentAgg.unitsStatus};
+    if(previousAgg?.unitsStatus)previousAgg={...previousAgg,status:previousAgg.unitsStatus};
+  }
   const cur = currentAgg ? currentAgg[metric] : null;
   const prev = previousAgg ? previousAgg[metric] : null;
   if (!currentAgg || currentAgg.status === 'not-occurred') return { status: 'not-occurred', current: null, previous: prev, absoluteChange: null, percentChange: null, note: 'This period has not happened yet.' };
@@ -221,15 +229,19 @@ function yearEarlierRange(start, end) {
 function rangeLengthMonths(start, end) { const s = parseDate(normalizeStart(start)), e = parseDate(normalizeEnd(end)); return (e.getUTCFullYear() - s.getUTCFullYear()) * 12 + e.getUTCMonth() - s.getUTCMonth() + 1; }
 
 function channelContribution(records, opts) {
-  const channels = opts.channels.map((channel) => ({ channel, ...aggregate(records, { ...opts, channels: [channel] }) }));
+  const legacyAll = records.finance && opts.channels.includes('shopify') && opts.channels.length > 1;
+  const channelRecords = legacyAll ? records.finance.legacy : records;
+  const channels = opts.channels.map((channel) => ({ channel, ...aggregate(channelRecords, { ...opts, channels: [channel] }), ...(legacyAll ? {financialBasis:'legacy-imported-gross'} : {}) }));
   const totalRevenue = channels.reduce((s, c) => s + (c.revenue || 0), 0);
   return {
-    channels: channels.map((c) => ({ ...c, pctOfRevenue: channels.every((a) => a.status === 'complete') && c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
+    channels: channels.map((c) => ({ ...c, pctOfRevenue: (channels.every((a) => a.status === 'complete') || (legacyAll && channels.every(a=>a.revenue!=null))) && aggregate(records, opts).revenue != null && c.revenue != null && totalRevenue > 0 ? c.revenue / totalRevenue : null })),
     totals: aggregate(records, opts),
   };
 }
 
 function buildSeries(records, opts) {
+  // All Stores, including separate series, must use one consistent legacy import basis.
+  if (records.finance && opts.channels.includes('shopify') && opts.channels.length > 1) records = records.finance.legacy;
   const buckets = bucketsForGranularity(opts.granularity, opts.fromPeriod, opts.toPeriod);
   const groups = opts.seriesMode === 'byChannel' ? opts.channels.map((c) => [c]) : [opts.channels];
   const makeSeries = (comparison) => groups.map((channels) => ({

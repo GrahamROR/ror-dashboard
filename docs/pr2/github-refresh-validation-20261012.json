@@ -1,0 +1,80 @@
+{
+  "validated_at": "2026-10-12T09:01:14.656Z",
+  "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+  "coverage": {
+    "start": "2024-01-01",
+    "end": "2026-10-11"
+  },
+  "native_controls": 41,
+  "fy26": {
+    "before": {
+      "start": "2025-08-01",
+      "end": "2026-07-31",
+      "endExclusive": "2026-08-01",
+      "store": "rockonruby.myshopify.com",
+      "currency": "GBP",
+      "timezone": "Europe/London",
+      "snapshot_id": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
+      "definition": "shopify-analytics-v1",
+      "missingDays": 0,
+      "status": "actual",
+      "reconciliation_status": "native-aggregate-verified; legacy-counting-basis-difference",
+      "warnings": [],
+      "gross_sales": 27622101,
+      "discounts": -2360122,
+      "sales_reversals": -462013,
+      "net_sales": 24799966,
+      "shipping_charges": 2367088,
+      "taxes": 4176652,
+      "total_sales": 31343706,
+      "orders": 7832,
+      "average_order_value": 32.22,
+      "net_aov": 31.664920837589378,
+      "component_residual": 0
+    },
+    "corrected": {
+      "start": "2025-08-01",
+      "end": "2026-07-31",
+      "endExclusive": "2026-08-01",
+      "store": "rockonruby.myshopify.com",
+      "currency": "GBP",
+      "timezone": "Europe/London",
+      "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+      "definition": "shopify-analytics-v1",
+      "missingDays": 0,
+      "status": "actual",
+      "reconciliation_status": "native-aggregate-verified; legacy-counting-basis-difference",
+      "warnings": [],
+      "gross_sales": 27622101,
+      "discounts": -2360122,
+      "sales_reversals": -462013,
+      "net_sales": 24799966,
+      "shipping_charges": 2367088,
+      "taxes": 4176652,
+      "total_sales": 31343706,
+      "orders": 7832,
+      "average_order_value": 32.22,
+      "net_aov": 31.664920837589378,
+      "component_residual": 0
+    },
+    "native": {
+      "start": "2025-08-01",
+      "end": "2026-07-31",
+      "gross_sales": 27622101,
+      "discounts": -2360122,
+      "sales_reversals": -462013,
+      "net_sales": 24799966,
+      "shipping_charges": 2367088,
+      "taxes": 4176652,
+      "total_sales": 31343706,
+      "orders": 7832,
+      "average_order_value": 32.22
+    }
+  },
+  "rollback": {
+    "passed": true,
+    "restored_previous": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
+    "restored_current": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+    "isolated": true
+  }
+}

@@ -477,4 +477,9 @@ async function main() {
   console.log(`  Yesterday:   £${yesterday.revenue} | ${yesterday.orders} orders`);
 }
 
-main().catch(e => { console.error('\n✗ Fatal error:', e); process.exit(1); });
+if (require.main === module) {
+  const run = process.argv.includes('--finance-staging')
+    ? require('../finance/refresh.js').refresh({sourceDir: process.argv.includes('--from-capture') ? process.argv[process.argv.indexOf('--from-capture')+1] : null})
+    : main();
+  run.catch(e => { console.error('\n✗ Fetch failed:', e.message); process.exitCode = 1; });
+}

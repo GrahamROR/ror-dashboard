@@ -1,59 +1,93 @@
 name: Fetch Dashboard Data
-
 on:
   schedule:
-    - cron: '0 3 * * *'    # 3am UTC = 4am BST. Even with 60min GitHub drift, lands by 5am BST at worst.
-  workflow_dispatch:         # manual trigger from GitHub Actions tab
-
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      rollback_snapshot:
+        description: 'Retained finance snapshot ID for an approved rollback; otherwise leave empty'
+        required: false
+        default: ''
+      approve_rollback:
+        description: 'Explicit approval for manual finance rollback (finance refresh must be paused)'
+        type: boolean
+        default: false
 permissions:
-  contents: write            # needed to commit data.json back to repo
-
+  pages: write
+  contents: write
+concurrency:
+  group: dashboard-data-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
   fetch-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45
     env:
-      TZ: Europe/London      # all date commands in this job use BST/GMT automatically
-
+      TZ: Europe/London
+      FINANCE_PUBLICATION_ENABLED: ${{ vars.FINANCE_PUBLICATION_ENABLED }}
+      GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-
-      - name: Fetch data from Shopify Analytics
+          node-version: '22'
+      - name: Fetch existing legacy Shopify data
+        id: legacy
+        if: ${{ !inputs.rollback_snapshot }}
+        continue-on-error: true
         env:
-          SHOPIFY_STORE:         ${{ secrets.SHOPIFY_STORE }}
-          SHOPIFY_CLIENT_ID:     ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
         run: node scripts/fetch-data.js
-
-      - name: Commit and push updated data.json
+      - name: Publish legacy export before financial collection
+        id: legacy_publish
+        if: ${{ steps.legacy.outcome == 'success' }}
+        continue-on-error: true
+        run: node scripts/publish-data.js --files data.json
+      - name: Collect and validate canonical Shopify finance
+        id: finance
+        if: ${{ github.ref == 'refs/heads/main' && vars.FINANCE_PUBLICATION_ENABLED == 'true' && !inputs.rollback_snapshot }}
+        continue-on-error: true
+        env:
+          SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+          SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+          SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+        run: node finance/refresh.js
+      - name: Publish finance bundle or retained-snapshot failure warning
+        id: finance_publish
+        if: ${{ always() && (steps.finance.outcome == 'success' || steps.finance.outcome == 'failure') }}
+        continue-on-error: true
+        env:
+          FINANCE_OUTCOME: ${{ steps.finance.outcome }}
+        run: node scripts/publish-data.js --finance-outcome "$FINANCE_OUTCOME"
+      - name: Approved manual finance rollback
+        id: rollback
+        if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.rollback_snapshot && inputs.approve_rollback && vars.FINANCE_PUBLICATION_ENABLED != 'true' }}
+        env:
+          FINANCE_ROLLBACK_APPROVED: 'true'
+          ROLLBACK_ID: ${{ inputs.rollback_snapshot }}
+        run: node scripts/publish-data.js --rollback "$ROLLBACK_ID"
+      - name: Retain finance audit without publishing private captures
+        if: ${{ always() && (steps.finance.outcome == 'success' || steps.finance.outcome == 'failure') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: shopify-finance-daily-${{ github.run_id }}
+          path: |
+            finance/staging/manifest.json
+            finance/staging/refresh-status.json
+            finance/staging/snapshots/
+          retention-days: 30
+      - name: Report failed collection or publication
+        if: always()
+        env:
+          LEGACY_OUTCOME: ${{ steps.legacy.outcome }}
+          LEGACY_PUBLISH_OUTCOME: ${{ steps.legacy_publish.outcome }}
+          FINANCE_OUTCOME: ${{ steps.finance.outcome }}
+          FINANCE_PUBLISH_OUTCOME: ${{ steps.finance_publish.outcome }}
+          ROLLBACK_INPUT: ${{ inputs.rollback_snapshot }}
+          ROLLBACK_OUTCOME: ${{ steps.rollback.outcome }}
         run: |
-          git config user.name  "ror-dashboard[bot]"
-          git config user.email "dashboard@rockonruby.co.uk"
-          git add data.json
-
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-
-          git commit -m "chore: daily update $(date +'%Y-%m-%d %H:%M %Z')"
-
-          for attempt in 1 2 3; do
-            if git pull --rebase --autostash origin "${GITHUB_REF_NAME:-main}" && git push; then
-              exit 0
-            fi
-
-            echo "Push failed because the remote moved; retrying after rebase (attempt ${attempt}/3)"
-            sleep $((attempt * 5))
-          done
-
-          echo "Failed to push after rebasing remote changes."
-          exit 1
+          node -e 'const e=process.env;if([e.LEGACY_OUTCOME,e.LEGACY_PUBLISH_OUTCOME,e.FINANCE_OUTCOME,e.FINANCE_PUBLISH_OUTCOME].includes("failure")||(e.ROLLBACK_INPUT&&e.ROLLBACK_OUTCOME!=="success"))process.exit(1)'

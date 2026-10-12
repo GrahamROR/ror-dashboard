@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "attempted_at": "2026-10-12T08:58:20.310Z",
+  "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+  "previous_snapshot_id": "ff0bc394c201681314758ff3c4d6ab2ec3c4d503f5946f72cf4c9583fca53e0d",
+  "verification": {
+    "start": "2024-01-01",
+    "end": "2026-10-11",
+    "days": 1015,
+    "nativeControls": 41,
+    "source_capture": "refresh-ea62c209-1a5c-48d6-adb8-e47bd9fb6e50"
+  }
+}
