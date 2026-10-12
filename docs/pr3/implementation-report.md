@@ -1,3 +1,5 @@
+Final release review: [separate P1/P2/Etsy/NOTHS gates and source-access findings](../../docs/release/20261012/release-gates.md). No production workflow or source change.
+
 # P3 review report — Etsy financial accuracy and NOTHS evidence
 
 **Current follow-up:** [Current-year behavior, new evidence requests, NOTHS product/refund findings and separate release gates](current-year/evidence-and-rollout.md). This supersedes any dispatched-only inference from the early aggregate comparison; the underlying historical benchmarks remain unchanged.

@@ -1,0 +1,93 @@
+{
+  "run": "https://github.com/GrahamROR/ror-dashboard/actions/runs/38294917391",
+  "head_sha": "00593ec3d563c5a61761ddc64ff699d18446a1b9",
+  "manifest": {
+    "snapshot_id": "d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820",
+    "file": "snapshots/d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820.json",
+    "sha256": "0ddc7734f795439ca34a70d90aaaa8bdfb717b153915403cd849bd1633f69a17",
+    "previous_snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+    "approval": "STAGING ONLY — publication and accounting approval pending"
+  },
+  "validation": {
+    "validated_at": "2026-10-12T19:05:05.882Z",
+    "snapshot_id": "d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820",
+    "coverage": {
+      "start": "2024-01-01",
+      "end": "2026-10-11"
+    },
+    "native_controls": 41,
+    "fy26": {
+      "before": {
+        "start": "2025-08-01",
+        "end": "2026-07-31",
+        "endExclusive": "2026-08-01",
+        "store": "rockonruby.myshopify.com",
+        "currency": "GBP",
+        "timezone": "Europe/London",
+        "snapshot_id": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+        "definition": "shopify-analytics-v1",
+        "missingDays": 0,
+        "status": "actual",
+        "reconciliation_status": "native-aggregate-verified; legacy-counting-basis-difference",
+        "warnings": [],
+        "gross_sales": 27622101,
+        "discounts": -2360122,
+        "sales_reversals": -462013,
+        "net_sales": 24799966,
+        "shipping_charges": 2367088,
+        "taxes": 4176652,
+        "total_sales": 31343706,
+        "orders": 7832,
+        "average_order_value": 32.22,
+        "net_aov": 31.664920837589378,
+        "component_residual": 0
+      },
+      "corrected": {
+        "start": "2025-08-01",
+        "end": "2026-07-31",
+        "endExclusive": "2026-08-01",
+        "store": "rockonruby.myshopify.com",
+        "currency": "GBP",
+        "timezone": "Europe/London",
+        "snapshot_id": "d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820",
+        "definition": "shopify-analytics-v1",
+        "missingDays": 0,
+        "status": "actual",
+        "reconciliation_status": "native-aggregate-verified; legacy-counting-basis-difference",
+        "warnings": [],
+        "gross_sales": 27622101,
+        "discounts": -2360122,
+        "sales_reversals": -462013,
+        "net_sales": 24799966,
+        "shipping_charges": 2367088,
+        "taxes": 4176652,
+        "total_sales": 31343706,
+        "orders": 7832,
+        "average_order_value": 32.22,
+        "net_aov": 31.664920837589378,
+        "component_residual": 0
+      },
+      "native": {
+        "start": "2025-08-01",
+        "end": "2026-07-31",
+        "gross_sales": 27622101,
+        "discounts": -2360122,
+        "sales_reversals": -462013,
+        "net_sales": 24799966,
+        "shipping_charges": 2367088,
+        "taxes": 4176652,
+        "total_sales": 31343706,
+        "orders": 7832,
+        "average_order_value": 32.22
+      }
+    },
+    "rollback": {
+      "passed": true,
+      "restored_previous": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+      "restored_current": "d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820",
+      "isolated": true
+    }
+  },
+  "changed_days_fields": [],
+  "production_published": false
+}

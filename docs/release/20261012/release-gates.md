@@ -1,0 +1,44 @@
+# Final release gates — 12 October 2026
+
+**Nothing merged or deployed; no production records, StockHub, Xero, source workflow or scheduled job changed.** PR14/15/16 remain open and stacked. GitHub Pages is configured for `main` / root; approval is required before main publication.
+
+| Work | Gate | Decision |
+|---|---|---|
+| P1 #14 | Latest-main compatibility/test review passed; owner approval | Can release independently after approval. Remote CI is not configured on P1 alone. |
+| P2 #15 | Canonical calculations/native staging refresh and isolated rollback pass; daily production finance publication is not installed | Financial implementation is review-ready. Hold the automatically refreshing finance release until a reviewed writer/publication rehearsal and explicit activation approval. This is not blocked by Etsy/NOTHS source work. |
+| P3 Etsy #16 | FY26 verified; August/September review candidate verified; independent promotion and ongoing closed-month coverage policy need approval | Historical Etsy/candidate can be considered independently of NOTHS net, with the existing P1/P2 code dependency. October remains unverified; no full-period net fallback. |
+| P3 NOTHS #16 | Gross bridge preserved; complete dated transaction ledger and independent controls missing | Preserve current figures. Do not publish NOTHS/consolidated net. |
+
+## Compatibility and tests
+
+Latest main `02e2f3c750acaefaebbca733e62efa9cd44910fd`; P1 head `011e7fbd`, P2 compatibility update `3dfe880`, P3 financial/diagnostic code `d3c3ad8`. Read-only merge-tree checks are conflict-free for each against latest main and for P3 with updated P2. No branch merge was performed. Isolated tests use latest main's five exported files, with a separately pinned review baseline; original branch imports remain byte-identical.
+
+- P1: five legacy test-file runners passed, covering original ROR calculations/contracts/date controls, Ads and insights.
+- P2: 43 Node entries passed on its branch; latest-main tree 41 passed / two expected private-source skips. Four old-baseline/date assumptions initially failed on latest data and have been repaired on P2 with explicit fixtures and a review baseline option already tested in P3. No financial implementation or figures were altered to make them pass.
+- P3: latest-main tree 87 passed / two expected private-source skips; its prior full local suite with private evidence passed all 89. Original desktop/mobile preservation and new Etsy candidate browser evidence remain valid; no UI product code changed in this review.
+
+[Shopify production/rollback checklist](https://github.com/GrahamROR/ror-dashboard/blob/codex/pr2-canonical-shopify-finance/docs/pr2/release-review/checklist.md). [Etsy independent promotion/rollback](etsy-promotion-rollback.md). Original P2/P3 before-after/control/browser reports remain preserved.
+
+## Shopify publication findings
+
+Fresh real credential-backed [staging run 38294917391](https://github.com/GrahamROR/ror-dashboard/actions/runs/38294917391) succeeded on exact source implementation `00593ec`; the P2 follow-up changes only tests/checklist, not the collector/publication code. Downloaded artifact hash/id checks passed independently. Coverage is 1 January 2024–11 October 2026, 1,015 days and 41 native control periods. All prior daily financial facts match the accepted snapshot. FY26 remains gross £276,221.01, net £247,999.66, total £313,437.06 and 7,832 native eligible orders. July remains total £15,416.27 / net £11,619.67 / 445 orders. Source tax treatment, native AOV and the unresolved legacy two-order basis difference remain explicit, not forced.
+
+The final P2 head `3dfe880` also passed [real staging refresh 38295612953](https://github.com/GrahamROR/ror-dashboard/actions/runs/38295612953) and reporting CI. Its downloaded snapshot hash was independently verified; every daily/period/product fact and source policy is identical to the earlier publication-rehearsal capture, with native controls and isolated rollback passing. See `shopify-final-head-validation.json`.
+
+The existing local publisher validates first, retains immutable snapshots and atomically replaces the pointer. The existing integrity-checked loader consumes the same source on both dashboards. A local repository with **no remote** rehearsed one-commit publication of snapshot + matching manifest/status and rollback of manifest/status, keeping both immutable facts and all five imported exports unchanged; see `publication-rehearsal.json`. This demonstrates the publication contract, not an installed daily writer or a production deployment/rollback.
+
+**Operational gate:** scheduled `fetch-data.yml` commits only legacy `data.json`. Canonical refresh is staging-only with no schedule, contents-read permission and uploaded artifacts. Daily served finance cannot be claimed to refresh yet. Implement/review a disabled candidate production writer, validate failed last-good handling and moved-branch/concurrent-publication behaviour, then activate only after approval. Publish each finance bundle as one Git/Pages revision; keep legacy jobs operational. On failure, keep the old financial pointer and publish an appropriately sanitized failure/freshness status if approved. Do not blindly rebase a stale financial manifest or force-push. A real production cycle can only be verified after approved enablement. A successful staging artifact is not that cycle.
+
+## NOTHS supported collection assessment
+
+Checked the actual authenticated Product List surface in Chrome: it has a native **Export To CSV** and Available/Suspended/Discontinued/Out-of-stock status controls, but that is a **product aggregate export**, not a dated order-linked transaction ledger. No ledger/bulk financial export was shown on that inspected surface. The separate Accounting page opened signed out; its authenticated report/export controls could not be fully inspected. The standalone data dashboard Home navigation did not reveal another report. The supplied Accounting screenshot establishes individual statement CSV downloads, not bulk availability.
+
+Existing exact-ID **GET /api/v1/orders** is successfully exercised and exposes order financials/cumulative refunds. Inspected source responses/advertised read links do not establish a complete dated refund/financial event ledger; status and updated_at are not event dates. Public primary documentation did not establish a supported bulk statement/transaction endpoint. This is **not a claim that NOTHS has none**. No guessed endpoint, undocumented HTTP reverse-engineering, new database, StockHub integration or operational importer was built.
+
+**Simplest supported next step:** request one consolidated ledger/native control package from the user's existing Partner Support channel, or documentation of a supported bulk export/read-only endpoint. [Exact ready-to-send request](noths-partner-support-request.md); no message sent. It includes all FY26 posted events plus subsequent adjustments against FY26 orders, independent event/original-order dates, refund allocation, categories/currency/timezone and native monthly/FY controls. It leaves the £6.27 gap open pending evidence.
+
+**Fallback assessment:** after normal authenticated access and confirmation that automation is permitted, use the existing visible Statements list and Download controls to acquire statement CSVs read-only in bounded resumable batches. Filter periods (including boundary statements and later adjustments), retain each file's statement identity, hash and capture date, record missing/failed downloads and possible duplicates, then assemble one private CSV/JSON ledger. User supplies no 52-file manual workload. Validate against provider statement inventory/period controls, join exact source order IDs via existing GET, and reconcile customer refund events to native cumulative amounts through a consistent as-of cutoff and an independent NOTHS report. Preserve original order dates and actual financial event timestamps/timezone. Stop rather than infer unknown event dates or allocations. A signed-out portal and unavailable completeness control prevent claiming this fallback has been successfully exercised end-to-end. No new production collector is activated.
+
+The existing investigation-only CSV diagnostic separates shopper payments, customer refunds, commissions, commission reimbursements, admin fees, platform-funded credits, VAT/IOSS deductions and bank transfers, while retaining unknown/repeated rows and source balance precision. It never feeds net-sales metrics. Sample matches support category/ID joins, not annual completeness or refund timing inferred from updated_at.
+
+NOTHS gross bridge stays **£116,150.70 merchandise + £6,325.64 delivery = £122,476.34**. Product and refund residuals, including £6.27, remain documented. All Stores retains imported gross £466,955.48 / 12,680 / £36.83. No mixed-basis consolidated net is offered.

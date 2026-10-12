@@ -1,0 +1,19 @@
+{
+  "scope": "local Git publication contract rehearsal; no remote, no production writer installed or enabled",
+  "baseline_commit": "3d53c436db255fde1c9ddd86316747e4fcbd41ee",
+  "published_commit": "9b722b60a9d6f840ab2e1f2cf9182a6c1e72ddce",
+  "rollback_commit": "dd58363bf9bd7e5f7655126ba91282376fac7e3a",
+  "paths_published": [
+    "finance/staging/manifest.json",
+    "finance/staging/refresh-status.json",
+    "finance/staging/snapshots/d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820.json"
+  ],
+  "snapshot_id": "d2b05f199042b101ffd5403bd3797d1ef9d605af3bbccc78d8c69c99c74ae820",
+  "snapshot_hash_verified": true,
+  "single_commit_includes_pointer_and_snapshot": true,
+  "protected_exports_unchanged": true,
+  "immutable_new_snapshot_retained_after_rollback": true,
+  "manifest_and_status_restored": true,
+  "production_published": false,
+  "production_schedule_verified": false
+}
