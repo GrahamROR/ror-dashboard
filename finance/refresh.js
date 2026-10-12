@@ -231,6 +231,7 @@ async function refresh({
     const manifest = B.publish(snapshot, root);
     status(root, {
       status: "success",
+      completed_at: new Date().toISOString(),
       attempted_at: now.toISOString(),
       snapshot_id: snapshot.id,
       previous_snapshot_id: previous?.snapshot_id || null,

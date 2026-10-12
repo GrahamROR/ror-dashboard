@@ -975,7 +975,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           ShopifyIntegration.BASIS.map(k=>el('option',{key:k,value:k},ShopifyIntegration.labels[k]))),
         el('span',{style:{color:'var(--t3)'}}, 'Goals: Total Sales')
       ),
-      (financeError || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},financeError || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
+      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
 
       // ── WHAT-IF BAR ─────────────────────────────────────────────
       el(WhatIfBar, {
@@ -2064,18 +2064,19 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <script src="dashboard2/data-adapter.js"></script>
 <script src="dashboard2/calculations.js"></script>
 <script src="dashboard2/charts.js"></script>
-<script src="dashboard2/ror-sales-app.js"></script>
+<script src="dashboard2/ror-sales-app.js?v=publication-v1"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/integration.js"></script>
-<script src="finance/loader.js"></script>
+<script src="finance/freshness.js"></script>
+<script src="finance/loader.js?v=publication-v1"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');
   const [financialBasis, setFinancialBasis] = useState('net_sales');
   const [financeSnapshot, setFinanceSnapshot] = useState(null);
   const [financeError, setFinanceError] = useState('');
-  useEffect(() => { ShopifyFinanceLoader.load().then(setFinanceSnapshot).catch(e => setFinanceError(e.message)); }, []);
+  useEffect(() => { let active=true; const refresh=()=>ShopifyFinanceLoader.load({force:true}).then(s=>{if(active){setFinanceSnapshot(s);setFinanceError('');}}).catch(e=>{if(active)setFinanceError(e.message);}); refresh(); const timer=setInterval(refresh,15*60*1000); return ()=>{active=false;clearInterval(timer);}; }, []);
   const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError};
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),

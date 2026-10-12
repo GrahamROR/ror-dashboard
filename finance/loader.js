@@ -1,7 +1,8 @@
 // One integrity-checked loader shared by the existing dashboard components.
 (function (root) {
   let pending;
-  async function load() {
+  async function load({force=false}={}) {
+    if(force)pending=null;
     if (!pending)
       pending = (async () => {
         const response = await fetch("finance/staging/manifest.json", {
@@ -35,7 +36,7 @@
           });
           if (status.ok) refreshStatus = await status.json();
         } catch {}
-        return { ...data, refreshStatus };
+        return { ...data, refreshStatus, freshness: root.ShopifyFreshness.assess(data, refreshStatus) };
       })();
     try {
       return await pending;

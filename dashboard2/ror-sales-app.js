@@ -452,7 +452,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBas
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
       meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot, channels }),
-      (financeError || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || 'Latest financial refresh failed; showing the last validated snapshot.'),
+      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.'),
 
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },

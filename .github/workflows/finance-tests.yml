@@ -5,6 +5,8 @@ on:
       - 'index.html'
       - 'finance/**'
       - 'scripts/fetch-data.js'
+      - 'scripts/publish-data.js'
+      - '.github/workflows/**'
       - '.github/workflows/finance-staging-refresh.yml'
       - 'dashboard2/**'
       - 'ads/**'

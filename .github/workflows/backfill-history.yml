@@ -4,18 +4,27 @@ on:
   workflow_dispatch:         # manual trigger only — this is a one-off, not scheduled
 
 permissions:
+  pages: write
   contents: write            # needed to commit data.json back to repo
+
+concurrency:
+  group: dashboard-data-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   backfill-history:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
+      GH_TOKEN: ${{ github.token }}
+      FINANCE_PUBLICATION_ENABLED: ${{ vars.FINANCE_PUBLICATION_ENABLED }}
       TZ: Europe/London
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -30,11 +39,4 @@ jobs:
         run: node scripts/backfill-history.js
 
       - name: Commit and push updated data.json
-        run: |
-          git config user.name  "ror-dashboard[bot]"
-          git config user.email "dashboard@rockonruby.co.uk"
-          git add data.json
-          git diff --staged --quiet && echo "No changes to commit" || (
-            git commit -m "chore: backfill FY24 + FY25 historical data"
-            git push
-          )
+        run: node scripts/publish-data.js --files data.json

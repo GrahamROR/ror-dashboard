@@ -6,12 +6,21 @@ on:
   workflow_dispatch:
 
 permissions:
+  pages: write
   contents: write
+
+concurrency:
+  group: dashboard2-sales-data-json-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   fetch-ror-sales-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
+    env:
+      TZ: Europe/London
+      GH_TOKEN: ${{ github.token }}
+      FINANCE_PUBLICATION_ENABLED: ${{ vars.FINANCE_PUBLICATION_ENABLED }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,26 +35,4 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: node scripts/fetch-ror-sales-data.js
       - name: Commit refreshed sales export
-        run: |
-          git config user.name "ror-dashboard[bot]"
-          git config user.email "dashboard@rockonruby.co.uk"
-          git add dashboard2/sales-data.json
-
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-
-          git commit -m "chore: refresh ROR sales data $(date +'%Y-%m-%d %H:%M UTC')"
-
-          for attempt in 1 2 3; do
-            if git pull --rebase --autostash origin "${GITHUB_REF_NAME:-main}" && git push; then
-              exit 0
-            fi
-
-            echo "Push failed because the remote moved; retrying after rebase (attempt ${attempt}/3)"
-            sleep $((attempt * 5))
-          done
-
-          echo "Failed to push after rebasing remote changes."
-          exit 1
+        run: node scripts/publish-data.js --files dashboard2/sales-data.json

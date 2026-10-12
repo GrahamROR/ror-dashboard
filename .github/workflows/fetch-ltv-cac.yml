@@ -6,13 +6,20 @@ on:
   workflow_dispatch:         # manual trigger from GitHub Actions tab
 
 permissions:
+  pages: write
   contents: write            # needed to commit ltv-cac.json back to repo
+
+concurrency:
+  group: ltv-cac-json-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   fetch-ltv-cac:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     env:
+      GH_TOKEN: ${{ github.token }}
+      FINANCE_PUBLICATION_ENABLED: ${{ vars.FINANCE_PUBLICATION_ENABLED }}
       TZ: Europe/London
 
     steps:
@@ -39,26 +46,4 @@ jobs:
         run: node scripts/fetch-ltv-cac.js
 
       - name: Commit and push updated ltv-cac.json
-        run: |
-          git config user.name  "ror-dashboard[bot]"
-          git config user.email "dashboard@rockonruby.co.uk"
-          git add ltv-cac.json
-
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-
-          git commit -m "chore: LTV:CAC update $(date +'%Y-%m-%d %H:%M %Z')"
-
-          for attempt in 1 2 3; do
-            if git pull --rebase --autostash origin "${GITHUB_REF_NAME:-main}" && git push; then
-              exit 0
-            fi
-
-            echo "Push failed because the remote moved; retrying after rebase (attempt ${attempt}/3)"
-            sleep $((attempt * 5))
-          done
-
-          echo "Failed to push after rebasing remote changes."
-          exit 1
+        run: node scripts/publish-data.js --files ltv-cac.json
