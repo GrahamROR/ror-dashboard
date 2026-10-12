@@ -28,7 +28,7 @@ function formatMetric(metric, v, short) {
 
 function metricLabel(metric,channels,basis) {
   if(channels.length===1&&channels[0]==='shopify')return metric==='revenue'?ShopifyFinance.LABELS[basis]:metric==='orders'?'Shopify eligible orders':metric==='aov'?ShopifyIntegration.aovLabel(basis):M.METRICS[metric].label;
-  return metric==='revenue'&&channels.includes('shopify')?'Sales (channel bases)':M.METRICS[metric].label;
+  return metric==='revenue'&&channels.includes('shopify')?'Legacy imported gross sales (pending P3)':M.METRICS[metric].label;
 }
 
 function changeText(cmp) {
@@ -112,13 +112,13 @@ function PeriodNotice({ range, records, channels, section }) {
   );
 }
 
-function MetricDefinitions({ meta, basis, snapshot }) {
+function MetricDefinitions({ meta, basis, snapshot, channels }) {
   return el('details', {className:'card',style:{fontSize:12,lineHeight:1.7}},
-    el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},'Financial basis: Shopify '+ShopifyIntegration.labels[basis]+' · Etsy/NOTHS imported gross line sales'),
+    el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},channels.length>1?'All Stores: legacy imported gross figures · Pending P3 · Not reconciled net sales':'Financial basis: Shopify '+ShopifyIntegration.labels[basis]+' · Etsy/NOTHS imported gross line sales'),
     el('div',null,ShopifyFinance.DEFINITIONS[basis]),
     el('div',null,'Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = net merchandise / orders. Shopify-reported AOV is a separate native metric.'),
     el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
-    el('div',null,'Etsy/NOTHS revenue, orders and purchased units retain the existing imported definitions. Combined revenue and AOV are unavailable until their financial bases reconcile.'),
+    el('div',null,'Etsy/NOTHS revenue, orders and purchased units retain the existing imported definitions. All Stores revenue, AOV and contribution retain legacy imported gross figures and orders, not reconciled net sales. Pending P3.'),
     el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
     el('div',null,'Legacy ROR FY26 count: 7,834 includes two gift-voucher-only orders. Shopify native sales reporting counts 7,832 eligible merchandise orders. All native eligible IDs match the import; no local order exclusions are applied.'),
     el('div',null,'Imported export: '+(meta.generated_at||'unknown')+' · Reporting dates use Europe/London through yesterday; absent marketplace rows remain coverage unverified.')
@@ -133,7 +133,7 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
     el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 } },
       el('div', { style: { width: 28, height: 28, borderRadius: 6, background: accentCol + '22', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
         el('i', { className: 'ti ' + icon, style: { color: accentCol, fontSize: 14 } })),
-      el('div', { className: 'lbl', title: agg.financialBasis ? (metric==='revenue'?ShopifyFinance.DEFINITIONS[agg.financialBasis]:metric==='orders'?ShopifyFinance.DEFINITIONS.orders:metric==='aov'?'Selected sales divided by Shopify eligible orders':M.METRICS[metric].basis) : M.METRICS[metric].basis }, label)
+      el('div', { className: 'lbl', title: agg.financialBasis && agg.financialBasis!=='legacy-imported-gross' ? (metric==='revenue'?(agg.financialBasis==='legacy-imported-gross'?'Preserved legacy imported gross figures; not reconciled net sales. Pending P3.':ShopifyFinance.DEFINITIONS[agg.financialBasis]):metric==='orders'?ShopifyFinance.DEFINITIONS.orders:metric==='aov'?'Selected sales divided by Shopify eligible orders':M.METRICS[metric].basis) : M.METRICS[metric].basis }, label)
     ),
     el('div', { style: { fontSize: 26, fontWeight: 600, color: 'var(--t1)', fontFamily: "'DM Mono',monospace", letterSpacing: '-0.02em', marginBottom: 6 } }, value),
     metric==='aov' && agg.nativeAov!=null && el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:6}}, 'Shopify-reported AOV: '+fmtC(agg.nativeAov,2)),
@@ -161,8 +161,8 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
   const growthCmp = C.compareAggregates(revAgg, comparisonAgg, 'revenue');
 
   return el('div', { className: 'fi grid-auto', style: { display: 'grid', gridTemplateColumns: 'repeat(5,1fr)', gap: 12 }, key: 'kpis' },
-    el(KpiCard, { label: channels.length===1&&channels[0]==='shopify'?ShopifyFinance.LABELS[basis]:'Imported / mixed-basis sales', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
-    el(KpiCard, { label: channels.includes('shopify')?'Eligible / imported orders':M.METRICS.orders.label, icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
+    el(KpiCard, { label: channels.length===1&&channels[0]==='shopify'?ShopifyFinance.LABELS[basis]:'Legacy imported gross sales', icon: 'ti-currency-pound', metric: 'revenue', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'revenue'), accentCol: 'var(--amb)' }),
+    el(KpiCard, { label: channels.length===1&&channels[0]==='shopify'?'Shopify eligible orders':M.METRICS.orders.label, icon: 'ti-shopping-cart', metric: 'orders', agg: ordAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'orders'), accentCol: 'var(--blu)' }),
     el(KpiCard, { label: channels.length===1&&channels[0]==='shopify'?ShopifyIntegration.aovLabel(basis):M.METRICS.aov.label, icon: 'ti-receipt', metric: 'aov', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'aov'), accentCol: 'var(--pur)' }),
     el(KpiCard, { label: M.METRICS.units.label, icon: 'ti-package', metric: 'units', agg: revAgg, cmp: C.compareAggregates(revAgg, comparisonAgg, 'units'), accentCol: 'var(--grn)' }),
     el('div', { className: 'card', style: { display: 'flex', flexDirection: 'column', gap: 0 } },
@@ -258,7 +258,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
       )
     ),
     metric === 'aov' && el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 10 } },
-      'Selected sales ÷ eligible/source orders for the interval. Shopify-reported AOV remains independent; mixed-basis combined AOV is unavailable.')
+      'Selected sales ÷ eligible/source orders for the interval. Shopify-reported AOV remains independent; All Stores AOV uses preserved legacy imported gross sales divided by imported orders; not reconciled net sales, pending P3.')
   );
 }
 
@@ -301,7 +301,7 @@ function ChannelContribution({ records, channels, range }) {
         el('tbody', null, contrib.channels.map((c) => el('tr', { key: c.channel, style: { borderBottom: '1px solid var(--bdr)' } },
           el('td', { style: { padding: '7px 10px', display: 'flex', alignItems: 'center', gap: 6 } },
             el('div', { style: { width: 8, height: 8, borderRadius: 2, background: M.CHANNEL_META[c.channel].color } }),
-            M.CHANNEL_META[c.channel].label + (c.channel==='shopify'?' · '+ShopifyIntegration.labels[records.finance?.basis||'net_sales']:' · imported gross lines')),
+            M.CHANNEL_META[c.channel].label + (c.financialBasis==='legacy-imported-gross'?' · legacy imported gross':c.channel==='shopify'?' · '+ShopifyIntegration.labels[records.finance?.basis||'net_sales']:' · imported gross lines')),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.revenue != null ? fmtC(c.revenue, 2) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.pctOfRevenue != null ? fmtP(c.pctOfRevenue) : '—'),
           el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } }, c.orders != null ? fmt(c.orders, 0) : '—'),
@@ -400,7 +400,6 @@ function SalesExplorer({ records, meta, basis }) {
     granularity === 'weekly' && comparison === 'previous-year' && el('div', { style: { color: 'var(--t2)', fontSize: 12 } }, 'Weekly year-on-year aligns weekdays using a 364-day (52-week) shift.'),
     range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
     !seriesData ? null :
-    metric==='revenue' && channels.includes('shopify') && channels.length>1 && (seriesMode==='combined' || effectiveChartType==='stacked-bar' || effectiveChartType==='donut') ? el(UnavailableNotice,{reason:'Combined revenue, stacked revenue and revenue shares require reconciled channel bases. Separate per-store bar/line/area views remain available.'}) :
     effectiveChartType === 'donut'
       ? (C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate }).status !== 'complete' ? el(UnavailableNotice, { reason: 'Complete channel coverage is required for contribution charts.' }) : el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) }))
       : el(RorCharts.SalesChart, {
@@ -452,7 +451,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBas
       ),
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
-      meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot }),
+      meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot, channels }),
       (financeError || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || 'Latest financial refresh failed; showing the last validated snapshot.'),
 
       // §5 top controls

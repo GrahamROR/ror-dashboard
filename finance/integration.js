@@ -171,6 +171,14 @@
     const requested = opts.channels,
       other = requested.filter((c) => c !== "shopify");
     const imported = legacyAggregate(legacy, { ...opts, channels: requested });
+    // Consolidated commercial reporting stays wholly on the preserved legacy import until P3.
+    // Never blend canonical Shopify amounts/counts with unreconciled marketplace inputs.
+    if (other.length) return {
+      ...imported,
+      financialBasis: "legacy-imported-gross",
+      unitsStatus: imported.status,
+      note: [imported.note, "Legacy imported gross figures across all selected stores; not reconciled net sales. AOV uses the same imported orders. Pending P3."].filter(Boolean).join(" "),
+    };
     const native = report(snapshot, start, end, basis),
       shops = legacy.filter(
         (r) => r.channel === "shopify" && r.date >= start && r.date <= end,

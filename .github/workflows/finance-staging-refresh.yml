@@ -2,11 +2,15 @@ name: Validate Shopify finance refresh in staging
 # Deliberately no schedule and no production write. Enablement needs separate approval.
 on:
   workflow_dispatch:
+  pull_request:
+    types: [synchronize]
 permissions:
   contents: read
 jobs:
   staging-refresh:
-    if: github.ref_name == 'codex/pr2-canonical-shopify-finance'
+    if: >-
+      (github.head_ref || github.ref_name) == 'codex/pr2-canonical-shopify-finance' &&
+      (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -22,6 +26,8 @@ jobs:
           SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
           SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
         run: node scripts/fetch-data.js --finance-staging
+      - name: Validate native controls and isolated snapshot rollback
+        run: node finance/validate-refresh.js
       - name: Verify protected exports remain unchanged
         run: git diff --exit-code -- data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json
       - name: Preserve staging audit and rollback evidence
@@ -32,5 +38,6 @@ jobs:
           path: |
             finance/staging/manifest.json
             finance/staging/refresh-status.json
+            finance/staging/validation.json
             finance/staging/snapshots/
           retention-days: 30

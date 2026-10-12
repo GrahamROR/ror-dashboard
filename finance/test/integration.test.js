@@ -133,7 +133,7 @@ test("Basis changes do not change orders, purchased units, sessions, conversions
   assert.equal(total.summary.ytdRevenue, 313437.06);
   assert.equal(total.summary.basisAov, 313437.06 / 7832);
 });
-test("Etsy and NOTHS retain byte-equivalent imported aggregates and combined net/total revenue is never shown", () => {
+test("All Stores preserves consistent legacy gross totals, AOV, contribution and explorer pending P3", () => {
   for (const basis of I.BASIS) {
     const records = I.rorRecords(legacy, s, basis),
       opts = { startDate: "2025-08-01", endDate: "2026-07-31" };
@@ -146,18 +146,14 @@ test("Etsy and NOTHS retain byte-equivalent imported aggregates and combined net
       ...opts,
       channels: ["shopify", "etsy", "noths"],
     });
-    assert.equal(all.revenue, null);
-    assert.equal(all.aov, null);
-    assert.match(all.note, /Combined/);
-    const contribution = C.channelContribution(records, {
-      ...opts,
-      channels: ["shopify", "etsy", "noths"],
-    });
-    assert.ok(contribution.channels.every((c) => c.pctOfRevenue === null));
-    assert.equal(
-      contribution.channels[0].revenue,
-      I.report(s, opts.startDate, opts.endDate, basis).revenue,
-    );
+    const original=C.aggregate(legacy,{...opts,channels:["shopify","etsy","noths"]});
+    for(const metric of ["revenue","orders","aov","units","status"])assert.equal(all[metric],original[metric]);
+    assert.equal(all.financialBasis,"legacy-imported-gross");assert.match(all.note,/not reconciled net sales/);
+    const contribution=C.channelContribution(records,{...opts,channels:["shopify","etsy","noths"]});
+    const originalContribution=C.channelContribution(legacy,{...opts,channels:["shopify","etsy","noths"]});
+    for(let i=0;i<contribution.channels.length;i++)for(const metric of ["revenue","orders","aov","pctOfRevenue"])assert.equal(contribution.channels[i][metric],originalContribution.channels[i][metric]);
+    for(const mode of ["combined","byChannel"])assert.deepEqual(C.buildSeries(records,{...opts,channels:["shopify","etsy","noths"],fromPeriod:opts.startDate,toPeriod:opts.endDate,granularity:"monthly",metric:"revenue",seriesMode:mode}),C.buildSeries(legacy,{...opts,channels:["shopify","etsy","noths"],fromPeriod:opts.startDate,toPeriod:opts.endDate,granularity:"monthly",metric:"revenue",seriesMode:mode}));
+
   }
 });
 test("Missing finance cannot fall back to stale financial facts; units/marketplace facts remain", () => {
