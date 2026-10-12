@@ -1,0 +1,33 @@
+{
+  "schema": "etsy-stats-controls-v1",
+  "months": [
+    {
+      "month": "2026-08",
+      "start": "2026-08-01",
+      "end_inclusive": "2026-08-31",
+      "revenue_gbp": "3642.52",
+      "orders": 125,
+      "currency": "GBP",
+      "reporting_timezone": "Europe/London",
+      "stats_evidence_reference": "Screenshot 2026-10-12 at 16.52.32.png",
+      "captured_at": "2026-10-12T16:52:32+01:00",
+      "review_reference": "FY27 paired CSV/native receipt review: monthly Stats totals, GBP, London receipt scope, eligibility, source tax and refund fields checked; Stats UI timezone not displayed",
+      "source_policy_verified": true,
+      "stats_evidence_sha256": "9bddd7d11244fd7bb61534ee13cc4da1640bed400a8f2003935c689e3cc4108e"
+    },
+    {
+      "month": "2026-09",
+      "start": "2026-09-01",
+      "end_inclusive": "2026-09-30",
+      "revenue_gbp": "1371.20",
+      "orders": 52,
+      "currency": "GBP",
+      "reporting_timezone": "Europe/London",
+      "stats_evidence_reference": "Screenshot 2026-10-12 at 16.52.53.png",
+      "captured_at": "2026-10-12T16:52:53+01:00",
+      "review_reference": "FY27 paired CSV/native receipt review: monthly Stats totals, GBP, London receipt scope, eligibility, source tax and refund fields checked; Stats UI timezone not displayed",
+      "source_policy_verified": true,
+      "stats_evidence_sha256": "c68baf94ebcd3b495ef982238e4ac1d5949ca47b65dec4cd9d6ad0e06485b7e6"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "scope": "private-source validation + separate review-only staging candidate; production/active staging pointer unchanged",
+  "candidate_snapshot": "e9f7612f48a3df24b3f4413383ff55cdfed9001b5b8096fcb4b1adbaa3b85788",
+  "rollback_snapshot": "c724cf6a191c0d6183042b0df017a2a8e89ec516e70595021ce3333b7d92be3c",
+  "fy26_months_and_days_byte_equal": true,
+  "last_good_after_failed_import": true,
+  "rollback_and_restore_exact": true,
+  "idempotent_replay": true,
+  "stats_timezone_visible": false,
+  "boundary_review": "Stats full-month values and eligible IDs reconcile exactly with complete London native receipt scope; no platform timezone setting inferred",
+  "native_receipts": 177,
+  "source_fields": "GBP tax field zero, source merchandise treatment preserved; not asserted VAT-exclusive turnover",
+  "months": [
+    {
+      "month": "2026-08",
+      "gross_sales": 413150,
+      "discounts": 48898,
+      "net_sales": 364252,
+      "total_sales": 373018,
+      "shipping": 8766,
+      "tax": 0,
+      "orders": 125,
+      "audit": {
+        "payment_records": 125,
+        "excluded": 0,
+        "partial": 0,
+        "residual_count": 0,
+        "residual": 0,
+        "fees": 17422,
+        "payment_gross": 373018,
+        "refunds": 0
+      },
+      "source": {
+        "sold_sha256": "2189bffada2cbf59b52f567e2e368a59468f61434efd6308ddf0c05daa6fc518",
+        "payments_sha256": "9596ba0298c9dbb50cbb356477156a22abeb41d4098d3f101bd4b20a09615128",
+        "controls_sha256": "925168534d88cecd1c9d7a0fb42edd82c59f56c4fce5504ccb68891bcada2c4d"
+      },
+      "validation": "paired CSV + independent source controls + native London timestamps",
+      "currency": "GBP",
+      "timezone": "Europe/London"
+    },
+    {
+      "month": "2026-09",
+      "gross_sales": 140660,
+      "discounts": 3540,
+      "net_sales": 137120,
+      "total_sales": 141197,
+      "shipping": 4077,
+      "tax": 0,
+      "orders": 52,
+      "audit": {
+        "payment_records": 52,
+        "excluded": 0,
+        "partial": 0,
+        "residual_count": 0,
+        "residual": 0,
+        "fees": 6691,
+        "payment_gross": 141197,
+        "refunds": 0
+      },
+      "source": {
+        "sold_sha256": "d47a553c6f05688e6a5eba0055c08b676ccc477e99cc069ad59dc35151e84d80",
+        "payments_sha256": "e79b0f5b367b703027043271028bdc9fdfc673635487dd75a4aee6b7bfd05ca1",
+        "controls_sha256": "7a4ae929d3144f8509f39e99170263f03fcd48058adfe26c00ad9d6fff3fd91a"
+      },
+      "validation": "paired CSV + independent source controls + native London timestamps",
+      "currency": "GBP",
+      "timezone": "Europe/London"
+    }
+  ]
+}

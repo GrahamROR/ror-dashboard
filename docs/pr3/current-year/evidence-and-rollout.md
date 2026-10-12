@@ -1,5 +1,7 @@
 # PR16 current-year release follow-up — 12 October 2026
 
+**New evidence received later on 12 October:** all four August/September CSVs and both independent Stats captures now reconcile exactly. See [new-month validation](aug-sep-validation/report.md). This supersedes the pending August/September evidence requests below. A separate review-only candidate is prepared; the active staging pointer and production are unchanged. October remains unverified.
+
 PR16 remains stacked on open P2. No merge, deployment, production financial write, StockHub change or Xero integration. Latest main was fetched and is still `02e2f3c750acaefaebbca733e62efa9cd44910fd`; its latest five exports are used in the isolated test preview. P1/P2 and the reviewed P3 snapshots remain intact.
 
 ## What Etsy users see now
