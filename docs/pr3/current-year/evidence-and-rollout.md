@@ -93,3 +93,7 @@ The authenticated NOTHS report/statement UI and available export buttons could n
 ## Testing and review evidence
 
 All existing suites plus the updated marketplace tests pass locally: **81 Node entries**, including the legacy file runners; 38 P3 tests cover explicit legacy access, no fallback, independent definitions, unit preservation, new-year intake, retained history, failure/rollback and NOTHS source discrepancies. Native/API evidence remains private; committed reports expose only aggregates/product comparisons. All **33 desktop/mobile browser follow-up checks passed**, with no browser errors; results and screenshots are in this directory. No August/September source totals were invented, no verified gross bridge was removed, and no production workflow or data changed.
+
+### Latest-main compatibility check
+
+A read-only `git merge-tree` check of latest main `02e2f3c750acaefaebbca733e62efa9cd44910fd` and P3 produced a conflict-free combined tree; no branch was merged. The complete combined tree was exported to an isolated test preview. Initial checks exposed three older-date assumptions in the tests plus the expected changed daily-export hash baseline. The tests now use explicit partial/marketing-date fixtures; a separate `latest-main-exports.sha256` pins the five actual main exports for this isolated run. The original P2 preservation baseline and branch exports remain unchanged. See `latest-main-test-results.txt`; no financial production code or figures were changed to make tests pass.
