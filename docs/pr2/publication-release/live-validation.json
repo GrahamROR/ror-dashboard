@@ -1,0 +1,106 @@
+{
+  "verification": {
+    "start": "2024-01-01",
+    "end": "2026-10-11",
+    "days": 1015,
+    "nativeControls": 41
+  },
+  "manifest_sha256": "d9306a300e3337f4a998616d42dc02a70d2b56f1e203dfc5c3354d7304a0f906",
+  "snapshot_id": "15e8e6be5ea622f19c7abeca19a1ddfb7c3aca686690bdf05c54bd7f9b86b620",
+  "fy26": {
+    "start": "2025-08-01",
+    "end": "2026-07-31",
+    "endExclusive": "2026-08-01",
+    "store": "rockonruby.myshopify.com",
+    "currency": "GBP",
+    "timezone": "Europe/London",
+    "snapshot_id": "15e8e6be5ea622f19c7abeca19a1ddfb7c3aca686690bdf05c54bd7f9b86b620",
+    "definition": "shopify-analytics-v1",
+    "missingDays": 0,
+    "status": "actual",
+    "reconciliation_status": "native-aggregate-verified; legacy-counting-basis-difference",
+    "warnings": [],
+    "gross_sales": 27622101,
+    "discounts": -2360122,
+    "sales_reversals": -462013,
+    "net_sales": 24799966,
+    "shipping_charges": 2367088,
+    "taxes": 4176652,
+    "total_sales": 31343706,
+    "orders": 7832,
+    "average_order_value": 32.22,
+    "net_aov": 31.664920837589378,
+    "component_residual": 0
+  },
+  "july": {
+    "start": "2026-07-01",
+    "end": "2026-07-31",
+    "endExclusive": "2026-08-01",
+    "store": "rockonruby.myshopify.com",
+    "currency": "GBP",
+    "timezone": "Europe/London",
+    "snapshot_id": "15e8e6be5ea622f19c7abeca19a1ddfb7c3aca686690bdf05c54bd7f9b86b620",
+    "definition": "shopify-analytics-v1",
+    "missingDays": 0,
+    "status": "actual",
+    "reconciliation_status": "native-aggregate-verified; legacy-counting-basis-difference",
+    "warnings": [],
+    "gross_sales": 1314839,
+    "discounts": -131956,
+    "sales_reversals": -20916,
+    "net_sales": 1161967,
+    "shipping_charges": 136620,
+    "taxes": 243040,
+    "total_sales": 1541627,
+    "orders": 445,
+    "average_order_value": 26.529,
+    "net_aov": 26.11161797752809,
+    "component_residual": 0
+  },
+  "financial_arrays_changed": [],
+  "source_tax_treatment": true,
+  "live_run": 38303469192,
+  "simulation": {
+    "main_revision": "02e2f3c750acaefaebbca733e62efa9cd44910fd",
+    "producer_revision": "6746bee8baba3db32c43f157c3fdfa4bcbeb3707",
+    "compatible_tree": "13fd47a483f34492afd2b3b7cd0a21dfdfbd32ea",
+    "publication": {
+      "published": true,
+      "confirmed": true,
+      "revision": "2081ca7bde32c01034163d052034796fadfec0bd",
+      "failed": false,
+      "paths": [
+        "finance/staging/snapshots/15e8e6be5ea622f19c7abeca19a1ddfb7c3aca686690bdf05c54bd7f9b86b620.json",
+        "finance/staging/manifest.json",
+        "finance/staging/refresh-status.json"
+      ]
+    },
+    "simulated_pages": {
+      "status": "verified",
+      "deployed_revision": "2081ca7bde32c01034163d052034796fadfec0bd",
+      "snapshot_id": "15e8e6be5ea622f19c7abeca19a1ddfb7c3aca686690bdf05c54bd7f9b86b620"
+    },
+    "external_pages_build_requested": false,
+    "live_recovery": true,
+    "recovery": {
+      "published": true,
+      "confirmed": true,
+      "revision": "79e9124231cb6fa14b659873159e9556a6f0f687",
+      "failed": false,
+      "paths": [
+        "finance/staging/snapshots/3a97fe308155dbe452dd10d8bac44ecb1e6e55d7fc46ffb71365476a0b24db8e.json",
+        "finance/staging/manifest.json",
+        "finance/staging/refresh-status.json"
+      ]
+    },
+    "failed_refresh_retained_manifest": true,
+    "failure_warning_published": true,
+    "unrelated_export_race_preserved": true,
+    "other_protected_exports_unchanged": true,
+    "rollback_to": "dfd6416590ad2cd7346584d3d46db8afe8552a424e372e58908ae65814e12ff1",
+    "recovered_snapshot": "3a97fe308155dbe452dd10d8bac44ecb1e6e55d7fc46ffb71365476a0b24db8e",
+    "all_previous_snapshots_retained": true,
+    "local_remote_only": true,
+    "production_published": false
+  }
+}

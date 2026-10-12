@@ -1,0 +1,208 @@
+[
+  {
+    "tab": "Yesterday",
+    "rendered": 3065,
+    "errors": false
+  },
+  {
+    "tab": "Monthly",
+    "rendered": 7332,
+    "errors": false
+  },
+  {
+    "tab": "Products",
+    "rendered": 4238,
+    "errors": false
+  },
+  {
+    "tab": "Email",
+    "rendered": 16801,
+    "errors": false
+  },
+  {
+    "tab": "Ads",
+    "rendered": 11271,
+    "errors": false
+  },
+  {
+    "tab": "Margin",
+    "rendered": 7612,
+    "errors": false
+  },
+  {
+    "tab": "Overview",
+    "rendered": 4854,
+    "errors": false
+  },
+  {
+    "growthBasis": "gross_sales",
+    "expectedFY26": true,
+    "orders": true,
+    "goal": true
+  },
+  {
+    "growthBasis": "total_sales",
+    "expectedFY26": true,
+    "orders": true,
+    "goal": true
+  },
+  {
+    "growthBasis": "net_sales",
+    "expectedFY26": true,
+    "orders": true,
+    "goal": true
+  },
+  {
+    "allStoresLegacy": true,
+    "orders": true,
+    "aov": true,
+    "contribution": true,
+    "explorer": true,
+    "warning": true
+  },
+  {
+    "rorBasis": "gross_sales",
+    "expectedFY26": true,
+    "orders": true
+  },
+  {
+    "rorBasis": "total_sales",
+    "expectedFY26": true,
+    "orders": true
+  },
+  {
+    "rorBasis": "net_sales",
+    "expectedFY26": true,
+    "orders": true
+  },
+  {
+    "dateControl": "Page date range",
+    "period": "thisMonth",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Page date range",
+    "period": "lastMonth",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Page date range",
+    "period": "last30",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Page date range",
+    "period": "last7",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Page date range",
+    "period": "currentFY",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Page date range",
+    "period": "previousFY",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales comparison date range",
+    "period": "thisMonth",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales comparison date range",
+    "period": "lastMonth",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales comparison date range",
+    "period": "last30",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales comparison date range",
+    "period": "last7",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales comparison date range",
+    "period": "currentFY",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales comparison date range",
+    "period": "previousFY",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales explorer date range",
+    "period": "thisMonth",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales explorer date range",
+    "period": "lastMonth",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales explorer date range",
+    "period": "last30",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales explorer date range",
+    "period": "last7",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales explorer date range",
+    "period": "currentFY",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "dateControl": "Sales explorer date range",
+    "period": "previousFY",
+    "rendered": true,
+    "errors": false
+  },
+  {
+    "failureGrowthWarning": true,
+    "retainedNet": true,
+    "retainedOrders": true
+  },
+  {
+    "failureRORWarning": true,
+    "retainedNet": true,
+    "retainedOrders": true
+  },
+  {
+    "latestCredentialCaptureGrowth": true,
+    "failureCleared": true
+  },
+  {
+    "latestCredentialCaptureROR": true,
+    "failureCleared": true
+  },
+  {
+    "latestCaptureAllStoresLegacy": true,
+    "legacyWarning": true
+  }
+]
