@@ -1,6 +1,6 @@
 # NOTHS consolidated ledger request
 
-Prepared for the user's existing NOTHS Partner Support channel. **Not sent.** This replaces requests for manual weekly statement downloads.
+**Status: Sent to NOTHS Partner Support — 12 October 2026 (confirmed by the user). Awaiting a response.** This replaces requests for manual weekly statement downloads.
 
 Subject: Consolidated order-linked financial transaction ledger and independent sales controls — Rock On Ruby FY26
 
