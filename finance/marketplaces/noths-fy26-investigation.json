@@ -1,0 +1,436 @@
+{
+  "collected_at": "2026-10-12T12:54:33.430Z",
+  "pages": 17,
+  "source": "Native NOTHS orders GET include=financials, all states, Europe/London placed_at",
+  "states": {
+    "dispatched": {
+      "orders": 3750,
+      "item_gross": 11478508,
+      "order_total": 11949027,
+      "refund_total": 11897
+    },
+    "declined": {
+      "orders": 9,
+      "item_gross": 30537,
+      "order_total": 32503,
+      "refund_total": 0
+    },
+    "refunded": {
+      "orders": 18,
+      "item_gross": 83325,
+      "order_total": 81657,
+      "refund_total": 82284
+    },
+    "expired": {
+      "orders": 8,
+      "item_gross": 21500,
+      "order_total": 22299,
+      "refund_total": 0
+    },
+    "archived": {
+      "orders": 1,
+      "item_gross": 1200,
+      "order_total": 1370,
+      "refund_total": 0
+    }
+  },
+  "status": "unreconciled",
+  "months": {
+    "2025-08": {
+      "orders": 243,
+      "item_gross": 758559,
+      "delivery": 61679,
+      "order_total": 816285,
+      "discounts": 3953,
+      "refund_total": 3800,
+      "commission_gross": 254154,
+      "listing_total_with_discount": 820238,
+      "tax_identity_exceptions": 418,
+      "tax_identity_residual": -418,
+      "states": {
+        "dispatched": {
+          "orders": 240,
+          "item_gross": 749799,
+          "order_total": 806907,
+          "refund_total": 0
+        },
+        "refunded": {
+          "orders": 1,
+          "item_gross": 3800,
+          "order_total": 3800,
+          "refund_total": 3800
+        },
+        "expired": {
+          "orders": 1,
+          "item_gross": 2800,
+          "order_total": 2919,
+          "refund_total": 0
+        },
+        "declined": {
+          "orders": 1,
+          "item_gross": 2160,
+          "order_total": 2659,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 820238,
+      "item_plus_delivery": 820238,
+      "unresolved_native_gross_difference": 0
+    },
+    "2025-09": {
+      "orders": 226,
+      "item_gross": 814744,
+      "delivery": 40982,
+      "order_total": 849895,
+      "discounts": 5831,
+      "refund_total": 0,
+      "commission_gross": 262353,
+      "listing_total_with_discount": 855726,
+      "tax_identity_exceptions": 264,
+      "tax_identity_residual": -264,
+      "states": {
+        "dispatched": {
+          "orders": 226,
+          "item_gross": 814744,
+          "order_total": 849895,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 855726,
+      "item_plus_delivery": 855726,
+      "unresolved_native_gross_difference": 0
+    },
+    "2025-10": {
+      "orders": 211,
+      "item_gross": 748922,
+      "delivery": 36317,
+      "order_total": 774181,
+      "discounts": 11058,
+      "refund_total": 499,
+      "commission_gross": 238291,
+      "listing_total_with_discount": 785239,
+      "tax_identity_exceptions": 241,
+      "tax_identity_residual": -241,
+      "states": {
+        "dispatched": {
+          "orders": 210,
+          "item_gross": 744922,
+          "order_total": 770181,
+          "refund_total": 499
+        },
+        "declined": {
+          "orders": 1,
+          "item_gross": 4000,
+          "order_total": 4000,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 785239,
+      "item_plus_delivery": 785239,
+      "unresolved_native_gross_difference": 0
+    },
+    "2025-11": {
+      "orders": 653,
+      "item_gross": 1771892,
+      "delivery": 93928,
+      "order_total": 1814167,
+      "discounts": 51653,
+      "refund_total": 22513,
+      "commission_gross": 559671,
+      "listing_total_with_discount": 1865820,
+      "tax_identity_exceptions": 758,
+      "tax_identity_residual": -728,
+      "states": {
+        "dispatched": {
+          "orders": 646,
+          "item_gross": 1745752,
+          "order_total": 1789567,
+          "refund_total": 6193
+        },
+        "refunded": {
+          "orders": 5,
+          "item_gross": 17860,
+          "order_total": 16320,
+          "refund_total": 16320
+        },
+        "declined": {
+          "orders": 2,
+          "item_gross": 8280,
+          "order_total": 8280,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 1865820,
+      "item_plus_delivery": 1865820,
+      "unresolved_native_gross_difference": 0
+    },
+    "2025-12": {
+      "orders": 894,
+      "item_gross": 2344288,
+      "delivery": 171877,
+      "order_total": 2475330,
+      "discounts": 40835,
+      "refund_total": 17949,
+      "commission_gross": 754693,
+      "listing_total_with_discount": 2516165,
+      "tax_identity_exceptions": 1478,
+      "tax_identity_residual": -1246,
+      "states": {
+        "dispatched": {
+          "orders": 880,
+          "item_gross": 2304992,
+          "order_total": 2434943,
+          "refund_total": 1074
+        },
+        "refunded": {
+          "orders": 5,
+          "item_gross": 16705,
+          "order_total": 16547,
+          "refund_total": 16875
+        },
+        "expired": {
+          "orders": 7,
+          "item_gross": 18700,
+          "order_total": 19380,
+          "refund_total": 0
+        },
+        "declined": {
+          "orders": 1,
+          "item_gross": 2691,
+          "order_total": 3090,
+          "refund_total": 0
+        },
+        "archived": {
+          "orders": 1,
+          "item_gross": 1200,
+          "order_total": 1370,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 2516165,
+      "item_plus_delivery": 2516165,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-01": {
+      "orders": 409,
+      "item_gross": 1223868,
+      "delivery": 59520,
+      "order_total": 1267117,
+      "discounts": 16485,
+      "refund_total": 6825,
+      "commission_gross": 385022,
+      "listing_total_with_discount": 1283602,
+      "tax_identity_exceptions": 532,
+      "tax_identity_residual": -524,
+      "states": {
+        "dispatched": {
+          "orders": 407,
+          "item_gross": 1216582,
+          "order_total": 1259831,
+          "refund_total": 3106
+        },
+        "refunded": {
+          "orders": 1,
+          "item_gross": 3420,
+          "order_total": 3420,
+          "refund_total": 3719
+        },
+        "declined": {
+          "orders": 1,
+          "item_gross": 3866,
+          "order_total": 3866,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 1283388,
+      "item_plus_delivery": 1283388,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-02": {
+      "orders": 175,
+      "item_gross": 647764,
+      "delivery": 24177,
+      "order_total": 662452,
+      "discounts": 9685,
+      "refund_total": 0,
+      "commission_gross": 201603,
+      "listing_total_with_discount": 672137,
+      "tax_identity_exceptions": 180,
+      "tax_identity_residual": -176,
+      "states": {
+        "dispatched": {
+          "orders": 175,
+          "item_gross": 647764,
+          "order_total": 662452,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 671941,
+      "item_plus_delivery": 671941,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-03": {
+      "orders": 215,
+      "item_gross": 809579,
+      "delivery": 39299,
+      "order_total": 842553,
+      "discounts": 6589,
+      "refund_total": 5025,
+      "commission_gross": 254687,
+      "listing_total_with_discount": 849142,
+      "tax_identity_exceptions": 221,
+      "tax_identity_residual": -221,
+      "states": {
+        "dispatched": {
+          "orders": 214,
+          "item_gross": 805579,
+          "order_total": 838553,
+          "refund_total": 1025
+        },
+        "refunded": {
+          "orders": 1,
+          "item_gross": 4000,
+          "order_total": 4000,
+          "refund_total": 4000
+        }
+      },
+      "native_report_gross": 848878,
+      "item_plus_delivery": 848878,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-04": {
+      "orders": 141,
+      "item_gross": 544850,
+      "delivery": 28351,
+      "order_total": 571040,
+      "discounts": 2161,
+      "refund_total": 31100,
+      "commission_gross": 171922,
+      "listing_total_with_discount": 573201,
+      "tax_identity_exceptions": 176,
+      "tax_identity_residual": -172,
+      "states": {
+        "dispatched": {
+          "orders": 136,
+          "item_gross": 507010,
+          "order_total": 532671,
+          "refund_total": 0
+        },
+        "refunded": {
+          "orders": 3,
+          "item_gross": 31240,
+          "order_total": 31100,
+          "refund_total": 31100
+        },
+        "declined": {
+          "orders": 2,
+          "item_gross": 6600,
+          "order_total": 7269,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 573201,
+      "item_plus_delivery": 573201,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-05": {
+      "orders": 166,
+      "item_gross": 577216,
+      "delivery": 24152,
+      "order_total": 596743,
+      "discounts": 4646,
+      "refund_total": 0,
+      "commission_gross": 180376,
+      "listing_total_with_discount": 601389,
+      "tax_identity_exceptions": 166,
+      "tax_identity_residual": -164,
+      "states": {
+        "dispatched": {
+          "orders": 166,
+          "item_gross": 577216,
+          "order_total": 596743,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 601368,
+      "item_plus_delivery": 601368,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-06": {
+      "orders": 226,
+      "item_gross": 715020,
+      "delivery": 26656,
+      "order_total": 737259,
+      "discounts": 4417,
+      "refund_total": 6470,
+      "commission_gross": 223350,
+      "listing_total_with_discount": 741676,
+      "tax_identity_exceptions": 232,
+      "tax_identity_residual": -230,
+      "states": {
+        "dispatched": {
+          "orders": 224,
+          "item_gross": 708720,
+          "order_total": 730789,
+          "refund_total": 0
+        },
+        "refunded": {
+          "orders": 2,
+          "item_gross": 6300,
+          "order_total": 6470,
+          "refund_total": 6470
+        }
+      },
+      "native_report_gross": 741676,
+      "item_plus_delivery": 741676,
+      "unresolved_native_gross_difference": 0
+    },
+    "2026-07": {
+      "orders": 227,
+      "item_gross": 658368,
+      "delivery": 25626,
+      "order_total": 679834,
+      "discounts": 4223,
+      "refund_total": 0,
+      "commission_gross": 206713,
+      "listing_total_with_discount": 684057,
+      "tax_identity_exceptions": 233,
+      "tax_identity_residual": -221,
+      "states": {
+        "dispatched": {
+          "orders": 226,
+          "item_gross": 655428,
+          "order_total": 676495,
+          "refund_total": 0
+        },
+        "declined": {
+          "orders": 1,
+          "item_gross": 2940,
+          "order_total": 3339,
+          "refund_total": 0
+        }
+      },
+      "native_report_gross": 683994,
+      "item_plus_delivery": 683994,
+      "unresolved_native_gross_difference": 0
+    }
+  },
+  "totals": {
+    "orders": 3786,
+    "item_gross": 11615070,
+    "delivery": 632564,
+    "order_total": 12086856,
+    "discounts": 161536,
+    "refund_total": 94181,
+    "commission_gross": 3692835,
+    "listing_total_with_discount": 12248392,
+    "native_report_gross": 12247634,
+    "item_plus_delivery": 12247634,
+    "unresolved_native_gross_difference": 0,
+    "tax_identity_exceptions": 4899,
+    "tax_identity_residual": -4605
+  },
+  "product_report_gross": 11947824,
+  "product_vs_order_total_difference": -139032,
+  "decision": "No verified NOTHS revenue, eligible-order definition or refund adjustment promoted. Imported gross remains unchanged."
+}

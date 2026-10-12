@@ -1,0 +1,22 @@
+{
+  "source_monthly": "gross_turnover_by_month_01aug2025-31jul2026_01aug2024-31jul2025.csv",
+  "source_products": "products_01aug2025-31jul2026.csv",
+  "monthly_sha256": "135365737276cc874fb6fa3c6a38c3806e6f11fca739c346ded238a2489b9b13",
+  "products_sha256": "3f82527d88a69b1798b74f9c09deb78c7d47d7045c8840bb07196cab211a3acb",
+  "monthly_gross": {
+    "2025-08": 820238,
+    "2025-09": 855726,
+    "2025-10": 785239,
+    "2025-11": 1865820,
+    "2025-12": 2516165,
+    "2026-01": 1283388,
+    "2026-02": 671941,
+    "2026-03": 848878,
+    "2026-04": 573201,
+    "2026-05": 601368,
+    "2026-06": 741676,
+    "2026-07": 683994
+  },
+  "product_report_gross": 11947824,
+  "note": "Native monthly and product reports have different scopes; product Sales is not a deduplicated order count."
+}

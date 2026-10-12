@@ -1,0 +1,39 @@
+{
+  "tested_at": "2026-10-12T15:58:30.831Z",
+  "scope": "isolated latest-main preview with review-only candidate",
+  "checks": [
+    {
+      "check": "September net_sales",
+      "pass": true
+    },
+    {
+      "check": "September gross_sales",
+      "pass": true
+    },
+    {
+      "check": "September total_sales",
+      "pass": true
+    },
+    {
+      "check": "August and September rows use verified Stats controls; October total withheld",
+      "pass": true
+    },
+    {
+      "check": "currentFY withholds full financial total for missing October",
+      "pass": true
+    },
+    {
+      "check": "thisMonth withholds full financial total for missing October",
+      "pass": true
+    },
+    {
+      "check": "last30 withholds full financial total for missing October",
+      "pass": true
+    },
+    {
+      "check": "last7 withholds full financial total for missing October",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

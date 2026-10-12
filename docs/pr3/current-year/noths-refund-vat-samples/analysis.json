@@ -1,0 +1,266 @@
+{
+  "money_unit": "GBP pence; balance fields explicitly ten-thousandths",
+  "source": "three private CSVs + read-only GET of exact referenced order IDs",
+  "native_collected_at": "2026-10-12T16:17:20.536Z",
+  "native_sha256": "44937ae12f4caab14421e0696a016be6d70b6845a67340b207a911f3de87f36a",
+  "native_orders": 188,
+  "source_writes": 0,
+  "verified_net_sales": false,
+  "reports": [
+    {
+      "source_sha256": "5995eac98a6ff2ec48dd943ed79c94fb99baaebae9eb06f0f67a6cefe36bb141",
+      "status": "investigation-only",
+      "currency_in_source": false,
+      "timezone_in_source": false,
+      "source_rows": 203,
+      "categories": {
+        "bank_transfer": {
+          "rows": 1,
+          "amount_pence": -115517
+        },
+        "shopper_payment": {
+          "rows": 96,
+          "amount_pence": 304284
+        },
+        "commission_fee": {
+          "rows": 96,
+          "amount_pence": -92043
+        },
+        "platform_funded_discount": {
+          "rows": 8,
+          "amount_pence": 2592
+        },
+        "platform_vat_deduction": {
+          "rows": 1,
+          "amount_pence": -616
+        }
+      },
+      "possible_repeated_rows": 0,
+      "balances": {
+        "opening_ten_thousandths": 11551700,
+        "closing_ten_thousandths": 21424000,
+        "sum_of_exported_amounts_ten_thousandths": 21421700,
+        "residual_ten_thousandths": 2300
+      },
+      "definition": "Customer refunds, commissions, fee credits, platform VAT, funding and transfers remain separate. No settlement-derived net-sales metric or automatic promotion.",
+      "sample": 1,
+      "activity_start": "2026-06-15",
+      "activity_end": "2026-06-19",
+      "audit": {
+        "shopper_payments": 96,
+        "shopper_payment_matches": 96,
+        "commission_rows": 96,
+        "commission_matches": 96,
+        "missing_native_orders": 0
+      },
+      "adjustments": [
+        {
+          "posted_day": "2026-06-18",
+          "kind": "platform_vat_deduction",
+          "statement_amount": -616,
+          "order_placed_london_day": "2026-06-17",
+          "native_state": "dispatched",
+          "original_order_total": 3550,
+          "original_item_gross": 2800,
+          "original_delivery": 750,
+          "cumulative_refund": 0,
+          "original_commission_gross": 1065,
+          "native_item_commission_gross": 840,
+          "native_delivery_commission_gross": 225,
+          "native_vat_liability_label": "NOTHS (IOSS)",
+          "native_platform_vat_amount": 616,
+          "events": [
+            {
+              "type": "platform_vat_deduction",
+              "day": "2026-06-18",
+              "amount_pence": -616
+            }
+          ],
+          "settlement_effect": -616
+        }
+      ]
+    },
+    {
+      "source_sha256": "7052c6e5ea119e49909bdc919011feb6e2e486cdc3b07cc4d339fa5354ed8ca0",
+      "status": "investigation-only",
+      "currency_in_source": false,
+      "timezone_in_source": false,
+      "source_rows": 106,
+      "categories": {
+        "bank_transfer": {
+          "rows": 1,
+          "amount_pence": -106287
+        },
+        "shopper_payment": {
+          "rows": 49,
+          "amount_pence": 168550
+        },
+        "commission_fee": {
+          "rows": 49,
+          "amount_pence": -51105
+        },
+        "platform_funded_discount": {
+          "rows": 3,
+          "amount_pence": 836
+        },
+        "customer_refund": {
+          "rows": 1,
+          "amount_pence": -3800
+        },
+        "refund_admin_fee": {
+          "rows": 1,
+          "amount_pence": -114
+        },
+        "commission_credit": {
+          "rows": 1,
+          "amount_pence": 1140
+        }
+      },
+      "possible_repeated_rows": 0,
+      "balances": {
+        "opening_ten_thousandths": 10628675,
+        "closing_ten_thousandths": 11551700,
+        "sum_of_exported_amounts_ten_thousandths": 11550675,
+        "residual_ten_thousandths": 1025
+      },
+      "definition": "Customer refunds, commissions, fee credits, platform VAT, funding and transfers remain separate. No settlement-derived net-sales metric or automatic promotion.",
+      "sample": 2,
+      "activity_start": "2026-06-08",
+      "activity_end": "2026-06-12",
+      "audit": {
+        "shopper_payments": 49,
+        "shopper_payment_matches": 49,
+        "commission_rows": 49,
+        "commission_matches": 49,
+        "missing_native_orders": 0
+      },
+      "adjustments": [
+        {
+          "posted_day": "2026-06-09",
+          "kind": "customer_refund",
+          "statement_amount": -3800,
+          "order_placed_london_day": "2026-06-07",
+          "native_state": "refunded",
+          "original_order_total": 3800,
+          "original_item_gross": 3800,
+          "original_delivery": 0,
+          "cumulative_refund": 3800,
+          "original_commission_gross": 1140,
+          "native_item_commission_gross": 1140,
+          "native_delivery_commission_gross": 0,
+          "native_vat_liability_label": "Rock On Ruby",
+          "native_platform_vat_amount": null,
+          "events": [
+            {
+              "type": "customer_refund",
+              "day": "2026-06-09",
+              "amount_pence": -3800
+            },
+            {
+              "type": "refund_admin_fee",
+              "day": "2026-06-09",
+              "amount_pence": -114
+            },
+            {
+              "type": "commission_credit",
+              "day": "2026-06-09",
+              "amount_pence": 1140
+            }
+          ],
+          "settlement_effect": -2774
+        }
+      ]
+    },
+    {
+      "source_sha256": "ed657b40d787d1e66e1dd370c3eab83c3ae10e5c71f09ee1ad576b7cfb82c181",
+      "status": "investigation-only",
+      "currency_in_source": false,
+      "timezone_in_source": false,
+      "source_rows": 96,
+      "categories": {
+        "bank_transfer": {
+          "rows": 1,
+          "amount_pence": -91473
+        },
+        "shopper_payment": {
+          "rows": 42,
+          "amount_pence": 147980
+        },
+        "commission_fee": {
+          "rows": 42,
+          "amount_pence": -45424
+        },
+        "platform_funded_discount": {
+          "rows": 7,
+          "amount_pence": 2280
+        },
+        "customer_refund": {
+          "rows": 1,
+          "amount_pence": -2800
+        },
+        "refund_admin_fee": {
+          "rows": 1,
+          "amount_pence": -84
+        },
+        "commission_credit": {
+          "rows": 1,
+          "amount_pence": 1125
+        }
+      },
+      "possible_repeated_rows": 0,
+      "balances": {
+        "opening_ten_thousandths": 9147275,
+        "closing_ten_thousandths": 10308600,
+        "sum_of_exported_amounts_ten_thousandths": 10307675,
+        "residual_ten_thousandths": 925
+      },
+      "definition": "Customer refunds, commissions, fee credits, platform VAT, funding and transfers remain separate. No settlement-derived net-sales metric or automatic promotion.",
+      "sample": 3,
+      "activity_start": "2026-09-07",
+      "activity_end": "2026-09-11",
+      "audit": {
+        "shopper_payments": 42,
+        "shopper_payment_matches": 42,
+        "commission_rows": 42,
+        "commission_matches": 42,
+        "missing_native_orders": 0
+      },
+      "adjustments": [
+        {
+          "posted_day": "2026-09-11",
+          "kind": "customer_refund",
+          "statement_amount": -2800,
+          "order_placed_london_day": "2026-09-02",
+          "native_state": "dispatched",
+          "original_order_total": 3299,
+          "original_item_gross": 2800,
+          "original_delivery": 499,
+          "cumulative_refund": 2800,
+          "original_commission_gross": 1325,
+          "native_item_commission_gross": 1176,
+          "native_delivery_commission_gross": 150,
+          "native_vat_liability_label": "Rock On Ruby",
+          "native_platform_vat_amount": null,
+          "events": [
+            {
+              "type": "customer_refund",
+              "day": "2026-09-11",
+              "amount_pence": -2800
+            },
+            {
+              "type": "refund_admin_fee",
+              "day": "2026-09-11",
+              "amount_pence": -84
+            },
+            {
+              "type": "commission_credit",
+              "day": "2026-09-11",
+              "amount_pence": 1125
+            }
+          ],
+          "settlement_effect": -1759
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "scope": "read-only sample; no verified net-sales or reporting-source promotion",
+  "statement_sha256": "1bd06b18773b26557b693d6e2e28f5fa4e5af1ee460050da694abc4db56d6b45",
+  "native_capture_sha256": "80e5d2bf709f8b8882c632556ef9b7e5655b14ca7b2d9b785a0f9faf346ab8bb",
+  "native_collected_at": "2026-10-12T14:24:30.456Z",
+  "source_rows": 131,
+  "date_min": "2026-07-27",
+  "date_max": "2026-07-31",
+  "timezone_in_csv": false,
+  "currency_in_csv": false,
+  "currency_review": "Matched native financial fields are GBP; CSV itself has no currency field",
+  "groups": {
+    "Scheduled transfer to bank account for Invoice [id]": {
+      "count": 1,
+      "amount_pence": -94325
+    },
+    "Shopper payment for Partner Order [id]": {
+      "count": 61,
+      "amount_pence": 187052
+    },
+    "Commission fee for Partner Order [id]": {
+      "count": 61,
+      "amount_pence": -57230
+    },
+    "Discount funded by NOTHS for Partner Order [id]": {
+      "count": 7,
+      "amount_pence": 2037
+    }
+  },
+  "linked_orders": 61,
+  "matched_native_orders": 61,
+  "missing_native_orders": 0,
+  "shopper_payment_mismatches": 0,
+  "commission_mismatches": 0,
+  "shopper_plus_platform_funding_vs_native_purchase_subtotal_mismatches": 0,
+  "order_placed_london_days": {
+    "2026-07-26": 10,
+    "2026-07-24": 4,
+    "2026-07-25": 3,
+    "2026-07-27": 12,
+    "2026-07-28": 11,
+    "2026-07-29": 9,
+    "2026-07-30": 9,
+    "2026-07-31": 3
+  },
+  "source_totals_pence": {
+    "order_total": 187052,
+    "item_gross": 182448,
+    "delivery": 6578,
+    "purchase_discount": 2037,
+    "commission_gross": 57230,
+    "cumulative_refunds": 0
+  },
+  "unexplained_identity_residuals_pence": [
+    {
+      "anonymous_sample_row": 18,
+      "item_gross": 2716,
+      "delivery": 107,
+      "order_total": 2551,
+      "purchase_discount": 335,
+      "statement_shopper_payment": 2551,
+      "statement_noths_funded_discount": 335,
+      "payment_plus_funding_minus_original_item_and_delivery": 63
+    }
+  ],
+  "balance_review": {
+    "opening_thousandths": 943245,
+    "closing_reported_thousandths": 1318750,
+    "closing_sum_of_exported_amounts_thousandths": 1318585,
+    "difference_thousandths": 165,
+    "maximum_absolute_running_difference_thousandths": 165,
+    "rounding_policy_verified": false
+  },
+  "refund_entries_present": false,
+  "production_records_written": 0
+}

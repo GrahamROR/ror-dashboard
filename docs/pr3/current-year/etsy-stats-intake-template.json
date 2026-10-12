@@ -1,0 +1,32 @@
+{
+  "schema": "etsy-stats-controls-v1",
+  "note": "Blank intake template, not financial data. Fill from native Stats evidence, never from CSV calculations. Review date boundaries, eligibility/refunds and actual tax treatment before setting source_policy_verified=true.",
+  "months": [
+    {
+      "month": "2026-08",
+      "start": "2026-08-01",
+      "end_inclusive": "2026-08-31",
+      "revenue_gbp": null,
+      "orders": null,
+      "currency": "GBP",
+      "reporting_timezone": null,
+      "stats_evidence_reference": null,
+      "captured_at": null,
+      "review_reference": null,
+      "source_policy_verified": false
+    },
+    {
+      "month": "2026-09",
+      "start": "2026-09-01",
+      "end_inclusive": "2026-09-30",
+      "revenue_gbp": null,
+      "orders": null,
+      "currency": "GBP",
+      "reporting_timezone": null,
+      "stats_evidence_reference": null,
+      "captured_at": null,
+      "review_reference": null,
+      "source_policy_verified": false
+    }
+  ]
+}

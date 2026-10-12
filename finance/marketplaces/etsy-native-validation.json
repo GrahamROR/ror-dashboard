@@ -1,0 +1,29 @@
+{
+  "collected_at": "2026-10-12T12:51:09.592Z",
+  "scope": "FY26 native receipts using Europe/London bounds",
+  "receipt_count": 1060,
+  "eligible": 1051,
+  "cancelled": 9,
+  "partially_refunded": 4,
+  "merchandise_money_differences": 0,
+  "order_total_differences": 0,
+  "csv_day_differences": 11,
+  "monthly_date_boundary_differences": 0,
+  "totals": {
+    "gross_sales": 3236620,
+    "discounts": 197621,
+    "net_sales": 3038999,
+    "total_sales": 3091032,
+    "orders": 1051
+  },
+  "collection_methods": [
+    "GET Etsy receipts",
+    "SELECT existing access token (no OAuth refresh)"
+  ],
+  "stockhub_rows_written": 0,
+  "stockhub_changed_db": false,
+  "cancelled_original_merchandise": 30395,
+  "cancelled_discounts": 3519,
+  "cancelled_order_total": 28065,
+  "native_evidence_sha256": "0160a967bbfe04c6ca16c8f133a3c7fee40e49f9e1a9063b98b754343b332824"
+}

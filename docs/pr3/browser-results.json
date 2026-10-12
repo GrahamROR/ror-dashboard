@@ -1,0 +1,274 @@
+{
+  "tested_at": "2026-10-12T13:31:40.538Z",
+  "before_url": "http://127.0.0.1:8767/",
+  "after_url": "http://127.0.0.1:8770/",
+  "desktop_width": 1440,
+  "mobile_width": 390,
+  "latest_exports": "origin/main 02e2f3c750acaefaebbca733e62efa9cd44910fd, isolated preview only",
+  "checks": [
+    {
+      "check": "Etsy gross_sales",
+      "pass": true,
+      "text": "ETSY ORIGINAL MERCHANDISE VALUE\n£32,366.20\nNo comparison data"
+    },
+    {
+      "check": "Etsy total_sales",
+      "pass": true,
+      "text": "ETSY SOLD ORDERS TOTAL\n£30,910.32\nNo comparison data"
+    },
+    {
+      "check": "Etsy net_sales",
+      "pass": true,
+      "text": "ETSY STATS MERCHANDISE SALES\n£30,389.99\nNo comparison data"
+    },
+    {
+      "check": "Three date selectors: currentFY",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: previousFY",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: last12Months",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: year2024",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: year2025",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: year2026YTD",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: thisMonth",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: lastMonth",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: last30",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: last7",
+      "pass": true
+    },
+    {
+      "check": "Three date selectors: custom",
+      "pass": true
+    },
+    {
+      "check": "Custom May Etsy net KPI",
+      "pass": true
+    },
+    {
+      "check": "Contribution donut",
+      "pass": true
+    },
+    {
+      "check": "Contribution bar",
+      "pass": true
+    },
+    {
+      "check": "Contribution stacked-bar",
+      "pass": true
+    },
+    {
+      "check": "Explorer Bar",
+      "pass": true
+    },
+    {
+      "check": "Explorer Line",
+      "pass": true
+    },
+    {
+      "check": "Explorer Stacked bar",
+      "pass": true
+    },
+    {
+      "check": "Explorer Area",
+      "pass": true
+    },
+    {
+      "check": "All Stores FY26 legacy KPIs",
+      "pass": true,
+      "text": [
+        "Legacy imported gross sales£466,955.48Recorded subtotal · Coverage unverified",
+        "Imported orders12,680Recorded subtotal · Coverage unverified",
+        "Imported gross line AOV£36.83Recorded subtotal · Coverage unverified",
+        "Purchased units (imported)17,671Recorded subtotal · Coverage unverified"
+      ]
+    },
+    {
+      "check": "Mobile Etsy at 390px",
+      "pass": true,
+      "charts": 2,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile All Stores at 390px",
+      "pass": true,
+      "charts": 2,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Growth tab Overview",
+      "pass": true
+    },
+    {
+      "check": "Growth tab Yesterday",
+      "pass": true
+    },
+    {
+      "check": "Growth tab Monthly",
+      "pass": true
+    },
+    {
+      "check": "Growth tab Products",
+      "pass": true
+    },
+    {
+      "check": "Growth tab Email",
+      "pass": true
+    },
+    {
+      "check": "Growth tab Ads",
+      "pass": true
+    },
+    {
+      "check": "Growth tab Margin",
+      "pass": true
+    },
+    {
+      "check": "Existing forecast CVR slider responds",
+      "pass": true,
+      "before": "0.0261",
+      "after": "0.0265"
+    },
+    {
+      "check": "Mobile Growth Overview",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile Growth Yesterday",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile Growth Monthly",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile Growth Products",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile Growth Email",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile Growth Ads",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Mobile Growth Margin",
+      "pass": true,
+      "scrollWidth": 386,
+      "width": 390
+    },
+    {
+      "check": "Fixed Etsy 100% donut renders full ring",
+      "pass": true
+    },
+    {
+      "check": "Refresh failure browser retains Etsy last-good financials and displays warning",
+      "pass": true
+    },
+    {
+      "check": "Unchanged Shopify FY26 net_sales",
+      "pass": true
+    },
+    {
+      "check": "Unchanged Shopify FY26 gross_sales",
+      "pass": true
+    },
+    {
+      "check": "Unchanged Shopify FY26 total_sales",
+      "pass": true
+    },
+    {
+      "check": "NOTHS remains imported gross",
+      "pass": true
+    },
+    {
+      "check": "ROR comparison and Explorer granularity daily",
+      "pass": true
+    },
+    {
+      "check": "ROR comparison and Explorer granularity weekly",
+      "pass": true
+    },
+    {
+      "check": "ROR comparison and Explorer granularity monthly",
+      "pass": true
+    },
+    {
+      "check": "ROR comparison and Explorer granularity quarterly",
+      "pass": true
+    },
+    {
+      "check": "ROR comparison and Explorer granularity financial-year",
+      "pass": true
+    },
+    {
+      "check": "ROR comparison and Explorer granularity calendar-year",
+      "pass": true
+    },
+    {
+      "check": "ROR financial/units filter revenue",
+      "pass": true
+    },
+    {
+      "check": "ROR financial/units filter orders",
+      "pass": true
+    },
+    {
+      "check": "ROR financial/units filter aov",
+      "pass": true
+    },
+    {
+      "check": "ROR financial/units filter units",
+      "pass": true
+    },
+    {
+      "check": "Final preview has no console errors",
+      "pass": true
+    }
+  ],
+  "console_errors": [],
+  "resolved_issues": [
+    "Existing single-store donut arc geometry fixed and tested",
+    "Browser cached chart script detected; changed ROR scripts versioned and final four-arc ring confirmed"
+  ]
+}

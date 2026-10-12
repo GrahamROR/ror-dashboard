@@ -10,6 +10,7 @@ on:
       - 'ads/**'
       - 'insights/**'
       - 'docs/pr2/**'
+      - 'docs/pr3/**'
       - '.github/workflows/finance-tests.yml'
   workflow_dispatch:
 permissions:
@@ -22,7 +23,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: node --test finance/test/*.test.js
+      - run: node --test finance/test/*.test.js finance/marketplaces/test/*.test.js
+      - run: node finance/marketplaces/reconcile.js
+      - run: git diff --exit-code -- docs/pr3/reconciliation.json docs/pr3/reconciliation.md
       - run: node finance/reconcile.js
       - run: git diff --exit-code -- docs/pr2/reconciliation.json docs/pr2/reconciliation.md
       - run: node dashboard2/test/calculations.test.js

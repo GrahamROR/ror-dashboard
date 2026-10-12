@@ -1,0 +1,107 @@
+{
+  "checked_on": "2026-10-12",
+  "main_commit": "02e2f3c750acaefaebbca733e62efa9cd44910fd",
+  "source_generated_at": "2026-10-12T10:40:11.425Z",
+  "rows": [
+    {
+      "preset": "currentFY",
+      "start": "2026-08-01",
+      "end_inclusive": "2026-10-11",
+      "modes": {
+        "net_sales": {
+          "revenue_pence": null,
+          "orders": null,
+          "aov_pounds": null,
+          "units": 240,
+          "status": "no-data",
+          "missing_financial_or_imported_days": 72,
+          "note": "Etsy financial coverage unavailable for 72 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07."
+        },
+        "legacy_gross": {
+          "revenue_pence": 596040,
+          "orders": 190,
+          "aov_pounds": 31.370526315789444,
+          "units": 240,
+          "status": "incomplete-data",
+          "missing_financial_or_imported_days": 11,
+          "note": "Explicitly selected legacy imported gross; not verified net sales. Coverage unverified: 11 day/channel entries absent; absence may mean no sales or missing imports. Shown amounts are recorded subtotals; comparisons are unavailable."
+        }
+      }
+    },
+    {
+      "preset": "thisMonth",
+      "start": "2026-10-01",
+      "end_inclusive": "2026-10-11",
+      "modes": {
+        "net_sales": {
+          "revenue_pence": null,
+          "orders": null,
+          "aov_pounds": null,
+          "units": 29,
+          "status": "no-data",
+          "missing_financial_or_imported_days": 11,
+          "note": "Etsy financial coverage unavailable for 11 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07."
+        },
+        "legacy_gross": {
+          "revenue_pence": 66295,
+          "orders": 24,
+          "aov_pounds": 27.62291666666667,
+          "units": 29,
+          "status": "partial",
+          "missing_financial_or_imported_days": 0,
+          "note": "Explicitly selected legacy imported gross; not verified net sales. Includes a partially completed source day; comparisons are unavailable."
+        }
+      }
+    },
+    {
+      "preset": "last30",
+      "start": "2026-09-12",
+      "end_inclusive": "2026-10-11",
+      "modes": {
+        "net_sales": {
+          "revenue_pence": null,
+          "orders": null,
+          "aov_pounds": null,
+          "units": 54,
+          "status": "no-data",
+          "missing_financial_or_imported_days": 30,
+          "note": "Etsy financial coverage unavailable for 30 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07."
+        },
+        "legacy_gross": {
+          "revenue_pence": 128245,
+          "orders": 45,
+          "aov_pounds": 28.498888888888896,
+          "units": 54,
+          "status": "incomplete-data",
+          "missing_financial_or_imported_days": 8,
+          "note": "Explicitly selected legacy imported gross; not verified net sales. Coverage unverified: 8 day/channel entries absent; absence may mean no sales or missing imports. Shown amounts are recorded subtotals; comparisons are unavailable."
+        }
+      }
+    },
+    {
+      "preset": "last7",
+      "start": "2026-10-05",
+      "end_inclusive": "2026-10-11",
+      "modes": {
+        "net_sales": {
+          "revenue_pence": null,
+          "orders": null,
+          "aov_pounds": null,
+          "units": 18,
+          "status": "no-data",
+          "missing_financial_or_imported_days": 7,
+          "note": "Etsy financial coverage unavailable for 7 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07."
+        },
+        "legacy_gross": {
+          "revenue_pence": 40735,
+          "orders": 17,
+          "aov_pounds": 23.961764705882352,
+          "units": 18,
+          "status": "partial",
+          "missing_financial_or_imported_days": 0,
+          "note": "Explicitly selected legacy imported gross; not verified net sales. Includes a partially completed source day; comparisons are unavailable."
+        }
+      }
+    }
+  ]
+}

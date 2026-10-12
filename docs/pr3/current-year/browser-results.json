@@ -1,0 +1,188 @@
+{
+  "tested_at": "2026-10-12T15:04:13.015Z",
+  "url": "http://127.0.0.1:8770/",
+  "main": "02e2f3c750acaefaebbca733e62efa9cd44910fd",
+  "checks": [
+    {
+      "check": "currentFY default net unavailable; imported units visible",
+      "pass": true,
+      "cards": [
+        "Etsy Stats merchandise sales—Etsy financial coverage unavailable for 72 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy Sold Orders—Etsy financial coverage unavailable for 72 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy selected sales per order—Etsy financial coverage unavailable for 72 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Purchased units (imported)240Recorded subtotal · Coverage unverified"
+      ]
+    },
+    {
+      "check": "currentFY explicit legacy",
+      "pass": true,
+      "cards": [
+        "Etsy legacy imported gross — unreconciled£5,960.40Recorded subtotal · Coverage unverified",
+        "Etsy imported orders190Recorded subtotal · Coverage unverified",
+        "Etsy legacy imported gross AOV£31.37Recorded subtotal · Coverage unverified",
+        "Purchased units (imported)240Recorded subtotal · Coverage unverified"
+      ]
+    },
+    {
+      "check": "thisMonth default net unavailable; imported units visible",
+      "pass": true,
+      "cards": [
+        "Etsy Stats merchandise sales—Etsy financial coverage unavailable for 11 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy Sold Orders—Etsy financial coverage unavailable for 11 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy selected sales per order—Etsy financial coverage unavailable for 11 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Purchased units (imported)29Includes a partially completed source day; comparisons are unavailable."
+      ]
+    },
+    {
+      "check": "thisMonth explicit legacy",
+      "pass": true,
+      "cards": [
+        "Etsy legacy imported gross — unreconciled£662.95Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback. Includes a partially completed source day; comparisons are unavailable.",
+        "Etsy imported orders24Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback. Includes a partially completed source day; comparisons are unavailable.",
+        "Etsy legacy imported gross AOV£27.62Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback. Includes a partially completed source day; comparisons are unavailable.",
+        "Purchased units (imported)29Includes a partially completed source day; comparisons are unavailable."
+      ]
+    },
+    {
+      "check": "last30 default net unavailable; imported units visible",
+      "pass": true,
+      "cards": [
+        "Etsy Stats merchandise sales—Etsy financial coverage unavailable for 30 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy Sold Orders—Etsy financial coverage unavailable for 30 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy selected sales per order—Etsy financial coverage unavailable for 30 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Purchased units (imported)54Recorded subtotal · Coverage unverified"
+      ]
+    },
+    {
+      "check": "last30 explicit legacy",
+      "pass": true,
+      "cards": [
+        "Etsy legacy imported gross — unreconciled£1,282.45Recorded subtotal · Coverage unverified",
+        "Etsy imported orders45Recorded subtotal · Coverage unverified",
+        "Etsy legacy imported gross AOV£28.50Recorded subtotal · Coverage unverified",
+        "Purchased units (imported)54Recorded subtotal · Coverage unverified"
+      ]
+    },
+    {
+      "check": "last7 default net unavailable; imported units visible",
+      "pass": true,
+      "cards": [
+        "Etsy Stats merchandise sales—Etsy financial coverage unavailable for 7 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy Sold Orders—Etsy financial coverage unavailable for 7 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Etsy selected sales per order—Etsy financial coverage unavailable for 7 selected days. No imported gross fallback or estimated net sales. Last validated complete month: 2026-07.",
+        "Purchased units (imported)18Includes a partially completed source day; comparisons are unavailable."
+      ]
+    },
+    {
+      "check": "last7 explicit legacy",
+      "pass": true,
+      "cards": [
+        "Etsy legacy imported gross — unreconciled£407.35Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback. Includes a partially completed source day; comparisons are unavailable.",
+        "Etsy imported orders17Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback. Includes a partially completed source day; comparisons are unavailable.",
+        "Etsy legacy imported gross AOV£23.96Explicitly selected StockHub-imported gross line sales and imported orders. Not verified net sales, not Etsy Stats revenue. AOV uses imported gross / imported orders. Absent imported days remain coverage unverified; no zero filling or financial-source fallback. Includes a partially completed source day; comparisons are unavailable.",
+        "Purchased units (imported)18Includes a partially completed source day; comparisons are unavailable."
+      ]
+    },
+    {
+      "check": "Explorer selection updates Etsy page basis coherently",
+      "pass": true
+    },
+    {
+      "check": "Explicit legacy contribution and Explorer retained",
+      "pass": true
+    },
+    {
+      "check": "Etsy legacy selection never becomes Shopify financial basis",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Overview",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Yesterday",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Monthly",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Products",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Email",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Ads",
+      "pass": true
+    },
+    {
+      "check": "Preserved Growth Margin",
+      "pass": true
+    },
+    {
+      "check": "Desktop legacy no overflow",
+      "pass": true
+    },
+    {
+      "check": "FY26 golden figures unchanged",
+      "pass": true
+    },
+    {
+      "check": "All Stores golden figures unchanged",
+      "pass": true
+    },
+    {
+      "check": "Unit comparison rows remain visible when net missing",
+      "pass": true
+    },
+    {
+      "check": "Shopify FY26 net_sales",
+      "pass": true
+    },
+    {
+      "check": "Shopify FY26 gross_sales",
+      "pass": true
+    },
+    {
+      "check": "Shopify FY26 total_sales",
+      "pass": true
+    },
+    {
+      "check": "Etsy FY26 net_sales",
+      "pass": true
+    },
+    {
+      "check": "Etsy FY26 gross_sales",
+      "pass": true
+    },
+    {
+      "check": "Etsy FY26 total_sales",
+      "pass": true
+    },
+    {
+      "check": "Etsy FY26 legacy_gross",
+      "pass": true
+    },
+    {
+      "check": "Mobile explicit legacy no document overflow",
+      "pass": true
+    },
+    {
+      "check": "Mobile unverified net preserves imported units",
+      "pass": true
+    },
+    {
+      "check": "No browser console errors",
+      "pass": true
+    },
+    {
+      "check": "Explicit single Etsy legacy contribution labels recorded gross subtotals and imported orders",
+      "pass": true
+    }
+  ],
+  "errors": []
+}
