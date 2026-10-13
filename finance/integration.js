@@ -56,7 +56,8 @@
   }
   function growthView(view, snapshot, basis, now = new Date()) {
     if (!view) return null;
-    const range = yearRange(view.fy, now);
+    const requested = yearRange(view.fy, now);
+    const range = {...requested, requestedEnd:requested.end, end:requested.end<requested.close && snapshot?.coverage.end && snapshot.coverage.end<requested.end ? snapshot.coverage.end : requested.end};
     const result =
       range.start <= range.end
         ? report(snapshot, range.start, range.end, basis)
@@ -101,7 +102,7 @@
         financialEnd: end,
         complete: r.status === "actual" && last <= range.end,
         mtd: start <= range.end && last > range.end,
-        future: start > range.end,
+        future: start > requested.end,
       };
     });
     const summary = {
@@ -128,9 +129,9 @@
       revenue: pounds(p.value),
       orders: originalProducts.get(p.title)?.orders ?? null,
     }));
-    const y = view.yesterday;
+    const y = view.marketingYesterday || view.yesterday;
     const yesterdayDate = F.next(range.today, -1);
-    const yr = y ? report(snapshot, yesterdayDate, yesterdayDate, basis) : null;
+    const yr = report(snapshot, yesterdayDate, yesterdayDate, basis);
     const sameMarketingDate = y?.date === yesterdayDate;
     const marketing = y ? { ...y } : null;
     if (marketing && !sameMarketingDate)
@@ -152,16 +153,14 @@
       monthly,
       summary,
       topProducts,
-      yesterday: y
-        ? {
+      yesterday: {
             ...marketing,
             ...yr,
             date: yesterdayDate,
             monthKey: yesterdayDate.slice(0, 7),
-            importedMarketingDate: y.date,
+            importedMarketingDate: y?.date || null,
             marketingAvailable: sameMarketingDate,
-          }
-        : null,
+          },
       finance: {
         ...result,
         ...range,

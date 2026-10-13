@@ -1,0 +1,166 @@
+  ok  - resolveAdsDateRange: today/yesterday/last7/last30 line up
+  ok  - resolveAdsDateRange: thisMonth/lastMonth/thisQuarter/thisYear
+  ok  - resolveAdsDateRange: custom validates start<=end and requires both dates
+  ok  - previousEquivalentRange shifts back by the range's own length (day-precision)
+  ok  - yearEarlierRange shifts both ends back exactly one calendar year
+  ok  - adsAggregate: sums raw components then derives ROAS/CPA/CTR/CPC — never averages ratios
+  ok  - adsAggregate: missing days are "no-data", never zero
+  ok  - adsAggregate: a future range is "not-occurred"
+  ok  - adsAggregate: today included in range is flagged "partial"
+  ok  - adsCompare: zero-denominator never produces Infinity/NaN
+  ok  - adsBucketsForGranularity: daily/weekly/monthly produce sane, non-overlapping buckets
+  ok  - adsPreviousBucket / adsYearEarlierBucket: monthly bucket steps to the correct prior month/year
+  ok  - adsPreviousBucket / adsYearEarlierBucket: daily bucket steps by exactly 1 day / 1 year
+  ok  - one missing channel-day takes precedence over a partial current day
+  ok  - incomplete current or prior ads periods never produce growth
+  ok  - Ads trailing 365-day legacy preset is labelled accurately
+
+16 passed, 0 failed
+✔ ads/test/calculations.test.js (94.619709ms)
+  ok  - production export has a self-consistent range, sources, rows and units
+  ok  - AOV is total revenue divided by total orders and units are summed
+  ok  - mapping state cannot affect totals because the reporting contract ignores it
+  ok  - MoM and YoY comparisons compute valid changes
+  ok  - date presets retain requested completed days when exports lag
+  ok  - custom ranges retain requested dates and warn about unavailable coverage
+  ok  - daily and weekly buckets are supported
+  ok  - financial year runs August through July
+  ok  - latest partial day is labelled rather than treated as a complete period
+  ok  - missing and future periods remain distinct from zero
+  ok  - channel contribution includes all three sources and totals to 100%
+  ok  - previous equivalent range uses the same number of days
+
+12 passed, 0 failed
+✔ dashboard2/test/calculations.test.js (118.180583ms)
+11 presets × 3 rendered selectors passed; all 6 custom inputs and 4 period labels verified
+✔ dashboard2/test/date-controls.test.js (282.312083ms)
+  ok - all eleven ordered presets work through one resolver
+  ok - previous FY is exactly August–July, even with stale history
+  ok - FY boundary keeps new FY identity before its first completed day
+  ok - month boundary does not mislabel last month as this month
+  ok - London clock handles both DST transitions and BST midnight independently of host TZ
+  ok - rolling calendar months include leap day, not a hard-coded 365 days
+  ok - 2024 stays available and 2023 stays no-data without clipping
+  ok - invalid dates, missing dates and reversed custom dates are rejected
+  ok - a single missing day or missing channel suppresses both comparison directions
+  ok - an absent entire month cannot produce complete multi-month growth
+  ok - known zero differs from unknown amounts and zero-order AOV is unavailable
+  ok - adapter preserves null instead of converting it to zero
+  ok - partial data never produces growth
+  ok - monthly table and chart respect custom endpoints and reconcile to the selected total
+  ok - end-exclusive filtering excludes next-day facts
+  ok - weekly YoY shifts 52 weeks and preserves Monday
+  ok - incomplete contribution never reports apparently complete shares
+  ok - metric dictionary distinguishes gross imports, Shopify total sales, attribution and estimates
+
+18 reporting contract tests passed
+✔ dashboard2/test/reporting-contract.test.js (121.598625ms)
+✔ Money precision is exact, signed and nullable; excessive precision is rejected (0.750541ms)
+✔ Native discounts, partial/full returns and cancellations retain signed adjustments without altering order counts (2.423125ms)
+✔ Shipping-only refunds and mixed/zero tax preserve actual tax; no VAT factor (0.481667ms)
+✔ Missing whole day, full month, tax and reversals stay unavailable, never zero (0.355417ms)
+✔ Native AOV requires exact native interval; zero-price eligible orders have zero net AOV (0.153542ms)
+✔ Products preserve unassigned money and do not sum product orders (0.243709ms)
+✔ Unknown total components remain explicit residuals (0.244834ms)
+✔ London calendar dates survive spring/autumn DST, leap day and FY boundaries (19.713333ms)
+✔ Every shared preset returns identical financial projections, including custom and absent 2023 (21.992458ms)
+✔ All daily, monthly, annual and custom source controls match both dashboards exactly (95.937875ms)
+✔ Every month and FY product components reconcile at penny precision (127.387375ms)
+✔ Monthly explorer clips custom first and last months (0.360542ms)
+✔ Snapshot payload and file hashes match manifest; no order/customer identifiers (18.84575ms)
+✔ Source parser rejects truncated tables, duplicate count formats and nullable money stays missing (0.313625ms)
+✔ Read-only transport retries rate limits and rejects parser/GraphQL failures without publishing (1.064875ms)
+✔ Collector rejects FX/store changes and failed batches leave staging manifest intact (2.980541ms)
+✔ Production exports, attribution and marketplace inputs remain byte-identical (0.823291ms)
+✔ Idempotent staging replay and rollback preserve immutable facts (88.43525ms)
+✔ Actual native source build is repeatable and source edits fail reconciliation (364.952666ms)
+✔ Rollback switches between two versioned snapshots and retains both histories (174.511833ms)
+✔ Collector assembles a complete custom-period capture; partial batches never become visible (3.924375ms)
+✔ Parse failure midway through capture retains previous snapshot and leaves no capture directory (0.413375ms)
+✔ Duplicate daily facts and changed source currency are rejected by the builder (26.2675ms)
+Shopify read throttled; retry 2, waiting 51s
+Shopify read throttled; retry 1, waiting 61s
+✔ FY26 original Growth sections and ROR all consume identical canonical values for each basis (186.971ms)
+✔ All eleven presets and custom intervals preserve consistent existing ROR KPIs/table/explorer totals for all three bases (313.974208ms)
+✔ Basis changes do not change orders, purchased units, sessions, conversions, attribution or fixed goal input (20.875958ms)
+✔ All Stores preserves consistent legacy gross totals, AOV, contribution and explorer pending P3 (67.524209ms)
+✔ Missing finance cannot fall back to stale financial facts; units/marketplace facts remain (1.423875ms)
+✔ Missing dates and partial imported units suppress comparison without changing verified financial counts (4.444083ms)
+✔ Yesterday financial fields use the same source and basis while session/margin inputs retain existing behavior (4.645083ms)
+✔ Late adjustments refresh all retained history, preserve old immutable snapshots and rollback safely (11.166792ms)
+✔ Failed reconciliation keeps last good pointer, records failure and never changes production exports (4.628583ms)
+✔ Full-history partitioning includes all prior dates and London reporting-day boundaries (0.413958ms)
+✔ Refresh uses existing client credentials without logging secrets and reports auth failures safely (0.322125ms)
+✔ Transport refresh partitions full history and validates independent monthly/FY/product controls before publishing (5.750792ms)
+✔ Credential-backed refresh respects Retry-After and GraphQL throttle refill metadata (0.758875ms)
+✔ ShopifyQL-specific window reset is respected even with full Admin GraphQL budget (0.204042ms)
+✔ Refreshed Yesterday uses the London prior day without relabelling stale marketing or cost facts (1.867375ms)
+✔ Canonical snapshot, manifest and status publish together; other exports and all history remain (1486.664917ms)
+✔ Incomplete or unreconciled candidate publishes warning only and preserves old pointer/facts (1004.198042ms)
+✔ Unrelated concurrent export commits survive a rejected push and retry (1570.341542ms)
+✔ Changed owned export aborts rather than overwrites newer data (546.8095ms)
+✔ Failed pushes remain failed; lost acknowledgement is confirmed without a duplicate publication (766.627625ms)
+✔ Recovery and rollback retain immutable snapshots and publish matching warning status (2581.181292ms)
+✔ Freshness warnings preserve verified data and respect London reporting date and morning deadline (1.025458ms)
+✔ Replaying the same verified snapshot is safe and producer code movement blocks stale finance publication (1986.6705ms)
+✔ Pages build request and served snapshot verification are simulated, never deployed by tests (1463.263417ms)
+✔ Valid hashes cannot promote missing days or mismatched native controls (2013.898958ms)
+✔ Production CLI cannot activate finance or rollback without explicit main approval context (141.229334ms)
+✔ Pages timeout or mixed served bundle never reports publication success (1835.484708ms)
+✔ Normalisation preserves relative seasons and exact one; largest-remainder allocation preserves every annual penny (3.257541ms)
+✔ FY26 completed-year target and signed variance use verified Total Sales (24.556459ms)
+✔ Current FY includes completed months and 11/31 October, excluding future months (0.557708ms)
+✔ Month end, leap year and financial-year boundaries pace correctly (0.940167ms)
+✔ London midnight/DST dates use completed reporting days; stale coverage clips actual and target together (2.983292ms)
+✔ Every basis reconciles monthly money/orders to annual controls without mutating facts or native AOV (56.223209ms)
+✔ Reviewed FY27 snapshot is a historical check, not a constraint on newer source data (2.083916ms)
+✔ Yesterday finance renders independently of legacy capture and selected FY, missing data never becomes zero (4.739833ms)
+✔ Original exports and all financial snapshots/manifest/status remain byte-identical to latest-main baseline (11.90875ms)
+✔ Existing model stays on Total Sales; presentation exposes comparable variance and full-month planning target (1.473792ms)
+✔ Monthly comparable variance always uses Total Sales across every selected basis, with no missing-data zero (4.802208ms)
+✔ Closed historical years keep the annual planning target even if facts are missing, without inventing actuals or variance (2.874334ms)
+  ok - ads: not-occurred period returns neutral verdict, no bullets
+  ok - ads: no-data period returns neutral verdict, no bullets
+  ok - ads: missing current entirely is treated like not-occurred
+  ok - ads: ROAS up >=10% vs comparison gives good verdict
+  ok - ads: ROAS down <=-10% vs comparison gives bad verdict
+  ok - ads: ROAS change within +/-10% gives neutral "roughly steady" verdict
+  ok - ads: no comparison data at all falls back to standalone-period verdict
+  ok - ads: comparison previous had zero spend (percentChange null) is called out explicitly
+  ok - ads: spend up sharply with disproportionately low conversion growth flags as bad
+  ok - ads: spend down while conversions hold is flagged as good efficiency
+  ok - ads: channel efficiency gap >=40% surfaces a watch bullet naming the stronger channel
+  ok - ads: channel gap below MIN_CHANNEL_SPEND guard is suppressed as noise
+  ok - ads: per-channel CPA rise >=25% flags bad, fall <=-20% flags good
+  ok - ads: platform conversions >= real Shopify orders triggers a caveat without claiming proven double attribution
+  ok - ads: platform conversions comfortably below Shopify orders does not imply trustworthy attribution
+  ok - ads: platform conversions in the 85-100% band of Shopify orders is a watch, not bad or good
+  ok - ads: bullets are capped at 6 and sorted by score descending
+  ok - overview: ahead of YTD goal pace by >=5% gives good verdict
+  ok - overview: behind YTD goal pace by >=5% gives bad verdict
+  ok - overview: no ytdGoal available falls back to neutral, no-pace-to-compare verdict
+  ok - overview: AOV well below goal flags bad; conversion rate well below goal flags bad
+  ok - overview: repeat rate well below goal flags a watch bullet
+  ok - overview: month-on-month revenue drop >=15% between last two completed months flags watch
+  ok - overview: top product concentration >=25% of YTD revenue flags a watch bullet
+  ok - overview: bullets capped at 5
+  ok - email: attribution at/above goal gives good verdict
+  ok - email: attribution well below goal gives bad verdict
+  ok - email: missing attribution data gives neutral "not enough data" verdict
+  ok - email: list size well below goal flags a watch bullet; null list size flags neutral tracked-status bullet
+  ok - email: flow share below 50% flags watch (campaigns outperforming flows); above 70% flags good
+  ok - email: repeat purchase rate well below goal flags watch
+  ok - email: lower of campaign/flow AOV well below goal flags watch, names the weaker one
+  ok - email: bullets capped at 5
+  ok - ads: incomplete and partial coverage suppress performance conclusions
+
+34 passed, 0 failed
+✔ insights/test/rules.test.js (67.644833ms)
+ℹ tests 67
+ℹ suites 0
+ℹ pass 67
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15538.041042
