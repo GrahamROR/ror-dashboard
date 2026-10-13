@@ -68,7 +68,8 @@ function loadExisting() {
 // each row scoped to a single calendar day, matching Google's shape) ──
 async function fetchMetaDay(dateStr) {
   if (!META_ACCESS_TOKEN || !META_AD_ACCOUNT_ID) {
-    return { spend: null, conversions: null, conversionValue: null, clicks: null, impressions: null, source: 'not configured' };
+    console.warn('Platform credentials not configured; retaining last-good daily records');
+    return null;
   }
   try {
     const timeRange = encodeURIComponent(JSON.stringify({ since: dateStr, until: dateStr }));
@@ -85,7 +86,7 @@ async function fetchMetaDay(dateStr) {
 
     return {
       spend: Math.round(Number(row.spend || 0) * 100) / 100,
-      conversions: Math.round(conversions),
+      conversions,
       conversionValue: Math.round(conversionValue * 100) / 100,
       clicks: Number(row.clicks || 0),
       impressions: Number(row.impressions || 0),
@@ -118,7 +119,8 @@ async function fetchGoogleDay(dateStr) {
   const configured = GOOGLE_ADS_DEVELOPER_TOKEN && GOOGLE_ADS_CLIENT_ID &&
     GOOGLE_ADS_CLIENT_SECRET && GOOGLE_ADS_REFRESH_TOKEN && GOOGLE_ADS_CUSTOMER_ID;
   if (!configured) {
-    return { spend: null, conversions: null, conversionValue: null, clicks: null, impressions: null, source: 'not configured' };
+    console.warn('Platform credentials not configured; retaining last-good daily records');
+    return null;
   }
   try {
     const accessToken = await getGoogleAdsAccessToken();
@@ -147,7 +149,7 @@ async function fetchGoogleDay(dateStr) {
 
     return {
       spend: Math.round((costMicros / 1_000_000) * 100) / 100,
-      conversions: Math.round(conversions),
+      conversions,
       conversionValue: Math.round(conversionValue * 100) / 100,
       clicks, impressions,
       source: 'Google Ads API GAQL',
@@ -183,4 +185,5 @@ async function main() {
   console.log(`\n✓ ads-data.json written — ${Object.keys(days).length} day(s) on file`);
 }
 
-main().catch((e) => { console.error('\n✗ Fatal error:', e); process.exit(1); });
+module.exports={extractPurchaseMetrics,fetchMetaDay,fetchGoogleDay};
+if(require.main===module) main().catch((e) => { console.error('\n✗ Fatal error:', e); process.exit(1); });

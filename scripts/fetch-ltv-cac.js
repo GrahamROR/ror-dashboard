@@ -38,6 +38,7 @@
 
 const fs   = require('fs');
 const path = require('path');
+const LtvCac = require('../ads/ltv-cac');
 
 // ── CONFIG ───────────────────────────────────────────────────
 const META_ACCESS_TOKEN  = process.env.META_ACCESS_TOKEN  || null;
@@ -160,6 +161,10 @@ function loadCompletedMonths() {
 function aggregateWindow(months) {
   if (!months.length) return null;
 
+  const keys=months.map(m=>m.key);
+  const contiguous=keys.every((k,i)=>!i || k===new Date(Date.UTC(Number(keys[i-1].slice(0,4)),Number(keys[i-1].slice(5,7)),1)).toISOString().slice(0,7));
+  const customersKnown=contiguous && months.every(m=>['orders','customers','returning'].every(k=>typeof m[k]==='number'&&Number.isFinite(m[k])));
+  const valueKnown=customersKnown && months.every(m=>['aov','costOfGoodsSold','grossProfit'].every(k=>typeof m[k]==='number'&&Number.isFinite(m[k])));
   const totalOrders      = months.reduce((s, m) => s + (m.orders    || 0), 0);
   const totalCustomers   = months.reduce((s, m) => s + (m.customers || 0), 0);
   const totalReturning   = months.reduce((s, m) => s + (m.returning || 0), 0);
@@ -170,12 +175,13 @@ function aggregateWindow(months) {
 
   return {
     monthsUsed:        months.length,
+    completeness:      {contiguous, customersKnown, valueKnown},
     since:             firstDayOfMonthKey(months[0].key),
     until:             lastDayOfMonthKey(months[months.length - 1].key),
-    avgAOV:            totalOrders ? Math.round((aovNumerator / totalOrders) * 100) / 100 : null,
-    ordersPerCustomer: totalCustomers ? Math.round((totalOrders / totalCustomers) * 100) / 100 : null,
-    marginPct:         costedRevenue ? Math.round((totalGrossProfit / costedRevenue) * 1000) / 1000 : null,
-    newCustomers:      Math.max(0, totalCustomers - totalReturning),
+    avgAOV:            valueKnown && totalOrders ? Math.round((aovNumerator / totalOrders) * 100) / 100 : null,
+    ordersPerCustomer: customersKnown && totalCustomers ? Math.round((totalOrders / totalCustomers) * 100) / 100 : null,
+    marginPct:         valueKnown && costedRevenue ? Math.round((totalGrossProfit / costedRevenue) * 1000) / 1000 : null,
+    newCustomers:      customersKnown ? Math.max(0, totalCustomers - totalReturning) : null,
     totalCustomers,
     totalOrders,
   };
@@ -191,8 +197,7 @@ async function buildWindowResult(label, orderSide, monthsCap) {
   const google = await fetchGoogleAdsSpend(orderSide.since, orderSide.until);
   console.log(google.spend != null ? `  ✓ £${google.spend}` : `  – ${google.source}`);
 
-  const spendKnown = [meta.spend, google.spend].filter(v => v != null);
-  const blendedSpend = spendKnown.length ? Math.round(spendKnown.reduce((s, v) => s + v, 0) * 100) / 100 : null;
+  const blendedSpend = LtvCac.spend(meta, google);
 
   const ltv = (orderSide.avgAOV != null && orderSide.ordersPerCustomer != null && orderSide.marginPct != null)
     ? Math.round(orderSide.avgAOV * orderSide.ordersPerCustomer * orderSide.marginPct * 100) / 100
@@ -306,4 +311,5 @@ async function main() {
   console.log(`  vs. prior 12mo  — ${rollingComparison.status === 'ok' ? (rollingComparison.absoluteChange >= 0 ? '+' : '') + rollingComparison.absoluteChange + ' (was ' + rollingComparison.previousRatio + ':1)' : rollingComparison.status}`);
 }
 
-main().catch(e => { console.error('\n✗ Fatal error:', e); process.exit(1); });
+module.exports={aggregateWindow,compareRolling,buildWindowResult};
+if(require.main===module) main().catch(e => { console.error('\n✗ Fatal error:', e); process.exit(1); });
