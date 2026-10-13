@@ -76,6 +76,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 @media(max-width:768px){
   .hide-mobile{display:none!important;}
   .mobile-only{display:block;}
+  .mobile-freshness{display:flex;}
   .grid-auto{grid-template-columns:1fr!important;}
   .tab-bar .tab{padding:9px 14px!important;font-size:12px!important;min-height:38px;display:flex!important;align-items:center;justify-content:center;}
   .tab-bar{padding:4px!important;}
@@ -344,9 +345,9 @@ function MiniBar({ months, goalRev }) {
 }
 
 // Metric card component
-function MetricCard({ icon, label, actual, target, unit='', statusKey, note, accentCol }) {
+function MetricCard({ icon, label, actual, target, unit='', statusKey, statusText, note, accentCol }) {
   const col = statusKey==='pending'?'var(--t3)':statusCol(statusKey);
-  const bd  = statusBadge(statusKey);
+  const bd  = statusBadge(statusKey, statusText);
   return el('div', {className:'card',style:{display:'flex',flexDirection:'column',gap:0}},
     el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12}},
       el('div', {style:{display:'flex',alignItems:'center',gap:8}},
@@ -393,9 +394,9 @@ function ChannelMixCard({ es }) {
   );
 }
 
-function YesterdayCard({ icon, label, actual, target, statusKey, note, accentCol }) {
+function YesterdayCard({ icon, label, actual, target, statusKey, statusText, note, accentCol }) {
   const col = statusKey==='pending'?'var(--t3)':statusCol(statusKey);
-  const bd  = statusBadge(statusKey);
+  const bd  = statusBadge(statusKey, statusText);
   return el('div', {className:'card',style:{display:'flex',flexDirection:'column',gap:0,minHeight:142}},
     el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:12}},
       el('div', {style:{display:'flex',alignItems:'center',gap:8,minWidth:0}},
@@ -952,7 +953,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
     // Mobile-only freshness line — plain left-aligned text below the sticky
     // header, not a pill, per the mobile feedback that the header pill read
     // as an out-of-place floating bubble on small screens.
-    el('div', {className:'mobile-only', style:{padding:'4px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',display:'flex',alignItems:'center',gap:5}},
+    el('div', {className:'mobile-only mobile-freshness', style:{padding:'4px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',alignItems:'center',gap:5}},
       el('i', {className: isFallback ? 'ti ti-database-off' : 'ti ti-database-check', style:{fontSize:11}}),
       isFallback
         ? el('span', null, 'Embedded legacy marketing data · live refresh unavailable')
@@ -1097,10 +1098,11 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
           el(MetricCard, {
             icon:'ti-current-location', label:'Sessions', accentCol:'var(--blu)',
-            actual: summary.ytdSessions ? fmt(summary.ytdSessions) : 'Not tracked',
+            actual: summary.ytdSessions != null ? fmt(summary.ytdSessions) : 'Not tracked',
             target: fmt(GOALS.sessions), unit:'/year',
-            statusKey: summary.ytdSessions ? status(summary.ytdSessions, GOALS.sessions) : 'pending',
-            note: summary.ytdSessions ? null : 'Shopify Analytics pipeline active — sessions appear after first nightly run',
+            statusKey: isLiveYear ? 'pending' : status(summary.ytdSessions, GOALS.sessions),
+            statusText: isLiveYear && summary.ytdSessions!=null ? 'annual progress' : undefined,
+            note: summary.ytdSessions==null ? 'Shopify Analytics pipeline active — sessions appear after first nightly run' : isLiveYear ? (summary.ytdSessions / GOALS.sessions * 100).toFixed(1)+'% of the annual goal · Accumulated legacy marketing sessions; not a YTD pace assessment.' : 'Completed financial year vs annual sessions goal.',
           }),
 
           el(MetricCard, {
@@ -1120,8 +1122,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
           el(MetricCard, {
             icon:'ti-shopping-bag', label:'Orders', accentCol:'var(--amb)',
-            actual: fmt(summary.ytdOrders), target: fmt(Math.round(ytdGoal / GOALS.aov)),
-            statusKey: status(summary.ytdOrders, ytdGoal / GOALS.aov),
+            actual: fmt(summary.ytdOrders), target: fmt(ytdGoal==null?null:Math.round(ytdGoal / GOALS.aov)),
+            statusKey: status(summary.ytdOrders, ytdGoal==null?null:ytdGoal / GOALS.aov),
             note: 'YTD orders vs implied target at £'+GOALS.aov+' goal AOV · matches Orders/day on the goal slider above',
           }),
 
