@@ -2087,17 +2087,23 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <script src="finance/integration.js?v=growth-targets-v1"></script>
 <script src="finance/freshness.js"></script>
 <script src="finance/loader.js?v=publication-v1"></script>
+<script src="finance/marketplaces/contract.js?v=etsy-isolated-v1"></script>
+<script src="finance/marketplaces/loader.js?v=etsy-isolated-v1"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');
   const [financialBasis, setFinancialBasis] = useState('net_sales');
+  const [etsyBasis, setEtsyBasis] = useState('net_sales');
+  const [marketplaceSnapshot, setMarketplaceSnapshot] = useState(null);
+  const [marketplaceError, setMarketplaceError] = useState('');
+  useEffect(() => { MarketplaceFinanceLoader.load().then(setMarketplaceSnapshot).catch(e => setMarketplaceError(e.message)); }, []);
   const [financeSnapshot, setFinanceSnapshot] = useState(null);
   const [financeError, setFinanceError] = useState('');
   useEffect(() => { let active=true; const refresh=()=>ShopifyFinanceLoader.load({force:true}).then(s=>{if(active){setFinanceSnapshot(s);setFinanceError('');}}).catch(e=>{if(active)setFinanceError(e.message);}); refresh(); const timer=setInterval(refresh,15*60*1000); return ()=>{active=false;clearInterval(timer);}; }, []);
   const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError};
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
-    activeDashboard === 'ror-sales' ? el(RorSalesApp, financeProps) : el(App, financeProps)
+    activeDashboard === 'ror-sales' ? el(RorSalesApp, {...financeProps,marketplaceSnapshot,marketplaceError,etsyBasis,setEtsyBasis}) : el(App, financeProps)
   );
 }
 

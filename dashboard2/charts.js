@@ -245,7 +245,10 @@ function DonutChart({ slices, formatValue }) {
     const toXY = (a, rad) => [cx + rad * Math.cos((a * Math.PI) / 180), cy + rad * Math.sin((a * Math.PI) / 180)];
     const [x1, y1] = toXY(start, r), [x2, y2] = toXY(end, r);
     const [x1i, y1i] = toXY(end, rInner), [x2i, y2i] = toXY(start, rInner);
-    const d = `M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${x1i},${y1i} A${rInner},${rInner} 0 ${large} 0 ${x2i},${y2i} Z`;
+    // A full circle cannot be represented by one SVG arc with coincident endpoints.
+    const d = frac === 1
+      ? `M${cx},${cy-r} A${r},${r} 0 1 1 ${cx},${cy+r} A${r},${r} 0 1 1 ${cx},${cy-r} Z M${cx},${cy-rInner} A${rInner},${rInner} 0 1 0 ${cx},${cy+rInner} A${rInner},${rInner} 0 1 0 ${cx},${cy-rInner} Z`
+      : `M${x1},${y1} A${r},${r} 0 ${large} 1 ${x2},${y2} L${x1i},${y1i} A${rInner},${rInner} 0 ${large} 0 ${x2i},${y2i} Z`;
     return { d, color: s.color, label: s.label, value: s.value, pct: frac, i };
   });
 
