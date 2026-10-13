@@ -1,6 +1,384 @@
 {
   "updated": "2026-10-13T10:56:36.635Z",
   "days": {
+    "2025-08-01": {
+      "google": {
+        "spend": 23.03,
+        "conversions": 2.0,
+        "conversionValue": 70.0,
+        "clicks": 58,
+        "impressions": 4304,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 142.4,
+        "conversions": 13,
+        "conversionValue": 377.08,
+        "clicks": 547,
+        "impressions": 25818,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-02": {
+      "google": {
+        "spend": 10.19,
+        "conversions": 0.02,
+        "conversionValue": 0.55,
+        "clicks": 39,
+        "impressions": 2819,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 143.52,
+        "conversions": 12,
+        "conversionValue": 455.91,
+        "clicks": 581,
+        "impressions": 26763,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-03": {
+      "google": {
+        "spend": 34.54,
+        "conversions": 2.01,
+        "conversionValue": 46.96,
+        "clicks": 89,
+        "impressions": 4806,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 159.02,
+        "conversions": 17,
+        "conversionValue": 685.98,
+        "clicks": 599,
+        "impressions": 31554,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-04": {
+      "google": {
+        "spend": 18.6,
+        "conversions": 2.35,
+        "conversionValue": 63.43,
+        "clicks": 64,
+        "impressions": 3413,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 163.79,
+        "conversions": 16,
+        "conversionValue": 540.58,
+        "clicks": 847,
+        "impressions": 30052,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-05": {
+      "google": {
+        "spend": 20.67,
+        "conversions": 7.63,
+        "conversionValue": 274.77,
+        "clicks": 67,
+        "impressions": 3230,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 152.21,
+        "conversions": 12,
+        "conversionValue": 451.05,
+        "clicks": 662,
+        "impressions": 25669,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-06": {
+      "google": {
+        "spend": 20.26,
+        "conversions": 1.0,
+        "conversionValue": 38.0,
+        "clicks": 54,
+        "impressions": 4661,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 145.78,
+        "conversions": 12,
+        "conversionValue": 411.6,
+        "clicks": 577,
+        "impressions": 23589,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-07": {
+      "google": {
+        "spend": 37.01,
+        "conversions": 2.0,
+        "conversionValue": 63.0,
+        "clicks": 75,
+        "impressions": 5688,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 143.23,
+        "conversions": 14,
+        "conversionValue": 456.97,
+        "clicks": 576,
+        "impressions": 22762,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-08": {
+      "google": {
+        "spend": 22.67,
+        "conversions": 3.0,
+        "conversionValue": 93.7,
+        "clicks": 54,
+        "impressions": 2972,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 132.5,
+        "conversions": 23,
+        "conversionValue": 832.37,
+        "clicks": 581,
+        "impressions": 22155,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-09": {
+      "google": {
+        "spend": 26.79,
+        "conversions": 0.01,
+        "conversionValue": 0.3,
+        "clicks": 63,
+        "impressions": 3534,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 114.07,
+        "conversions": 13,
+        "conversionValue": 532.37,
+        "clicks": 517,
+        "impressions": 19694,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-10": {
+      "google": {
+        "spend": 24.73,
+        "conversions": 2.99,
+        "conversionValue": 90.2,
+        "clicks": 68,
+        "impressions": 4964,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 136.5,
+        "conversions": 10,
+        "conversionValue": 376.92,
+        "clicks": 590,
+        "impressions": 24457,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-11": {
+      "google": {
+        "spend": 22.79,
+        "conversions": 0.0,
+        "conversionValue": 0.1,
+        "clicks": 61,
+        "impressions": 4107,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 125.46,
+        "conversions": 7,
+        "conversionValue": 257.7,
+        "clicks": 592,
+        "impressions": 22848,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-12": {
+      "google": {
+        "spend": 16.93,
+        "conversions": 1.0,
+        "conversionValue": 23.5,
+        "clicks": 47,
+        "impressions": 2416,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 150.84,
+        "conversions": 7,
+        "conversionValue": 619.88,
+        "clicks": 668,
+        "impressions": 25331,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-13": {
+      "google": {
+        "spend": 26.24,
+        "conversions": 2.0,
+        "conversionValue": 63.0,
+        "clicks": 52,
+        "impressions": 2992,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 163.23,
+        "conversions": 6,
+        "conversionValue": 256.14,
+        "clicks": 723,
+        "impressions": 24982,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-14": {
+      "google": {
+        "spend": 20.17,
+        "conversions": 0.0,
+        "conversionValue": 0.0,
+        "clicks": 57,
+        "impressions": 4351,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 155.97,
+        "conversions": 9,
+        "conversionValue": 361.19,
+        "clicks": 629,
+        "impressions": 24327,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-15": {
+      "google": {
+        "spend": 19.48,
+        "conversions": 2.0,
+        "conversionValue": 51.95,
+        "clicks": 55,
+        "impressions": 3932,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 158.41,
+        "conversions": 12,
+        "conversionValue": 370.2,
+        "clicks": 565,
+        "impressions": 25264,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-16": {
+      "google": {
+        "spend": 28.89,
+        "conversions": 1.0,
+        "conversionValue": 35.0,
+        "clicks": 66,
+        "impressions": 4658,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 165.27,
+        "conversions": 4,
+        "conversionValue": 137.9,
+        "clicks": 682,
+        "impressions": 27458,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-17": {
+      "google": {
+        "spend": 37.39,
+        "conversions": 1.0,
+        "conversionValue": 35.0,
+        "clicks": 79,
+        "impressions": 5321,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 175.82,
+        "conversions": 9,
+        "conversionValue": 355.75,
+        "clicks": 688,
+        "impressions": 29443,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-18": {
+      "google": {
+        "spend": 17.33,
+        "conversions": 1.0,
+        "conversionValue": 35.0,
+        "clicks": 61,
+        "impressions": 2986,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 168.8,
+        "conversions": 14,
+        "conversionValue": 625.16,
+        "clicks": 779,
+        "impressions": 34885,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-19": {
+      "google": {
+        "spend": 21.61,
+        "conversions": 4.0,
+        "conversionValue": 121.4,
+        "clicks": 70,
+        "impressions": 3575,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 164.5,
+        "conversions": 7,
+        "conversionValue": 248.5,
+        "clicks": 613,
+        "impressions": 27493,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-20": {
+      "google": {
+        "spend": 19.16,
+        "conversions": 2.0,
+        "conversionValue": 64.66,
+        "clicks": 73,
+        "impressions": 3529,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 164.66,
+        "conversions": 11,
+        "conversionValue": 449.46,
+        "clicks": 581,
+        "impressions": 24188,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
+    "2025-08-21": {
+      "google": {
+        "spend": 24.31,
+        "conversions": 5.0,
+        "conversionValue": 195.25,
+        "clicks": 58,
+        "impressions": 3179,
+        "source": "Google Ads native account-day CSV (private FY26 candidate)"
+      },
+      "meta": {
+        "spend": 160.04,
+        "conversions": 12,
+        "conversionValue": 517.39,
+        "clicks": 513,
+        "impressions": 23411,
+        "source": "Meta native account-day reporting (validated FY26 backfill)"
+      }
+    },
     "2025-08-22": {
       "meta": {
         "spend": 156.14,
@@ -192,7 +570,7 @@
       },
       "google": {
         "spend": 23.18,
-        "conversions": 5,
+        "conversions": 4.72,
         "conversionValue": 179.1,
         "clicks": 75,
         "impressions": 4255,
@@ -210,7 +588,7 @@
       },
       "google": {
         "spend": 22.23,
-        "conversions": 7,
+        "conversions": 7.27,
         "conversionValue": 241.76,
         "clicks": 68,
         "impressions": 3436,
@@ -354,7 +732,7 @@
       },
       "google": {
         "spend": 28.1,
-        "conversions": 13,
+        "conversions": 12.83,
         "conversionValue": 489.62,
         "clicks": 74,
         "impressions": 3623,
@@ -372,7 +750,7 @@
       },
       "google": {
         "spend": 17.76,
-        "conversions": 4,
+        "conversions": 4.17,
         "conversionValue": 132.15,
         "clicks": 53,
         "impressions": 3521,
@@ -408,7 +786,7 @@
       },
       "google": {
         "spend": 30.36,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 159.86,
         "clicks": 83,
         "impressions": 4471,
@@ -426,7 +804,7 @@
       },
       "google": {
         "spend": 21.39,
-        "conversions": 6,
+        "conversions": 5.5,
         "conversionValue": 285.6,
         "clicks": 79,
         "impressions": 4906,
@@ -480,7 +858,7 @@
       },
       "google": {
         "spend": 26.98,
-        "conversions": 5,
+        "conversions": 4.5,
         "conversionValue": 184.46,
         "clicks": 73,
         "impressions": 3857,
@@ -570,7 +948,7 @@
       },
       "google": {
         "spend": 27.81,
-        "conversions": 6,
+        "conversions": 5.5,
         "conversionValue": 197.2,
         "clicks": 73,
         "impressions": 4506,
@@ -678,7 +1056,7 @@
       },
       "google": {
         "spend": 17.67,
-        "conversions": 5,
+        "conversions": 4.5,
         "conversionValue": 158.94,
         "clicks": 71,
         "impressions": 4006,
@@ -696,7 +1074,7 @@
       },
       "google": {
         "spend": 27.33,
-        "conversions": 3,
+        "conversions": 2.5,
         "conversionValue": 80.68,
         "clicks": 79,
         "impressions": 4290,
@@ -714,7 +1092,7 @@
       },
       "google": {
         "spend": 20.17,
-        "conversions": 5,
+        "conversions": 4.62,
         "conversionValue": 317.84,
         "clicks": 65,
         "impressions": 2843,
@@ -786,7 +1164,7 @@
       },
       "google": {
         "spend": 21.59,
-        "conversions": 6,
+        "conversions": 5.5,
         "conversionValue": 188.7,
         "clicks": 91,
         "impressions": 3740,
@@ -804,7 +1182,7 @@
       },
       "google": {
         "spend": 26.01,
-        "conversions": 6,
+        "conversions": 5.5,
         "conversionValue": 268.35,
         "clicks": 81,
         "impressions": 4648,
@@ -894,7 +1272,7 @@
       },
       "google": {
         "spend": 23.72,
-        "conversions": 13,
+        "conversions": 12.88,
         "conversionValue": 471.08,
         "clicks": 64,
         "impressions": 3968,
@@ -930,7 +1308,7 @@
       },
       "google": {
         "spend": 26.55,
-        "conversions": 5,
+        "conversions": 5.01,
         "conversionValue": 199.84,
         "clicks": 101,
         "impressions": 4503,
@@ -1038,7 +1416,7 @@
       },
       "google": {
         "spend": 30.11,
-        "conversions": 4,
+        "conversions": 4.3,
         "conversionValue": 144.25,
         "clicks": 103,
         "impressions": 4620,
@@ -1056,7 +1434,7 @@
       },
       "google": {
         "spend": 22.64,
-        "conversions": 8,
+        "conversions": 8.19,
         "conversionValue": 312.64,
         "clicks": 104,
         "impressions": 6247,
@@ -1110,7 +1488,7 @@
       },
       "google": {
         "spend": 29.01,
-        "conversions": 3,
+        "conversions": 2.92,
         "conversionValue": 199.21,
         "clicks": 99,
         "impressions": 4987,
@@ -1182,7 +1560,7 @@
       },
       "google": {
         "spend": 32.5,
-        "conversions": 10,
+        "conversions": 10.33,
         "conversionValue": 497.22,
         "clicks": 130,
         "impressions": 5462,
@@ -1254,7 +1632,7 @@
       },
       "google": {
         "spend": 19.28,
-        "conversions": 9,
+        "conversions": 9.32,
         "conversionValue": 396.1,
         "clicks": 99,
         "impressions": 4669,
@@ -1272,7 +1650,7 @@
       },
       "google": {
         "spend": 20.87,
-        "conversions": 3,
+        "conversions": 3.33,
         "conversionValue": 195.85,
         "clicks": 88,
         "impressions": 4886,
@@ -1290,7 +1668,7 @@
       },
       "google": {
         "spend": 23.18,
-        "conversions": 9,
+        "conversions": 8.5,
         "conversionValue": 360.62,
         "clicks": 118,
         "impressions": 5718,
@@ -1326,7 +1704,7 @@
       },
       "google": {
         "spend": 17.29,
-        "conversions": 5,
+        "conversions": 5.18,
         "conversionValue": 158.18,
         "clicks": 102,
         "impressions": 4871,
@@ -1344,7 +1722,7 @@
       },
       "google": {
         "spend": 33.34,
-        "conversions": 9,
+        "conversions": 9.02,
         "conversionValue": 309.04,
         "clicks": 116,
         "impressions": 5493,
@@ -1380,7 +1758,7 @@
       },
       "google": {
         "spend": 31.09,
-        "conversions": 8,
+        "conversions": 7.5,
         "conversionValue": 372.01,
         "clicks": 139,
         "impressions": 6266,
@@ -1398,7 +1776,7 @@
       },
       "google": {
         "spend": 27.55,
-        "conversions": 6,
+        "conversions": 6.25,
         "conversionValue": 284.5,
         "clicks": 117,
         "impressions": 6282,
@@ -1434,7 +1812,7 @@
       },
       "google": {
         "spend": 29.75,
-        "conversions": 8,
+        "conversions": 8.01,
         "conversionValue": 328.59,
         "clicks": 129,
         "impressions": 5820,
@@ -1452,7 +1830,7 @@
       },
       "google": {
         "spend": 25.22,
-        "conversions": 6,
+        "conversions": 5.92,
         "conversionValue": 185.91,
         "clicks": 115,
         "impressions": 5792,
@@ -1470,7 +1848,7 @@
       },
       "google": {
         "spend": 30.12,
-        "conversions": 8,
+        "conversions": 7.65,
         "conversionValue": 216.35,
         "clicks": 125,
         "impressions": 8248,
@@ -1488,7 +1866,7 @@
       },
       "google": {
         "spend": 33.25,
-        "conversions": 7,
+        "conversions": 7.34,
         "conversionValue": 297.71,
         "clicks": 157,
         "impressions": 7131,
@@ -1506,7 +1884,7 @@
       },
       "google": {
         "spend": 29.59,
-        "conversions": 6,
+        "conversions": 5.5,
         "conversionValue": 252.36,
         "clicks": 143,
         "impressions": 7478,
@@ -1524,7 +1902,7 @@
       },
       "google": {
         "spend": 30.47,
-        "conversions": 15,
+        "conversions": 14.82,
         "conversionValue": 565.05,
         "clicks": 171,
         "impressions": 8470,
@@ -1542,7 +1920,7 @@
       },
       "google": {
         "spend": 48.57,
-        "conversions": 11,
+        "conversions": 10.83,
         "conversionValue": 503.33,
         "clicks": 209,
         "impressions": 12682,
@@ -1560,7 +1938,7 @@
       },
       "google": {
         "spend": 40.33,
-        "conversions": 8,
+        "conversions": 7.51,
         "conversionValue": 359.57,
         "clicks": 205,
         "impressions": 12196,
@@ -1578,7 +1956,7 @@
       },
       "google": {
         "spend": 33.56,
-        "conversions": 4,
+        "conversions": 4.03,
         "conversionValue": 137.1,
         "clicks": 144,
         "impressions": 7155,
@@ -1614,7 +1992,7 @@
       },
       "google": {
         "spend": 32.38,
-        "conversions": 12,
+        "conversions": 11.5,
         "conversionValue": 377.85,
         "clicks": 147,
         "impressions": 6661,
@@ -1632,7 +2010,7 @@
       },
       "google": {
         "spend": 28.85,
-        "conversions": 7,
+        "conversions": 7.34,
         "conversionValue": 337,
         "clicks": 107,
         "impressions": 6013,
@@ -1650,7 +2028,7 @@
       },
       "google": {
         "spend": 24.76,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 121.85,
         "clicks": 105,
         "impressions": 5838,
@@ -1668,7 +2046,7 @@
       },
       "google": {
         "spend": 35.68,
-        "conversions": 6,
+        "conversions": 6.01,
         "conversionValue": 221.54,
         "clicks": 192,
         "impressions": 8104,
@@ -1686,7 +2064,7 @@
       },
       "google": {
         "spend": 42.36,
-        "conversions": 14,
+        "conversions": 13.86,
         "conversionValue": 489.26,
         "clicks": 190,
         "impressions": 6986,
@@ -1704,7 +2082,7 @@
       },
       "google": {
         "spend": 23.74,
-        "conversions": 8,
+        "conversions": 8.4,
         "conversionValue": 341.97,
         "clicks": 101,
         "impressions": 4780,
@@ -1722,7 +2100,7 @@
       },
       "google": {
         "spend": 46.14,
-        "conversions": 9,
+        "conversions": 8.68,
         "conversionValue": 390.94,
         "clicks": 159,
         "impressions": 6836,
@@ -1740,7 +2118,7 @@
       },
       "google": {
         "spend": 28.06,
-        "conversions": 13,
+        "conversions": 13.17,
         "conversionValue": 603.3,
         "clicks": 145,
         "impressions": 5488,
@@ -1776,7 +2154,7 @@
       },
       "google": {
         "spend": 28.71,
-        "conversions": 15,
+        "conversions": 14.99,
         "conversionValue": 577.6,
         "clicks": 120,
         "impressions": 6417,
@@ -1812,7 +2190,7 @@
       },
       "google": {
         "spend": 30.98,
-        "conversions": 16,
+        "conversions": 15.51,
         "conversionValue": 703.61,
         "clicks": 163,
         "impressions": 8320,
@@ -1830,7 +2208,7 @@
       },
       "google": {
         "spend": 33.02,
-        "conversions": 9,
+        "conversions": 9.33,
         "conversionValue": 454.13,
         "clicks": 151,
         "impressions": 7836,
@@ -1848,7 +2226,7 @@
       },
       "google": {
         "spend": 27.53,
-        "conversions": 5,
+        "conversions": 4.99,
         "conversionValue": 302.14,
         "clicks": 147,
         "impressions": 8333,
@@ -1866,7 +2244,7 @@
       },
       "google": {
         "spend": 34.66,
-        "conversions": 13,
+        "conversions": 12.63,
         "conversionValue": 572.31,
         "clicks": 183,
         "impressions": 8034,
@@ -1884,7 +2262,7 @@
       },
       "google": {
         "spend": 22.35,
-        "conversions": 18,
+        "conversions": 17.8,
         "conversionValue": 693.12,
         "clicks": 106,
         "impressions": 6354,
@@ -1920,7 +2298,7 @@
       },
       "google": {
         "spend": 38.18,
-        "conversions": 11,
+        "conversions": 11.05,
         "conversionValue": 493.37,
         "clicks": 197,
         "impressions": 10238,
@@ -1938,7 +2316,7 @@
       },
       "google": {
         "spend": 41.4,
-        "conversions": 20,
+        "conversions": 19.52,
         "conversionValue": 754.84,
         "clicks": 210,
         "impressions": 10360,
@@ -1956,7 +2334,7 @@
       },
       "google": {
         "spend": 33.62,
-        "conversions": 10,
+        "conversions": 9.5,
         "conversionValue": 365.4,
         "clicks": 168,
         "impressions": 8912,
@@ -1974,7 +2352,7 @@
       },
       "google": {
         "spend": 21.23,
-        "conversions": 21,
+        "conversions": 20.98,
         "conversionValue": 793.69,
         "clicks": 132,
         "impressions": 6355,
@@ -1992,7 +2370,7 @@
       },
       "google": {
         "spend": 49.43,
-        "conversions": 13,
+        "conversions": 13.02,
         "conversionValue": 453.45,
         "clicks": 175,
         "impressions": 9899,
@@ -2028,7 +2406,7 @@
       },
       "google": {
         "spend": 33.63,
-        "conversions": 12,
+        "conversions": 12.31,
         "conversionValue": 461.92,
         "clicks": 144,
         "impressions": 7562,
@@ -2046,7 +2424,7 @@
       },
       "google": {
         "spend": 32.27,
-        "conversions": 7,
+        "conversions": 7.02,
         "conversionValue": 326.92,
         "clicks": 173,
         "impressions": 8083,
@@ -2064,7 +2442,7 @@
       },
       "google": {
         "spend": 29.35,
-        "conversions": 12,
+        "conversions": 11.5,
         "conversionValue": 630.27,
         "clicks": 184,
         "impressions": 10971,
@@ -2082,7 +2460,7 @@
       },
       "google": {
         "spend": 36.27,
-        "conversions": 9,
+        "conversions": 8.95,
         "conversionValue": 360.34,
         "clicks": 191,
         "impressions": 10334,
@@ -2100,7 +2478,7 @@
       },
       "google": {
         "spend": 24.16,
-        "conversions": 13,
+        "conversions": 12.83,
         "conversionValue": 470.98,
         "clicks": 171,
         "impressions": 7926,
@@ -2118,7 +2496,7 @@
       },
       "google": {
         "spend": 45.23,
-        "conversions": 10,
+        "conversions": 10.33,
         "conversionValue": 392.45,
         "clicks": 185,
         "impressions": 11148,
@@ -2136,7 +2514,7 @@
       },
       "google": {
         "spend": 24.81,
-        "conversions": 2,
+        "conversions": 2.33,
         "conversionValue": 93.15,
         "clicks": 132,
         "impressions": 6485,
@@ -2154,7 +2532,7 @@
       },
       "google": {
         "spend": 22.06,
-        "conversions": 7,
+        "conversions": 6.98,
         "conversionValue": 259.96,
         "clicks": 117,
         "impressions": 5663,
@@ -2316,7 +2694,7 @@
       },
       "google": {
         "spend": 26.06,
-        "conversions": 2,
+        "conversions": 1.98,
         "conversionValue": 56.09,
         "clicks": 124,
         "impressions": 6088,
@@ -2334,7 +2712,7 @@
       },
       "google": {
         "spend": 25.05,
-        "conversions": 6,
+        "conversions": 6.48,
         "conversionValue": 229.97,
         "clicks": 104,
         "impressions": 5503,
@@ -2352,7 +2730,7 @@
       },
       "google": {
         "spend": 18.28,
-        "conversions": 2,
+        "conversions": 2.47,
         "conversionValue": 151.48,
         "clicks": 112,
         "impressions": 5091,
@@ -2370,7 +2748,7 @@
       },
       "google": {
         "spend": 14.88,
-        "conversions": 6,
+        "conversions": 5.52,
         "conversionValue": 221.63,
         "clicks": 71,
         "impressions": 4232,
@@ -2550,7 +2928,7 @@
       },
       "google": {
         "spend": 25.75,
-        "conversions": 7,
+        "conversions": 6.53,
         "conversionValue": 263.97,
         "clicks": 90,
         "impressions": 4341,
@@ -2604,7 +2982,7 @@
       },
       "google": {
         "spend": 33.72,
-        "conversions": 12,
+        "conversions": 11.5,
         "conversionValue": 415.51,
         "clicks": 128,
         "impressions": 6814,
@@ -2622,7 +3000,7 @@
       },
       "google": {
         "spend": 24.09,
-        "conversions": 13,
+        "conversions": 13.01,
         "conversionValue": 537.82,
         "clicks": 97,
         "impressions": 6062,
@@ -2676,7 +3054,7 @@
       },
       "google": {
         "spend": 23.88,
-        "conversions": 9,
+        "conversions": 9.33,
         "conversionValue": 324.88,
         "clicks": 96,
         "impressions": 4854,
@@ -2712,7 +3090,7 @@
       },
       "google": {
         "spend": 20.56,
-        "conversions": 4,
+        "conversions": 3.67,
         "conversionValue": 182.48,
         "clicks": 88,
         "impressions": 4612,
@@ -2748,7 +3126,7 @@
       },
       "google": {
         "spend": 30.44,
-        "conversions": 14,
+        "conversions": 13.8,
         "conversionValue": 426.63,
         "clicks": 122,
         "impressions": 7745,
@@ -2766,7 +3144,7 @@
       },
       "google": {
         "spend": 22.39,
-        "conversions": 5,
+        "conversions": 4.64,
         "conversionValue": 174.91,
         "clicks": 119,
         "impressions": 8002,
@@ -2784,7 +3162,7 @@
       },
       "google": {
         "spend": 19.4,
-        "conversions": 13,
+        "conversions": 12.67,
         "conversionValue": 472.94,
         "clicks": 106,
         "impressions": 5291,
@@ -2802,7 +3180,7 @@
       },
       "google": {
         "spend": 21.65,
-        "conversions": 8,
+        "conversions": 8.39,
         "conversionValue": 351.65,
         "clicks": 126,
         "impressions": 6905,
@@ -2838,7 +3216,7 @@
       },
       "google": {
         "spend": 19.95,
-        "conversions": 11,
+        "conversions": 10.5,
         "conversionValue": 426.37,
         "clicks": 109,
         "impressions": 6391,
@@ -2892,7 +3270,7 @@
       },
       "google": {
         "spend": 19.88,
-        "conversions": 5,
+        "conversions": 4.75,
         "conversionValue": 189.41,
         "clicks": 115,
         "impressions": 5071,
@@ -3036,7 +3414,7 @@
       },
       "google": {
         "spend": 31.6,
-        "conversions": 6,
+        "conversions": 6.16,
         "conversionValue": 249.07,
         "clicks": 108,
         "impressions": 7654,
@@ -3054,7 +3432,7 @@
       },
       "google": {
         "spend": 23.57,
-        "conversions": 1,
+        "conversions": 1.24,
         "conversionValue": 48.72,
         "clicks": 131,
         "impressions": 7384,
@@ -3072,7 +3450,7 @@
       },
       "google": {
         "spend": 31.46,
-        "conversions": 2,
+        "conversions": 2.25,
         "conversionValue": 93.75,
         "clicks": 133,
         "impressions": 7182,
@@ -3090,7 +3468,7 @@
       },
       "google": {
         "spend": 18.09,
-        "conversions": 10,
+        "conversions": 10.01,
         "conversionValue": 450.29,
         "clicks": 99,
         "impressions": 4438,
@@ -3126,7 +3504,7 @@
       },
       "google": {
         "spend": 31.83,
-        "conversions": 7,
+        "conversions": 6.83,
         "conversionValue": 222,
         "clicks": 110,
         "impressions": 7255,
@@ -3144,7 +3522,7 @@
       },
       "google": {
         "spend": 26.39,
-        "conversions": 6,
+        "conversions": 5.77,
         "conversionValue": 216.75,
         "clicks": 93,
         "impressions": 5638,
@@ -3162,7 +3540,7 @@
       },
       "google": {
         "spend": 19.85,
-        "conversions": 1,
+        "conversions": 1.02,
         "conversionValue": 28.72,
         "clicks": 82,
         "impressions": 4196,
@@ -3198,7 +3576,7 @@
       },
       "google": {
         "spend": 36.56,
-        "conversions": 12,
+        "conversions": 11.52,
         "conversionValue": 470.9,
         "clicks": 160,
         "impressions": 9078,
@@ -3234,7 +3612,7 @@
       },
       "google": {
         "spend": 30.2,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 113,
         "clicks": 93,
         "impressions": 5047,
@@ -3288,7 +3666,7 @@
       },
       "google": {
         "spend": 23.97,
-        "conversions": 10,
+        "conversions": 9.5,
         "conversionValue": 321.31,
         "clicks": 106,
         "impressions": 5885,
@@ -3306,7 +3684,7 @@
       },
       "google": {
         "spend": 23.35,
-        "conversions": 6,
+        "conversions": 5.94,
         "conversionValue": 218.15,
         "clicks": 116,
         "impressions": 4940,
@@ -3378,7 +3756,7 @@
       },
       "google": {
         "spend": 25.12,
-        "conversions": 7,
+        "conversions": 6.5,
         "conversionValue": 190.2,
         "clicks": 107,
         "impressions": 6574,
@@ -3414,7 +3792,7 @@
       },
       "google": {
         "spend": 18.27,
-        "conversions": 5,
+        "conversions": 4.5,
         "conversionValue": 147.23,
         "clicks": 90,
         "impressions": 3575,
@@ -3468,7 +3846,7 @@
       },
       "google": {
         "spend": 28.41,
-        "conversions": 3,
+        "conversions": 3.02,
         "conversionValue": 143.73,
         "clicks": 88,
         "impressions": 5035,
@@ -3522,7 +3900,7 @@
       },
       "google": {
         "spend": 22.95,
-        "conversions": 4,
+        "conversions": 3.99,
         "conversionValue": 137.41,
         "clicks": 95,
         "impressions": 4455,
@@ -3540,7 +3918,7 @@
       },
       "google": {
         "spend": 23.86,
-        "conversions": 5,
+        "conversions": 4.99,
         "conversionValue": 223.41,
         "clicks": 90,
         "impressions": 4098,
@@ -3558,7 +3936,7 @@
       },
       "google": {
         "spend": 23.08,
-        "conversions": 8,
+        "conversions": 7.96,
         "conversionValue": 331.17,
         "clicks": 110,
         "impressions": 4215,
@@ -3576,7 +3954,7 @@
       },
       "google": {
         "spend": 31.96,
-        "conversions": 14,
+        "conversions": 14.06,
         "conversionValue": 552.16,
         "clicks": 127,
         "impressions": 5300,
@@ -3594,7 +3972,7 @@
       },
       "google": {
         "spend": 19.61,
-        "conversions": 11,
+        "conversions": 11.06,
         "conversionValue": 344.38,
         "clicks": 81,
         "impressions": 3774,
@@ -3612,7 +3990,7 @@
       },
       "google": {
         "spend": 17.72,
-        "conversions": 5,
+        "conversions": 4.94,
         "conversionValue": 205.96,
         "clicks": 78,
         "impressions": 3777,
@@ -3684,7 +4062,7 @@
       },
       "google": {
         "spend": 29.23,
-        "conversions": 3,
+        "conversions": 2.99,
         "conversionValue": 90.88,
         "clicks": 100,
         "impressions": 6201,
@@ -3882,7 +4260,7 @@
       },
       "google": {
         "spend": 32.44,
-        "conversions": 3,
+        "conversions": 3.5,
         "conversionValue": 113.81,
         "clicks": 113,
         "impressions": 4838,
@@ -3900,7 +4278,7 @@
       },
       "google": {
         "spend": 23.92,
-        "conversions": 0,
+        "conversions": 0.01,
         "conversionValue": 0.34,
         "clicks": 85,
         "impressions": 4021,
@@ -3918,7 +4296,7 @@
       },
       "google": {
         "spend": 17.87,
-        "conversions": 6,
+        "conversions": 5.52,
         "conversionValue": 178.71,
         "clicks": 65,
         "impressions": 2491,
@@ -3936,7 +4314,7 @@
       },
       "google": {
         "spend": 26.66,
-        "conversions": 5,
+        "conversions": 5.01,
         "conversionValue": 200.77,
         "clicks": 90,
         "impressions": 5256,
@@ -3954,7 +4332,7 @@
       },
       "google": {
         "spend": 29.86,
-        "conversions": 10,
+        "conversions": 9.99,
         "conversionValue": 433.39,
         "clicks": 106,
         "impressions": 4520,
@@ -4008,7 +4386,7 @@
       },
       "google": {
         "spend": 24.38,
-        "conversions": 5,
+        "conversions": 4.99,
         "conversionValue": 176.11,
         "clicks": 60,
         "impressions": 3318,
@@ -4026,7 +4404,7 @@
       },
       "google": {
         "spend": 18.94,
-        "conversions": 5,
+        "conversions": 4.99,
         "conversionValue": 140.93,
         "clicks": 65,
         "impressions": 2920,
@@ -4350,7 +4728,7 @@
       },
       "google": {
         "spend": 17.78,
-        "conversions": 5,
+        "conversions": 5.04,
         "conversionValue": 212.1,
         "clicks": 58,
         "impressions": 3036,
@@ -4494,7 +4872,7 @@
       },
       "google": {
         "spend": 18.94,
-        "conversions": 4,
+        "conversions": 4.04,
         "conversionValue": 201.57,
         "clicks": 67,
         "impressions": 2408,
@@ -4512,7 +4890,7 @@
       },
       "google": {
         "spend": 21.56,
-        "conversions": 3,
+        "conversions": 2.67,
         "conversionValue": 55.6,
         "clicks": 89,
         "impressions": 5290,
@@ -4548,7 +4926,7 @@
       },
       "google": {
         "spend": 34.33,
-        "conversions": 9,
+        "conversions": 9.33,
         "conversionValue": 367.21,
         "clicks": 102,
         "impressions": 6462,
@@ -4656,7 +5034,7 @@
       },
       "google": {
         "spend": 23.46,
-        "conversions": 3,
+        "conversions": 2.93,
         "conversionValue": 108.53,
         "clicks": 62,
         "impressions": 3259,
@@ -4710,7 +5088,7 @@
       },
       "google": {
         "spend": 15.79,
-        "conversions": 5,
+        "conversions": 4.67,
         "conversionValue": 148.17,
         "clicks": 66,
         "impressions": 2783,
@@ -4746,7 +5124,7 @@
       },
       "google": {
         "spend": 34.33,
-        "conversions": 2,
+        "conversions": 2.02,
         "conversionValue": 130.43,
         "clicks": 88,
         "impressions": 5506,
@@ -4782,7 +5160,7 @@
       },
       "google": {
         "spend": 21.41,
-        "conversions": 2,
+        "conversions": 1.98,
         "conversionValue": 57.54,
         "clicks": 57,
         "impressions": 3388,
@@ -4962,7 +5340,7 @@
       },
       "google": {
         "spend": 22.05,
-        "conversions": 6,
+        "conversions": 6.33,
         "conversionValue": 200.51,
         "clicks": 72,
         "impressions": 5274,
@@ -4980,7 +5358,7 @@
       },
       "google": {
         "spend": 26.17,
-        "conversions": 4,
+        "conversions": 4.33,
         "conversionValue": 125.8,
         "clicks": 74,
         "impressions": 4898,
@@ -4998,7 +5376,7 @@
       },
       "google": {
         "spend": 21.47,
-        "conversions": 6,
+        "conversions": 6.09,
         "conversionValue": 184.16,
         "clicks": 57,
         "impressions": 2961,
@@ -5034,7 +5412,7 @@
       },
       "google": {
         "spend": 31.69,
-        "conversions": 5,
+        "conversions": 4.5,
         "conversionValue": 122.63,
         "clicks": 70,
         "impressions": 3190,
@@ -5106,7 +5484,7 @@
       },
       "google": {
         "spend": 23.59,
-        "conversions": 5,
+        "conversions": 4.5,
         "conversionValue": 122.9,
         "clicks": 70,
         "impressions": 2370,
@@ -5124,7 +5502,7 @@
       },
       "google": {
         "spend": 21.46,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 91.8,
         "clicks": 58,
         "impressions": 3784,
@@ -5142,7 +5520,7 @@
       },
       "google": {
         "spend": 24.12,
-        "conversions": 5,
+        "conversions": 4.83,
         "conversionValue": 160.12,
         "clicks": 69,
         "impressions": 2183,
@@ -5304,7 +5682,7 @@
       },
       "google": {
         "spend": 28.91,
-        "conversions": 6,
+        "conversions": 6.25,
         "conversionValue": 193.59,
         "clicks": 87,
         "impressions": 3243,
@@ -5322,7 +5700,7 @@
       },
       "google": {
         "spend": 36.64,
-        "conversions": 12,
+        "conversions": 12.11,
         "conversionValue": 429.89,
         "clicks": 96,
         "impressions": 4026,
@@ -5376,7 +5754,7 @@
       },
       "google": {
         "spend": 28.14,
-        "conversions": 13,
+        "conversions": 12.89,
         "conversionValue": 451.18,
         "clicks": 60,
         "impressions": 2032,
@@ -5394,7 +5772,7 @@
       },
       "google": {
         "spend": 18.58,
-        "conversions": 7,
+        "conversions": 7.2,
         "conversionValue": 309.2,
         "clicks": 60,
         "impressions": 2569,
@@ -5412,7 +5790,7 @@
       },
       "google": {
         "spend": 30.42,
-        "conversions": 5,
+        "conversions": 4.82,
         "conversionValue": 119.55,
         "clicks": 64,
         "impressions": 3358,
@@ -5430,7 +5808,7 @@
       },
       "google": {
         "spend": 18.72,
-        "conversions": 4,
+        "conversions": 4.01,
         "conversionValue": 170.44,
         "clicks": 50,
         "impressions": 2448,
@@ -5556,7 +5934,7 @@
       },
       "google": {
         "spend": 26.46,
-        "conversions": 4,
+        "conversions": 3.97,
         "conversionValue": 120.12,
         "clicks": 45,
         "impressions": 2855,
@@ -5610,7 +5988,7 @@
       },
       "google": {
         "spend": 22.43,
-        "conversions": 1,
+        "conversions": 1.03,
         "conversionValue": 23.69,
         "clicks": 49,
         "impressions": 3369,
@@ -5808,7 +6186,7 @@
       },
       "google": {
         "spend": 15.76,
-        "conversions": 8,
+        "conversions": 7.5,
         "conversionValue": 303.66,
         "clicks": 51,
         "impressions": 1482,
@@ -5844,7 +6222,7 @@
       },
       "google": {
         "spend": 20.91,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 146.4,
         "clicks": 58,
         "impressions": 4007,
@@ -5880,7 +6258,7 @@
       },
       "google": {
         "spend": 22.95,
-        "conversions": 4,
+        "conversions": 3.97,
         "conversionValue": 132.77,
         "clicks": 51,
         "impressions": 4170,
@@ -5898,7 +6276,7 @@
       },
       "google": {
         "spend": 25.58,
-        "conversions": 1,
+        "conversions": 1.09,
         "conversionValue": 45.32,
         "clicks": 54,
         "impressions": 3276,
@@ -5934,7 +6312,7 @@
       },
       "google": {
         "spend": 34.62,
-        "conversions": 3,
+        "conversions": 2.91,
         "conversionValue": 65.93,
         "clicks": 62,
         "impressions": 4487,
@@ -5988,7 +6366,7 @@
       },
       "google": {
         "spend": 23.1,
-        "conversions": 7,
+        "conversions": 6.5,
         "conversionValue": 192.9,
         "clicks": 55,
         "impressions": 1932,
@@ -6006,7 +6384,7 @@
       },
       "google": {
         "spend": 21.18,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 107.76,
         "clicks": 56,
         "impressions": 2898,
@@ -6060,7 +6438,7 @@
       },
       "google": {
         "spend": 24.99,
-        "conversions": 2,
+        "conversions": 2.03,
         "conversionValue": 48.57,
         "clicks": 56,
         "impressions": 3859,
@@ -6096,7 +6474,7 @@
       },
       "google": {
         "spend": 23.87,
-        "conversions": 4,
+        "conversions": 4.01,
         "conversionValue": 149.09,
         "clicks": 73,
         "impressions": 3674,
@@ -6114,7 +6492,7 @@
       },
       "google": {
         "spend": 21.65,
-        "conversions": 4,
+        "conversions": 3.96,
         "conversionValue": 145.55,
         "clicks": 53,
         "impressions": 2802,
@@ -6150,7 +6528,7 @@
       },
       "google": {
         "spend": 21.03,
-        "conversions": 4,
+        "conversions": 3.5,
         "conversionValue": 128.5,
         "clicks": 70,
         "impressions": 3428,
