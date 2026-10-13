@@ -317,16 +317,17 @@ test("Production exports, attribution and marketplace inputs remain byte-identic
   }
 });
 test("Idempotent staging replay and rollback preserve immutable facts", () => {
-  const pointer = fs.readFileSync(path.join(B.ROOT, "manifest.json"));
-  const before = fs.readFileSync(path.join(B.ROOT, manifest.file));
-  assert.equal(B.publish(live).snapshot_id, live.id);
-  assert.equal(rollback(live.id).snapshot_id, live.id);
-  assert.deepEqual(
-    fs.readFileSync(path.join(B.ROOT, "manifest.json")),
-    pointer,
-  );
-  assert.deepEqual(fs.readFileSync(path.join(B.ROOT, manifest.file)), before);
-  assert.throws(() => rollback("../data"));
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'ror-replay-test-'));
+  try {
+    B.publish(live,dir);
+    const pointer=fs.readFileSync(path.join(dir,'manifest.json'));
+    const before=fs.readFileSync(path.join(dir,manifest.file));
+    assert.equal(B.publish(live,dir).snapshot_id,live.id);
+    assert.equal(rollback(live.id,dir).snapshot_id,live.id);
+    assert.deepEqual(fs.readFileSync(path.join(dir,'manifest.json')),pointer);
+    assert.deepEqual(fs.readFileSync(path.join(dir,manifest.file)),before);
+    assert.throws(()=>rollback('../data',dir));
+  } finally {fs.rmSync(dir,{recursive:true,force:true});}
 });
 test(
   "Actual native source build is repeatable and source edits fail reconciliation",

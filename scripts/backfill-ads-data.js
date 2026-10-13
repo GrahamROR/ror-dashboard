@@ -69,7 +69,7 @@ async function fetchMetaRange(since, until) {
     const { conversions, conversionValue } = extractPurchaseMetrics(row.actions, row.action_values);
     byDate[row.date_start] = {
       spend: Math.round(Number(row.spend || 0) * 100) / 100,
-      conversions: Math.round(conversions),
+      conversions,
       conversionValue: Math.round(conversionValue * 100) / 100,
       clicks: Number(row.clicks || 0),
       impressions: Number(row.impressions || 0),

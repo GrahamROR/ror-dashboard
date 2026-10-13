@@ -1554,7 +1554,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         const formatAdsMetric = (metric, v) => {
           if (v == null) return '—';
           if (metric === 'spend' || metric === 'conversionValue' || metric === 'cpa' || metric === 'cpc') return fmtC(v, 2);
-          if (metric === 'conversions' || metric === 'clicks' || metric === 'impressions') return fmt(Math.round(v), 0);
+          if (metric === 'conversions') return v.toLocaleString('en-GB',{maximumFractionDigits:3});
+          if (metric === 'clicks' || metric === 'impressions') return fmt(Math.round(v), 0);
           if (metric === 'roas') return v.toFixed(2) + 'x';
           if (metric === 'ctr') return fmtP(v, 2);
           return String(v);
@@ -1817,7 +1818,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                   {label:'Shopify eligible orders (selected dates)', val: fmt(shopifyTotals.orders,0)},
                   {label:'Shopify sessions', val: hasShopifySessions ? fmt(shopifyTotals.sessions,0) : '—'},
                   {label:'Shopify conv. rate', val: hasShopifySessions && shopifyTotals.sessions ? fmtP(shopifyTotals.convertedSessions/shopifyTotals.sessions,2) : '—'},
-                  {label:'Attributed conversions (selected dates/platforms)', val: fmt(current.conversions,0)},
+                  {label:'Attributed conversions (selected dates/platforms)', val: formatAdsMetric('conversions',current.conversions)},
                 ].map((item,i)=>el('div', {key:i, style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'12px 14px',border:'1px solid var(--bdr)'}},
                   el('div', {className:'lbl', style:{marginBottom:6}}, item.label),
                   el('div', {style:{fontSize:20,fontWeight:600,fontFamily:"'DM Mono',monospace",color:'var(--t1)'}}, item.val)
@@ -1889,7 +1890,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           )
         ),
         (() => {
-          const lc = ltvCacData || LTV_CAC_FALLBACK;
+          const originalLc = ltvCacData || LTV_CAC_FALLBACK;
+          const lc = {...originalLc, rolling:LtvCac.safeWindow(originalLc.rolling), cumulative:LtvCac.safeWindow(originalLc.cumulative), previousRolling:LtvCac.safeWindow(originalLc.previousRolling)};
+          if(lc.rolling.ratio==null || (lc.previousRolling && lc.previousRolling.ratio==null)) lc.rollingComparison={status:'incomplete',note:'Comparison withheld: both platforms must provide spend in both periods.'};
           const goals = lc.goals;
 
           const renderWindow = (title, desc, w, comparison) => {
@@ -1899,7 +1902,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               ? { cls: 'badge bb', text: 'pending' }
               : w.ratio >= goals.targetRatio ? { cls: 'badge bg', text: 'on track' }
               : w.ratio >= goals.minRatio    ? { cls: 'badge ba', text: 'below target' }
-              :                                { cls: 'badge br', text: 'losing money' };
+              :                                { cls: 'badge br', text: 'proxy below 1:1' };
             const metaMissing   = w.adSpend.meta.spend   == null;
             const googleMissing = w.adSpend.google.spend == null;
 
@@ -1931,7 +1934,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                   el('div', { style: { fontWeight: 500, fontSize: 14, marginBottom: 4 } }, title),
                   el('div', { style: { fontSize: 12, color: 'var(--t2)', lineHeight: 1.5, maxWidth: 480 } },
                     w.window.monthsUsed
-                      ? desc(w) + ' · blended CAC = all ad spend ÷ new customers · LTV = AOV × orders/customer × margin %'
+                      ? desc(w) + ' · estimated blended CAC = Meta + Google spend ÷ estimated new customers · gross-profit proxy = legacy native AOV × orders/customer × costed-SKU margin. Monthly customer counts are not deduplicated; not paid-only CAC or observed cohort LTV.'
                       : 'Waiting on the first LTV:CAC data pull'
                   )
                 ),
@@ -1948,13 +1951,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                 metaMissing && 'Meta (' + w.adSpend.meta.source + ')',
                 metaMissing && googleMissing && ' and ',
                 googleMissing && 'Google Ads (' + w.adSpend.google.source + ')',
-                '. CAC and the ratio populate once API credentials are added as GitHub secrets.'
+                '. Blended CAC and the ratio are withheld until both platforms provide valid spend; retained single-platform amounts are not a complete blended total.'
               ),
 
               el('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: 12 } },
                 [
                   {
-                    lbl: 'Estimated LTV',
+                    lbl: 'Estimated gross-profit LTV proxy',
                     val: w.ltv != null ? fmtC(w.ltv, 0) : '—',
                     col: 'var(--grn)',
                     note: w.customerMetrics.avgAOV != null
@@ -1966,7 +1969,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                     val: w.cac != null ? fmtC(w.cac, 0) : '—',
                     col: 'var(--amb)',
                     note: w.adSpend.blended != null
-                      ? fmtC(w.adSpend.blended, 0) + ' spend ÷ ' + fmt(w.customerMetrics.newCustomers) + ' new customers'
+                      ? fmtC(w.adSpend.blended, 0) + ' spend ÷ ' + fmt(w.customerMetrics.newCustomers) + ' estimated new customers'
                       : 'Needs ad spend data',
                   },
                   {
@@ -2060,6 +2063,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
      directory. Loaded here (before App() is actually called) so its
      AdsCalc global exists by the time App's render runs. -->
 <script src="ads/calculations.js"></script>
+<script src="ads/ltv-cac.js"></script>
 
 <!-- Rules-based "analysis brain" — plain-English verdicts and suggestions
      derived from numbers already on the page. Deliberately NOT an LLM/API

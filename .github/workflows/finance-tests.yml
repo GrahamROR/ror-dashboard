@@ -5,6 +5,9 @@ on:
       - 'index.html'
       - 'finance/**'
       - 'scripts/fetch-data.js'
+      - 'scripts/fetch-ads-data.js'
+      - 'scripts/backfill-ads-data.js'
+      - 'scripts/fetch-ltv-cac.js'
       - 'scripts/publish-data.js'
       - '.github/workflows/**'
       - '.github/workflows/finance-staging-refresh.yml'
@@ -27,14 +30,17 @@ jobs:
         with:
           node-version: '22'
       - name: Record checked-out daily exports before tests
-        run: sha256sum data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json > "$RUNNER_TEMP/reporting-exports.sha256"
+        run: |
+          sha256sum data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json > "$RUNNER_TEMP/reporting-exports.sha256"
+          git ls-files -z finance/staging | xargs -0 sha256sum > "$RUNNER_TEMP/finance-artifacts.sha256"
       - run: node --test finance/test/*.test.js growth/test/*.test.js
         env:
           REPORTING_EXPORT_BASELINE: ${{ runner.temp }}/reporting-exports.sha256
+          FINANCIAL_ARTIFACT_BASELINE: ${{ runner.temp }}/finance-artifacts.sha256
       - run: node finance/reconcile.js
-      - run: git diff --exit-code -- docs/pr2/reconciliation.json docs/pr2/reconciliation.md
+      - run: git diff --exit-code -- finance/staging data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json
       - run: node dashboard2/test/calculations.test.js
       - run: node dashboard2/test/reporting-contract.test.js
       - run: node dashboard2/test/date-controls.test.js
-      - run: node ads/test/calculations.test.js
+      - run: node --test ads/test/*.test.js
       - run: node insights/test/rules.test.js

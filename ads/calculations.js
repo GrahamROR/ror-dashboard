@@ -19,15 +19,16 @@
 })(typeof window !== 'undefined' ? window : globalThis, function () {
 
 function pad2(n) { return String(n).padStart(2, '0'); }
-function fmtDateISO(d) { return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`; }
-function parseISO(s) { return new Date(s + 'T00:00:00'); }
-function addDays(dateStr, n) { const d = parseISO(dateStr); d.setDate(d.getDate() + n); return fmtDateISO(d); }
-function shiftYear(dateStr, deltaYears) { const d = parseISO(dateStr); d.setFullYear(d.getFullYear() + deltaYears); return fmtDateISO(d); }
-function startOfMonth(dateStr) { const d = parseISO(dateStr); return fmtDateISO(new Date(d.getFullYear(), d.getMonth(), 1)); }
-function endOfMonth(dateStr) { const d = parseISO(dateStr); return fmtDateISO(new Date(d.getFullYear(), d.getMonth() + 1, 0)); }
-function startOfQuarter(dateStr) { const d = parseISO(dateStr); const q = Math.floor(d.getMonth() / 3); return fmtDateISO(new Date(d.getFullYear(), q * 3, 1)); }
-function startOfYear(dateStr) { const d = parseISO(dateStr); return fmtDateISO(new Date(d.getFullYear(), 0, 1)); }
-function mondayOf(dateStr) { const d = parseISO(dateStr); const day = (d.getDay() + 6) % 7; d.setDate(d.getDate() - day); return fmtDateISO(d); }
+function fmtDateISO(d) { return new Intl.DateTimeFormat('en-CA', {timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit'}).format(d); }
+function civilISO(d) { return d.toISOString().slice(0,10); }
+function parseISO(s) { return new Date(s + 'T00:00:00Z'); }
+function addDays(dateStr, n) { const d = parseISO(dateStr); d.setUTCDate(d.getUTCDate() + n); return civilISO(d); }
+function shiftYear(dateStr, deltaYears) { const d = parseISO(dateStr); d.setUTCFullYear(d.getUTCFullYear() + deltaYears); return civilISO(d); }
+function startOfMonth(dateStr) { return dateStr.slice(0,7)+'-01'; }
+function endOfMonth(dateStr) { const d = parseISO(dateStr); return civilISO(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth()+1, 0))); }
+function startOfQuarter(dateStr) { const d = parseISO(dateStr); return civilISO(new Date(Date.UTC(d.getUTCFullYear(), Math.floor(d.getUTCMonth()/3)*3, 1))); }
+function startOfYear(dateStr) { return dateStr.slice(0,4)+'-01-01'; }
+function mondayOf(dateStr) { const d = parseISO(dateStr); d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7); return civilISO(d); }
 function compareDates(a, b) { return a < b ? -1 : a > b ? 1 : 0; }
 function rangeLengthDays(start, end) { return Math.round((parseISO(end) - parseISO(start)) / 86400000) + 1; }
 
@@ -35,8 +36,8 @@ function rangeLengthDays(start, end) { return Math.round((parseISO(end) - parseI
 const ADS_DATE_PRESETS = [
   { key: 'today', label: 'Today' },
   { key: 'yesterday', label: 'Yesterday' },
-  { key: 'last7', label: 'Last 7 days' },
-  { key: 'last30', label: 'Last 30 days' },
+  { key: 'last7', label: 'Last 7 completed days' },
+  { key: 'last30', label: 'Last 30 completed days' },
   { key: 'thisMonth', label: 'This month' },
   { key: 'lastMonth', label: 'Last month' },
   { key: 'thisQuarter', label: 'This quarter' },
@@ -51,8 +52,8 @@ function resolveAdsDateRange(preset, opts) {
   switch (preset) {
     case 'today': return { start: today, end: today, label: 'Today' };
     case 'yesterday': { const y = addDays(today, -1); return { start: y, end: y, label: 'Yesterday' }; }
-    case 'last7': return { start: addDays(today, -6), end: today, label: 'Last 7 days' };
-    case 'last30': return { start: addDays(today, -29), end: today, label: 'Last 30 days' };
+    case 'last7': return { start: addDays(today, -7), end: addDays(today,-1), label: 'Last 7 completed days' };
+    case 'last30': return { start: addDays(today, -30), end: addDays(today,-1), label: 'Last 30 completed days' };
     case 'thisMonth': return { start: startOfMonth(today), end: today, label: 'This month' };
     case 'lastMonth': { const lm = addDays(startOfMonth(today), -1); return { start: startOfMonth(lm), end: endOfMonth(lm), label: 'Last month' }; }
     case 'thisQuarter': return { start: startOfQuarter(today), end: today, label: 'This quarter' };
@@ -91,13 +92,16 @@ function adsAggregate(daysData, start, end, channels, todayStr) {
 
   let spend = 0, conversions = 0, conversionValue = 0, clicks = 0, impressions = 0, foundCount = 0, isPartial = false;
   const expectedCount = occurred.length * channels.length;
+  const missingMetrics=new Set();
 
   occurred.forEach((d) => {
     channels.forEach((ch) => {
       const rec = daysData[d] && daysData[d][ch];
       if (rec && rec.spend != null) {
         foundCount++;
-        spend += rec.spend; conversions += rec.conversions || 0; conversionValue += rec.conversionValue || 0;
+        spend += rec.spend;
+        for(const k of ['conversions','conversionValue','clicks','impressions'])if(typeof rec[k]!=='number'||!Number.isFinite(rec[k]))missingMetrics.add(k);
+        conversions += rec.conversions || 0; conversionValue += rec.conversionValue || 0;
         clicks += rec.clicks || 0; impressions += rec.impressions || 0;
         if (d === todayStr) isPartial = true;
       }
@@ -106,26 +110,26 @@ function adsAggregate(daysData, start, end, channels, todayStr) {
 
   let status;
   if (foundCount === 0) status = 'no-data';
-  else if (foundCount < expectedCount) status = 'incomplete-data';
+  else if (foundCount < expectedCount || missingMetrics.size) status = 'incomplete-data';
   else if (isPartial) status = 'partial';
   else status = 'complete';
 
   let note = null;
   if (status === 'no-data') note = `No ad data recorded for this period: ${expectedCount} channel-days missing.`;
-  else if (status === 'incomplete-data') note = `Data missing for ${expectedCount - foundCount} of ${expectedCount} channel-days in this range.`;
+  else if (status === 'incomplete-data') note = `Data missing for ${expectedCount - foundCount} of ${expectedCount} channel-days in this range.` + (missingMetrics.size ? ' Missing metric fields: '+[...missingMetrics].join(', ')+'.' : '');
   else if (status === 'partial') note = 'Today is still in progress — figures are so-far-today.';
 
   return {
     status,
     spend: foundCount ? Math.round(spend * 100) / 100 : null,
-    conversions: foundCount ? conversions : null,
-    conversionValue: foundCount ? Math.round(conversionValue * 100) / 100 : null,
-    clicks: foundCount ? clicks : null,
-    impressions: foundCount ? impressions : null,
-    roas: (foundCount && spend > 0) ? conversionValue / spend : null,
-    cpa: (foundCount && conversions > 0) ? spend / conversions : null,
-    cpc: (foundCount && clicks > 0) ? spend / clicks : null,
-    ctr: (foundCount && impressions > 0) ? clicks / impressions : null,
+    conversions: foundCount && !missingMetrics.has('conversions') ? conversions : null,
+    conversionValue: foundCount && !missingMetrics.has('conversionValue') ? Math.round(conversionValue * 100) / 100 : null,
+    clicks: foundCount && !missingMetrics.has('clicks') ? clicks : null,
+    impressions: foundCount && !missingMetrics.has('impressions') ? impressions : null,
+    roas: (foundCount && spend > 0 && !missingMetrics.has('conversionValue')) ? conversionValue / spend : null,
+    cpa: (foundCount && conversions > 0 && !missingMetrics.has('conversions')) ? spend / conversions : null,
+    cpc: (foundCount && clicks > 0 && !missingMetrics.has('clicks')) ? spend / clicks : null,
+    ctr: (foundCount && impressions > 0 && !missingMetrics.has('clicks') && !missingMetrics.has('impressions')) ? clicks / impressions : null,
     start, end, foundCount, expectedCount, note,
   };
 }
@@ -151,11 +155,11 @@ function adsCompare(current, previous, metric) {
 // ── granularity buckets ──────────────────────────────────────
 function shortDateLabel(dateStr) {
   const d = parseISO(dateStr);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone:'UTC' });
 }
 function monthLabelOf(dateStr) {
   const d = parseISO(dateStr);
-  return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' });
+  return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone:'UTC' });
 }
 
 function adsBucketsForGranularity(granularity, start, end) {

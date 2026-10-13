@@ -23,7 +23,7 @@ test('resolveAdsDateRange: today/yesterday/last7/last30 line up', () => {
   const y = C.resolveAdsDateRange('yesterday', { todayStr: TODAY });
   assert.strictEqual(y.start, '2026-09-25'); assert.strictEqual(y.end, '2026-09-25');
   const l7 = C.resolveAdsDateRange('last7', { todayStr: TODAY });
-  assert.strictEqual(l7.start, '2026-09-20'); assert.strictEqual(l7.end, TODAY);
+  assert.strictEqual(l7.start, '2026-09-19'); assert.strictEqual(l7.end, '2026-09-25');
   assert.strictEqual(C.rangeLengthDays(l7.start, l7.end), 7);
   const l30 = C.resolveAdsDateRange('last30', { todayStr: TODAY });
   assert.strictEqual(C.rangeLengthDays(l30.start, l30.end), 30);
