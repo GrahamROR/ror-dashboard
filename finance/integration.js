@@ -115,11 +115,13 @@
         future: start > requested.end,
       };
     });
+    const costMonths = monthly.filter(m=>m.financialStart<=range.end);
+    const expectedCostMonths = (Number(range.end.slice(0,4))-Number(range.start.slice(0,4)))*12 + Number(range.end.slice(5,7))-Number(range.start.slice(5,7))+1;
     const summary = {
       ...view.summary,
       ytdRevenue: result.revenue,
       ytdNetSales: result.netSales,
-      ytdEstGrossProfit: result.status==='actual' && monthly.filter(m=>m.financialStart<=range.end).every(m=>m.estGrossProfit!=null) ? monthly.filter(m=>m.financialStart<=range.end).reduce((s,m)=>s+Math.round(m.estGrossProfit*100),0)/100 : null,
+      ytdEstGrossProfit: result.status==='actual' && costMonths.length===expectedCostMonths && costMonths.length>0 && new Set(costMonths.map(m=>m.key)).size===expectedCostMonths && costMonths.every(m=>m.estGrossProfit!=null) ? costMonths.reduce((s,m)=>s+Math.round(m.estGrossProfit*100),0)/100 : null,
       productProfitVersion: 'canonical-net-product-proxy-v1',
       ytdTotalSales: result.totalSales,
       ytdOrders: result.orders,

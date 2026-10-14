@@ -56,7 +56,7 @@ No approved browser-control tool is available. Manual desktop/mobile acceptance 
 
 ## Validation outcome (14 October)
 
-Local full suite: **141 tests, 139 passed, 2 existing private-evidence skips, 0 failed**, with the privately retained native gross-shipping candidate supplied. Public CI omits that private capture and adds one deliberate skip for its source-control test; synthetic gross-component/collection/reconciliation tests remain mandatory. The 16 headless interface cases pass, including both original dashboards and FY26/FY27 × seven Growth tabs. These are not desktop/mobile screenshot evidence. Protected exports and all original finance snapshots/manifests/status match their latest-main exact-byte baselines.
+Local full suite: **142 tests, 140 passed, 2 existing private-evidence skips, 0 failed**, with the privately retained native gross-shipping candidate supplied. Public CI omits that private capture and adds one deliberate skip for its source-control test; synthetic gross-component/collection/reconciliation tests remain mandatory. The 16 headless interface cases pass, including both original dashboards and FY26/FY27 × seven Growth tabs. These are not desktop/mobile screenshot evidence. Protected exports and all original finance snapshots/manifests/status match their latest-main exact-byte baselines.
 
 Native gross-shipping definition: [Shopify sales schema](https://shopify.dev/docs/api/shopifyql/latest/schemas/sales_revenue/sales#salesmetric-propertydetail-grossshippingcharges). It is before shipping discounts and excludes shipping reversals, unlike net shipping; no source return is converted into merchandise revenue.
 
