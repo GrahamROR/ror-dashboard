@@ -115,7 +115,7 @@ async function collect({ domain, token, start, end, run }, transport) {
       data: metadata,
     },
   };
-  const fields = [...F.ADDITIVE, "average_order_value"].join(", "),
+  const fields = [...F.ADDITIVE, "gross_shipping_charges", "average_order_value"].join(", "),
     bounds = ` SINCE ${start} UNTIL ${end}`;
   const queries = {
     "daily.json": `FROM sales SHOW ${fields} TIMESERIES day${bounds} LIMIT 2000`,
@@ -129,6 +129,7 @@ async function collect({ domain, token, start, end, run }, transport) {
     if (r?.parseErrors?.length || !r?.tableData)
       throw Error("Invalid native report; capture aborted");
     const { columns, rows } = r.tableData;
+    if(query.includes('gross_shipping_charges')&&!columns.some(c=>c.name==='gross_shipping_charges'))throw Error('Required native gross shipping column missing');
     const normalized = rows.map((row) =>
       Array.isArray(row) ? row : columns.map((c) => row[c.name]),
     );

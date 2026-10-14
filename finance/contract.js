@@ -16,6 +16,9 @@
   ];
   const ADDITIVE = [...MONEY, "orders"];
   const LABELS = {
+    legacy_gross: "Legacy imported gross (ROR Sales only)",
+    net_revenue: "Net revenue including shipping",
+    gross_revenue: "Gross revenue including shipping",
     gross_sales: "Gross merchandise sales",
     discounts: "Discounts",
     sales_reversals: "Sales reversals",
@@ -28,6 +31,9 @@
     net_aov: "Net merchandise AOV",
   };
   const DEFINITIONS = {
+    legacy_gross: "Legacy imported gross is supported in ROR Sales. Growth native financial amounts are unavailable on this basis; no substitute.",
+    net_revenue: "Native net merchandise + net shipping; no blanket VAT adjustment. Management revenue, not certified VAT-exclusive accounting turnover.",
+    gross_revenue: "Native gross merchandise + independently validated gross shipping; unavailable without complete gross-shipping evidence.",
     gross_sales:
       "Product sales before discounts and reversals; excludes shipping and taxes.",
     discounts:
@@ -104,6 +110,8 @@
       warnings: [],
     };
     for (const k of ADDITIVE) result[k] = missing ? null : sum(rows, k);
+    result.gross_shipping_charges = missing ? null : sum(rows,'gross_shipping_charges');
+    result.gross_shipping_validated = result.gross_shipping_charges!=null && rows.every(r=>r.gross_shipping_validated===true);
     if (ADDITIVE.some((k) => result[k] == null)) result.status = "missing";
     const native = snapshot.periods.find(
       (r) => r.start === start && r.end === end,

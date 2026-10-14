@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const M = require('../data-model.js'), C = require('../calculations.js');
 const data = require('../sales-data.json');
 const context = vm.createContext({
-  window: {}, ShopifyIntegration:require('../../finance/integration'), ShopifyFinance:require('../../finance/contract'), RorModel:M, RorCalc:C, React:{ Fragment:'fragment' }, RorCharts:{SalesChart:'chart'},
+  window: {}, ManagementFinance:require('../../finance/management'), RorPlanningControl:'planner', ShopifyIntegration:require('../../finance/integration'), ShopifyFinance:require('../../finance/contract'), RorModel:M, RorCalc:C, React:{ Fragment:'fragment' }, RorCharts:{SalesChart:'chart'},
   RorDataAdapter:{}, useEffect:()=>{}, useMemo:fn=>fn(),
   el:(type,props,...children)=>({type,props:props || {},children}),
   fmt:String, fmtC:String, fmtP:String,
@@ -22,7 +22,7 @@ function render(node) {
     context.useState = initial => {
       const n=hook++;
       if (name === 'RorSalesApp') return [[false,'',data.meta,data.records,'all',selected,{start:'2024-02-01',end:'2024-02-29'},'mom'][n],()=>{}];
-      return [initial === 'last12Months' ? selected : initial && typeof initial === 'object' && 'start' in initial ? {start:'2024-02-01',end:'2024-02-29'} : initial,()=>{}];
+      return [initial === 'previousFY' ? selected : initial && typeof initial === 'object' && 'start' in initial ? {start:'2024-02-01',end:'2024-02-29'} : initial,()=>{}];
     };
     return render(node.type({...node.props,children:node.children}));
   }

@@ -21,7 +21,8 @@ permissions:
 jobs:
   staging-refresh:
     if: >-
-      (github.head_ref || github.ref_name) == 'codex/pr2-canonical-shopify-finance' &&
+      ((github.head_ref || github.ref_name) == 'codex/pr2-canonical-shopify-finance' ||
+       (github.event_name == 'workflow_dispatch' && github.ref_name == 'codex/financial-foundation')) &&
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: ubuntu-latest
     timeout-minutes: 45

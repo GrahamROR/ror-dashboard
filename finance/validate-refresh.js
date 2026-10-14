@@ -19,7 +19,7 @@ assert.equal(
 let controls = 0;
 for (const p of snapshot.periods) {
   const result = F.select(snapshot, p.start, p.end);
-  for (const metric of F.ADDITIVE) assert.equal(result[metric], p[metric]);
+  for (const metric of [...F.ADDITIVE,...(snapshot.days.some(d=>Object.hasOwn(d,'gross_shipping_charges'))?['gross_shipping_charges']:[])]) assert.equal(result[metric], p[metric]);
   if (p.start !== p.end) controls++;
 }
 const interval = ["2025-08-01", "2026-07-31"],

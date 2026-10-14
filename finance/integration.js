@@ -1,25 +1,28 @@
 // Adapters for the existing dashboards. Source records and marketing fields are immutable.
 (function (root, factory) {
   if (typeof module === "object" && module.exports)
-    module.exports = factory(require("./contract"));
-  else root.ShopifyIntegration = factory(root.ShopifyFinance);
-})(typeof window === "undefined" ? globalThis : window, function (F) {
+    module.exports = factory(require("./contract"), require("./management"));
+  else root.ShopifyIntegration = factory(root.ShopifyFinance, root.ManagementFinance);
+})(typeof window === "undefined" ? globalThis : window, function (F, M) {
   "use strict";
-  const BASIS = ["net_sales", "gross_sales", "total_sales"];
+  const BASIS = ["net_revenue", "gross_revenue", "total_sales"];
+  const SOURCE_BASIS = [...BASIS, "net_sales", "gross_sales", "legacy_gross"];
   const labels = {
+    net_revenue: "Net Sales",
+    gross_revenue: "Gross Sales",
     net_sales: "Net Sales",
     gross_sales: "Gross Sales",
     total_sales: "Total Sales",
   };
   const aovLabel = (b) =>
-    b === "net_sales"
+    b === "net_revenue" || b === "net_sales"
       ? "Net AOV"
-      : b === "gross_sales"
+      : b === "gross_revenue" || b === "gross_sales"
         ? "Gross sales per order"
         : "Total sales per order";
   const pounds = (n) => (n == null ? null : n / 100);
   function report(snapshot, start, end, basis) {
-    if (!BASIS.includes(basis)) throw Error("Unknown financial basis");
+    if (!SOURCE_BASIS.includes(basis)) throw Error("Unknown financial basis");
     const r = snapshot
       ? F.select(snapshot, start, end)
       : {
@@ -29,15 +32,19 @@
           average_order_value: null,
           warnings: ["Verified Shopify finance unavailable."],
         };
+    const derived = snapshot ? M.shopify(snapshot,start,end,basis) : null;
+    const value = derived?.value ?? null;
     return {
       ...r,
-      revenue: pounds(r[basis]),
+      status: value==null ? "missing" : r.status,
+      warnings: [...(r.warnings||[]), ...(derived?.warning?[derived.warning]:[])],
+      revenue: pounds(value),
       netSales: pounds(r.net_sales),
       totalSales: pounds(r.total_sales),
       aov: r.average_order_value,
       netAov: r.net_aov,
       basisAov:
-        r.orders > 0 && r[basis] != null ? r[basis] / 100 / r.orders : null,
+        r.orders > 0 && value != null ? value / 100 / r.orders : null,
       basis,
     };
   }
@@ -120,8 +127,8 @@
       (view.topProducts || []).map((p) => [p.name, p]),
     );
     const grouped =
-      snapshot && range.start <= range.end
-        ? F.products(snapshot, range.start, range.end, basis)
+      snapshot && basis!=="legacy_gross" && range.start <= range.end
+        ? F.products(snapshot, range.start, range.end, basis==='net_revenue'?'net_sales':basis==='gross_revenue'?'gross_sales':basis)
         : { rows: [], status: "missing", residual: null };
     const topProducts = grouped.rows.slice(0, 10).map((p) => ({
       ...originalProducts.get(p.title),
@@ -166,6 +173,7 @@
         ...range,
         snapshot_id: snapshot?.id,
         productStatus: grouped.status,
+        productRevenue: pounds(basis==="net_revenue" ? result.net_sales : basis==="gross_revenue" ? result.gross_sales : result.total_sales),
         productResidual: grouped.residual,
         sourceRetrievedAt: snapshot?.sources.find(
           (s) => s.file === "daily.json",

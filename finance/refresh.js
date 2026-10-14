@@ -60,6 +60,7 @@ async function capture({ domain, token, start, end, query, transport }) {
   if (!r?.tableData || r.parseErrors?.length)
     throw Error("Native report failed; staging snapshot retained");
   const { columns, rows } = r.tableData;
+  if(query.includes('gross_shipping_charges')&&!columns.some(c=>c.name==='gross_shipping_charges'))throw Error('Required native gross shipping column missing');
   const raw = {
     query,
     columns,
@@ -105,7 +106,7 @@ async function captureHistory({
       transport: "Shopify Admin GraphQL 2026-10",
     },
   };
-  const fields = [...F.ADDITIVE, "average_order_value"].join(", "),
+  const fields = [...F.ADDITIVE, "gross_shipping_charges", "average_order_value"].join(", "),
     partitioned = {
       "daily.json": [],
       "monthly.json": [],
