@@ -6,7 +6,7 @@
 })(typeof window === "undefined" ? globalThis : window, function (F, M) {
   "use strict";
   const BASIS = ["net_revenue", "gross_revenue", "total_sales"];
-  const SOURCE_BASIS = [...BASIS, "net_sales", "gross_sales"];
+  const SOURCE_BASIS = [...BASIS, "net_sales", "gross_sales", "legacy_gross"];
   const labels = {
     net_revenue: "Net Sales",
     gross_revenue: "Gross Sales",
@@ -127,7 +127,7 @@
       (view.topProducts || []).map((p) => [p.name, p]),
     );
     const grouped =
-      snapshot && range.start <= range.end
+      snapshot && basis!=="legacy_gross" && range.start <= range.end
         ? F.products(snapshot, range.start, range.end, basis==='net_revenue'?'net_sales':basis==='gross_revenue'?'gross_sales':basis)
         : { rows: [], status: "missing", residual: null };
     const topProducts = grouped.rows.slice(0, 10).map((p) => ({
@@ -173,6 +173,7 @@
         ...range,
         snapshot_id: snapshot?.id,
         productStatus: grouped.status,
+        productRevenue: pounds(basis==="net_revenue" ? result.net_sales : basis==="gross_revenue" ? result.gross_sales : result.total_sales),
         productResidual: grouped.residual,
         sourceRetrievedAt: snapshot?.sources.find(
           (s) => s.file === "daily.json",

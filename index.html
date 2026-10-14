@@ -469,7 +469,7 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
             style: {
               fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em',
               fontFamily: "'DM Mono',monospace",
-              color: isProjecting ? (projIsUp ? 'var(--grn)' : 'var(--red)') : 'var(--t1)',
+              color: 'var(--t1)',
             }
           }, fmtC(selectedActual,2)),
           el('div',{style:{fontSize:11,color:'var(--t2)',marginTop:4}},(isProjecting?'Projected Net Sales: '+fmtC(projYTD,2)+' · ':'')+'Through '+(reportingCutoff || 'unavailable')),
@@ -1327,7 +1327,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           topProducts.length === 0 && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'12px 0'}}, 'No product data yet for '+(viewData?.fy||'this year')+' — populates after the next nightly data refresh.'),
           topProducts.map((p,i) => {
             const totalRev = topProducts.reduce((s,t)=>s+(t.revenue||0),0);
-            const pct = totalRev ? (p.revenue/summary.ytdRevenue*100) : 0;
+            const pct = totalRev ? (p.revenue/viewData.finance.productRevenue*100) : 0;
             return el('div', {key:i,style:{marginBottom:14}},
               el('div', {style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4,gap:8}},
                 el('div', {style:{fontSize:12,fontWeight:500,color:'var(--t1)',flex:1,lineHeight:1.4}}, p.name),
@@ -1346,13 +1346,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         el('div', {style:{display:'flex',flexDirection:'column',gap:12}},
           el('div', {className:'card'},
             el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Concentration risk'),
-            el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:12}}, ShopifyIntegration.labels[financialBasis]+' from top product'),
+            el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:12}}, 'Merchandise sales from top product'),
             el('div', {style:{fontSize:36,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1}},
-              topProducts[0] ? (topProducts[0].revenue/summary.ytdRevenue*100).toFixed(1)+'%' : '—'
+              topProducts[0] ? (topProducts[0].revenue/viewData.finance.productRevenue*100).toFixed(1)+'%' : '—'
             ),
             el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.6}},
               topProducts[0]
-                ? topProducts[0].name + ' drives ' + Math.round(topProducts[0].revenue/summary.ytdRevenue*100) + '% of selected Shopify sales.' +
+                ? topProducts[0].name + ' drives ' + Math.round(topProducts[0].revenue/viewData.finance.productRevenue*100) + '% of selected merchandise sales.' +
                   (topProducts[1] ? ' The next product is ' + Math.max(1, Math.round(topProducts[0].revenue/topProducts[1].revenue)) + '× smaller.' : '') +
                   ' Worth managing as a concentration risk.'
                 : 'No product data yet for ' + (viewData?.fy||'this year') + ' — populates after the next nightly data refresh.'
@@ -2107,7 +2107,7 @@ function RootApp() {
   useEffect(()=>{MarketplaceFinanceLoader.load().then(setMarketplaceSnapshot).catch(e=>setMarketplaceError(e.message));},[]);
   const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
   return el(React.Fragment, null,
-    el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
+    el(RorTopNavSwitcher, {active:activeDashboard,onChange:next=>{if(next==='shopify'&&financialBasis==='legacy_gross')setFinancialBasis('net_revenue');setActiveDashboard(next);}}),
     activeDashboard === 'ror-sales' ? el(RorSalesApp, financeProps) : el(App, financeProps)
   );
 }

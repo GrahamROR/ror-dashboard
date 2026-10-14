@@ -33,7 +33,7 @@ Existing product-only costed margin/profit inputs and calculations remain untouc
 
 ## Testing and visual gate
 
-Local regression: 134 tests, 132 pass, 2 existing private-evidence skips, zero failures; includes the private native gross-shipping capture. Headless component/handler checks cover all seven tabs for FY26/FY27, prominent selected actuals, original model slider/reset behaviour, annual goal lock/reset and ROR sections. These are not browser screenshots. Public CI intentionally omits the private gross-shipping capture; native transport/control tests remain mandatory.
+Local regression: 136 tests, 134 pass, 2 existing private-evidence skips, zero failures; includes the private native gross-shipping capture. Headless component/handler checks cover all seven tabs for FY26/FY27, prominent selected actuals, original model slider/reset behaviour, annual goal lock/reset and ROR sections. These are not browser screenshots. Public CI intentionally omits the private gross-shipping capture; native transport/control tests remain mandatory.
 
 Approved browser-control tooling is unavailable. No fresh desktop/mobile screenshots or visual pass are claimed. Merge remains blocked on side-by-side visual acceptance and explicit owner approval.
 
@@ -44,3 +44,11 @@ For manual acceptance, serve production main and this branch separately. Use the
 Do not merge/deploy without visual parity approval. After approval: merge this PR only, run existing Fetch Dashboard Data on main, wait for validated matching snapshot/manifest/status, confirm gross shipping and source cutoff in the served file, then verify Pages assets and both dashboards. Existing daily schedules are unchanged. LTV remains on its existing methodology; no forced new LTV publication is required by this release.
 
 Retain main's exact original exports and all immutable finance/marketplace snapshots. Roll back only this feature's code and approved source pointers, preserving newer unrelated daily exports and historical snapshot files. Do not reset main or force-push. StockHub/Xero are untouched, and PR16/20/21 remain unmerged.
+
+## Credential-backed staging result
+
+[Staging run 38578040595](https://github.com/GrahamROR/ror-dashboard/actions/runs/38578040595) passed on this branch at collector revision `a8c3937`. Collection covers 1 January 2024 through 13 October 2026 (Europe/London); 41 independent native control intervals passed, including original gross shipping £23,884.50 and FY26 Gross Sales £300,105.51. Snapshot `d07bcba87ff030a96aeeb04840ba57825b73067fe319e39eda58cc9f18a8a3cc` matches its manifest SHA256 `4d3ac1f64e6ffe9b47844c5b2e5e48589f5573f6152949ad828072b8c6b464bc`. Final local regression also uses this newly collected staging snapshot, rather than only the earlier private capture. Later review changes concern display/product-share denominators; collection and publication validation functions are unchanged.
+
+Failed-refresh last-good retention, warning publication, live API recovery, preservation of concurrent unrelated exports and isolated rollback passed. All previous snapshots were retained. Rollback reference: `437cbe465793d84c3175b23bab2cd49cdc3d98ecef8daab63ef36c43c1cfc3f2`. Publication/Pages verification ran against an isolated local Git remote/mock; no production publication or external Pages build occurred.
+
+Local comparison URLs: production-main reference `http://127.0.0.1:8773/`; simplified branch with unchanged production snapshot `http://127.0.0.1:8772/`. Neither is deployed. The latter intentionally withholds Gross Sales until a validated gross-shipping snapshot is supplied.
