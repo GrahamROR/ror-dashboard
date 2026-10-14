@@ -22,7 +22,7 @@ function view(fy) {
   };
 }
 test("FY26 original Growth sections and ROR all consume identical canonical values for each basis", () => {
-  for (const basis of I.BASIS) {
+  for (const basis of ["net_sales","gross_sales","total_sales"]) {
     const v = I.growthView(view("FY26"), s, basis, now),
       records = I.rorRecords(legacy, s, basis),
       opts = {
@@ -74,7 +74,7 @@ test("FY26 original Growth sections and ROR all consume identical canonical valu
   }
 });
 test("All eleven presets and custom intervals preserve consistent existing ROR KPIs/table/explorer totals for all three bases", () => {
-  for (const basis of I.BASIS)
+  for (const basis of ["net_sales","gross_sales","total_sales"])
     for (const p of C.REPORT_DATE_PRESETS) {
       const r = C.resolveDateRange(p.key, {
           nowDate: now,
@@ -105,7 +105,7 @@ test("All eleven presets and custom intervals preserve consistent existing ROR K
 test("Basis changes do not change orders, purchased units, sessions, conversions, attribution or fixed goal input", () => {
   const input = JSON.stringify(raw),
     recordsBefore = JSON.stringify(legacy);
-  const values = I.BASIS.map((b) => I.growthView(view("FY26"), s, b, now));
+  const values = ["net_sales","gross_sales","total_sales"].map((b) => I.growthView(view("FY26"), s, b, now));
   for (const v of values) {
     assert.equal(v.summary.ytdOrders, 7832);
     assert.equal(v.summary.ytdSessions, raw.years.FY26.summary.ytdSessions);
@@ -121,7 +121,7 @@ test("Basis changes do not change orders, purchased units, sessions, conversions
   }
   assert.equal(JSON.stringify(raw), input);
   assert.equal(JSON.stringify(legacy), recordsBefore);
-  for (const basis of I.BASIS) {
+  for (const basis of ["net_sales","gross_sales","total_sales"]) {
     const a = C.aggregate(I.rorRecords(legacy, s, basis), {
       channels: ["shopify"],
       startDate: "2025-08-01",
@@ -134,7 +134,7 @@ test("Basis changes do not change orders, purchased units, sessions, conversions
   assert.equal(total.summary.basisAov, 313437.06 / 7832);
 });
 test("All Stores preserves consistent legacy gross totals, AOV, contribution and explorer pending P3", () => {
-  for (const basis of I.BASIS) {
+  for (const basis of ["net_sales","gross_sales","total_sales"]) {
     const records = I.rorRecords(legacy, s, basis),
       opts = { startDate: "2025-08-01", endDate: "2026-07-31" };
     for (const channel of ["etsy", "noths"])
@@ -249,7 +249,7 @@ test("Missing dates and partial imported units suppress comparison without chang
   assert.equal(clipped.rows[0].mom.percentChange, null);
 });
 test("Yesterday financial fields use the same source and basis while session/margin inputs retain existing behavior", () => {
-  for (const basis of I.BASIS) {
+  for (const basis of ["net_sales","gross_sales","total_sales"]) {
     const source = {...view("FY27"), yesterday: {...raw.yesterday, date: "2026-10-07"}};
     const v = I.growthView(source, s, basis, now),
       a = C.aggregate(I.rorRecords(legacy, s, basis), {
