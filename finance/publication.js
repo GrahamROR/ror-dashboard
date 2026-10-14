@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),cp=require('node:child_process'),assert=require('node:assert/strict');
 const F=require('./contract'),B=require('./build-staging'),R=require('./refresh');
 const ROOT='finance/staging',EXPORTS=['data.json','ads-data.json','email-data.json','ltv-cac.json','dashboard2/sales-data.json'];
-const PRODUCERS=['finance/contract.js','finance/build-staging.js','finance/collect.js','finance/refresh.js','finance/integration.js','finance/publication.js','finance/pages-publication.js','finance/freshness.js','finance/loader.js','scripts/publish-data.js','index.html','dashboard2/calculations.js','dashboard2/ror-sales-app.js'];
+const PRODUCERS=['finance/contract.js','finance/management.js','finance/build-staging.js','finance/collect.js','finance/refresh.js','finance/integration.js','finance/publication.js','finance/pages-publication.js','finance/freshness.js','finance/loader.js','scripts/publish-data.js','index.html','dashboard2/calculations.js','dashboard2/ror-sales-app.js'];
 function git(repo,args,options={}){return cp.execFileSync('git',['-C',repo,...args],{encoding:'utf8',maxBuffer:64*1024*1024,stdio:['pipe','pipe','pipe'],...options}).trim();}
 function blob(repo,rev,file){try{return cp.execFileSync('git',['-C',repo,'show',rev+':'+file],{maxBuffer:64*1024*1024,stdio:['pipe','pipe','pipe']});}catch(error){if(error.status===128)return null;throw error;}}
 function same(a,b){return a===null?b===null:b!==null&&a.equals(b);}
@@ -21,6 +21,7 @@ function prepare({repo,files=[],financeOutcome='skipped',rollbackId=null,now=new
  for(const file of files)if(!EXPORTS.includes(file))throw Error('Unapproved export path');
  const base=git(repo,['rev-parse','HEAD']),pending=new Map(),guards=new Map();
  for(const file of files){const bytes=fs.readFileSync(path.join(repo,file));JSON.parse(bytes);pending.set(file,bytes);guards.set(file,blob(repo,base,file));}
+ if(files.includes('ltv-cac.json')){const D=require('./dependencies'),output=JSON.parse(pending.get('ltv-cac.json'));D.guard(output,D.load(repo));for(const file of [ROOT+'/manifest.json',ROOT+'/refresh-status.json','data.json','finance/dependencies.js','scripts/fetch-ltv-cac.js'])guards.set(file,blob(repo,base,file));}
  let failed=false;
  if(financeOutcome!=='skipped'||rollbackId){
   const manifestPath=ROOT+'/manifest.json',statusPath=ROOT+'/refresh-status.json',oldBytes=blob(repo,base,manifestPath);assert.ok(oldBytes,'Retained finance manifest required');const oldM=JSON.parse(oldBytes),oldS=readSnapshot(oldM,blob(repo,base,ROOT+'/'+oldM.file));validate(oldS);

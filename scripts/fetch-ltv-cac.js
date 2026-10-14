@@ -39,6 +39,7 @@
 const fs   = require('fs');
 const path = require('path');
 const LtvCac = require('../ads/ltv-cac');
+const Dependencies = require('../finance/dependencies');
 
 // ── CONFIG ───────────────────────────────────────────────────
 const META_ACCESS_TOKEN  = process.env.META_ACCESS_TOKEN  || null;
@@ -197,6 +198,9 @@ async function buildWindowResult(label, orderSide, monthsCap) {
   const google = await fetchGoogleAdsSpend(orderSide.since, orderSide.until);
   console.log(google.spend != null ? `  ✓ £${google.spend}` : `  – ${google.source}`);
 
+  return calculateWindow(orderSide,meta,google,monthsCap);
+}
+function calculateWindow(orderSide,meta,google,monthsCap=null){
   const blendedSpend = LtvCac.spend(meta, google);
 
   const ltv = (orderSide.avgAOV != null && orderSide.ordersPerCustomer != null && orderSide.marginPct != null)
@@ -273,7 +277,7 @@ async function main() {
   console.log(`  ✓ ${allMonths.length} completed month(s) available, ${allMonths[0].key} → ${allMonths[allMonths.length - 1].key}`);
 
   const rollingMonths    = allMonths.slice(-ROLLING_MONTHS);
-  const cumulativeMonths = allMonths.slice(-CUMULATIVE_CAP);
+  let cumulativeMonths = allMonths.slice(-CUMULATIVE_CAP);
   // The 12 completed months immediately before the current rolling window —
   // e.g. if rolling is Oct'25–Sep'26, this is Oct'24–Sep'25. Only exists once
   // a full second window of history has closed.
@@ -281,9 +285,13 @@ async function main() {
     ? allMonths.slice(-PREVIOUS_ROLLING_MONTHS_NEEDED, -ROLLING_MONTHS)
     : null;
 
-  const rollingOrderSide         = aggregateWindow(rollingMonths);
-  const cumulativeOrderSide      = aggregateWindow(cumulativeMonths);
-  const previousRollingOrderSide = previousRollingMonths ? aggregateWindow(previousRollingMonths) : null;
+  const verifiedSource = Dependencies.load(path.join(__dirname,'..'));
+  cumulativeMonths=cumulativeMonths.filter(m=>firstDayOfMonthKey(m.key)>=verifiedSource.snapshot.coverage.start && lastDayOfMonthKey(m.key)<=verifiedSource.snapshot.coverage.end);
+  if(!cumulativeMonths.length)throw Error('No source-covered cumulative period; last-good LTV retained');
+  const canonicalMonths = ms=>Dependencies.productMonths(ms,verifiedSource.snapshot);
+  const rollingOrderSide         = aggregateWindow(canonicalMonths(rollingMonths));
+  const cumulativeOrderSide      = aggregateWindow(canonicalMonths(cumulativeMonths));
+  const previousRollingOrderSide = previousRollingMonths ? aggregateWindow(canonicalMonths(previousRollingMonths)) : null;
 
   const rolling         = await buildWindowResult('rolling 12mo', rollingOrderSide, null);
   const cumulative      = await buildWindowResult('cumulative', cumulativeOrderSide, CUMULATIVE_CAP);
@@ -295,6 +303,8 @@ async function main() {
 
   const output = {
     updated: new Date().toISOString(),
+    source: verifiedSource.dependency,
+    methodology: {version: 'product-profit-proxy-v4', previous: 'legacy-period-proxy-v3', revenueBasis: 'net_merchandise_only', note: 'Canonical net merchandise per native eligible order × period orders per customer × legacy costed-product margin. No shipping profit assumed. Customer totals are monthly aggregates, not deduplicated lifetime cohorts; CAC is blended spend / estimated new customers, not paid acquisition. Operating, fulfilment and overhead costs excluded. Historic v3 ratios are not directly comparable.'},
     rolling,
     previousRolling,
     rollingComparison,
@@ -303,6 +313,8 @@ async function main() {
   };
 
   const outPath = path.join(__dirname, '..', 'ltv-cac.json');
+  if([rolling,cumulative,previousRolling].filter(Boolean).some(r=>r.adSpend?.blended==null||r.ltv==null||r.cac==null))throw Error('Required spend, customer or product-cost inputs unavailable; last-good LTV export retained');
+  Dependencies.guard(output,Dependencies.load(path.join(__dirname,'..')));
   fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
 
   console.log('\n✓ ltv-cac.json written');
@@ -311,5 +323,5 @@ async function main() {
   console.log(`  vs. prior 12mo  — ${rollingComparison.status === 'ok' ? (rollingComparison.absoluteChange >= 0 ? '+' : '') + rollingComparison.absoluteChange + ' (was ' + rollingComparison.previousRatio + ':1)' : rollingComparison.status}`);
 }
 
-module.exports={aggregateWindow,compareRolling,buildWindowResult};
+module.exports={aggregateWindow,compareRolling,buildWindowResult,calculateWindow,loadCompletedMonths};
 if(require.main===module) main().catch(e => { console.error('\n✗ Fatal error:', e); process.exit(1); });

@@ -1,0 +1,7 @@
+// Published read-only targets. Exploration never writes shared configuration.
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.RorGoalConfig=factory();})(typeof window==='undefined'?globalThis:window,function(){return Object.freeze({version:'ror-planning-v1',updated:'2026-10-14',goals:[
+{fy:'FY27',scope:'shopify',scenario:'goal',basis:'net_revenue',annual:300000,approval:'owner-approved',effective:'2026-10-14',version:1,assumptions:'Native net merchandise plus net shipping.'},
+{fy:'FY27',scope:'shopify',scenario:'ambitious',basis:'net_revenue',annual:350000,approval:'illustrative-awaiting-approval',effective:'2026-10-14',version:1,assumptions:'Illustrative stretch target; not an approved shared goal.'},
+{fy:'FY27',scope:'all',scenario:'goal',basis:'net_revenue',annual:500000,approval:'owner-approved',effective:'2026-10-14',version:1,assumptions:'Provisional channel management estimates; tax bases differ.'},
+{fy:'FY27',scope:'all',scenario:'ambitious',basis:'net_revenue',annual:600000,approval:'illustrative-awaiting-approval',effective:'2026-10-14',version:1,assumptions:'Illustrative; no assumed £200k marketplace forecast.'},
+...['FY24','FY25','FY26'].map(fy=>({fy,scope:'shopify',scenario:'goal',basis:'total_sales',annual:500000,approval:'historical-preserved',effective:null,version:1,assumptions:'Historical £500k Shopify Total Sales target retained; not rewritten.'}))]});});
