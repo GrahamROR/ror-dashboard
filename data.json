@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-14T08:01:28.153Z",
+  "updated": "2026-10-14T08:15:37.735Z",
   "currentFY": "FY27",
   "yesterday": {
     "date": "2026-10-13",
@@ -410,24 +410,24 @@
         {
           "key": "2026-10",
           "label": "Oct 26",
-          "revenue": 6740.4,
-          "netSales": 5210.31,
-          "orders": 175,
-          "aov": 30.04,
-          "customers": 173,
+          "revenue": 6817.56,
+          "netSales": 5268.03,
+          "orders": 177,
+          "aov": 30.02,
+          "customers": 175,
           "returning": 45,
-          "sessions": 8130,
+          "sessions": 8140,
           "complete": false,
           "mtd": true,
           "future": false,
-          "convertedSessions": 157,
-          "conversionRate": 0.019311193111931118,
-          "shopifyConversionRate": 0.019311193111931118,
-          "costOfGoodsSold": 2179.4,
-          "grossProfit": 2453.35,
+          "convertedSessions": 159,
+          "conversionRate": 0.019533169533169532,
+          "shopifyConversionRate": 0.019533169533169532,
+          "costOfGoodsSold": 2203.4,
+          "grossProfit": 2487.07,
           "marginPctCovered": 0.53,
-          "costCoverage": 0.889,
-          "estGrossProfit": 2759.21
+          "costCoverage": 0.89,
+          "estGrossProfit": 2793.31
         },
         {
           "key": "2026-11",
@@ -541,8 +541,8 @@
       "topProducts": [
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 6158.9,
-          "orders": 161
+          "revenue": 6228.16,
+          "orders": 163
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
@@ -586,21 +586,21 @@
         }
       ],
       "summary": {
-        "ytdRevenue": 46937.77,
-        "ytdNetSales": 36158.24,
-        "ytdOrders": 1234,
-        "ytdSessions": 51138,
-        "ytdConvertedSessions": 1007,
+        "ytdRevenue": 47014.93,
+        "ytdNetSales": 36215.96,
+        "ytdOrders": 1236,
+        "ytdSessions": 51148,
+        "ytdConvertedSessions": 1009,
         "avgConversionRate": 0.0197,
         "avgAOV": 29.64,
         "avgRepeatRate": 0.181,
         "ytdReturning": 219,
-        "ytdCustomers": 1210,
-        "ytdCostOfGoodsSold": 16947.9,
-        "ytdGrossProfit": 16886.54,
+        "ytdCustomers": 1212,
+        "ytdCostOfGoodsSold": 16971.9,
+        "ytdGrossProfit": 16920.26,
         "ytdMarginPct": 0.499,
         "ytdCostCoverage": 0.936,
-        "ytdEstGrossProfit": 18042.96
+        "ytdEstGrossProfit": 18071.76
       }
     },
     "FY24": {
