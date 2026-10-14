@@ -16,7 +16,7 @@
 
 const M = RorModel;
 const C = RorCalc;
-const metricOptions = (basis) => ['revenue','orders','aov','units'].map(key=>({value:key,label:key==='revenue'?'Revenue (selected source basis)':key==='orders'?'Orders (source eligible)':key==='aov'?'Sales per order':M.METRICS[key].label}));
+const metricOptions = (basis) => ['revenue','orders','aov','units'].map(key=>({value:key,label:key==='revenue'?'Revenue (selected source basis)':key==='orders'?'Orders (source count)':key==='aov'?'Sales per order':M.METRICS[key].label}));
 
 // ── formatting helpers (metric-aware; reuse dashboard1's fmt/fmtC/fmtP) ──
 function formatMetric(metric, v, short) {
@@ -27,8 +27,8 @@ function formatMetric(metric, v, short) {
 }
 
 function metricLabel(metric,channels,basis) {
-  if(channels.length===1&&channels[0]==='shopify')return metric==='revenue'?ShopifyFinance.LABELS[basis]:metric==='orders'?'Shopify eligible orders':metric==='aov'?ShopifyIntegration.aovLabel(basis):M.METRICS[metric].label;
-  return metric==='revenue'&&channels.includes('shopify')?'Legacy imported gross sales (pending P3)':M.METRICS[metric].label;
+  if(channels.length===1&&channels[0]==='shopify')return metric==='revenue'?ManagementFinance.LABELS[basis]:metric==='orders'?'Shopify eligible orders':metric==='aov'?ShopifyIntegration.aovLabel(basis):M.METRICS[metric].label;
+  return metric==='revenue'?ManagementFinance.LABELS[basis]:metric==='orders'&&channels.includes('noths')?'Orders (includes provisional NOTHS cohort)':metric==='aov'?'Selected-basis sales per order':M.METRICS[metric].label;
 }
 
 function changeText(cmp) {
@@ -114,11 +114,11 @@ function PeriodNotice({ range, records, channels, section }) {
 
 function MetricDefinitions({ meta, basis, snapshot, channels }) {
   return el('details', {className:'card',style:{fontSize:12,lineHeight:1.7}},
-    el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},channels.length>1?'All Stores: legacy imported gross figures · Pending P3 · Not reconciled net sales':'Financial basis: Shopify '+ShopifyIntegration.labels[basis]+' · Etsy/NOTHS imported gross line sales'),
+    el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},ManagementFinance.LABELS[basis]+' · Source-specific definitions'),
     el('div',null,ShopifyFinance.DEFINITIONS[basis]),
     el('div',null,'In Shopify-only views, Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = net merchandise / orders. Shopify-reported AOV is a separate native metric.'),
     el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
-    el('div',null,'Etsy/NOTHS revenue, orders and purchased units retain the existing imported definitions. All Stores revenue, AOV and contribution retain legacy imported gross figures and orders, not reconciled net sales. Pending P3.'),
+    el('div',null,ManagementFinance.DEFINITIONS[basis]+' Etsy source is CSV/Stats-controlled; NOTHS management is provisional. Missing periods are withheld.'),
     el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
     el('div',null,'Legacy ROR FY26 count: 7,834 includes two gift-voucher-only orders. Shopify native sales reporting counts 7,832 eligible merchandise orders. All native eligible IDs match the import; no local order exclusions are applied.'),
     el('div',null,'Imported export: '+(meta.generated_at||'unknown')+' · Reporting dates use Europe/London through yesterday; absent marketplace rows remain coverage unverified.')
@@ -410,12 +410,12 @@ function SalesExplorer({ records, meta, basis }) {
 }
 
 // ── top-level Dashboard 2 ────────────────────────────────────
-function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBasis=()=>{},financeError}={}) {
+function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialBasis=()=>{},financeError,marketplaceSnapshot,marketplaceError}={}) {
   const [loading, setLoading] = useState(true);
   const [loadErr, setLoadErr] = useState('');
   const [meta, setMeta] = useState(null);
   const [importedRecords, setRecords] = useState([]);
-  const records = useMemo(()=>ShopifyIntegration.rorRecords(importedRecords,financeSnapshot,financialBasis,financeError),[importedRecords,financeSnapshot,financialBasis,financeError]);
+  const records = useMemo(()=>{const r=importedRecords.slice();r.management={shop:financeSnapshot,markets:marketplaceSnapshot,basis:financialBasis};return r;},[importedRecords,financeSnapshot,marketplaceSnapshot,financialBasis]);
   const [topStore, setTopStore] = useState('all');
   const [topRangePreset, setTopRangePreset] = useState('currentFY');
   const [topCustomRange, setTopCustomRange] = useState({ start: '', end: '' });
@@ -454,12 +454,14 @@ function RorSalesApp({financeSnapshot,financialBasis='net_sales',setFinancialBas
       meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot, channels }),
       (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.'),
 
+      marketplaceError && el(UnavailableNotice,{reason:marketplaceError}),
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
+        el(RorPlanningControl,{scope:topStore==='shopify'?'shopify':'all',shop:financeSnapshot,markets:marketplaceSnapshot}),
         el('div',{style:{display:'flex',flexDirection:'column',gap:4}},
-          el(FilterLabel,null,'Shopify-only financial basis'),
-          el(Select,{value:financialBasis,onChange:setFinancialBasis,ariaLabel:'ROR Shopify financial basis',options:ShopifyIntegration.BASIS.map(k=>({value:k,label:ShopifyIntegration.labels[k]}))})),
+          el(FilterLabel,null,'Financial reporting basis'),
+          el(Select,{value:financialBasis,onChange:setFinancialBasis,ariaLabel:'ROR Shopify financial basis',options:Object.entries(ManagementFinance.LABELS).map(([value,label])=>({value,label}))})),
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
           'KPI cards and channel contribution use these filters. Comparison dates are independent; its store follows this filter. Sales explorer has independent dates and stores.')

@@ -92,6 +92,9 @@ function resolveDateRange(presetKey, opts) {
 }
 
 function aggregate(records, opts) {
+  if(records.management){const management=typeof module!=='undefined'&&module.exports?require('../finance/management.js'):window.ManagementFinance;return management.aggregate(records,opts,aggregate);}
+
+  if(records.marketplaces&&opts.channels.length===1&&opts.channels[0]==='etsy'){const MP=typeof module!=='undefined'&&module.exports?require('../finance/marketplaces/contract'):window.MarketplaceFinance;return MP.aggregate(records,opts,aggregate);}
   if (records.finance && opts.channels.includes('shopify')) {
     const integration = typeof module !== 'undefined' && module.exports ? require('../finance/integration.js') : window.ShopifyIntegration;
     return integration.aggregateRor(records, opts, aggregate);
@@ -130,6 +133,7 @@ function aggregate(records, opts) {
 }
 
 function compareAggregates(currentAgg, previousAgg, metric) {
+  if(metric!=='units'&&currentAgg?.financialBasis&&previousAgg?.financialBasis&&currentAgg.financialBasis!==previousAgg.financialBasis)return {status:'incompatible-basis',current:currentAgg[metric],previous:previousAgg[metric],absoluteChange:null,percentChange:null,note:'Financial definitions differ; comparison withheld.'};
   if(metric==='units') {
     if(currentAgg?.unitsStatus)currentAgg={...currentAgg,status:currentAgg.unitsStatus};
     if(previousAgg?.unitsStatus)previousAgg={...previousAgg,status:previousAgg.unitsStatus};
