@@ -720,7 +720,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const goalBasis = savedGoal.basis;
   const goalRev = customGoal ?? savedGoal.annual;
   const setGoalRev = setCustomGoal;
-  useEffect(()=>{setCustomGoal(null);setScenario('goal');},[selectedFY]);
+  useEffect(()=>{setCustomGoal(null);setScenario('goal');setCostAssumptions({});},[selectedFY]);
   // Locked by default so every new visitor sees the same committed goal
   // rather than whatever position the slider happens to land on — it's
   // only meant to be unlocked deliberately, to explore a different figure.
@@ -1886,14 +1886,14 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               fmtP(summary.ytdCostCoverage,0)+' of YTD net merchandise sales has SKU cost data'
             ),
             el('div', {style:{fontSize:12,color:'var(--t2)',lineHeight:1.5}},
-              'Management revenue including shipping: '+fmtC(ShopifyIntegration.report(financeSnapshot,viewData.finance.start,viewData.finance.end,'net_revenue').revenue,2)+'; shipping/fulfilment cost and contribution unavailable. Margin and profit estimates retain the original costed-SKU export and its imported net-sales basis. The revenue column uses verified Shopify net merchandise sales; these estimates and cost coverage have not been recomputed against the corrected source.'
+              'Management revenue including shipping: '+fmtC(ShopifyIntegration.report(financeSnapshot,viewData.finance.start,viewData.finance.end,'net_revenue').revenue,2)+'; shipping/fulfilment cost and contribution unavailable. Product profit estimates use canonical net merchandise × the existing costed-SKU margin. Cost records and reported cost-coverage fields remain the original legacy export; their coverage/freshness is not independently re-reconciled. Shipping does not inflate product profit.'
             )
           )
         ),
         el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12,marginBottom:16}},
           [
             {lbl:'Margin % (costed SKUs)', val: summary.ytdMarginPct!=null?fmtP(summary.ytdMarginPct,1):'—', note:'Goal: '+fmtP(GOALS.margin,0)+' · Gross profit ÷ net merchandise sales, costed SKUs only'},
-            {lbl:'Est. product gross profit YTD',  val: summary.ytdEstGrossProfit!=null?fmtC(summary.ytdEstGrossProfit,0):'—', note:'Product-only costed-export estimate; no shipping margin assumption. Contribution/profit target pending costs.'},
+            {lbl:'Est. product gross profit YTD',  val: summary.ytdEstGrossProfit!=null?fmtC(summary.ytdEstGrossProfit,0):'—', note:'Canonical net merchandise × legacy costed-SKU margin, estimated; no shipping margin assumption. Contribution/profit target pending costs.'},
             {lbl:'Cost of goods (costed)', val: summary.ytdCostOfGoodsSold!=null?fmtC(summary.ytdCostOfGoodsSold,0):'—', note:'Actual COGS on SKUs with cost data'},
             {lbl:'Cost data coverage',     val: summary.ytdCostCoverage!=null?fmtP(summary.ytdCostCoverage,0):'—', note:'Share of imported net sales with a costed SKU'},
           ].map((item,i)=>
