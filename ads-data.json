@@ -1,11 +1,11 @@
 {
-  "updated": "2026-10-13T10:56:36.635Z",
+  "updated": "2026-10-14T08:08:08.492Z",
   "days": {
     "2025-08-01": {
       "google": {
         "spend": 23.03,
-        "conversions": 2.0,
-        "conversionValue": 70.0,
+        "conversions": 2,
+        "conversionValue": 70,
         "clicks": 58,
         "impressions": 4304,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -94,8 +94,8 @@
     "2025-08-06": {
       "google": {
         "spend": 20.26,
-        "conversions": 1.0,
-        "conversionValue": 38.0,
+        "conversions": 1,
+        "conversionValue": 38,
         "clicks": 54,
         "impressions": 4661,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -112,8 +112,8 @@
     "2025-08-07": {
       "google": {
         "spend": 37.01,
-        "conversions": 2.0,
-        "conversionValue": 63.0,
+        "conversions": 2,
+        "conversionValue": 63,
         "clicks": 75,
         "impressions": 5688,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -130,7 +130,7 @@
     "2025-08-08": {
       "google": {
         "spend": 22.67,
-        "conversions": 3.0,
+        "conversions": 3,
         "conversionValue": 93.7,
         "clicks": 54,
         "impressions": 2972,
@@ -184,7 +184,7 @@
     "2025-08-11": {
       "google": {
         "spend": 22.79,
-        "conversions": 0.0,
+        "conversions": 0,
         "conversionValue": 0.1,
         "clicks": 61,
         "impressions": 4107,
@@ -202,7 +202,7 @@
     "2025-08-12": {
       "google": {
         "spend": 16.93,
-        "conversions": 1.0,
+        "conversions": 1,
         "conversionValue": 23.5,
         "clicks": 47,
         "impressions": 2416,
@@ -220,8 +220,8 @@
     "2025-08-13": {
       "google": {
         "spend": 26.24,
-        "conversions": 2.0,
-        "conversionValue": 63.0,
+        "conversions": 2,
+        "conversionValue": 63,
         "clicks": 52,
         "impressions": 2992,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -238,8 +238,8 @@
     "2025-08-14": {
       "google": {
         "spend": 20.17,
-        "conversions": 0.0,
-        "conversionValue": 0.0,
+        "conversions": 0,
+        "conversionValue": 0,
         "clicks": 57,
         "impressions": 4351,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -256,7 +256,7 @@
     "2025-08-15": {
       "google": {
         "spend": 19.48,
-        "conversions": 2.0,
+        "conversions": 2,
         "conversionValue": 51.95,
         "clicks": 55,
         "impressions": 3932,
@@ -274,8 +274,8 @@
     "2025-08-16": {
       "google": {
         "spend": 28.89,
-        "conversions": 1.0,
-        "conversionValue": 35.0,
+        "conversions": 1,
+        "conversionValue": 35,
         "clicks": 66,
         "impressions": 4658,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -292,8 +292,8 @@
     "2025-08-17": {
       "google": {
         "spend": 37.39,
-        "conversions": 1.0,
-        "conversionValue": 35.0,
+        "conversions": 1,
+        "conversionValue": 35,
         "clicks": 79,
         "impressions": 5321,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -310,8 +310,8 @@
     "2025-08-18": {
       "google": {
         "spend": 17.33,
-        "conversions": 1.0,
-        "conversionValue": 35.0,
+        "conversions": 1,
+        "conversionValue": 35,
         "clicks": 61,
         "impressions": 2986,
         "source": "Google Ads native account-day CSV (private FY26 candidate)"
@@ -328,7 +328,7 @@
     "2025-08-19": {
       "google": {
         "spend": 21.61,
-        "conversions": 4.0,
+        "conversions": 4,
         "conversionValue": 121.4,
         "clicks": 70,
         "impressions": 3575,
@@ -346,7 +346,7 @@
     "2025-08-20": {
       "google": {
         "spend": 19.16,
-        "conversions": 2.0,
+        "conversions": 2,
         "conversionValue": 64.66,
         "clicks": 73,
         "impressions": 3529,
@@ -364,7 +364,7 @@
     "2025-08-21": {
       "google": {
         "spend": 24.31,
-        "conversions": 5.0,
+        "conversions": 5,
         "conversionValue": 195.25,
         "clicks": 58,
         "impressions": 3179,
@@ -7869,11 +7869,11 @@
     },
     "2026-10-12": {
       "meta": {
-        "spend": 101.76,
+        "spend": 101.82,
         "conversions": 9,
         "conversionValue": 426.64,
         "clicks": 597,
-        "impressions": 21866,
+        "impressions": 21882,
         "source": "Meta Marketing API insights"
       },
       "google": {
@@ -7882,6 +7882,24 @@
         "conversionValue": 270.25,
         "clicks": 122,
         "impressions": 5402,
+        "source": "Google Ads API GAQL"
+      }
+    },
+    "2026-10-13": {
+      "meta": {
+        "spend": 113.77,
+        "conversions": 6,
+        "conversionValue": 229.96,
+        "clicks": 599,
+        "impressions": 21648,
+        "source": "Meta Marketing API insights"
+      },
+      "google": {
+        "spend": 16.38,
+        "conversions": 2,
+        "conversionValue": 45.41,
+        "clicks": 53,
+        "impressions": 4038,
         "source": "Google Ads API GAQL"
       }
     }
