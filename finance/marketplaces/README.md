@@ -1,3 +1,5 @@
+> Management upgrade: native Etsy definitions below remain unchanged. The shared management layer adds the approved provisional VAT estimates and sanitized NOTHS placed-order cohort. See `../../docs/management-reporting/README.md` for definitions, current-year gaps, controls and release gates. No automatic marketplace publication is activated.
+
 # Isolated Etsy reporting proposal
 
 Prepared from deployed main `08247d4`, reusing the reviewed PR16 Etsy calculations. This branch is for review and separate approval. It does not merge PR16 or change NOTHS financial calculations, Shopify, Ads, Email, LTV:CAC, imported exports or production schedules.

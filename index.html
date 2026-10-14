@@ -379,7 +379,7 @@ function ChannelMixCard({ es }) {
     el('div', { className: 'lbl', style: { marginBottom: 12 } }, 'Channel mix'),
 
     el('div', { style: { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 } },
-      el('span', { style: { fontSize: 13, color: 'var(--t2)' } }, 'Email + SMS attribution'),
+      el('span', { style: { fontSize: 13, color: 'var(--t2)' } }, 'Email + SMS attribution (source Total Sales ratio)'),
       el('span', { style: { fontSize: 20, fontWeight: 600, fontFamily: "'DM Mono',monospace" } }, es.attribution != null ? fmtP(es.attribution, 1) : '—')
     ),
     el('div', barBg, el('div', { style: barFill(attrPct) })),
@@ -632,7 +632,7 @@ function EmailWhatIfBar({ es, projConv, setProjConv, projAOV, setProjAOV,
           )
         ),
         el('div', { style: { textAlign: 'right' } },
-          el('div', { className: 'lbl' }, 'Attribution'),
+          el('div', { className: 'lbl' }, 'Source Total Sales attribution ratio'),
           el('div', { style: { fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', fontFamily: "'DM Mono',monospace", color: (isProjecting ? projAttribution : es.attribution) >= EMAIL_GOALS_CLIENT.attribution ? 'var(--grn)' : 'var(--amb)' } },
             fmtP(isProjecting ? projAttribution : es.attribution, 1)
           )
@@ -1433,7 +1433,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               }),
 
               el(MetricCard, {
-                icon:'ti-chart-pie', label:'Email+SMS Attribution', accentCol:'var(--blu)',
+                icon:'ti-chart-pie', label:'Email value / selected store revenue', accentCol:'var(--blu)',
                 actual: emailComparison.ratio!=null ? fmtP(emailComparison.ratio,1) : '—', target: fmtP(EMAIL_GOALS_CLIENT.attribution,0),
                 statusKey: emailComparison.ratio!=null ? status(emailComparison.ratio, EMAIL_GOALS_CLIENT.attribution) : 'pending',
                 note: emailComparison.warning+' Preserved source ratio: '+fmtP(es.attribution,1)+' against reported Shopify Total Sales; exact window alignment unverified.',
@@ -2095,18 +2095,18 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
      of this. -->
 <script src="dashboard2/data-model.js"></script>
 <script src="dashboard2/data-adapter.js"></script>
-<script src="dashboard2/calculations.js"></script>
+<script src="dashboard2/calculations.js?v=management-v1"></script>
 <script src="dashboard2/charts.js"></script>
-<script src="dashboard2/ror-sales-app.js?v=publication-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=management-v1"></script>
 
-<script src="finance/contract.js"></script>
+<script src="finance/contract.js?v=management-v1"></script>
 <script src="finance/management.js"></script>
 <script src="planning/config.js"></script>
 <script src="planning/scenarios.js"></script>
 <script src="planning/control.js"></script>
 <script src="finance/marketplaces/contract.js"></script>
 <script src="finance/marketplaces/loader.js"></script>
-<script src="finance/integration.js?v=growth-targets-v1"></script>
+<script src="finance/integration.js?v=management-v1"></script>
 <script src="finance/freshness.js"></script>
 <script src="finance/loader.js?v=publication-v1"></script>
 <script>

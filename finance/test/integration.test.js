@@ -496,6 +496,7 @@ test("Transport refresh partitions full history and validates independent monthl
           ),
         ];
       }
+      if(q.includes('gross_shipping_charges')){columns=[...columns,{name:'gross_shipping_charges',dataType:'fixture'}];rows=rows.map(r=>[...r,'0']);}
       data = {
         shopifyqlQuery: { tableData: { columns, rows }, parseErrors: [] },
       };

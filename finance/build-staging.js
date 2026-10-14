@@ -23,6 +23,7 @@ function table(raw) {
 function fact(row, orders = true) {
   const out = {};
   for (const k of F.MONEY) out[k] = F.minor(row[k]);
+  if(Object.hasOwn(row,'gross_shipping_charges')){out.gross_shipping_charges=F.minor(row.gross_shipping_charges);if(out.gross_shipping_charges==null)throw Error('Missing native gross shipping');out.gross_shipping_validated=true;}
   if (orders) {
     if (row.orders == null || row.orders === "") out.orders = null;
     else if (!/^\d+$/.test(String(row.orders)))
@@ -138,7 +139,7 @@ function build(sourceDir) {
   // Independent native period reports must agree with daily sums, never balance to benchmarks.
   for (const p of periods) {
     const a = F.select({ ...snapshot, id: "pending" }, p.start, p.end);
-    for (const k of F.ADDITIVE)
+    for (const k of [...F.ADDITIVE,...(days.some(d=>Object.hasOwn(d,'gross_shipping_charges'))?['gross_shipping_charges']:[])])
       if (a[k] !== p[k])
         throw Error(
           `Native reconciliation failed: ${p.start} ${p.end} ${k}: ${a[k]} != ${p[k]}`,

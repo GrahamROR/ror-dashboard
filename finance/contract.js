@@ -110,6 +110,8 @@
       warnings: [],
     };
     for (const k of ADDITIVE) result[k] = missing ? null : sum(rows, k);
+    result.gross_shipping_charges = missing ? null : sum(rows,'gross_shipping_charges');
+    result.gross_shipping_validated = result.gross_shipping_charges!=null && rows.every(r=>r.gross_shipping_validated===true);
     if (ADDITIVE.some((k) => result[k] == null)) result.status = "missing";
     const native = snapshot.periods.find(
       (r) => r.start === start && r.end === end,

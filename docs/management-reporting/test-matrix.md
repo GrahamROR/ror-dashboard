@@ -3,7 +3,7 @@
 | Requirement | Automated evidence | Manual / source gate |
 | --- | --- | --- |
 | FY26 channel and All Stores formulas | `finance/test/management.test.js` exact pennies/counts | NOTHS count is cohort, not certified eligible |
-| Shopify gross shipping | Missing component withheld; validated fixture path tested | Native £23,884.50 source validation outstanding |
+| Shopify gross shipping | Missing component withheld; validated fixture path tested | Native £23,884.50 validated privately; first approved production refresh still required |
 | Native finance immutability / all FY periods | Existing integration/reconciliation, protected-byte checks | FY24 prior August coverage remains unavailable |
 | 12-month / daily marketplace pennies | Cumulative rounding sum equals annual estimate | Assumed VAT rate is management-only |
 | Original Etsy + Aug/Sep candidate | 24 existing isolated Etsy tests | October source absent |
