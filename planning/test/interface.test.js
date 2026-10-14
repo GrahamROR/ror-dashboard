@@ -9,3 +9,12 @@ for(const fy of ['FY26','FY27'])for(const tab of ['overview','yesterday','monthl
 test('Break-even missing costs is visibly gated and does not manufacture a target',()=>{const txt=JSON.stringify(tree('FY27','overview','break-even'));assert.match(txt,/Break-even calculation pending cost validation/);});
 
 test('Original ROR components retain management controls, all three date selectors and incomplete current-source warnings',()=>{const txt=JSON.stringify(tree('FY27','overview','goal','ror'));assert.match(txt,/All Stores planning/);assert.match(txt,/Sales explorer/i);assert.match(txt,/Sales comparison table/);assert.match(txt,/Channel contribution/i);assert.match(txt,/Legacy imported gross/);});
+
+// Inspect the actual rendered KPI elements, including tooltip text, without claiming visual QA.
+test('ROR management KPI labels use the selected basis and qualify NOTHS placed-order counts',()=>{
+ const t=tree('FY27','overview','goal','ror'),cards=[];
+ function visit(n){if(!n||typeof n!=='object')return;if(Array.isArray(n)){n.forEach(visit);return;}if(n.props&&n.props['data-ror-metric'])cards.push(n);(n.children||[]).forEach(visit);}
+ visit(t);const revenue=cards.find(n=>n.props['data-ror-metric']==='revenue'),orders=cards.find(n=>n.props['data-ror-metric']==='orders');
+ assert.ok(revenue);assert.match(JSON.stringify(revenue),/Net revenue/i);assert.doesNotMatch(JSON.stringify(revenue),/Legacy imported gross sales/);
+ assert.ok(orders);assert.match(JSON.stringify(orders),/provisional NOTHS cohort/);assert.match(JSON.stringify(orders),/placed-order cohort, not verified eligible orders/);
+});
