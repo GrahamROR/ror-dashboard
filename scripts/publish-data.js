@@ -9,5 +9,6 @@ if(financeOutcome!=='skipped'||rollbackId){
  if(rollbackId){if(process.env.GITHUB_EVENT_NAME!=='workflow_dispatch'||process.env.FINANCE_ROLLBACK_APPROVED!=='true'||process.env.FINANCE_PUBLICATION_ENABLED==='true')throw Error('Explicit manual rollback approval and paused finance refresh required');}
  else if(process.env.FINANCE_PUBLICATION_ENABLED!=='true')throw Error('Finance publication remains disabled until owner activation');
 }
+if((value('--files')||'').split(',').includes('ltv-cac.json')){const D=require('../finance/dependencies'),fs=require('fs');D.guard(JSON.parse(fs.readFileSync('ltv-cac.json')),D.load(process.cwd()));}
 const prepared=P.prepare({repo:process.cwd(),files:(value('--files')||'').split(',').filter(Boolean),financeOutcome,rollbackId});
 async function finish(){const result=P.publish({repo:process.cwd(),branch,prepared});console.log(JSON.stringify(result));if(branch==='main'&&process.env.GITHUB_ACTIONS==='true'){const pages=await require('../finance/pages-publication').requestBuild({repo:process.cwd(),repository:process.env.GITHUB_REPOSITORY,token:process.env.GH_TOKEN,revision:result.revision});console.log(JSON.stringify({pages}));}if(result.failed)process.exitCode=1;}finish().catch(e=>{console.error(e.message);process.exitCode=1;});

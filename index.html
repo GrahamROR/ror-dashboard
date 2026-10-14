@@ -86,7 +86,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </head>
 <body>
 <div id="root"></div>
-<script src="growth/targets.js"></script>
+<script src="growth/targets.js?v=management-v1"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
 const DATA_URL      = './data.json'; // served by GitHub Pages
@@ -336,7 +336,7 @@ function MiniBar({ months, goalRev }) {
       const tgtH = Math.round((tgt/maxRev)*h);
       const revH = Math.round((rev/maxRev)*h);
       const col  = m.mtd ? 'var(--amb)' : m.future?'var(--s4)':rev>=tgt?'var(--grn)':rev>=tgt*0.85?'var(--amb)':'var(--red)';
-      return el('div', {key:m.key, style:{flex:1,display:'flex',alignItems:'flex-end',gap:1,position:'relative'},title:`${m.label}: Total Sales ${fmtC(m.revenue,2)} · Full-month planning target ${fmtC(tgt,2)}${m.mtd ? " · Partial-month actual" : ""}`},
+      return el('div', {key:m.key, style:{flex:1,display:'flex',alignItems:'flex-end',gap:1,position:'relative'},title:`${m.label}: Goal-basis revenue ${fmtC(m.revenue,2)} · Full-month planning target ${fmtC(tgt,2)}${m.mtd ? " · Partial-month actual" : ""}`},
         el('div', {style:{flex:1,height:tgtH,background:'#fff',borderRadius:2}}),
         !m.future && m.revenue!=null && el('div', {style:{position:'absolute',left:0,right:0,bottom:0,height:revH,background:col,borderRadius:2,opacity:0.85}})
       );
@@ -379,11 +379,11 @@ function ChannelMixCard({ es }) {
     el('div', { className: 'lbl', style: { marginBottom: 12 } }, 'Channel mix'),
 
     el('div', { style: { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 } },
-      el('span', { style: { fontSize: 13, color: 'var(--t2)' } }, 'Email + SMS attribution'),
+      el('span', { style: { fontSize: 13, color: 'var(--t2)' } }, 'Email + SMS attribution (source Total Sales ratio)'),
       el('span', { style: { fontSize: 20, fontWeight: 600, fontFamily: "'DM Mono',monospace" } }, es.attribution != null ? fmtP(es.attribution, 1) : '—')
     ),
     el('div', barBg, el('div', { style: barFill(attrPct) })),
-    el('div', { style: { fontSize: 11, color: 'var(--t3)', marginBottom: 14 } }, 'Goal: ' + fmtP(EMAIL_GOALS_CLIENT.attribution, 0) + ' of Shopify total sales (attributed value ratio)'),
+    el('div', { style: { fontSize: 11, color: 'var(--t3)', marginBottom: 14 } }, 'Goal: ' + fmtP(EMAIL_GOALS_CLIENT.attribution, 0) + ' of source-reported Shopify Total Sales (legacy attribution modelling; exact windows unverified)'),
 
     el('div', { style: { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 4 } },
       el('span', { style: { fontSize: 13, color: 'var(--t2)' } }, 'List size'),
@@ -419,7 +419,7 @@ function YesterdayCard({ icon, label, actual, target, statusKey, statusText, not
 function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
                      cvrLocked, setCvrLocked, aovLocked, setAovLocked,
                      effectiveCVR, effectiveAOV, projYTD, projVsActual, projIsUp,
-                     isProjecting, resetProjection, actualCVR, actualAOV, selectedActual, financialBasis, reportingCutoff, projectionComparable }) {
+                     isProjecting, resetProjection, actualCVR, actualAOV, selectedActual, financialBasis, reportingCutoff, projectionComparable, goalBasis }) {
 
   const fmtPct = v => (v * 100).toFixed(2) + '%';
   const ytdSessions = monthly.filter(m=>!m.future).reduce((s,m)=>s+(m.sessions||0),0);
@@ -463,7 +463,7 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
       el('div', { style: { display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' } },
         // Projected YTD
         el('div', { style: { textAlign: 'right' } },
-          el('div', { className: 'lbl' }, isProjecting ? 'Projected Shopify Total Sales YTD' : 'Shopify Total Sales YTD — Goal Basis'),
+          el('div', { className: 'lbl' }, (isProjecting?'Projected ':'')+ShopifyFinance.LABELS[goalBasis]+' YTD — Goal Basis'),
           el('div', {
             style: {
               fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em',
@@ -476,7 +476,7 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
         ),
         // Delta vs actual (only when projecting)
         isProjecting && el('div', { style: { textAlign: 'right' } },
-          el('div', { className: 'lbl' }, 'vs Total Sales actual'),
+          el('div', { className: 'lbl' }, 'vs '+ShopifyFinance.LABELS[goalBasis]+' actual'),
           el('div', {
             style: {
               fontSize: 18, fontWeight: 600, fontFamily: "'DM Mono',monospace",
@@ -552,7 +552,7 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
       el('div', { style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '12px 14px', border: '1.5px solid ' + (aovLocked ? 'var(--amb)' : 'var(--bdr)') } },
         el('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8, flexWrap: 'wrap', gap: 6 } },
           el('div', null,
-            el('div', { className: 'lbl', style: { marginBottom: 1 } }, 'Total sales per order / model input'),
+            el('div', { className: 'lbl', style: { marginBottom: 1 } }, ShopifyFinance.LABELS[goalBasis]+' per order / model input'),
             el('div', { style: { fontSize: 18, fontWeight: 600, fontFamily: "'DM Mono',monospace", color: 'var(--grn)' } },
               '£' + effectiveAOV.toFixed(2)
             )
@@ -632,7 +632,7 @@ function EmailWhatIfBar({ es, projConv, setProjConv, projAOV, setProjAOV,
           )
         ),
         el('div', { style: { textAlign: 'right' } },
-          el('div', { className: 'lbl' }, 'Attribution'),
+          el('div', { className: 'lbl' }, 'Source Total Sales attribution ratio'),
           el('div', { style: { fontSize: 22, fontWeight: 700, letterSpacing: '-0.02em', fontFamily: "'DM Mono',monospace", color: (isProjecting ? projAttribution : es.attribution) >= EMAIL_GOALS_CLIENT.attribution ? 'var(--grn)' : 'var(--amb)' } },
             fmtP(isProjecting ? projAttribution : es.attribution, 1)
           )
@@ -713,7 +713,14 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const [loadErr,    setLoadErr]    = useState('');
   const [loading,    setLoading]    = useState(true);
   const [isFallback, setIsFallback] = useState(false);
-  const [goalRev,    setGoalRev]    = useState(500000);
+  const [scenario,setScenario] = useState('goal');
+  const [customGoal,setCustomGoal] = useState(null);
+  const [costAssumptions,setCostAssumptions] = useState({});
+  const savedGoal = RorPlanning.resolve(selectedFY || 'FY27','shopify',scenario,costAssumptions);
+  const goalBasis = savedGoal.basis;
+  const goalRev = customGoal ?? savedGoal.annual;
+  const setGoalRev = setCustomGoal;
+  useEffect(()=>{setCustomGoal(null);setScenario('goal');setCostAssumptions({});},[selectedFY]);
   // Locked by default so every new visitor sees the same committed goal
   // rather than whatever position the slider happens to land on — it's
   // only meant to be unlocked deliberately, to explore a different figure.
@@ -777,7 +784,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const availableYears = data?.years ? Object.keys(data.years).sort().reverse() : [];
   const originalView = useMemo(() => { const v=pickYear(data, selectedFY); return v ? {...v, marketingYesterday:data?.yesterday} : null; }, [data, selectedFY]);
   const viewData = useMemo(() => ShopifyIntegration.growthView(originalView, financeSnapshot, financialBasis), [originalView, financeSnapshot, financialBasis]);
-  const goalView = useMemo(() => ShopifyIntegration.growthView(originalView, financeSnapshot, 'total_sales'), [originalView, financeSnapshot]);
+  const goalView = useMemo(() => ShopifyIntegration.growthView(originalView, financeSnapshot, goalBasis), [originalView, financeSnapshot,goalBasis]);
 
   // Every month across every fiscal year on file, flattened — used by the
   // Ads tab's "Shopify actuals" panel to look up sessions/orders/conversion
@@ -823,10 +830,11 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const updatedAt    = viewData?.updated ? new Date(viewData.updated) : null;
   const isLiveYear   = selectedFY === data?.currentFY;
 
-  const targetPlan = selectedFY ? GrowthTargets.forFinance(goalRev,selectedFY,goalView?.finance) : null;
+  const targetPlan = selectedFY && goalRev!=null ? GrowthTargets.forFinance(goalRev,selectedFY,goalView?.finance) : null;
   const ytdGoal = targetPlan?.ytdTarget ?? null;
-  const fullTargets = GrowthTargets.allocate(goalRev);
+  const fullTargets = goalRev==null?Array(12).fill(null):GrowthTargets.allocate(goalRev);
   const peakMonth = fullTargets.indexOf(Math.max(...fullTargets));
+  const scenarioPlan = RorPlanning.calculate(savedGoal,goalView?.finance.status==='actual'?goalView.finance.end:null,goalView?.summary.ytdRevenue,goalView?.summary.ytdOrders,customGoal);
   const ytdVariance    = GrowthTargets.variance(goalView?.summary.ytdRevenue,ytdGoal);
   const ytdOnTrack     = ytdVariance != null && ytdVariance >= 0;
   const ytdPerformanceColour = ytdVariance==null?'var(--t3)':ytdOnTrack?'var(--grn)':'var(--red)';
@@ -834,7 +842,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const yRevTarget     = dailyTarget(goalRev, yesterdayIdx, yesterday?.monthKey);
   const yOrdersTarget  = yRevTarget / GOALS.aov;
   const ySessionsTarget = dailyTarget(GOALS.sessions, yesterdayIdx, yesterday?.monthKey);
-  const yProfitTarget  = yRevTarget * GOALS.margin;
+  const yProfitTarget  = null; // Shipping-inclusive contribution needs validated costs; no revenue × product-margin target.
 
   // ── WHAT-IF DERIVED VALUES ──────────────────────────────────
   // Resolve effective CVR and AOV — slider value if set, else actual
@@ -970,7 +978,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
       el('details', {className:'card', style:{marginBottom:16,fontSize:12,lineHeight:1.7}},
         el('summary', {style:{cursor:'pointer',color:'var(--amb)'}}, 'Reporting basis · ' + ShopifyFinance.LABELS[financialBasis]),
         el('div', null, ShopifyFinance.DEFINITIONS[financialBasis] + ' ' + ShopifyFinance.DEFINITIONS.average_order_value),
-        el('div', null, 'Financial actuals use the selected Shopify basis. Existing goals, target comparisons and what-if forecasts remain on total sales. Net AOV is calculated separately; native Shopify AOV is preserved. Source tax treatment is retained and is not asserted to be VAT-exclusive accounting turnover.'),
+        el('div', null, 'Financial actuals use the selected Shopify basis. FY27 goals and modelling use net revenue including shipping; historical goals remain Total Sales. Net AOV is calculated separately; native Shopify AOV is preserved. Source tax treatment is retained and is not asserted to be VAT-exclusive accounting turnover.'),
         el('div', null, RorModel.METRICS.attributedValue.basis),
         el('div', null, RorModel.METRICS.estimatedProfit.basis + ' Native product sales retain their source tax treatment. LTV and blended CAC are estimates pending customer deduplication and cost reconciliation.'),
         el('div', null, 'Source: Shopify Analytics · Verified through ' + (financeSnapshot?.coverage.end || 'unavailable') + ' · ' + (financeError || viewData?.finance.status || 'missing') + '. FY runs 1 August–31 July.')
@@ -979,11 +987,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
       el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:12,fontSize:12}},
         el('label', {htmlFor:'growth-financial-basis'}, 'Financial basis'),
         el('select', {id:'growth-financial-basis','aria-label':'Shopify financial basis',value:financialBasis,onChange:e=>setFinancialBasis(e.target.value),style:{background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:'var(--r)',padding:'6px 8px'}},
-          ShopifyIntegration.BASIS.map(k=>el('option',{key:k,value:k},ShopifyIntegration.labels[k]))),
-        el('span',{style:{color:'var(--t3)'}}, 'Goals: Total Sales · Financial data verified through '+(financeSnapshot?.coverage.end || 'unavailable'))
+          ShopifyIntegration.BASIS.map(k=>el('option',{key:k,value:k,disabled:k==='legacy_gross'},ShopifyIntegration.labels[k]))),
+        el('span',{style:{color:'var(--t3)'}}, 'Goals: '+ShopifyFinance.LABELS[goalBasis]+' · Financial data verified through '+(financeSnapshot?.coverage.end || 'unavailable'))
       ),
-      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
+      (financialBasis==='legacy_gross' || financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},(financialBasis==='legacy_gross'?'Legacy imported gross is available in ROR Sales; Growth native financial measures are unavailable on this selection.':null) || financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
 
+      el('div',{style:{display:'flex',gap:8,flexWrap:'wrap',marginBottom:12},'data-scenario-control':'shopify'},['break-even','goal','ambitious'].map(k=>el('button',{key:k,'aria-pressed':scenario===k,onClick:()=>{setScenario(k);setCustomGoal(null);}},k==='break-even'?'BREAK EVEN':k.toUpperCase())),el('span',null,customGoal!=null?'Custom Scenario':savedGoal.approval),customGoal!=null&&el('button',{onClick:()=>setCustomGoal(null)},'Reset to selected scenario'),savedGoal.annual==null&&el('span',{role:'status'},scenario==='break-even'?'Break-even calculation pending cost validation.':'No saved target for this historical scenario.')),
+      el(RorCostInputs,{scope:'shopify',value:costAssumptions,onChange:setCostAssumptions}),
       // ── WHAT-IF BAR ─────────────────────────────────────────────
       el(WhatIfBar, {
         monthly: goalView?.monthly || monthly, summary: goalView?.summary || summary,
@@ -993,19 +1003,19 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         projYTD, projVsActual, projIsUp,
         isProjecting, resetProjection,
         actualCVR, actualAOV,
-        projectionComparable, selectedActual:summary.ytdRevenue, financialBasis, reportingCutoff:goalView?.finance.status==='actual'?goalView.finance.end:null,
+        goalBasis, projectionComparable, selectedActual:summary.ytdRevenue, financialBasis, reportingCutoff:goalView?.finance.status==='actual'?goalView.finance.end:null,
       }),
 
       // ── SLIDER ──────────────────────────────────────────────
-      el('div', {className:'card',style:{marginBottom:16,border:'1.5px solid '+(goalRevLocked?'var(--amb)':'var(--bdr)')}},
+      goalRev!=null && el('div', {className:'card',style:{marginBottom:16,border:'1.5px solid '+(goalRevLocked?'var(--amb)':'var(--bdr)')}},
         // Top row
         el('div', {style:{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:16}},
           el('div', null,
             el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:4,flexWrap:'wrap'}},
-              el('div', {className:'lbl'}, goalRevLocked ? 'Total sales goal — locked' : 'Total sales goal — drag to explore'),
+              el('div', {className:'lbl'}, (customGoal!=null?'Custom Scenario':scenario.toUpperCase())+' · '+ShopifyFinance.LABELS[goalBasis]+(goalRevLocked?' — locked':' — drag to explore')),
               el('button', {
                 onClick: () => setGoalRevLocked(l => !l),
-                title: goalRevLocked ? 'Unlock — allow dragging' : 'Lock at this value for everyone',
+                title: goalRevLocked ? 'Unlock — allow dragging' : 'Lock this local exploration; published targets remain unchanged',
                 style: {
                   display:'flex',alignItems:'center',justifyContent:'center',gap:5,
                   padding:'5px 9px',fontSize:10,fontWeight:600,
@@ -1026,7 +1036,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           ),
           el('div', {style:{display:'flex',gap:16,flexWrap:'wrap'}},
             [
-              ['YTD Total Sales actual',  fmtC(goalView?.summary.ytdRevenue,2), ytdPerformanceColour],
+              ['YTD '+ShopifyFinance.LABELS[goalBasis]+' actual',  fmtC(goalView?.summary.ytdRevenue,2), ytdPerformanceColour],
               ['YTD target',  fmtC(ytdGoal,2),            'var(--t2)'],
               ['YTD variance', GrowthTargets.signed(ytdVariance), ytdPerformanceColour],
             ].map(([lbl,val,col],i)=>
@@ -1038,6 +1048,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           )
         ),
 
+        el('div',{style:{fontSize:12,color:'var(--t2)',marginBottom:12}},'Approved Goal: '+fmtC(RorPlanning.resolve(selectedFY || 'FY27','shopify').annual,2)+' · Difference: '+GrowthTargets.signed(GrowthTargets.variance(goalRev,RorPlanning.resolve(selectedFY || 'FY27','shopify').annual))+' · Achieved: '+(scenarioPlan.achieved==null?'unavailable':(scenarioPlan.achieved*100).toFixed(1)+'%')+' · Remaining: '+fmtC(scenarioPlan.remaining,2)+' · Required/day: '+fmtC(scenarioPlan.requiredDaily,2)+' · Required orders: '+fmt(scenarioPlan.requiredOrders,0)+' · Paced year-end forecast: '+fmtC(scenarioPlan.forecast,2)+' · Marketing/profit impact pending reviewed costs; forecast is an estimate.'),
         // Slider
         el('input', {
           type:'range',min:150000,max:800000,step:5000,value:goalRev,
@@ -1082,7 +1093,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
         // Mini chart
         el('div', {style:{marginTop:14,paddingTop:14,borderTop:'1px solid var(--bdr)'}},
-          el('div', {className:'lbl',style:{marginBottom:4}}, 'Monthly Shopify total sales vs full-month target  ',
+          el('div', {className:'lbl',style:{marginBottom:4}}, 'Monthly '+ShopifyFinance.LABELS[goalBasis]+' vs full-month target  ',
             el('span',{style:{color:'var(--grn)',fontWeight:400}}, '█ actual'),
             '  ',el('span',{style:{color:'#fff',fontWeight:400}}, '░ target')
           ),
@@ -1117,7 +1128,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             icon:'ti-receipt', label:RorModel.METRICS.shopifyAov.label, accentCol:'var(--grn)',
             actual: fmtC(summary.avgAOV,2), target: fmtC(GOALS.aov),
             statusKey: status(summary.avgAOV, GOALS.aov),
-            note: 'Net AOV: '+fmtC(summary.netAov,2)+' · Gap: '+fmtC(summary.avgAOV==null?null:GOALS.aov-summary.avgAOV,2)+' · Estimated sales uplift at current volume: +'+fmtC(summary.avgAOV==null||summary.ytdOrders==null?null:(GOALS.aov-summary.avgAOV)*summary.ytdOrders,0),
+            note: 'Selected-basis sales/order: '+fmtC(summary.basisAov,2)+' · Net AOV: '+fmtC(summary.netAov,2)+' · Gap: '+fmtC(summary.avgAOV==null?null:GOALS.aov-summary.avgAOV,2)+' · Estimated sales uplift at current volume: +'+fmtC(summary.avgAOV==null||summary.ytdOrders==null?null:(GOALS.aov-summary.avgAOV)*summary.ytdOrders,0),
           }),
 
           el(MetricCard, {
@@ -1136,9 +1147,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
           el(MetricCard, {
             icon:'ti-currency-pound', label:ShopifyFinance.LABELS[financialBasis] + ' YTD', accentCol:'var(--grn)',
-            actual: fmtC(summary.ytdRevenue,2), target: financialBasis==='total_sales'?fmtC(ytdGoal,0):'Total Sales: '+fmtC(ytdGoal,0),
-            statusKey: financialBasis==='total_sales'?status(summary.ytdRevenue,ytdGoal*0.9):'pending',
-            note: (viewData?.finance.start || '')+' → '+(viewData?.finance.end || '')+' · Existing FY goal is Total Sales: '+fmtC(goalRev,0),
+            actual: fmtC(summary.ytdRevenue,2), target: financialBasis===goalBasis?fmtC(ytdGoal,0):ShopifyFinance.LABELS[goalBasis]+': '+fmtC(ytdGoal,0),
+            statusKey: financialBasis===goalBasis?status(summary.ytdRevenue,ytdGoal*0.9):'pending',
+            note: (viewData?.finance.start || '')+' → '+(viewData?.finance.end || '')+' · Goal basis: '+ShopifyFinance.LABELS[goalBasis]+': '+fmtC(goalRev,0),
           }),
 
         ),
@@ -1152,7 +1163,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         renderInsightCard(
           'What\'s working, what\'s not',
           'Automatic read of your revenue, AOV, conversion and repeat-rate numbers vs goal.',
-          goalView?.finance.status === 'actual' && !financeError && !financeSnapshot?.freshness?.warning ? InsightRules.buildOverviewInsight({ summary: goalView?.summary || {}, goals: GOALS, ytdGoal, monthly: goalView?.monthly || [], topProducts: goalView?.topProducts || [], fyLabel: viewData?.fyLabel }) : {verdict:null,bullets:[{tone:'neutral',text:'Financial coverage or freshness needs attention. Automated performance conclusions are withheld; covered figures retain their labelled reporting cutoff.'}]}
+          goalRev!=null && goalView?.finance.status === 'actual' && !financeError && !financeSnapshot?.freshness?.warning ? InsightRules.buildOverviewInsight({ summary: goalView?.summary || {}, goals: GOALS, ytdGoal, monthly: goalView?.monthly || [], topProducts: goalView?.topProducts || [], fyLabel: viewData?.fyLabel }) : {verdict:null,bullets:[{tone:'neutral',text:'Financial coverage or freshness needs attention. Automated performance conclusions are withheld; covered figures retain their labelled reporting cutoff.'}]}
         )
       ),
 
@@ -1164,7 +1175,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               el('div', {className:'lbl',style:{marginBottom:4}}, 'Yesterday performance'),
               el('div', {style:{fontSize:24,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1.1}}, dateLabel(yesterday?.date)),
               el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.5}},
-                ShopifyFinance.LABELS[financialBasis]+' · Orders and Shopify-reported AOV use native metrics · Targets remain Total Sales'+' · Independent of selected FY'+(yesterday?.marketingAvailable===false?' · Marketing/cost capture: '+(yesterday.importedMarketingDate || 'unavailable')+'; those metrics are unavailable for this day.':'')
+                ShopifyFinance.LABELS[financialBasis]+' · Orders and Shopify-reported AOV use native metrics · Targets use the saved scenario basis'+' · Independent of selected FY'+(yesterday?.marketingAvailable===false?' · Marketing/cost capture: '+(yesterday.importedMarketingDate || 'unavailable')+'; those metrics are unavailable for this day.':'')
               )
             ),
             el('div', {style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
@@ -1176,9 +1187,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         yesterday ? el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(190px,1fr))',gap:12,marginBottom:16},className:'grid-auto'},
           el(YesterdayCard, {
             icon:'ti-currency-pound', label:ShopifyFinance.LABELS[financialBasis], accentCol:'var(--grn)',
-            actual: fmtC(yesterday.revenue,2), target: financialBasis==='total_sales'?fmtC(yRevTarget,0):'Total Sales: '+fmtC(yRevTarget,0),
-            statusKey: financialBasis==='total_sales'?status(yesterday.revenue,yRevTarget):'pending',
-            note: 'Verified Shopify Analytics '+financialBasis+' · Total Sales actual: '+fmtC(yesterday.totalSales,2)+' · '+yesterday.status,
+            actual: fmtC(yesterday.revenue,2), target: financialBasis===goalBasis?fmtC(yRevTarget,0):ShopifyFinance.LABELS[goalBasis]+': '+fmtC(yRevTarget,0),
+            statusKey: financialBasis===goalBasis?status(yesterday.revenue,yRevTarget):'pending',
+            note: 'Verified Shopify Analytics '+financialBasis+' · Goal-basis actual: '+fmtC(goalView?.yesterday?.revenue,2)+' · '+yesterday.status,
           }),
           el(YesterdayCard, {
             icon:'ti-shopping-bag', label:'Orders', accentCol:'var(--amb)',
@@ -1222,8 +1233,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             icon:'ti-chart-pie', label:RorModel.METRICS.estimatedProfit.label, accentCol:'var(--pur)',
             actual: yesterday.profit==null?'Pending':fmtC(yesterday.profit,0),
             target: fmtC(yProfitTarget,0),
-            statusKey: yesterday.profit==null?'pending':status(yesterday.profit, yProfitTarget),
-            note: 'Estimated from costed SKUs; cost coverage: ' + (yesterday.costCoverage == null ? 'unknown' : fmtP(yesterday.costCoverage)) + '. Excludes operating expenses. Target = total sales target × margin goal.',
+            statusKey: 'pending',
+            note: 'Estimated from costed SKUs; cost coverage: ' + (yesterday.costCoverage == null ? 'unknown' : fmtP(yesterday.costCoverage)) + '. Excludes operating expenses. Shipping-inclusive contribution target pending costs.',
           })
         ) : el('div', {className:'card',style:{textAlign:'center',padding:'28px 20px'}},
           el('div', {style:{fontWeight:600,marginBottom:6}}, 'Yesterday data not available yet'),
@@ -1237,7 +1248,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:10}},
             el('div', null,
               el('div', {style:{fontWeight:500,fontSize:14}}, (viewData?.fy||'')+' Monthly Performance'),
-              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, (viewData?.fyLabel||'')+' · Total Sales targets scale with annual goal. YTD paced through '+(goalView?.finance.end || 'unavailable'))
+              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, (viewData?.fyLabel||'')+' · Saved-basis targets scale with annual goal. YTD paced through '+(goalView?.finance.end || 'unavailable'))
             ),
             el('div', {style:{display:'flex',gap:6,flexWrap:'wrap'}},
               [['on track','bg'],['close','ba'],['off track','br'],['future','bb']].map(([l,c])=>
@@ -1253,19 +1264,19 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             el('table', {style:{width:'100%',borderCollapse:'collapse',fontSize:13,minWidth:600}},
               el('thead', null,
                 el('tr', {style:{borderBottom:'1px solid var(--bdr2)',background:'var(--s2)'}},
-                  ['Month',ShopifyFinance.LABELS[financialBasis],'Total Sales target (comparable)','Total Sales variance vs target','Orders','Shopify-reported AOV','Conv rate','Repeat rate','Status'].map((h,i)=>
+                  ['Month',ShopifyFinance.LABELS[financialBasis],ShopifyFinance.LABELS[goalBasis]+' target (comparable)',ShopifyFinance.LABELS[goalBasis]+' variance vs target','Orders','Shopify-reported AOV','Conv rate','Repeat rate','Status'].map((h,i)=>
                     el('th', {key:i,style:{padding:'8px 12px',textAlign:i===0?'left':'right',fontSize:10,textTransform:'uppercase',letterSpacing:'0.07em',color:'var(--t2)',whiteSpace:i>=1&&i<=3?'normal':'nowrap',fontWeight:500}},h)
                   )
                 )
               ),
               el('tbody', null,
                 monthly.map((m,i)=>{
-                  const fullTarget = monthlyTarget(goalRev, i);
+                  const fullTarget = goalRev==null?null:monthlyTarget(goalRev, i);
                   const tgt = targetPlan?.months[i]?.expectedTarget ?? null;
                   const aov  = m.aov ?? null;
                   const rr   = m.repeatRate ?? null;
-                  const vari = GrowthTargets.variance(m.totalSales,tgt);
-                  const st = m.future?'future': vari==null?'pending':m.mtd?'mtd':status(m.totalSales,tgt*0.9);
+                  const vari = GrowthTargets.variance(goalView?.monthly?.[i]?.revenue,tgt);
+                  const st = m.future?'future': vari==null?'pending':m.mtd?'mtd':status(goalView?.monthly?.[i]?.revenue,tgt*0.9);
                   const varCol = vari==null?'var(--t3)':vari>=0?'var(--grn)':'var(--red)';
                   return el('tr', {key:m.key,style:{borderBottom:'1px solid var(--bdr)',opacity:m.future?0.4:1,background:i%2?'transparent':'var(--s2)11'}},
                     el('td', {style:{padding:'9px 12px',fontWeight:500,whiteSpace:'nowrap'}},
@@ -1274,7 +1285,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                       m.future&&el('span',{style:{fontSize:10,color:'var(--t3)',marginLeft:6,fontWeight:400}},'future')
                     ),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t1)'}}, m.revenue!=null?fmtC(m.revenue,2):'—',
-                      financialBasis!=='total_sales'&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Total Sales: '+fmtC(m.totalSales,2))),
+                      financialBasis!==goalBasis&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},ShopifyFinance.LABELS[goalBasis]+': '+fmtC(goalView?.monthly?.[i]?.revenue,2))),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, fmtC(m.future?fullTarget:tgt,2),
                       !m.future && targetPlan?.months[i]?.elapsedDays<targetPlan?.months[i]?.days&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Full month: '+fmtC(fullTarget,2)+' · '+targetPlan?.months[i]?.elapsedDays+'/'+targetPlan?.months[i]?.days+' verified days')),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:varCol}},
@@ -1298,7 +1309,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               el('tfoot', null,
                 el('tr', {style:{borderTop:'1px solid var(--bdr2)',background:'var(--s2)',fontWeight:600}},
                   el('td',{style:{padding:'9px 12px'}}, 'YTD Total'),
-                  el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:ytdPerformanceColour}}, fmtC(summary.ytdRevenue,2),financialBasis!=='total_sales'&&el('div',{style:{fontSize:10,color:'var(--t2)'}},'Total Sales: '+fmtC(goalView?.summary.ytdRevenue,2))),
+                  el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:ytdPerformanceColour}}, fmtC(summary.ytdRevenue,2),financialBasis!==goalBasis&&el('div',{style:{fontSize:10,color:'var(--t2)'}},ShopifyFinance.LABELS[goalBasis]+': '+fmtC(goalView?.summary.ytdRevenue,2))),
                   el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, fmtC(ytdGoal,2)),
                   el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:ytdPerformanceColour}},
                     GrowthTargets.signed(ytdVariance)),
@@ -1319,11 +1330,11 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
         el('div', {className:'card'},
           el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Top 10 Products — '+(viewData?.fy||'')),
-          el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:18}}, 'By '+ShopifyFinance.LABELS[financialBasis]+' · Includes unassigned adjustments · '+(viewData?.finance.productStatus || 'missing')),
+          el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:18}}, 'By '+ShopifyFinance.LABELS[financialBasis==='net_revenue'?'net_sales':financialBasis==='gross_revenue'?'gross_sales':financialBasis]+' (shipping not allocated)'+' · Includes unassigned adjustments · '+(viewData?.finance.productStatus || 'missing')),
           topProducts.length === 0 && el('div', {style:{fontSize:12,color:'var(--t3)',padding:'12px 0'}}, 'No product data yet for '+(viewData?.fy||'this year')+' — populates after the next nightly data refresh.'),
           topProducts.map((p,i) => {
             const totalRev = topProducts.reduce((s,t)=>s+(t.revenue||0),0);
-            const pct = totalRev ? (p.revenue/summary.ytdRevenue*100) : 0;
+            const pct = totalRev ? (p.revenue/(financialBasis==='net_revenue'?summary.ytdNetSales:financialBasis==='gross_revenue'?ShopifyIntegration.report(financeSnapshot,viewData.finance.start,viewData.finance.end,'gross_sales').revenue:summary.ytdRevenue)*100) : 0;
             return el('div', {key:i,style:{marginBottom:14}},
               el('div', {style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4,gap:8}},
                 el('div', {style:{fontSize:12,fontWeight:500,color:'var(--t1)',flex:1,lineHeight:1.4}}, p.name),
@@ -1342,13 +1353,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         el('div', {style:{display:'flex',flexDirection:'column',gap:12}},
           el('div', {className:'card'},
             el('div', {style:{fontWeight:500,fontSize:14,marginBottom:4}}, 'Concentration risk'),
-            el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:12}}, ShopifyFinance.LABELS[financialBasis]+' from top product'),
+            el('div', {style:{fontSize:12,color:'var(--t2)',marginBottom:12}}, 'Merchandise share from top product (shipping not allocated)'),
             el('div', {style:{fontSize:36,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1}},
-              topProducts[0] ? (topProducts[0].revenue/summary.ytdRevenue*100).toFixed(1)+'%' : '—'
+              topProducts[0] ? (topProducts[0].revenue/(financialBasis==='net_revenue'?summary.ytdNetSales:financialBasis==='gross_revenue'?ShopifyIntegration.report(financeSnapshot,viewData.finance.start,viewData.finance.end,'gross_sales').revenue:summary.ytdRevenue)*100).toFixed(1)+'%' : '—'
             ),
             el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.6}},
               topProducts[0]
-                ? topProducts[0].name + ' drives ' + Math.round(topProducts[0].revenue/summary.ytdRevenue*100) + '% of selected Shopify sales.' +
+                ? topProducts[0].name + ' drives ' + Math.round(topProducts[0].revenue/(financialBasis==='net_revenue'?summary.ytdNetSales:financialBasis==='gross_revenue'?ShopifyIntegration.report(financeSnapshot,viewData.finance.start,viewData.finance.end,'gross_sales').revenue:summary.ytdRevenue)*100) + '% of selected Shopify sales.' +
                   (topProducts[1] ? ' The next product is ' + Math.max(1, Math.round(topProducts[0].revenue/topProducts[1].revenue)) + '× smaller.' : '') +
                   ' Worth managing as a concentration risk.'
                 : 'No product data yet for ' + (viewData?.fy||'this year') + ' — populates after the next nightly data refresh.'
@@ -1385,6 +1396,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
         (() => {
           const es = (emailData || EMAIL_FALLBACK).summary;
+          const emailComparison=ManagementFinance.emailComparison(emailData || EMAIL_FALLBACK,financeSnapshot,financialBasis);
           return el(React.Fragment, null,
 
             el(EmailWhatIfBar, {
@@ -1421,10 +1433,10 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               }),
 
               el(MetricCard, {
-                icon:'ti-chart-pie', label:'Email+SMS Attribution', accentCol:'var(--blu)',
-                actual: es.attribution!=null ? fmtP(es.attribution,1) : '—', target: fmtP(EMAIL_GOALS_CLIENT.attribution,0),
-                statusKey: es.attribution!=null ? status(es.attribution, EMAIL_GOALS_CLIENT.attribution) : 'pending',
-                note: '£'+fmt(es.totalEmailRevenue90d)+' Klaviyo-attributed value / £'+fmt(es.totalStoreRevenue90d)+' Shopify total sales; not incremental sales',
+                icon:'ti-chart-pie', label:'Email value / selected store revenue', accentCol:'var(--blu)',
+                actual: emailComparison.ratio!=null ? fmtP(emailComparison.ratio,1) : '—', target: fmtP(EMAIL_GOALS_CLIENT.attribution,0),
+                statusKey: emailComparison.ratio!=null ? status(emailComparison.ratio, EMAIL_GOALS_CLIENT.attribution) : 'pending',
+                note: emailComparison.warning+' Preserved source ratio: '+fmtP(es.attribution,1)+' against reported Shopify Total Sales; exact window alignment unverified.',
               }),
 
               el(MetricCard, {
@@ -1800,6 +1812,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         shopifyTotals.orders = ShopifyIntegration.report(financeSnapshot, range.start, range.end, 'total_sales').orders;
         const hasShopifySessions = overlappingMonths.some((m) => m.sessions != null);
 
+        const managementAdActual = ShopifyIntegration.report(financeSnapshot,range.start,range.end,'net_revenue');
         const shopifyPanel = el('div', {className:'card'},
           el('div', {style:{marginBottom:14}},
             el('div', {style:{fontWeight:500,fontSize:14}}, 'Shopify actuals, for comparison'),
@@ -1815,6 +1828,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             ? el('div', {style:{fontSize:12.5,color:'var(--t3)'}}, 'No Shopify monthly data available for this range yet.')
             : el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:12}},
                 [
+                  {label:'Whole-store management revenue / ad spend (not ROAS)',val:adsChannel==='all'&&current.status==='complete'&&managementAdActual.status==='actual'&&current.spend>0?(managementAdActual.revenue/current.spend).toFixed(2)+'×':'Unavailable; requires both platforms and matched coverage'},
+                  {label:'Shopify management revenue (selected dates)',val:fmtC(managementAdActual.revenue,2)},
                   {label:'Shopify eligible orders (selected dates)', val: fmt(shopifyTotals.orders,0)},
                   {label:'Shopify sessions', val: hasShopifySessions ? fmt(shopifyTotals.sessions,0) : '—'},
                   {label:'Shopify conv. rate', val: hasShopifySessions && shopifyTotals.sessions ? fmtP(shopifyTotals.convertedSessions/shopifyTotals.sessions,2) : '—'},
@@ -1871,14 +1886,14 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               fmtP(summary.ytdCostCoverage,0)+' of YTD net merchandise sales has SKU cost data'
             ),
             el('div', {style:{fontSize:12,color:'var(--t2)',lineHeight:1.5}},
-              'Margin and profit estimates retain the original costed-SKU export and its imported net-sales basis. The revenue column uses verified Shopify net merchandise sales; these estimates and cost coverage have not been recomputed against the corrected source.'
+              'Management revenue including shipping: '+fmtC(ShopifyIntegration.report(financeSnapshot,viewData.finance.start,viewData.finance.end,'net_revenue').revenue,2)+'; shipping/fulfilment cost and contribution unavailable. Product profit estimates use canonical net merchandise × the existing costed-SKU margin. Cost records and reported cost-coverage fields remain the original legacy export; their coverage/freshness is not independently re-reconciled. Shipping does not inflate product profit.'
             )
           )
         ),
         el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))',gap:12,marginBottom:16}},
           [
             {lbl:'Margin % (costed SKUs)', val: summary.ytdMarginPct!=null?fmtP(summary.ytdMarginPct,1):'—', note:'Goal: '+fmtP(GOALS.margin,0)+' · Gross profit ÷ net merchandise sales, costed SKUs only'},
-            {lbl:'Est. gross profit YTD',  val: summary.ytdEstGrossProfit!=null?fmtC(summary.ytdEstGrossProfit,0):'—', note:'Goal: '+fmtC(ytdGoal*GOALS.margin,0)+' (existing Total Sales target × margin goal; a proxy, not a comparable net-profit target) · Existing costed-export estimate'},
+            {lbl:'Est. product gross profit YTD',  val: summary.ytdEstGrossProfit!=null?fmtC(summary.ytdEstGrossProfit,0):'—', note:'Canonical net merchandise × legacy costed-SKU margin, estimated; no shipping margin assumption. Contribution/profit target pending costs.'},
             {lbl:'Cost of goods (costed)', val: summary.ytdCostOfGoodsSold!=null?fmtC(summary.ytdCostOfGoodsSold,0):'—', note:'Actual COGS on SKUs with cost data'},
             {lbl:'Cost data coverage',     val: summary.ytdCostCoverage!=null?fmtP(summary.ytdCostCoverage,0):'—', note:'Share of imported net sales with a costed SKU'},
           ].map((item,i)=>
@@ -1894,6 +1909,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           const lc = {...originalLc, rolling:LtvCac.safeWindow(originalLc.rolling), cumulative:LtvCac.safeWindow(originalLc.cumulative), previousRolling:LtvCac.safeWindow(originalLc.previousRolling)};
           if(lc.rolling.ratio==null || (lc.previousRolling && lc.previousRolling.ratio==null)) lc.rollingComparison={status:'incomplete',note:'Comparison withheld: both platforms must provide spend in both periods.'};
           const goals = lc.goals;
+          const methodologyLabel=lc.methodology?.version || 'legacy-period-proxy-v3';
 
           const renderWindow = (title, desc, w, comparison) => {
             const hasRatio = w.ratio != null;
@@ -1934,7 +1950,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                   el('div', { style: { fontWeight: 500, fontSize: 14, marginBottom: 4 } }, title),
                   el('div', { style: { fontSize: 12, color: 'var(--t2)', lineHeight: 1.5, maxWidth: 480 } },
                     w.window.monthsUsed
-                      ? desc(w) + ' · estimated blended CAC = Meta + Google spend ÷ estimated new customers · gross-profit proxy = legacy native AOV × orders/customer × costed-SKU margin. Monthly customer counts are not deduplicated; not paid-only CAC or observed cohort LTV.'
+                      ? desc(w) + ' · estimated blended CAC = Meta + Google spend ÷ estimated new customers · gross-profit proxy ('+methodologyLabel+') = '+(lc.methodology?.version==='product-profit-proxy-v4'?'canonical net merchandise per native order':'legacy native AOV')+' × orders/customer × costed-SKU margin. Shipping excluded; source/checksum metadata retained. Monthly customer counts are not deduplicated; not paid-only CAC or observed cohort LTV.'
                       : 'Waiting on the first LTV:CAC data pull'
                   )
                 ),
@@ -2079,22 +2095,31 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
      of this. -->
 <script src="dashboard2/data-model.js"></script>
 <script src="dashboard2/data-adapter.js"></script>
-<script src="dashboard2/calculations.js"></script>
+<script src="dashboard2/calculations.js?v=management-v1"></script>
 <script src="dashboard2/charts.js"></script>
-<script src="dashboard2/ror-sales-app.js?v=publication-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=management-v1"></script>
 
-<script src="finance/contract.js"></script>
-<script src="finance/integration.js?v=growth-targets-v1"></script>
+<script src="finance/contract.js?v=management-v1"></script>
+<script src="finance/management.js"></script>
+<script src="planning/config.js"></script>
+<script src="planning/scenarios.js"></script>
+<script src="planning/control.js"></script>
+<script src="finance/marketplaces/contract.js"></script>
+<script src="finance/marketplaces/loader.js"></script>
+<script src="finance/integration.js?v=management-v1"></script>
 <script src="finance/freshness.js"></script>
 <script src="finance/loader.js?v=publication-v1"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');
-  const [financialBasis, setFinancialBasis] = useState('net_sales');
+  const [financialBasis, setFinancialBasis] = useState('net_revenue');
   const [financeSnapshot, setFinanceSnapshot] = useState(null);
   const [financeError, setFinanceError] = useState('');
   useEffect(() => { let active=true; const refresh=()=>ShopifyFinanceLoader.load({force:true}).then(s=>{if(active){setFinanceSnapshot(s);setFinanceError('');}}).catch(e=>{if(active)setFinanceError(e.message);}); refresh(); const timer=setInterval(refresh,15*60*1000); return ()=>{active=false;clearInterval(timer);}; }, []);
-  const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError};
+  const [marketplaceSnapshot,setMarketplaceSnapshot]=useState(null);
+  const [marketplaceError,setMarketplaceError]=useState(null);
+  useEffect(()=>{MarketplaceFinanceLoader.load().then(setMarketplaceSnapshot).catch(e=>setMarketplaceError(e.message));},[]);
+  const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
     activeDashboard === 'ror-sales' ? el(RorSalesApp, financeProps) : el(App, financeProps)

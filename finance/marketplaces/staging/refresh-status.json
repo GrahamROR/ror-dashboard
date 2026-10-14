@@ -1,0 +1,12 @@
+{
+  "status": "validated-historical",
+  "checked_at": "2026-10-12T15:55:36.462Z",
+  "mechanism": "Controlled Etsy paired CSV/Stats + retained NOTHS native cohort with independent gross controls",
+  "live": false,
+  "financial_reporting_status": "provisional-management; Etsy Stats/source components validated, NOTHS refund-adjusted net not certified",
+  "source_covered_through": {
+    "etsy": "2026-09-30",
+    "noths": "2026-07-31"
+  },
+  "promotion": "Review candidate; no automatic marketplace production refresh"
+}

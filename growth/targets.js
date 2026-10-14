@@ -6,19 +6,21 @@
   const normalised = seasonal.map(n=>n/sum);
   normalised[11] = 1-normalised.slice(0,11).reduce((a,b)=>a+b,0);
   const weights = Object.freeze(normalised);
-  function allocate(goal){
+  function allocate(goal,profile=seasonal){
+    if(!Array.isArray(profile)||profile.length!==12||profile.some(n=>!Number.isSafeInteger(n)||n<0)||!profile.some(n=>n>0))throw Error('Invalid seasonal profile');
+    const total=profile.reduce((a,b)=>a+b,0);
     const cents=Math.round(goal*100);
     if(!Number.isSafeInteger(cents)||cents<0)throw Error('Invalid annual goal');
-    const rows=seasonal.map((n,i)=>({i,cents:Math.floor(cents*n/sum),remainder:(cents*n)%sum}));
+    const rows=profile.map((n,i)=>({i,cents:Math.floor(cents*n/total),remainder:(cents*n)%total}));
     let left=cents-rows.reduce((a,r)=>a+r.cents,0);
     for(const r of [...rows].sort((a,b)=>b.remainder-a.remainder||a.i-b.i)){if(left--<=0)break;r.cents++;}
     return rows.map(r=>r.cents/100);
   }
   function monthDays(key){return new Date(Date.UTC(+key.slice(0,4),+key.slice(5,7),0)).getUTCDate();}
-  function plan(goal,fy,cutoff){
+  function plan(goal,fy,cutoff,profile=seasonal){
     if(!/^FY\d{2}$/.test(fy))throw Error('Invalid financial year');
     if(cutoff!=null&&(!/^\d{4}-\d{2}-\d{2}$/.test(cutoff)||new Date(cutoff+'T00:00:00Z').toISOString().slice(0,10)!==cutoff))throw Error('Invalid reporting cutoff');
-    const year=2000+Number(fy.slice(2)),targets=allocate(goal);
+    const year=2000+Number(fy.slice(2)),targets=allocate(goal,profile);
     const months=targets.map((fullTarget,i)=>{
       const key=new Date(Date.UTC(year-1,7+i,1)).toISOString().slice(0,7),days=monthDays(key);
       const elapsedDays=cutoff==null?null:cutoff<key+'-01'?0:cutoff.slice(0,7)>key?days:Math.min(days,+cutoff.slice(8));

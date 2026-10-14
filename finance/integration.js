@@ -1,17 +1,21 @@
 // Adapters for the existing dashboards. Source records and marketing fields are immutable.
 (function (root, factory) {
   if (typeof module === "object" && module.exports)
-    module.exports = factory(require("./contract"));
-  else root.ShopifyIntegration = factory(root.ShopifyFinance);
-})(typeof window === "undefined" ? globalThis : window, function (F) {
+    module.exports = factory(require("./contract"), require("./management"));
+  else root.ShopifyIntegration = factory(root.ShopifyFinance, root.ManagementFinance);
+})(typeof window === "undefined" ? globalThis : window, function (F, M) {
   "use strict";
-  const BASIS = ["net_sales", "gross_sales", "total_sales"];
+  const BASIS = ["net_revenue", "gross_revenue", "net_sales", "gross_sales", "total_sales", "legacy_gross"];
   const labels = {
+    legacy_gross: "Legacy Imported Gross (ROR Sales only)",
+    net_revenue: "Net Revenue Including Shipping",
+    gross_revenue: "Gross Revenue Including Shipping",
     net_sales: "Net Sales",
     gross_sales: "Gross Sales",
     total_sales: "Total Sales",
   };
   const aovLabel = (b) =>
+    b === "net_revenue" || b === "gross_revenue" ? labels[b]+" per order" :
     b === "net_sales"
       ? "Net AOV"
       : b === "gross_sales"
@@ -29,15 +33,19 @@
           average_order_value: null,
           warnings: ["Verified Shopify finance unavailable."],
         };
+    const derived = snapshot ? M.shopify(snapshot,start,end,basis) : null;
+    const value = derived?.value ?? null;
     return {
       ...r,
-      revenue: pounds(r[basis]),
+      status: value==null ? "missing" : r.status,
+      warnings: [...(r.warnings||[]),...(derived?.warning?[derived.warning]:[])],
+      revenue: pounds(value),
       netSales: pounds(r.net_sales),
       totalSales: pounds(r.total_sales),
       aov: r.average_order_value,
       netAov: r.net_aov,
       basisAov:
-        r.orders > 0 && r[basis] != null ? r[basis] / 100 / r.orders : null,
+        r.orders > 0 && value != null ? value / 100 / r.orders : null,
       basis,
     };
   }
@@ -92,6 +100,8 @@
         ...m,
         revenue: r.revenue,
         netSales: r.netSales,
+        estGrossProfit: r.netSales!=null && Number.isFinite(m.marginPctCovered) && (last<=range.end || view.marketingYesterday?.date===end) ? Math.round(r.netSales*m.marginPctCovered*100)/100 : null,
+        productProfitVersion: 'canonical-net-product-proxy-v1',
         totalSales: r.totalSales,
         orders: r.orders,
         aov: r.aov,
@@ -105,10 +115,14 @@
         future: start > requested.end,
       };
     });
+    const costMonths = monthly.filter(m=>m.financialStart<=range.end);
+    const expectedCostMonths = (Number(range.end.slice(0,4))-Number(range.start.slice(0,4)))*12 + Number(range.end.slice(5,7))-Number(range.start.slice(5,7))+1;
     const summary = {
       ...view.summary,
       ytdRevenue: result.revenue,
       ytdNetSales: result.netSales,
+      ytdEstGrossProfit: result.status==='actual' && costMonths.length===expectedCostMonths && costMonths.length>0 && new Set(costMonths.map(m=>m.key)).size===expectedCostMonths && costMonths.every(m=>m.estGrossProfit!=null) ? costMonths.reduce((s,m)=>s+Math.round(m.estGrossProfit*100),0)/100 : null,
+      productProfitVersion: 'canonical-net-product-proxy-v1',
       ytdTotalSales: result.totalSales,
       ytdOrders: result.orders,
       avgAOV: result.aov,
@@ -120,8 +134,8 @@
       (view.topProducts || []).map((p) => [p.name, p]),
     );
     const grouped =
-      snapshot && range.start <= range.end
-        ? F.products(snapshot, range.start, range.end, basis)
+      snapshot && basis!=='legacy_gross' && range.start <= range.end
+        ? F.products(snapshot, range.start, range.end, basis==='net_revenue'?'net_sales':basis==='gross_revenue'?'gross_sales':basis)
         : { rows: [], status: "missing", residual: null };
     const topProducts = grouped.rows.slice(0, 10).map((p) => ({
       ...originalProducts.get(p.title),
@@ -156,6 +170,8 @@
       yesterday: {
             ...marketing,
             ...yr,
+            profit: yr.netSales!=null && sameMarketingDate && Number.isFinite(marketing?.margin) ? Math.round(yr.netSales*marketing.margin*100)/100 : null,
+            productProfitVersion: 'canonical-net-product-proxy-v1',
             date: yesterdayDate,
             monthKey: yesterdayDate.slice(0, 7),
             importedMarketingDate: y?.date || null,

@@ -33,6 +33,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Read latest committed financial dependencies
+        run: |
+          git fetch origin "$GITHUB_REF_NAME"
+          git merge --ff-only FETCH_HEAD
+          node -e 'require("./finance/dependencies").load(process.cwd())'
+
       - name: Fetch ad spend from Meta + Google Ads
         env:
           META_ACCESS_TOKEN:           ${{ secrets.META_ACCESS_TOKEN }}
