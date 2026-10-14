@@ -33,7 +33,7 @@ Existing product-only costed margin/profit inputs and calculations remain untouc
 
 ## Testing and visual gate
 
-Local regression: 136 tests, 134 pass, 2 existing private-evidence skips, zero failures; includes the private native gross-shipping capture. Headless component/handler checks cover all seven tabs for FY26/FY27, prominent selected actuals, original model slider/reset behaviour, annual goal lock/reset and ROR sections. These are not browser screenshots. Public CI intentionally omits the private gross-shipping capture; native transport/control tests remain mandatory.
+Local regression: 140 tests, 138 pass, 2 existing private-evidence skips, zero failures; includes the private native gross-shipping capture. Headless component/handler checks cover all seven tabs for FY26/FY27, prominent selected actuals, original model slider/reset behaviour, annual goal lock/reset and ROR sections. These are not browser screenshots. Public CI intentionally omits the private gross-shipping capture; native transport/control tests remain mandatory.
 
 Approved browser-control tooling is unavailable. No fresh desktop/mobile screenshots or visual pass are claimed. Merge remains blocked on side-by-side visual acceptance and explicit owner approval.
 
@@ -54,3 +54,11 @@ Failed-refresh last-good retention, warning publication, live API recovery, pres
 Local comparison URLs: production-main reference `http://127.0.0.1:8773/`; simplified branch with unchanged production snapshot `http://127.0.0.1:8772/`. Neither is deployed. The latter intentionally withholds Gross Sales until a validated gross-shipping snapshot is supplied.
 
 For pre-merge Net/Gross/Total visual acceptance with the actual validated source, use `http://127.0.0.1:8774/`. This serves the same simplified interface from an isolated copy, with only its local finance pointer/status switched to the matching staging snapshot. Production and review-branch exports remain unchanged. Compare this against the production-main reference at port 8773; use port 8772 specifically to check the old-snapshot unavailable-Gross warning. These previews are inspection aids, not claimed visual acceptance.
+
+## ROR Sales availability and comparisons
+
+All three original ROR sections now open explicitly on Previous Financial Year (FY26 at the review date), rather than opening Current FY and trailing ranges whose NOTHS source is absent. FY26 Net Sales immediately shows £398,139.18: Shopify £271,670.54, Etsy £25,744.84, NOTHS £100,723.80. This is a provisional management estimate. All 12 monthly rows, comparison total, explorer series and channel contribution reconcile to this total. Eleven FY26 MoM comparisons are supported; August versus July 2025 and FY26 Net Sales YoY are withheld because comparable prior marketplace evidence is absent.
+
+Each dashboard retains its own explicitly selected financial basis. Growth Gross/Total cannot blank the initial All Stores Net view, and an explicit ROR legacy selection cannot change Growth's selected measure. Unsupported All Stores Gross/Total options are disabled; existing selections are explained rather than substituted. Channel contribution labels follow the selected basis, including Provisional marketplace qualifiers.
+
+Current FY, calendar years, rolling periods and custom dates remain selectable independently in the original three sections. Selecting Current FY still withholds incomplete All Stores Net Sales; the covered Shopify-only view and source-controlled Etsy August/September remain accessible. Legacy Imported Gross is available only through explicit selection and retains coverage caveats. No FY25/FY27 financial records have been invented or overwritten.

@@ -2085,7 +2085,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <script src="dashboard2/data-adapter.js"></script>
 <script src="dashboard2/calculations.js"></script>
 <script src="dashboard2/charts.js"></script>
-<script src="dashboard2/ror-sales-app.js?v=foundation-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=foundation-ror-v2"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/management.js?v=foundation-v1"></script>
@@ -2099,15 +2099,16 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');
   const [financialBasis, setFinancialBasis] = useState('net_revenue');
+  const [rorFinancialBasis,setRorFinancialBasis]=useState('net_revenue'); // Explicit per-dashboard selection; Shopify-only bases cannot blank All Stores on entry.
   const [financeSnapshot, setFinanceSnapshot] = useState(null);
   const [financeError, setFinanceError] = useState('');
   useEffect(() => { let active=true; const refresh=()=>ShopifyFinanceLoader.load({force:true}).then(s=>{if(active){setFinanceSnapshot(s);setFinanceError('');}}).catch(e=>{if(active)setFinanceError(e.message);}); refresh(); const timer=setInterval(refresh,15*60*1000); return ()=>{active=false;clearInterval(timer);}; }, []);
   const [marketplaceSnapshot,setMarketplaceSnapshot]=useState(null);
   const [marketplaceError,setMarketplaceError]=useState(null);
   useEffect(()=>{MarketplaceFinanceLoader.load().then(setMarketplaceSnapshot).catch(e=>setMarketplaceError(e.message));},[]);
-  const financeProps = {financeSnapshot, financialBasis, setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
+  const financeProps = {financeSnapshot, financialBasis:activeDashboard==='ror-sales'?rorFinancialBasis:financialBasis, setFinancialBasis:activeDashboard==='ror-sales'?setRorFinancialBasis:setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
   return el(React.Fragment, null,
-    el(RorTopNavSwitcher, {active:activeDashboard,onChange:next=>{if(next==='shopify'&&financialBasis==='legacy_gross')setFinancialBasis('net_revenue');setActiveDashboard(next);}}),
+    el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
     activeDashboard === 'ror-sales' ? el(RorSalesApp, financeProps) : el(App, financeProps)
   );
 }

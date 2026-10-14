@@ -22,7 +22,7 @@ function render(node) {
     context.useState = initial => {
       const n=hook++;
       if (name === 'RorSalesApp') return [[false,'',data.meta,data.records,'all',selected,{start:'2024-02-01',end:'2024-02-29'},'mom'][n],()=>{}];
-      return [initial === 'last12Months' ? selected : initial && typeof initial === 'object' && 'start' in initial ? {start:'2024-02-01',end:'2024-02-29'} : initial,()=>{}];
+      return [initial === 'previousFY' ? selected : initial && typeof initial === 'object' && 'start' in initial ? {start:'2024-02-01',end:'2024-02-29'} : initial,()=>{}];
     };
     return render(node.type({...node.props,children:node.children}));
   }
