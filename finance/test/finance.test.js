@@ -409,6 +409,7 @@ test("Collector assembles a complete custom-period capture; partial batches neve
     const data = {
       ...row("2026-01-15"),
       month: "2026-01-01",
+      gross_shipping_charges: "0",
       product_title: "",
       average_order_value: "45",
     };
@@ -420,6 +421,7 @@ test("Collector assembles a complete custom-period capture; partial batches neve
         : q.includes("TIMESERIES month")
           ? ["month", ...F.ADDITIVE, "average_order_value"]
           : [...F.ADDITIVE, "average_order_value"];
+    if(q.includes('gross_shipping_charges'))names.push('gross_shipping_charges');
     return {
       status: 200,
       ok: true,

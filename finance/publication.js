@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),cp=require('node:child_process'),assert=require('node:assert/strict');
 const F=require('./contract'),B=require('./build-staging'),R=require('./refresh');
 const ROOT='finance/staging',EXPORTS=['data.json','ads-data.json','email-data.json','ltv-cac.json','dashboard2/sales-data.json'];
-const PRODUCERS=['finance/contract.js','finance/build-staging.js','finance/collect.js','finance/refresh.js','finance/integration.js','finance/publication.js','finance/pages-publication.js','finance/freshness.js','finance/loader.js','scripts/publish-data.js','index.html','dashboard2/calculations.js','dashboard2/ror-sales-app.js'];
+const PRODUCERS=['finance/contract.js','finance/management.js','finance/build-staging.js','finance/collect.js','finance/refresh.js','finance/integration.js','finance/publication.js','finance/pages-publication.js','finance/freshness.js','finance/loader.js','scripts/publish-data.js','index.html','dashboard2/calculations.js','dashboard2/ror-sales-app.js'];
 function git(repo,args,options={}){return cp.execFileSync('git',['-C',repo,...args],{encoding:'utf8',maxBuffer:64*1024*1024,stdio:['pipe','pipe','pipe'],...options}).trim();}
 function blob(repo,rev,file){try{return cp.execFileSync('git',['-C',repo,'show',rev+':'+file],{maxBuffer:64*1024*1024,stdio:['pipe','pipe','pipe']});}catch(error){if(error.status===128)return null;throw error;}}
 function same(a,b){return a===null?b===null:b!==null&&a.equals(b);}
@@ -11,7 +11,7 @@ function validate(s){
  assert.equal(s.store.currency,'GBP');assert.equal(s.store.timezone,'Europe/London');assert.equal(s.store.domain,'rockonruby.myshopify.com');
  const full=F.select(s,s.coverage.start,s.coverage.end);assert.equal(full.missingDays,0);assert.equal(full.status,'actual');
  const periods=s.periods.filter(p=>p.start!==p.end);assert.ok(periods.length>0);
- for(const p of s.periods){const a=F.select(s,p.start,p.end);for(const k of F.ADDITIVE){assert.notEqual(p[k],null);assert.equal(a[k],p[k]);}if(p.start!==p.end)for(const k of F.MONEY)assert.equal(F.products(s,p.start,p.end,k).status,'reconciled');}
+ for(const p of s.periods){const a=F.select(s,p.start,p.end);for(const k of [...F.ADDITIVE,...(s.days.some(d=>Object.hasOwn(d,'gross_shipping_charges'))?['gross_shipping_charges']:[])]){assert.notEqual(p[k],null);assert.notEqual(p[k],undefined);assert.equal(a[k],p[k]);}if(p.start!==p.end)for(const k of F.MONEY)assert.equal(F.products(s,p.start,p.end,k).status,'reconciled');}
  for(let d=s.coverage.start;d<=s.coverage.end;){const end=new Date(Date.UTC(+d.slice(0,4),+d.slice(5,7),0)).toISOString().slice(0,10),e=end<s.coverage.end?end:s.coverage.end;assert.ok(s.periods.some(p=>p.start===d&&p.end===e),'Missing independent monthly control');d=F.next(e);}
  for(const d of s.days){assert.equal(d.net_sales,d.gross_sales+d.discounts+d.sales_reversals);assert.ok(Number.isSafeInteger(d.orders)&&d.orders>=0);}
  return {start:s.coverage.start,end:s.coverage.end,days:s.days.length,nativeControls:periods.length};
