@@ -10,7 +10,7 @@ This branch extends the original dashboards. It does not change native Shopify f
 | Growth Products | Canonical product facts | Shipping not allocated; merchandise rankings / merchandise denominator retained |
 | Growth goals / What-If | `planning/config.js`, `planning/scenarios.js`, `growth/targets.js` | FY27 Shopify £300k net including shipping; historical £500k Total Sales preserved |
 | ROR KPIs / comparison / explorer / contribution | `dashboard2/calculations.js` → management contract | Shared Shopify; controlled Etsy; NOTHS provisional cohort; explicit legacy view |
-| All Stores annual planning | Published independent £500k management Goal | £600k illustrative; monthly/seasonal projections gated pending reviewed All Stores profile |
+| All Stores annual planning | Published independent £500k management Goal | £600k illustrative; FY26 combined-channel seasonal illustration; profile approval remains pending |
 | Margin | Existing costed-SKU COGS / profit | Product-only estimate preserved; shipping revenue shown separately; contribution withheld without costs |
 | LTV:CAC | `finance/dependencies.js`, canonical net merchandise/orders + legacy customer/cost inputs | v4 product-profit period proxy; no shipping-margin uplift; no unique-cohort or paid-only CAC claim |
 | Ads | Original `ads-data.json` | Native ROAS / CPA unchanged; separate matched-period store revenue, whole-store revenue/spend ratio requires both platforms |
@@ -34,7 +34,7 @@ Read-only published targets in `planning/config.js` include financial year, scop
 
 Break-even requires reviewed fixed costs / contribution ratio, Shopify overhead allocation or All Stores sales mix. Local assumptions are editable; results remain provisional operating break-even, not cashflow break-even. Contributions must cover product, labour, packaging, postage, fulfilment, commissions, processing fees and variable marketing. No amount is inferred from SKU gross margin alone.
 
-Shopify seasonality remains normalized with largest-remainder penny targets. Current-month pacing uses the latest covered completed London day. All Stores does not silently inherit Shopify seasonality. That profile is a genuine remaining planning limitation.
+Shopify seasonality remains normalized with largest-remainder penny targets. Current-month pacing uses the latest covered completed London day. All Stores does not silently inherit Shopify seasonality. The planner derives an explicitly illustrative FY26 combined management profile from all three channels. Monthly allocations reconcile to the independent annual Goal; this source-based assumption is not an approved shared profile. Missing FY27 actuals and forecasts remain withheld.
 
 ## Refresh / release / rollback
 
@@ -42,7 +42,7 @@ Schedules remain unchanged. Finance is fully recollected/verified by the existin
 
 Etsy stays on the paired CSV + independent Stats process: August/September candidates retained, October absent. NOTHS `import-noths.js` has no network/writes to source systems: a supported complete capture, reviewed monthly native gross controls, unique IDs, dates and GBP are required; output goes to independent staging. The existing collector is read-only and is not scheduled or activated. Raw captures/control evidence stay private. Approve/import a new sanitized immutable snapshot only after controls pass; retain its previous pointer for rollback.
 
-Release requires owner approval plus desktop/mobile visual acceptance, a successful first native-gross-shipping refresh before promoting that option, reviewed All Stores seasonality if enabling its monthly forecasts, and cost approval for contribution outputs. Do not claim missing FY27 marketplace management totals.
+Release requires owner approval plus desktop/mobile visual acceptance, a successful first native-gross-shipping refresh before promoting that option, approval of the illustrated All Stores seasonal profile for official forecasts, and cost approval for contribution outputs. Do not claim missing FY27 marketplace management totals.
 
 After approval, merge this coordinated PR; existing Pages handles code and sanitized candidate snapshot. Run the existing financial refresh first, then derivative LTV; verify served checksums/source IDs and both dashboards. No automatic old LTV rewrite is in the PR. V3 1.50:1 / 2.26:1 remain historical estimates, not constraints on V4. Offline V4 preview with the unchanged published rolling-window spend gives 1.48:1 / 2.20:1; these are not newly API-verified or published. Cumulative V4 is clipped to canonical source-covered completed months beginning January 2024; matching spend must be recollected for its changed interval, so no offline cumulative value is manufactured.
 
@@ -56,6 +56,6 @@ No approved browser-control tool is available. Manual desktop/mobile acceptance 
 
 ## Validation outcome (14 October)
 
-Local full suite: **137 tests, 135 passed, 2 existing private-evidence skips, 0 failed**, with the privately retained native gross-shipping candidate supplied. Public CI omits that private capture and adds one deliberate skip for its source-control test; synthetic gross-component/collection/reconciliation tests remain mandatory. The 16 headless interface cases pass, including both original dashboards and FY26/FY27 × seven Growth tabs. These are not desktop/mobile screenshot evidence. Protected exports and all original finance snapshots/manifests/status match their latest-main exact-byte baselines.
+Local full suite: **139 tests, 137 passed, 2 existing private-evidence skips, 0 failed**, with the privately retained native gross-shipping candidate supplied. Public CI omits that private capture and adds one deliberate skip for its source-control test; synthetic gross-component/collection/reconciliation tests remain mandatory. The 16 headless interface cases pass, including both original dashboards and FY26/FY27 × seven Growth tabs. These are not desktop/mobile screenshot evidence. Protected exports and all original finance snapshots/manifests/status match their latest-main exact-byte baselines.
 
 Native gross-shipping definition: [Shopify sales schema](https://shopify.dev/docs/api/shopifyql/latest/schemas/sales_revenue/sales#salesmetric-propertydetail-grossshippingcharges). It is before shipping discounts and excludes shipping reversals, unlike net shipping; no source return is converted into merchandise revenue.

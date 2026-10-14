@@ -35,7 +35,8 @@ function publish(out, snapshot) {
   atomic(path.join(out, "refresh-status.json"), {
     status: "validated-historical",
     checked_at: new Date().toISOString(),
-    mechanism: "paired CSV + independent period controls",
+    mechanism: snapshot.channels?.noths ? "Etsy paired CSV/Stats (where present) + approved NOTHS native cohort/gross controls" : "paired CSV + independent period controls",
+    financial_reporting_status: snapshot.channels?.noths ? "provisional-management; source components validated, refund-adjusted net not certified" : "source-validated Etsy Stats",
     live: false,
   });
   return id;

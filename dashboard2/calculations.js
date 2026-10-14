@@ -134,6 +134,7 @@ function aggregate(records, opts) {
 
 function compareAggregates(currentAgg, previousAgg, metric) {
   if(metric!=='units'&&currentAgg?.financialBasis&&previousAgg?.financialBasis&&currentAgg.financialBasis!==previousAgg.financialBasis)return {status:'incompatible-basis',current:currentAgg[metric],previous:previousAgg[metric],absoluteChange:null,percentChange:null,note:'Financial definitions differ; comparison withheld.'};
+  if(metric==='orders'){if(currentAgg?.ordersStatus)currentAgg={...currentAgg,status:currentAgg.ordersStatus};if(previousAgg?.ordersStatus)previousAgg={...previousAgg,status:previousAgg.ordersStatus};}
   if(metric==='units') {
     if(currentAgg?.unitsStatus)currentAgg={...currentAgg,status:currentAgg.unitsStatus};
     if(previousAgg?.unitsStatus)previousAgg={...previousAgg,status:previousAgg.unitsStatus};

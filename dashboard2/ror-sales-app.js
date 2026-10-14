@@ -458,13 +458,13 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
-        el(RorPlanningControl,{scope:topStore==='shopify'?'shopify':'all',shop:financeSnapshot,markets:marketplaceSnapshot}),
         el('div',{style:{display:'flex',flexDirection:'column',gap:4}},
           el(FilterLabel,null,'Financial reporting basis'),
           el(Select,{value:financialBasis,onChange:setFinancialBasis,ariaLabel:'ROR Shopify financial basis',options:Object.entries(ManagementFinance.LABELS).map(([value,label])=>({value,label}))})),
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
-          'KPI cards and channel contribution use these filters. Comparison dates are independent; its store follows this filter. Sales explorer has independent dates and stores.')
+          'KPI cards and channel contribution use these filters. Comparison dates are independent; its store follows this filter. Sales explorer has independent dates and stores.'),
+        el(RorPlanningControl,{scope:topStore==='shopify'?'shopify':'all',shop:financeSnapshot,markets:marketplaceSnapshot})
       ),
 
       el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
