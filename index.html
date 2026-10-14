@@ -985,7 +985,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           ShopifyIntegration.BASIS.map(k=>el('option',{key:k,value:k},ShopifyIntegration.labels[k]))),
         el('span',{style:{color:'var(--t3)'}}, 'Goal: Net Sales · Verified through '+(financeSnapshot?.coverage.end || 'unavailable'))
       ),
-      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
+      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':financialBasis==='gross_revenue'&&viewData?.finance.gross_shipping_validated===false?'Gross shipping awaits a verified refresh; Gross Sales is unavailable.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
 
       // ── WHAT-IF BAR ─────────────────────────────────────────────
       el(WhatIfBar, {
