@@ -16,6 +16,9 @@
   ];
   const ADDITIVE = [...MONEY, "orders"];
   const LABELS = {
+    legacy_gross: "Legacy imported gross (ROR Sales only)",
+    net_revenue: "Net revenue including shipping",
+    gross_revenue: "Gross revenue including shipping",
     gross_sales: "Gross merchandise sales",
     discounts: "Discounts",
     sales_reversals: "Sales reversals",
@@ -28,6 +31,9 @@
     net_aov: "Net merchandise AOV",
   };
   const DEFINITIONS = {
+    legacy_gross: "Legacy imported gross is supported in ROR Sales. Growth native financial amounts are unavailable on this basis; no substitute.",
+    net_revenue: "Native net merchandise + net shipping; no blanket VAT adjustment. Management revenue, not certified VAT-exclusive accounting turnover.",
+    gross_revenue: "Native gross merchandise + independently validated gross shipping; unavailable without complete gross-shipping evidence.",
     gross_sales:
       "Product sales before discounts and reversals; excludes shipping and taxes.",
     discounts:
