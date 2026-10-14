@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-14T08:08:08.492Z",
+  "updated": "2026-10-14T08:57:43.999Z",
   "days": {
     "2025-08-01": {
       "google": {
@@ -7887,11 +7887,11 @@
     },
     "2026-10-13": {
       "meta": {
-        "spend": 113.77,
+        "spend": 113.79,
         "conversions": 6,
         "conversionValue": 229.96,
         "clicks": 599,
-        "impressions": 21648,
+        "impressions": 21652,
         "source": "Meta Marketing API insights"
       },
       "google": {
