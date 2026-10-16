@@ -1,7 +1,7 @@
 {
-  "snapshot_id": "c59d973f52d73636e01dce99dc41b4f039f4036ac5c7407fb752adc54deb00f3",
-  "file": "snapshots/c59d973f52d73636e01dce99dc41b4f039f4036ac5c7407fb752adc54deb00f3.json",
-  "sha256": "ad147425281f603998e21e8d4713bacbd10514b73ec6fd0cf68cc00b028365cc",
-  "previous_snapshot_id": "8ab455ef195039e8fe4046aa990df61d3566a55d2ea8baa6ff4d459690074209",
+  "snapshot_id": "91be7ec088e90b6a82d26edf61878e475d0a96f4d8d12a9950d868a3b421446d",
+  "file": "snapshots/91be7ec088e90b6a82d26edf61878e475d0a96f4d8d12a9950d868a3b421446d.json",
+  "sha256": "a8acb83c78cf05934483cdb9a1f7d7be62f48bdfd38099a0a77fc9c03559a9a1",
+  "previous_snapshot_id": "c59d973f52d73636e01dce99dc41b4f039f4036ac5c7407fb752adc54deb00f3",
   "approval": "Canonical commercial reporting; production publication requires explicit activation"
 }
