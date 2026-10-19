@@ -87,6 +87,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <body>
 <div id="root"></div>
 <script src="growth/targets.js"></script>
+<script src="growth/periods.js?v=goal-period-v1"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
 const DATA_URL      = './data.json'; // served by GitHub Pages
@@ -828,8 +829,6 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
   const targetPlan = selectedFY ? GrowthTargets.forFinance(goalRev,selectedFY,goalView?.finance) : null;
   const ytdGoal = targetPlan?.ytdTarget ?? null;
-  const fullTargets = GrowthTargets.allocate(goalRev);
-  const peakMonth = fullTargets.indexOf(Math.max(...fullTargets));
   const ytdVariance    = GrowthTargets.variance(goalView?.summary.ytdRevenue,ytdGoal);
   const ytdOnTrack     = ytdVariance != null && ytdVariance >= 0;
   const ytdPerformanceColour = ytdVariance==null?'var(--t3)':ytdOnTrack?'var(--grn)':'var(--red)';
@@ -868,17 +867,25 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   // Reset both sliders to actuals
   function resetProjection() { setProjCVR(null); setProjAOV(null); setCvrLocked(false); setAovLocked(false); }
 
-  // Slider derived numbers — "cur" now tracks whatever CVR/AOV the What-If
-  // Modeller above is currently showing (actual, or a projected drag), so
-  // moving those sliders visibly changes the pace needed to hit the goal
-  // below rather than the two cards sitting disconnected from each other.
-  // "goal" stays fixed to the GOALS.aov/GOALS.conversion targets as the
-  // separate reference point (where we actually want CVR/AOV to be).
-  const ordersPerDay_cur  = (goalRev / (effectiveAOV||33)) / (targetPlan?.months.reduce((n,m)=>n+m.days,0) || 365);
-  const ordersPerDay_goal = (goalRev / GOALS.aov) / (targetPlan?.months.reduce((n,m)=>n+m.days,0) || 365);
-  const sessPerDay_cur    = ordersPerDay_cur  / (effectiveCVR || 0.023);
-  const sessPerDay_goal   = ordersPerDay_goal / GOALS.conversion;
   const convActual        = summary.avgConversionRate ?? null;
+
+  // Independent goal-card period; does not change sales reporting filters or annual targets.
+  const [goalPeriodKey,setGoalPeriodKey]=useState('annual');
+  const [goalCustomPeriod,setGoalCustomPeriod]=useState({start:'',end:''});
+  const [goalPeriodMode,setGoalPeriodMode]=useState('plan');
+  useEffect(()=>{setGoalPeriodKey('annual');setGoalCustomPeriod({start:'',end:''});setGoalPeriodMode('plan');},[selectedFY]);
+  const goalPeriodOptions=GrowthGoalPeriods.choices(selectedFY || 'FY27');
+  let goalPeriod=null,goalPeriodError='';
+  try {
+    const fy=selectedFY || 'FY27',period=GrowthGoalPeriods.resolve(fy,goalPeriodKey,goalCustomPeriod);
+    const reporting=ShopifyIntegration.yearRange(fy),yesterdayKey=ShopifyFinance.next(reporting.today,-1);
+    const cutoff=financeSnapshot?.coverage.end ? (financeSnapshot.coverage.end<yesterdayKey?financeSnapshot.coverage.end:yesterdayKey) : null;
+    const end=cutoff && cutoff<period.end?cutoff:period.end;
+    const future=period.start>yesterdayKey;
+    const actual=!future && cutoff && period.start<=end ? ShopifyIntegration.report(financeSnapshot,period.start,end,goalBasis) : null;
+    goalPeriod=GrowthGoalPeriods.calculate(goalRev,fy,period,future?{status:'future'}:{status:actual?.status,revenue:actual?.revenue,cutoff:end},{aov:effectiveAOV,cvr:effectiveCVR},goalPeriodMode);
+  } catch(e) {goalPeriodError=e.message;}
+  const goalPeriodColour=goalPeriod?.variance==null?'var(--t3)':goalPeriod.variance>=0?'var(--grn)':'var(--red)';
 
   // ── LOADING ────────────────────────────────────────────────
   if (loading) return el('div', {style:{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:16}},
@@ -1005,7 +1012,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         el('div', {style:{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:16}},
           el('div', null,
             el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:4,flexWrap:'wrap'}},
-              el('div', {className:'lbl'}, goalRevLocked ? 'Net Sales goal — locked' : 'Net Sales goal — drag to explore'),
+              el('div', {className:'lbl'}, goalRevLocked ? 'Annual Net Sales goal — locked' : 'Annual Net Sales goal — drag to explore'),
               goalRev!==FinancialGoals.annual(selectedFY || 'FY27') && el('button',{onClick:()=>{setGoalRev(FinancialGoals.annual(selectedFY || 'FY27'));setGoalRevLocked(true);},style:{fontSize:10}},'Reset to main goal'),
               el('button', {
                 onClick: () => setGoalRevLocked(l => !l),
@@ -1030,9 +1037,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           ),
           el('div', {style:{display:'flex',gap:16,flexWrap:'wrap'}},
             [
-              ['YTD Net Sales actual',  fmtC(goalView?.summary.ytdRevenue,2), ytdPerformanceColour],
-              ['YTD target',  fmtC(ytdGoal,2),            'var(--t2)'],
-              ['YTD variance', GrowthTargets.signed(ytdVariance), ytdPerformanceColour],
+              [goalPeriodKey==='annual'?'YTD Net Sales actual':'Period Net Sales actual', fmtC(goalPeriod?.actual,2),goalPeriodColour],
+              ['Target through verified day',fmtC(goalPeriod?.expected,2),'var(--t2)'],
+              ['Variance',GrowthTargets.signed(goalPeriod?.variance),goalPeriodColour],
             ].map(([lbl,val,col],i)=>
               el('div', {key:i,style:{textAlign:'right'}},
                 el('div', {className:'lbl'}, lbl),
@@ -1041,6 +1048,15 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             )
           )
         ),
+
+        el('div', {style:{display:'flex',flexWrap:'wrap',alignItems:'center',gap:8,marginBottom:10}},
+          el('label',{htmlFor:'goal-period',style:{fontSize:12}},'Goal period'),
+          el('select',{id:'goal-period','aria-label':'Goal planning period',value:goalPeriodKey,onChange:e=>setGoalPeriodKey(e.target.value),style:{background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:6,padding:'6px 8px',maxWidth:'100%'}},
+            goalPeriodOptions.map(p=>el('option',{key:p.key,value:p.key},p.label)),el('option',{value:'custom'},'Custom range within '+(selectedFY || 'FY27'))),
+          el('select',{'aria-label':'Goal planning calculation',value:goalPeriodMode,onChange:e=>setGoalPeriodMode(e.target.value),style:{background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:6,padding:'6px 8px',maxWidth:'100%'}},el('option',{value:'plan'},'Whole-period plan'),el('option',{value:'remaining'},'Remaining after verified actual')),
+          goalPeriodKey==='custom' && ['start','end'].map(key=>el('input',{key,type:'date','aria-label':'Goal period '+key,value:goalCustomPeriod[key],min:GrowthGoalPeriods.bounds(selectedFY || 'FY27').start,max:GrowthGoalPeriods.bounds(selectedFY || 'FY27').end,onChange:e=>setGoalCustomPeriod(p=>({...p,[key]:e.target.value})),style:{background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:6,padding:6,maxWidth:'100%'}}))
+        ),
+        el('div',{role:goalPeriodError?'status':undefined,style:{fontSize:11,color:goalPeriodError?'var(--amb)':'var(--t2)',marginBottom:12,lineHeight:1.5}},goalPeriodError || (goalPeriod.start+' → '+goalPeriod.end+' · Period Net Sales target: '+fmtC(goalPeriod.target,2)+' · '+(goalPeriod.cutoff?'Actual through '+goalPeriod.cutoff:goalPeriod.status==='future'?'Not started':'Verified actual unavailable')+(goalPeriodMode==='remaining'?' · Remaining: '+fmtC(goalPeriod.remaining,2)+(goalPeriod.ended?' · Period ended':''):'')+' · Seasonal share of the annual goal; sessions/orders use the existing What-If assumptions.')),
 
         // Slider
         el('input', {
@@ -1070,11 +1086,11 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         ),
         el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))',gap:10}},
           [
-            {lbl:'Monthly avg',     val:fmtC(goalRev/12,0),         sub:'Peak: '+fmtC(fullTargets[peakMonth],0)+' ('+['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'][peakMonth]+')'},
-            {lbl:'Weekly avg',      val:fmtC(goalRev/52,0),         sub:'Flat weekly average'},
-            {lbl:'Daily avg',       val:fmtC(goalRev / (targetPlan?.months.reduce((n,m)=>n+m.days,0) || 365),0),        sub:'Every day of the financial year'},
-            {lbl:'Orders/day @'+fmtC(effectiveAOV,2)+' AOV'+(projAOV!==null?' (projected)':''), val:ordersPerDay_cur.toFixed(1), sub:ordersPerDay_goal.toFixed(1)+' orders/day @ £'+GOALS.aov+' goal', col:'var(--amb)'},
-            {lbl:'Sessions/day needed'+(projCVR!==null?' (projected CVR)':''), val:fmt(Math.round(sessPerDay_cur)), sub:'At '+fmtP(effectiveCVR,2)+' conv · '+fmt(Math.round(sessPerDay_goal))+' at '+fmtP(GOALS.conversion,1)+' goal', col:'var(--blu)'},
+            {lbl:'Monthly avg'+(goalPeriodMode==='remaining'?' needed':''),val:fmtC(goalPeriod?.monthly,2),sub:'Calendar-month equivalent for selected period'},
+            {lbl:'Weekly avg',val:fmtC(goalPeriod?.weekly,2),sub:'Seven-day average for selected period'},
+            {lbl:'Daily avg',val:fmtC(goalPeriod?.daily,2),sub:goalPeriod?.days!=null?goalPeriod.days+' days in this calculation':'Verified coverage required'},
+            {lbl:'Orders/day @'+fmtC(effectiveAOV,2)+' AOV'+(projAOV!==null?' (projected)':''),val:fmt(goalPeriod?.ordersDaily,1),sub:goalPeriod?.orders!=null?fmt(Math.ceil(goalPeriod.orders))+' orders over this period':'AOV / coverage unavailable',col:'var(--amb)'},
+            {lbl:'Sessions/day needed'+(projCVR!==null?' (projected CVR)':''),val:fmt(goalPeriod?.sessionsDaily==null?null:Math.ceil(goalPeriod.sessionsDaily)),sub:goalPeriod?.sessions!=null?fmt(Math.ceil(goalPeriod.sessions))+' sessions over this period at '+fmtP(effectiveCVR,2):'Conversion / coverage unavailable',col:'var(--blu)'},
           ].map((item,i)=>
             el('div', {key:i,style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'12px 14px',border:'1px solid var(--bdr)'}},
               el('div', {className:'lbl',style:{marginBottom:5}}, item.lbl),
@@ -1086,7 +1102,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
         // Mini chart
         el('div', {style:{marginTop:14,paddingTop:14,borderTop:'1px solid var(--bdr)'}},
-          el('div', {className:'lbl',style:{marginBottom:4}}, ShopifyIntegration.labels[financialBasis]+' vs full-month Net Sales target  ',
+          el('div', {className:'lbl',style:{marginBottom:4}}, 'Annual context · '+ShopifyIntegration.labels[financialBasis]+' vs full-month Net Sales target  ',
             el('span',{style:{color:'var(--grn)',fontWeight:400}}, '█ actual'),
             '  ',el('span',{style:{color:'#fff',fontWeight:400}}, '░ target')
           ),
