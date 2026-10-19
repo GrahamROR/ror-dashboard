@@ -1,25 +1,33 @@
-# Goal-card planning periods
+# Goal-card periods and optional content estimate
 
-The existing Shopify Growth goal card now has a period selector. Full financial year remains the default; calendar quarters entirely inside that FY, the four financial quarters (August–July), individual months and a custom range within the selected FY are available. Calendar Q4 2026 means 1 October–31 December 2026, distinct from FY27 financial Q4 (May–July 2027). Cross-FY periods are rejected explicitly; they are not silently clipped or assigned another year's approved goal.
+The existing Shopify Growth goal card uses the familiar reporting-style menu: current/selected FY, previous FY, rolling 12 months, calendar 2024/2025/2026 YTD, this month, last month, last 30/7 completed days and Custom range. This quarter and Next quarter are the only extra choices. The long fiscal-quarter/month list is removed. This quarter in October 2026 means 1 October–31 December (calendar Q4); This month is the full planning month, with actuals stopping at the verified day.
 
-This is a local planning view, not a new revenue basis, saved target or dashboard. Approved FY27 Shopify £300k and All Stores £500k targets are unchanged. Reporting filters, the prominent financial actual, What-If controls, ROR Sales, attribution, LTV and cost/margin methods remain unchanged. The goal slider still edits the annual What-If amount and has its existing lock/reset behaviour. Its range is £20,000–£800,000 in £1,000 steps; the default/reset FY27 goal remains £300,000. A selected quarter takes its seasonal share of this annual amount.
+## Targets and planning
 
-## Calculations
+This is local What-If planning, not a saved target, financial basis or replacement dashboard. The annual slider remains £20k–£800k in £1k steps, with the approved FY27 Shopify £300k reset unchanged. Other reporting filters, headline actuals, ROR Sales, native source records, Ads/Email attribution and LTV/margin calculations are unchanged.
 
-The period target uses the existing normalized seasonal allocation of the annual goal. Partial-month amounts are differences between rounded cumulative monthly targets, preserving annual pennies when periods are split. At the approved £300k FY27 goal, calendar Q4 2026 is £99,687.50: October £18,750, November £36,562.50, December £44,375. This is £33,229.17 average per calendar month over 92 days.
+Targets retain the existing seasonal allocation. Partial-month targets are differences between rounded cumulative targets, so adjacent periods preserve annual pennies. Q4 2026 at the approved £300k FY27 goal is £99,687.50: October £18,750, November £36,562.50, December £44,375. Monthly average is £33,229.17 across 92 days.
 
-Whole-period plan shows target / calendar-month equivalents, target / days, a seven-day average, orders = target / assumed Net Sales AOV, and sessions = orders / assumed conversion. The original conversion/AOV What-If controls supply those assumptions. Fractional months use the selected days divided by the relevant month's length; remaining Monthly avg is a run rate, not a forecast for a full future month.
+Cross-FY ranges use the approved target for each covered year. The slider edits only the selected FY; an explicit note appears when a range includes another FY. Unknown future-year targets are withheld, never guessed. Whole-period plan shows full planning requirements; Remaining after verified actual uses the Net Sales gap after the completed Europe/London source cutoff and only the remaining days. Missing coverage withholds remaining pace. Ended periods have no fabricated daily recovery rate. Monthly averages use calendar-month equivalents; weekly averages are seven-day rates.
 
-Remaining after verified actual uses max(0, period target − verified period Net Sales), spread over days after the verified financial cutoff within the period. Current day is excluded using Europe/London reporting dates. A stale snapshot is shown through its actual verified date; unknown elapsed sales are never inferred. Missing period coverage withholds remaining requirements. Future periods are labelled Not started; expired periods have no fabricated daily/monthly recovery pace. Zero actual revenue is valid, while missing/zero/out-of-range AOV/conversion withholds affected sessions/orders.
+## Reels / carousels
 
-The three goal-card actual/target/variance figures apply to the chosen period. Other revenue cards and the Monthly table retain their existing reporting scope. The small comparison chart remains explicitly labelled Annual context. Period target and cutoff are displayed beside the controls, so partial actuals are not presented as full-quarter performance.
+A sixth card beside Sessions/day shows estimated extra Reels needed (or Carousels after format selection). Inputs live in a collapsed assumptions section. Average views start at **3,000**, Instagram share at **20%**, both explicitly labelled planning assumptions. The view-to-website-session rate and expected baseline traffic start blank; they are not invented or borrowed from platform attribution. No Windsor/Meta/Shopify forecast API is called.
 
-## Verification
+The formula is:
 
-Full regression: 150 tests; 147 pass, 3 intentional private-evidence skips, zero failures. Coverage includes Q4 target and sessions/order formulas, calendar versus financial quarters, exact penny allocation, leap years, DST-safe day counts, invalid and cross-FY custom ranges, incomplete/zero actuals, future and ended periods, and original model/goal lock-reset controls. Headless handler tests select Q4 and custom dates without changing the annual target or selected financial actual. Production CSS is unchanged.
+`required sessions = selected-period Net Sales requirement / (assumed Net Sales per order × assumed conversion)`
 
-Two pre-existing regression assertions assumed gross shipping was absent in production. Gross shipping is now live: tests accept the validated live component and construct an explicit missing-field fixture to continue testing unavailable-gross protection. Financial sources themselves are unchanged.
+`extra posts = ceil(max(0, required sessions − baseline expected sessions) × Instagram share / (average views × view-to-session rate))`
 
-Desktop/mobile visual acceptance remains manual because approved browser-control tooling is unavailable. Check the original goal card at 1440px and 390px widths; select Calendar Q4 2026, adjust CVR/AOV, switch Whole-period / Remaining, test custom dates and annual reset. Verify controls wrap within the card and original tabs/layout remain intact.
+Whole-period mode needs baseline traffic for the whole selected period. Remaining mode needs baseline traffic for the remaining days only; revenue already achieved is already deducted by the financial planner and must not be deducted again. Baseline excludes the new posts being planned. Changing period/mode/cutoff invalidates and clears the baseline. Format changes clear the traffic rate for review. Empty inputs are not zero; an explicitly entered zero baseline is valid. Only the final post count rounds up. Zero additional allocated Instagram sessions gives zero posts; missing/zero/invalid rates do not yield Infinity or a fabricated result.
 
-This branch does not merge/deploy or change workflows, source snapshots, targets or production exports. Rollback is a scoped revert of the UI/module change; no financial-data rollback is needed.
+Illustration, not a dashboard default: £150,000 / (£32.36 × 1.96%) = about 236,497.57 sessions. With baseline 230,000, 20% Instagram allocation, 3,000 views/post and a hypothetical 1% view-to-session rate, the result is **44** extra posts. At 6,000 views it is **22**, only if all other assumptions hold. The dashboard uses its existing Net Sales per-order assumption rather than copying the screenshot's £32.36. Impressions/views are not website sessions, and this estimate is neither attributed revenue nor evidence of causal incrementality.
+
+## Verification and release
+
+159 automated tests: 156 pass, 3 intentional private-evidence skips, zero failures. Tests cover date presets, quarter/year/leap/DST boundaries, cross-FY budgets, exact allocation, remaining coverage, zeros, post rounding, missing/invalid traffic inputs, inverse views/rate relationships, unchanged goals/headlines and original model/lock/reset controls. Source-export hashes and the complete production CSS block remain unchanged.
+
+Approved browser-control tooling is unavailable; headless component/handler checks are not a screenshot or browser pass. Review at desktop/mobile widths: simple menu, Q4, custom dates, whole/remaining mode, sixth card, editable views, and collapsed assumptions. Check the estimate stays unavailable until the required assumptions are supplied. Ensure the original tabs, source figures and reporting controls remain intact.
+
+No merge/deploy, new schedules, financial refresh or source edits are included. Rollback is a scoped code revert; financial-data rollback is unnecessary.
