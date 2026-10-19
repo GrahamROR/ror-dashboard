@@ -1060,12 +1060,12 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
         // Slider
         el('input', {
-          type:'range',min:150000,max:800000,step:5000,value:goalRev,
+          type:'range',min:20000,max:800000,step:1000,value:goalRev,
           onChange:e=>{ if(!goalRevLocked) setGoalRev(+e.target.value); },
           style:{marginBottom:6,opacity:goalRevLocked?0.5:1,pointerEvents:goalRevLocked?'none':'auto'}
         }),
         el('div', {style:{display:'flex',justifyContent:'space-between',fontSize:11,color:'var(--t3)',marginBottom:16}},
-          ['£150k','£250k','£350k','£450k','£550k','£650k','£800k'].map(l=>el('span',{key:l},l))
+          ['£20k','£150k','£280k','£410k','£540k','£670k','£800k'].map(l=>el('span',{key:l},l))
         ),
 
         // What the goal means — the two "Assumed" boxes read straight from

@@ -2,7 +2,7 @@
 
 The existing Shopify Growth goal card now has a period selector. Full financial year remains the default; calendar quarters entirely inside that FY, the four financial quarters (August–July), individual months and a custom range within the selected FY are available. Calendar Q4 2026 means 1 October–31 December 2026, distinct from FY27 financial Q4 (May–July 2027). Cross-FY periods are rejected explicitly; they are not silently clipped or assigned another year's approved goal.
 
-This is a local planning view, not a new revenue basis, saved target or dashboard. Approved FY27 Shopify £300k and All Stores £500k targets are unchanged. Reporting filters, the prominent financial actual, What-If controls, ROR Sales, attribution, LTV and cost/margin methods remain unchanged. The goal slider still edits the annual What-If amount and has its existing lock/reset behaviour.
+This is a local planning view, not a new revenue basis, saved target or dashboard. Approved FY27 Shopify £300k and All Stores £500k targets are unchanged. Reporting filters, the prominent financial actual, What-If controls, ROR Sales, attribution, LTV and cost/margin methods remain unchanged. The goal slider still edits the annual What-If amount and has its existing lock/reset behaviour. Its range is £20,000–£800,000 in £1,000 steps; the default/reset FY27 goal remains £300,000. A selected quarter takes its seasonal share of this annual amount.
 
 ## Calculations
 
