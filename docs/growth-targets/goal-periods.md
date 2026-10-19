@@ -26,7 +26,7 @@ Illustration, not a dashboard default: £150,000 / (£32.36 × 1.96%) = about 23
 
 ## Verification and release
 
-163 automated tests: 160 pass, 3 intentional private-evidence skips, zero failures. Tests cover date presets, quarter/year/leap/DST boundaries, cross-FY budgets, exact allocation, remaining coverage, zeros, post rounding, missing/invalid traffic inputs, inverse views/rate relationships, unchanged goals/headlines and original model/lock/reset controls. Source-export hashes and the complete production CSS block remain unchanged.
+164 automated tests: 161 pass, 3 intentional private-evidence skips, zero failures. Tests cover date presets, quarter/year/leap/DST boundaries, cross-FY budgets, exact allocation, remaining coverage, zeros, post rounding, missing/invalid traffic inputs, inverse views/rate relationships, unchanged goals/headlines and original model/lock/reset controls. Source-export hashes and the complete production CSS block remain unchanged.
 
 Approved browser-control tooling is unavailable; headless component/handler checks are not a screenshot or browser pass. Review at desktop/mobile widths: simple menu, Q4, custom dates, whole/remaining mode, sixth card, editable views, and collapsed assumptions. Check the estimate stays unavailable until the required assumptions are supplied. Ensure the original tabs, source figures and reporting controls remain intact.
 
@@ -39,3 +39,7 @@ No merge/deploy, new schedules, financial refresh or source edits are included. 
 The screenshot’s 350 extra posts follows from 52,388 required sessions, baseline 1, 20% share and 30 sessions per post (3,000 × 1%). It is not a measured content recommendation. Do not tune assumptions simply to force a feasible answer. Zero extra posts means the chosen baseline meets the model’s traffic requirement; it does not mean no marketing is needed.
 
 Measure an observed traffic ratio using tagged organic Instagram links and corresponding content views for the same window: website sessions / views × 100. Suggested campaign tagging: utm_source=instagram, utm_medium=organic_social, utm_campaign=q4_content_test, utm_content=<trackable-placement>. GA4 Traffic acquisition reports session source/medium and campaign (Google documentation: https://support.google.com/analytics/answer/10917952). A shared profile link cannot assign sessions to individual Reels, so only report an aggregate ratio unless distinct placements are trackable. Exclude paid traffic, keep format/window definitions consistent and do not equate observed attributed sessions with causal additional sessions. Do not use total Instagram sessions over Reel-only views. No account changes or new tracking integrations are made here.
+
+## Period versus annual headline
+
+The prominent amount now matches the pace cards: the selected period target in Whole-period plan, or the remaining Net Sales requirement in Remaining mode. The slider retains its annual meaning, explicitly labelled with financial year and exact annual amount. For a £101,000 annual FY27 goal, Q4 receives £33,561.46 seasonally and the three-month average is £11,187.15. A £101,000 quarter target would instead average £33,666.67; the annual control is not presented as that quarter amount. Source data, seasonal weights and approved targets are unchanged.

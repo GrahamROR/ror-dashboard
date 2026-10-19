@@ -1025,7 +1025,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         el('div', {style:{display:'flex',alignItems:'flex-start',justifyContent:'space-between',flexWrap:'wrap',gap:12,marginBottom:16}},
           el('div', null,
             el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:4,flexWrap:'wrap'}},
-              el('div', {className:'lbl'}, goalRevLocked ? 'Annual Net Sales goal — locked' : 'Annual Net Sales goal — drag to explore'),
+              el('div', {className:'lbl'}, goalPeriodMode==='remaining' ? 'Remaining Net Sales needed' : goalPeriodKey==='annual' ? 'Financial-year Net Sales target' : 'Selected-period Net Sales target'),
               goalRev!==FinancialGoals.annual(selectedFY || 'FY27') && el('button',{onClick:()=>{setGoalRev(FinancialGoals.annual(selectedFY || 'FY27'));setGoalRevLocked(true);},style:{fontSize:10}},'Reset to main goal'),
               el('button', {
                 onClick: () => setGoalRevLocked(l => !l),
@@ -1045,7 +1045,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               )
             ),
             el('div', {style:{fontSize:34,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",letterSpacing:'-0.02em',lineHeight:1}},
-              goalRev>=1000000 ? '£'+(goalRev/1000000).toFixed(2)+'m' : '£'+(goalRev/1000).toFixed(0)+'k'
+              fmtC(goalPeriod?.amount,2)
             )
           ),
           el('div', {style:{display:'flex',gap:16,flexWrap:'wrap'}},
@@ -1071,7 +1071,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         ),
         el('div',{role:goalPeriodError?'status':undefined,style:{fontSize:11,color:goalPeriodError?'var(--amb)':'var(--t2)',marginBottom:12,lineHeight:1.5}},goalPeriodError || (goalPeriod.start+' → '+goalPeriod.end+' · Period Net Sales target: '+fmtC(goalPeriod.target,2)+' · '+(goalPeriod.cutoff?'Actual through '+goalPeriod.cutoff:goalPeriod.status==='future'?'Not started':'Verified actual unavailable')+(goalPeriodMode==='remaining'?' · Remaining: '+fmtC(goalPeriod.remaining,2)+(goalPeriod.ended?' · Period ended':''):'')+' · Net Sales planning'+(periodYears.some(fy=>fy!==selectedFY)?' · Uses '+periodYears.join(' / ')+' goals; slider adjusts '+(selectedFY || 'FY27')+'.':'.'))),
 
-        // Slider
+        // Slider remains annual; selected-period headline and pace cards use the same amount.
+        el('div',{className:'lbl',style:{marginBottom:6}},'Annual Net Sales goal ('+(selectedFY || 'FY27')+'): '+fmtC(goalRev,0)+' · '+(goalRevLocked?'locked':'drag to explore')+' · Period target uses seasonal allocation'),
         el('input', {
           type:'range',min:20000,max:800000,step:1000,value:goalRev,
           onChange:e=>{ if(!goalRevLocked) setGoalRev(+e.target.value); },
