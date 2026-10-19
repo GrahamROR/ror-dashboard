@@ -88,7 +88,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div id="root"></div>
 <script src="growth/targets.js"></script>
 <script src="growth/periods.js?v=goal-period-v2"></script>
-<script src="growth/content-plan.js?v=content-plan-v1"></script>
+<script src="growth/content-plan.js?v=content-plan-v2"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
 const DATA_URL      = './data.json'; // served by GitHub Pages
@@ -895,6 +895,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const contentNumber=v=>v===''||v==null?null:Number(v);
   const contentPlan=ContentGoalPlan.calculate({sessions:goalPeriod?.sessions,baseline:contentInputs.baselineWindow===contentWindow?contentNumber(contentInputs.baseline):null,share:contentNumber(contentInputs.share)==null?null:contentNumber(contentInputs.share)/100,views:contentNumber(contentInputs.views),rate:contentNumber(contentInputs.rate)==null?null:contentNumber(contentInputs.rate)/100,days:goalPeriod?.days});
   const setContentField=(key,value)=>setContentInputs(p=>({...p,[key]:value,...(key==='baseline'?{baselineWindow:contentWindow}:{})}));
+  const contentBaseline=ContentGoalPlan.historicalBaseline({start:goalPeriodMode==='remaining'?(goalPeriod?.status==='future'?goalPeriod?.start:goalPeriod?.cutoff?ShopifyFinance.next(goalPeriod.cutoff,1):null):goalPeriod?.start,end:goalPeriod?.end,years:data?.years});
   const contentLabel=contentFormat==='reels'?'Reels':'Carousels';
   const periodYears=goalPeriod ? [...new Set([GrowthGoalPeriods.fyFor(goalPeriod.start),GrowthGoalPeriods.fyFor(goalPeriod.end)])] : [];
 
@@ -1124,8 +1125,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               ['baseline',goalPeriodMode==='remaining'?'Expected sessions in remaining days':'Expected baseline sessions in whole period',0,null,'Enter forecast (0 is allowed)']
             ].map(([key,label,min,max,placeholder])=>el('label',{key,style:{display:'flex',flexDirection:'column',gap:4}},label,el('input',{type:'number','aria-label':label,value:contentInputs[key],min,max,step:key==='views'||key==='baseline'?1:.1,placeholder,onChange:e=>setContentField(key,e.target.value),style:{width:150,maxWidth:'100%',background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:6,padding:6}})))
           ),
+          el('div',{style:{marginTop:8}},
+            el('button',{className:'btn',disabled:contentBaseline.sessions==null,onClick:()=>setContentField('baseline',String(contentBaseline.sessions))},'Use last year’s traffic'),
+            el('span',{style:{fontSize:11,color:'var(--t3)',marginLeft:8}},contentBaseline.sessions==null?contentBaseline.reason:fmt(contentBaseline.sessions)+' sessions · '+contentBaseline.start+' to '+contentBaseline.end+' · estimate; partial months prorated. Includes last year’s marketing; adjust if plans differ.')
+          ),
+          el('div',{style:{fontSize:11,color:'var(--t3)',marginTop:4}},'Measure traffic rate = website sessions from tagged organic Instagram links ÷ corresponding views × 100, over the same observation window. Keep paid traffic separate. A shared bio link cannot reliably identify each Reel. An assumed 1% means 30 sessions per 3,000-view post; it is not a measured default.'),
           el('div',{style:{fontSize:11,color:'var(--t3)',marginTop:8}},'Estimate = max(0, required sessions − baseline forecast) × Instagram share ÷ (average views × view-to-session rate), rounded up. Baseline covers the same selected window and excludes these extra posts. Changing the period clears the baseline. Starting assumptions: 3,000 views and 20% Instagram share; neither is a measured platform result. Enter the view-to-session rate before treating the estimate as usable. More views only reduce posts if the assumed traffic rate holds. This does not change revenue, goals or advertising attribution.'),
-          el('div',{style:{fontSize:11,color:'var(--t3)',marginTop:4}},'Period targets follow existing seasonal allocations. Periods spanning financial years use each year’s approved target; the slider edits only the year selected above. Monthly averages use calendar-month equivalents. This month is a full planning month; actuals stop at the verified day. Forecast traffic is a local assumption, not a verified Instagram or Shopify forecast.')
+          el('div',{style:{fontSize:11,color:'var(--t3)',marginTop:4}},'Period targets follow existing seasonal allocations. Periods spanning financial years use each year’s approved target; the slider edits only the year selected above. Monthly averages use calendar-month equivalents. This month is a full planning month; actuals stop at the verified day. Forecast traffic is a local assumption; last-year traffic is a seasonal reference, not a verified forecast.')
         ),
 
         // Mini chart
