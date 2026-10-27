@@ -1,21 +1,21 @@
 {
-  "updated": "2026-10-26T08:20:20.111Z",
+  "updated": "2026-10-27T08:31:42.957Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-10-25",
+    "date": "2026-10-26",
     "monthKey": "2026-10",
-    "revenue": 1166.13,
-    "orders": 25,
-    "customers": 25,
-    "returning": 11,
-    "repeatRate": 0.44,
-    "aov": 36.79,
-    "sessions": 1226,
-    "convertedSessions": 23,
-    "conversionRate": 0.018760195758564437,
-    "shopifyConversionRate": 0.018760195758564437,
-    "margin": 0.527,
-    "profit": 484.53,
+    "revenue": 414.19,
+    "orders": 11,
+    "customers": 11,
+    "returning": 4,
+    "repeatRate": 0.364,
+    "aov": 28.68,
+    "sessions": 725,
+    "convertedSessions": 11,
+    "conversionRate": 0.015172413793103448,
+    "shopifyConversionRate": 0.015172413793103448,
+    "margin": 0.502,
+    "profit": 158.54,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -410,24 +410,24 @@
         {
           "key": "2026-10",
           "label": "Oct 26",
-          "revenue": 14754.27,
-          "netSales": 11419.85,
-          "orders": 365,
-          "aov": 31.89,
-          "customers": 351,
-          "returning": 91,
-          "sessions": 17525,
+          "revenue": 15297.15,
+          "netSales": 11836.02,
+          "orders": 379,
+          "aov": 31.81,
+          "customers": 364,
+          "returning": 95,
+          "sessions": 18242,
           "complete": false,
           "mtd": true,
           "future": false,
-          "convertedSessions": 334,
-          "conversionRate": 0.01905848787446505,
-          "shopifyConversionRate": 0.01905848787446505,
-          "costOfGoodsSold": 4999.4,
-          "grossProfit": 5651.14,
-          "marginPctCovered": 0.531,
-          "costCoverage": 0.933,
-          "estGrossProfit": 6059.33
+          "convertedSessions": 348,
+          "conversionRate": 0.019076855607937725,
+          "shopifyConversionRate": 0.019076855607937725,
+          "costOfGoodsSold": 5198.4,
+          "grossProfit": 5859.5,
+          "marginPctCovered": 0.53,
+          "costCoverage": 0.934,
+          "estGrossProfit": 6271.82
         },
         {
           "key": "2026-11",
@@ -541,18 +541,18 @@
       "topProducts": [
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 6842.41,
-          "orders": 181
+          "revenue": 6910.81,
+          "orders": 183
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
-          "revenue": 3335.87,
-          "orders": 131
+          "revenue": 3359.27,
+          "orders": 132
         },
         {
           "name": "Personalised Initial Leopard Print Cross Body Bag",
-          "revenue": 3179.02,
-          "orders": 123
+          "revenue": 3207.02,
+          "orders": 124
         },
         {
           "name": "Happy Hour Slogan Sweatshirt",
@@ -586,21 +586,21 @@
         }
       ],
       "summary": {
-        "ytdRevenue": 54951.64,
-        "ytdNetSales": 42367.78,
-        "ytdOrders": 1424,
-        "ytdSessions": 60533,
-        "ytdConvertedSessions": 1184,
+        "ytdRevenue": 55494.52,
+        "ytdNetSales": 42783.95,
+        "ytdOrders": 1438,
+        "ytdSessions": 61250,
+        "ytdConvertedSessions": 1198,
         "avgConversionRate": 0.0196,
         "avgAOV": 30.17,
-        "avgRepeatRate": 0.191,
-        "ytdReturning": 265,
-        "ytdCustomers": 1388,
-        "ytdCostOfGoodsSold": 19767.9,
-        "ytdGrossProfit": 20084.33,
+        "avgRepeatRate": 0.192,
+        "ytdReturning": 269,
+        "ytdCustomers": 1401,
+        "ytdCostOfGoodsSold": 19966.9,
+        "ytdGrossProfit": 20292.69,
         "ytdMarginPct": 0.504,
         "ytdCostCoverage": 0.941,
-        "ytdEstGrossProfit": 21353.36
+        "ytdEstGrossProfit": 21563.11
       }
     },
     "FY24": {
