@@ -1,15 +1,15 @@
 {
   "status": "success",
-  "completed_at": "2026-10-28T09:12:02.594Z",
-  "attempted_at": "2026-10-28T09:11:37.255Z",
-  "snapshot_id": "af6c3dfe3e5e1c6b968d62841cd37089226264371e87f4de95b1d22ec9fd754f",
-  "previous_snapshot_id": "93c7cc7123a0c0e225494326f8a0099b90c27f7f7f65f5dfa454e0a8aec1a895",
+  "completed_at": "2026-10-29T09:11:35.927Z",
+  "attempted_at": "2026-10-29T09:11:21.195Z",
+  "snapshot_id": "b52ce301b4339e4c161868f799158ade606890ea850ad31652592c0e5ded2c9e",
+  "previous_snapshot_id": "af6c3dfe3e5e1c6b968d62841cd37089226264371e87f4de95b1d22ec9fd754f",
   "verification": {
     "start": "2024-01-01",
-    "end": "2026-10-27",
-    "days": 1031,
+    "end": "2026-10-28",
+    "days": 1032,
     "nativeControls": 41
   },
-  "producer_revision": "a23b1e2cfa87ae278d06199fc023551912370f0c",
-  "last_successful_at": "2026-10-28T09:12:02.594Z"
+  "producer_revision": "2040538e8a587c27da92c6df48a80a4fe9675a16",
+  "last_successful_at": "2026-10-29T09:11:35.927Z"
 }
