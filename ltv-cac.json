@@ -1,102 +1,102 @@
 {
-  "updated": "2026-10-31T09:47:36.866Z",
+  "updated": "2026-11-01T10:37:48.011Z",
   "rolling": {
     "window": {
-      "since": "2025-10-01",
-      "until": "2026-09-30",
+      "since": "2025-11-01",
+      "until": "2026-10-31",
       "monthsUsed": 12
     },
     "adSpend": {
       "meta": {
-        "spend": 65397.06,
+        "spend": 64523.35,
         "source": "Meta Marketing API insights"
       },
       "google": {
-        "spend": 9156.58,
+        "spend": 9163.63,
         "source": "Google Ads API GAQL"
       },
-      "blended": 74553.64
+      "blended": 73686.98
     },
     "customerMetrics": {
-      "avgAOV": 31.43,
+      "avgAOV": 31.45,
       "ordersPerCustomer": 1.03,
-      "marginPct": 0.554,
-      "newCustomers": 6252,
-      "totalCustomers": 7557,
-      "totalOrders": 7783
+      "marginPct": 0.551,
+      "newCustomers": 6181,
+      "totalCustomers": 7503,
+      "totalOrders": 7732
     },
-    "ltv": 17.93,
+    "ltv": 17.85,
     "cac": 11.92,
     "ratio": 1.5
   },
   "previousRolling": {
     "window": {
-      "since": "2024-10-01",
-      "until": "2025-09-30",
+      "since": "2024-11-01",
+      "until": "2025-10-31",
       "monthsUsed": 12
     },
     "adSpend": {
       "meta": {
-        "spend": 49429.79,
+        "spend": 51697.44,
         "source": "Meta Marketing API insights"
       },
       "google": {
-        "spend": 9028.48,
+        "spend": 8970.53,
         "source": "Google Ads API GAQL"
       },
-      "blended": 58458.27
+      "blended": 60667.97
     },
     "customerMetrics": {
-      "avgAOV": 35.18,
+      "avgAOV": 34.82,
       "ordersPerCustomer": 1.04,
-      "marginPct": 0.633,
-      "newCustomers": 5692,
-      "totalCustomers": 6758,
-      "totalOrders": 7052
+      "marginPct": 0.626,
+      "newCustomers": 5843,
+      "totalCustomers": 6926,
+      "totalOrders": 7193
     },
-    "ltv": 23.16,
-    "cac": 10.27,
-    "ratio": 2.26
+    "ltv": 22.67,
+    "cac": 10.38,
+    "ratio": 2.18
   },
   "rollingComparison": {
     "status": "ok",
-    "previousRatio": 2.26,
+    "previousRatio": 2.18,
     "previousWindow": {
-      "since": "2024-10-01",
-      "until": "2025-09-30"
+      "since": "2024-11-01",
+      "until": "2025-10-31"
     },
-    "absoluteChange": -0.76,
-    "percentChange": -33.6
+    "absoluteChange": -0.68,
+    "percentChange": -31.2
   },
   "cumulative": {
     "window": {
-      "since": "2023-10-01",
-      "until": "2026-09-30",
+      "since": "2023-11-01",
+      "until": "2026-10-31",
       "monthsUsed": 36,
       "monthsCap": 36
     },
     "adSpend": {
       "meta": {
-        "spend": 133917.25,
+        "spend": 137694.57,
         "source": "Meta Marketing API insights"
       },
       "google": {
-        "spend": 25609.33,
+        "spend": 25805.71,
         "source": "Google Ads API GAQL"
       },
-      "blended": 159526.58
+      "blended": 163500.28
     },
     "customerMetrics": {
-      "avgAOV": 33.49,
+      "avgAOV": 33.46,
       "ordersPerCustomer": 1.05,
-      "marginPct": 0.585,
-      "newCustomers": 14512,
-      "totalCustomers": 17542,
-      "totalOrders": 18351
+      "marginPct": 0.582,
+      "newCustomers": 14738,
+      "totalCustomers": 17841,
+      "totalOrders": 18658
     },
-    "ltv": 20.57,
-    "cac": 10.99,
-    "ratio": 1.87
+    "ltv": 20.45,
+    "cac": 11.09,
+    "ratio": 1.84
   },
   "goals": {
     "targetRatio": 3,
