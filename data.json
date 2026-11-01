@@ -1,21 +1,21 @@
 {
-  "updated": "2026-10-31T09:08:26.685Z",
+  "updated": "2026-11-01T09:56:16.025Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-10-30",
+    "date": "2026-10-31",
     "monthKey": "2026-10",
-    "revenue": 550.39,
-    "orders": 14,
-    "customers": 14,
-    "returning": 4,
-    "repeatRate": 0.286,
-    "aov": 30.23,
-    "sessions": 631,
-    "convertedSessions": 13,
-    "conversionRate": 0.020602218700475437,
-    "shopifyConversionRate": 0.020602218700475437,
-    "margin": 0.533,
-    "profit": 225.59,
+    "revenue": 774.7,
+    "orders": 17,
+    "customers": 17,
+    "returning": 9,
+    "repeatRate": 0.529,
+    "aov": 36.62,
+    "sessions": 787,
+    "convertedSessions": 17,
+    "conversionRate": 0.021601016518424398,
+    "shopifyConversionRate": 0.021601016518424398,
+    "margin": 0.554,
+    "profit": 344.75,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -410,36 +410,46 @@
         {
           "key": "2026-10",
           "label": "Oct 26",
-          "revenue": 18368.75,
-          "netSales": 14261.68,
-          "orders": 448,
-          "aov": 32.37,
-          "customers": 432,
-          "returning": 104,
-          "sessions": 21414,
-          "complete": false,
-          "mtd": true,
+          "revenue": 19103.54,
+          "netSales": 14853.73,
+          "orders": 464,
+          "aov": 32.53,
+          "customers": 446,
+          "returning": 111,
+          "sessions": 22071,
+          "complete": true,
+          "mtd": false,
           "future": false,
-          "convertedSessions": 411,
-          "conversionRate": 0.01919305127486691,
-          "shopifyConversionRate": 0.01919305127486691,
-          "costOfGoodsSold": 6302.9,
-          "grossProfit": 7129.14,
-          "marginPctCovered": 0.531,
+          "convertedSessions": 427,
+          "conversionRate": 0.01934665398033619,
+          "shopifyConversionRate": 0.01934665398033619,
+          "costOfGoodsSold": 6553.9,
+          "grossProfit": 7442.49,
+          "marginPctCovered": 0.532,
           "costCoverage": 0.942,
-          "estGrossProfit": 7569.48
+          "estGrossProfit": 7898.38
         },
         {
           "key": "2026-11",
           "label": "Nov 26",
-          "revenue": null,
-          "orders": null,
-          "customers": null,
-          "returning": null,
-          "sessions": null,
+          "revenue": 20.15,
+          "netSales": 13.5,
+          "orders": 1,
+          "aov": 13.5,
+          "customers": 1,
+          "returning": 0,
+          "sessions": 138,
           "complete": false,
-          "mtd": false,
-          "future": true
+          "mtd": true,
+          "future": false,
+          "convertedSessions": 1,
+          "conversionRate": 0.007246376811594203,
+          "shopifyConversionRate": 0.007246376811594203,
+          "costOfGoodsSold": 7.5,
+          "grossProfit": 6,
+          "marginPctCovered": 0.444,
+          "costCoverage": 1,
+          "estGrossProfit": 6
         },
         {
           "key": "2026-12",
@@ -541,8 +551,8 @@
       "topProducts": [
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 7015.21,
-          "orders": 186
+          "revenue": 7056.16,
+          "orders": 187
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
@@ -556,8 +566,8 @@
         },
         {
           "name": "Meats & Cheeses Christmas Sweatshirt",
-          "revenue": 1743.28,
-          "orders": 52
+          "revenue": 1779.28,
+          "orders": 53
         },
         {
           "name": "Happy Hour Slogan Sweatshirt",
@@ -571,8 +581,8 @@
         },
         {
           "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
-          "revenue": 1370.42,
-          "orders": 50
+          "revenue": 1392.02,
+          "orders": 51
         },
         {
           "name": "Personalised 'Only Here For...' Cap",
@@ -581,26 +591,26 @@
         },
         {
           "name": "Personalised Initial Leopard print Tote Bag",
-          "revenue": 1271.4,
-          "orders": 49
+          "revenue": 1294.8,
+          "orders": 50
         }
       ],
       "summary": {
-        "ytdRevenue": 58566.12,
-        "ytdNetSales": 45209.61,
-        "ytdOrders": 1507,
-        "ytdSessions": 64422,
-        "ytdConvertedSessions": 1261,
+        "ytdRevenue": 59321.06,
+        "ytdNetSales": 45815.16,
+        "ytdOrders": 1524,
+        "ytdSessions": 65217,
+        "ytdConvertedSessions": 1278,
         "avgConversionRate": 0.0196,
-        "avgAOV": 30.41,
-        "avgRepeatRate": 0.189,
-        "ytdReturning": 278,
-        "ytdCustomers": 1469,
-        "ytdCostOfGoodsSold": 21071.4,
-        "ytdGrossProfit": 21562.33,
+        "avgAOV": 30.47,
+        "avgRepeatRate": 0.192,
+        "ytdReturning": 285,
+        "ytdCustomers": 1484,
+        "ytdCostOfGoodsSold": 21329.9,
+        "ytdGrossProfit": 21881.68,
         "ytdMarginPct": 0.506,
         "ytdCostCoverage": 0.943,
-        "ytdEstGrossProfit": 22876.06
+        "ytdEstGrossProfit": 23182.47
       }
     },
     "FY24": {
