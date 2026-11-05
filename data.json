@@ -1,21 +1,21 @@
 {
-  "updated": "2026-11-04T10:14:41.564Z",
+  "updated": "2026-11-05T10:08:01.313Z",
   "currentFY": "FY27",
   "yesterday": {
-    "date": "2026-11-03",
+    "date": "2026-11-04",
     "monthKey": "2026-11",
-    "revenue": 1236.33,
-    "orders": 33,
-    "customers": 33,
-    "returning": 12,
-    "repeatRate": 0.364,
-    "aov": 28.52,
-    "sessions": 756,
-    "convertedSessions": 29,
-    "conversionRate": 0.03835978835978836,
-    "shopifyConversionRate": 0.03835978835978836,
-    "margin": 0.545,
-    "profit": 514.73,
+    "revenue": 751.79,
+    "orders": 15,
+    "customers": 15,
+    "returning": 2,
+    "repeatRate": 0.133,
+    "aov": 40.49,
+    "sessions": 771,
+    "convertedSessions": 14,
+    "conversionRate": 0.018158236057068743,
+    "shopifyConversionRate": 0.018158236057068743,
+    "margin": 0.555,
+    "profit": 330.7,
     "marginSource": "Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)",
     "profitSource": "estimated: net_sales × margin % (costed SKUs)",
     "revenueSource": "Shopify Analytics total_sales",
@@ -432,24 +432,24 @@
         {
           "key": "2026-11",
           "label": "Nov 26",
-          "revenue": 2956.58,
-          "netSales": 2288.52,
-          "orders": 71,
-          "aov": 32.56,
-          "customers": 71,
-          "returning": 16,
-          "sessions": 2983,
+          "revenue": 3698.27,
+          "netSales": 2859.02,
+          "orders": 89,
+          "aov": 32.77,
+          "customers": 89,
+          "returning": 20,
+          "sessions": 3761,
           "complete": false,
           "mtd": true,
           "future": false,
-          "convertedSessions": 66,
-          "conversionRate": 0.02212537713711029,
-          "shopifyConversionRate": 0.02212537713711029,
-          "costOfGoodsSold": 943.5,
-          "grossProfit": 1063.53,
-          "marginPctCovered": 0.53,
-          "costCoverage": 0.877,
-          "estGrossProfit": 1212.69
+          "convertedSessions": 82,
+          "conversionRate": 0.021802712044668972,
+          "shopifyConversionRate": 0.021802712044668972,
+          "costOfGoodsSold": 1196.5,
+          "grossProfit": 1371.33,
+          "marginPctCovered": 0.534,
+          "costCoverage": 0.898,
+          "estGrossProfit": 1526.84
         },
         {
           "key": "2026-12",
@@ -551,8 +551,8 @@
       "topProducts": [
         {
           "name": "Personalised Year Sweatshirt",
-          "revenue": 7255.97,
-          "orders": 193
+          "revenue": 7351.37,
+          "orders": 196
         },
         {
           "name": "Personalised Varsity Year Leopard Print Tote Bag",
@@ -566,13 +566,13 @@
         },
         {
           "name": "Meats & Cheeses Christmas Sweatshirt",
-          "revenue": 2180.73,
-          "orders": 64
+          "revenue": 2339.17,
+          "orders": 68
         },
         {
           "name": "Happy Hour Slogan Sweatshirt",
-          "revenue": 1503.92,
-          "orders": 42
+          "revenue": 1534.52,
+          "orders": 43
         },
         {
           "name": "Vintage Style Denim Unisex Personalised Slogan Cap",
@@ -596,21 +596,21 @@
         }
       ],
       "summary": {
-        "ytdRevenue": 62257.49,
-        "ytdNetSales": 48090.18,
-        "ytdOrders": 1594,
-        "ytdSessions": 68062,
-        "ytdConvertedSessions": 1343,
+        "ytdRevenue": 62999.18,
+        "ytdNetSales": 48660.68,
+        "ytdOrders": 1612,
+        "ytdSessions": 68840,
+        "ytdConvertedSessions": 1359,
         "avgConversionRate": 0.0197,
-        "avgAOV": 30.57,
+        "avgAOV": 30.6,
         "avgRepeatRate": 0.194,
-        "ytdReturning": 301,
-        "ytdCustomers": 1554,
-        "ytdCostOfGoodsSold": 22265.9,
-        "ytdGrossProfit": 22939.21,
-        "ytdMarginPct": 0.507,
-        "ytdCostCoverage": 0.94,
-        "ytdEstGrossProfit": 24381.72
+        "ytdReturning": 305,
+        "ytdCustomers": 1572,
+        "ytdCostOfGoodsSold": 22518.9,
+        "ytdGrossProfit": 23247.01,
+        "ytdMarginPct": 0.508,
+        "ytdCostCoverage": 0.941,
+        "ytdEstGrossProfit": 24719.63
       }
     },
     "FY24": {
