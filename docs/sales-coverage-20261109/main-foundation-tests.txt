@@ -1,0 +1,66 @@
+✖ Simple Net/Gross/Total selector has explicit native components and no scenario interface (7.02975ms)
+✔ Net shipping and native source measures sum daily/monthly/FY identically in Growth and ROR (83.40975ms)
+✖ Gross shipping unavailable never substitutes merchandise gross or changes eligible orders (1.754833ms)
+﹣ Actual private native gross-shipping capture reconciles all approved FY26 source amounts (0.059542ms) # SKIP
+✔ Marketplace management estimates stay provisional; current gaps never become legacy gross (5.60025ms)
+✔ Approved goals and model Net Sales remain independent of selected actual and local exploration (9.887084ms)
+✔ Product-only costed margin, profit and existing LTV methodology remain untouched across sales bases (15.924875ms)
+✔ Production typography, colours, spacing and responsive CSS remain byte-identical (0.6485ms)
+✔ Every original date preset and custom interval keeps selected shipping-inclusive money/counts consistent (41.799916ms)
+✔ Explicit ROR legacy selection cannot break a subsequent Growth navigation (7.115583ms)
+✔ Product concentration denominators exclude shipping on Net/Gross while revenue headlines include it (9.144ms)
+✔ FY26 All Stores monthly rows, totals, channel contribution and explorer share the agreed source math (39.627625ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 9
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 293.934625
+
+✖ failing tests:
+
+test at ../../../../../../private/tmp/ror-dashboard-review/main-baseline/finance/test/foundation.test.js:9:1
+✖ Simple Net/Gross/Total selector has explicit native components and no scenario interface (7.02975ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 300105.51
+  - null
+  
+      at TestContext.<anonymous> (/private/tmp/ror-dashboard-review/main-baseline/finance/test/foundation.test.js:9:386)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 300105.51,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../../private/tmp/ror-dashboard-review/main-baseline/finance/test/foundation.test.js:11:1
+✖ Gross shipping unavailable never substitutes merchandise gross or changes eligible orders (1.754833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 300105.51
+  - null
+  
+      at TestContext.<anonymous> (/private/tmp/ror-dashboard-review/main-baseline/finance/test/foundation.test.js:11:202)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 300105.51,
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

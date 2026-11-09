@@ -106,11 +106,12 @@ function UnavailableNotice({ reason }) {
 function PeriodNotice({ range, records, channels, section }) {
   if (range.unsupported) return null;
   const agg = C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate });
+  const statusLabel = agg.financialBasis === 'legacy_gross' ? 'Legacy imported gross' : agg.confidence === 'provisional' ? 'Provisional' : agg.status === 'incomplete-data' ? 'Unavailable · Incomplete coverage' : agg.status === 'partial' ? 'Partial period' : '';
   return el('div', { 'data-report-period': section, style: { margin: '10px 0', fontSize: 12, lineHeight: 1.6, color: 'var(--t2)' } },
     el('strong', null, section + ': ' + range.label + ' · ' + range.startDate + ' → ' + range.endDate + ' (inclusive)'),
     el('div', null, channels.map((c) => M.CHANNEL_META[c].short).join(' · ')),
     range.warning && el('div', { style: { color: 'var(--amb)' } }, range.warning),
-    agg.note && el('div', { style: { color: 'var(--amb)' }, title:agg.note }, agg.financialBasis==='legacy_gross'?'Legacy imported gross':agg.confidence==='provisional'?'Provisional':agg.status==='incomplete-data'?'Unavailable · Incomplete coverage':agg.status==='partial'?'Partial period':null)
+    agg.note && el('div', { style: { color: 'var(--amb)', overflowWrap: 'anywhere' }, title: agg.note }, (statusLabel ? statusLabel + ' — ' : '') + agg.note)
   );
 }
 
@@ -142,7 +143,11 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
     el('div', { style: { fontSize: 26, fontWeight: 600, color: 'var(--t1)', fontFamily: "'DM Mono',monospace", letterSpacing: '-0.02em', marginBottom: 6 } }, value),
     metric==='aov' && agg.nativeAov!=null && el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:6}}, 'Shopify-reported AOV: '+fmtC(agg.nativeAov,2)),
     (agg.status === 'no-data' || agg.status === 'not-occurred' || agg.status === 'incomplete-data' || agg.status === 'partial')
-      ? el('div', { style: { fontSize: 11, color: 'var(--amb)' }, title: agg.note }, agg.status === 'incomplete-data' ? 'Unavailable · Incomplete coverage' : agg.status === 'partial' ? 'Partial period' : 'Unavailable')
+      ? el('div', { style: { fontSize: 11, color: 'var(--amb)' }, title: agg.note },
+          agg.status === 'incomplete-data' ? 'Unavailable · Incomplete coverage' : agg.status === 'partial' ? 'Partial period' : 'Unavailable',
+          agg.note && el('details', { style: { marginTop: 4 } },
+            el('summary', { style: { cursor: 'pointer' } }, 'Coverage details'),
+            el('div', { style: { marginTop: 4, lineHeight: 1.5, overflowWrap: 'anywhere' } }, agg.note)))
       : el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 } },
           agg.confidence==='provisional' && el('span',{className:'badge ba'},'Provisional'),
           el('span', { style: { color: toneColor(chg.tone), fontWeight: 500 } }, chg.text),
@@ -296,7 +301,7 @@ function ChannelContribution({ records, channels, range }) {
           el('div', { key: k, role:'button', 'aria-label':'Contribution '+k, className: 'tab' + (view === k ? ' active' : ''), onClick: () => setView(k) }, el('i', { className: 'ti ' + ic, style: { fontSize: 13 } }))))
     ),
     el(PeriodNotice, { range, records, channels, section: 'Channel contribution' }),
-    contrib.totals.status !== 'complete' && !(['legacy-imported-gross','legacy_gross'].includes(contrib.totals.financialBasis) && contrib.channels.every(c=>c.revenue!=null)) ? el(UnavailableNotice, { reason: 'Channel contribution unavailable for this period: complete coverage is required.' }) :
+    contrib.totals.status !== 'complete' && !(['legacy-imported-gross','legacy_gross'].includes(contrib.totals.financialBasis) && contrib.channels.every(c=>c.revenue!=null)) ? el(UnavailableNotice, { reason: contrib.totals.note || 'Channel contribution unavailable for this period: complete coverage is required.' }) :
     view === 'donut' ? el(RorCharts.SalesChart, { type: 'donut', slices, formatValue: (v) => fmtC(v, 0) }) :
     el(RorCharts.SalesChart, { type: view === 'bar' ? 'bar' : 'stacked-bar', series: barSeries, formatValue: (v, short) => short ? fmtC(v, 0) : fmtC(v, 0) }),
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto', marginTop: 16 } },
