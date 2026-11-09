@@ -712,7 +712,7 @@ function EmailWhatIfBar({ es, projConv, setProjConv, projAOV, setProjAOV,
   );
 }
 
-function App({financeSnapshot, financialBasis, setFinancialBasis, financeError}) {
+function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, historical}) {
   const [data,       setData]       = useState(null); // raw multi-year data.json
   const [selectedFY, setSelectedFY] = useState(null);  // which year the dashboard is showing
   const [loadErr,    setLoadErr]    = useState('');
@@ -762,6 +762,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   const [adsMetric,      setAdsMetric]      = useState('spend');
   const [adsChartType,   setAdsChartType]   = useState('bar');
 
+  // Legacy selections never enter native Growth goals or YoY hooks. Keep all hooks unconditional.
+  const [legacyFY, setLegacyFY] = useState('');
+
   function resetEmailProjection() {
     setProjEmailConv(null); setProjEmailAOV(null);
     setEmailConvLocked(false); setEmailAovLocked(false);
@@ -781,7 +784,17 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
   }, []);
 
   // Years available for the selector, most recent first
-  const availableYears = data?.years ? Object.keys(data.years).sort().reverse() : [];
+  const nativeYears = data?.years ? Object.keys(data.years).sort().reverse() : [];
+  const historyContext=historical?.context;
+  const availableYears=[...new Set([...nativeYears,...(historyContext?RorHistoricalFinance.fiscalYears(historyContext.legacy_start,historyContext.through):[]),...(legacyFY?[legacyFY]:[])])].sort().reverse();
+  const displayFY=legacyFY||selectedFY;
+  const selectedYearRange=RorCalc.resolveDateRange(displayFY||'currentFY');
+  const showMonthlyHistory=!!legacyFY||window.RorHistoricalFinance?.needsHistory(historyContext,selectedYearRange,['shopify']);
+  const selectYear=fy=>{
+    const range=RorCalc.resolveDateRange(fy);
+    if(!nativeYears.includes(fy)||window.RorHistoricalFinance?.needsHistory(historyContext,range,['shopify']))setLegacyFY(fy);
+    else {setLegacyFY('');setSelectedFY(fy);}
+  };
   const originalView = useMemo(() => { const v=pickYear(data, selectedFY); return v ? {...v, marketingYesterday:data?.yesterday} : null; }, [data, selectedFY]);
   const viewData = useMemo(() => ShopifyIntegration.growthView(originalView, financeSnapshot, financialBasis), [originalView, financeSnapshot, financialBasis]);
   const goalView = useMemo(() => ShopifyIntegration.growthView(originalView, financeSnapshot, goalBasis), [originalView, financeSnapshot, goalBasis]);
@@ -898,17 +911,10 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
       el('div', {style:{display:'flex',alignItems:'center',gap:12,minWidth:0}},
         el('div', {style:{width:8,height:8,borderRadius:'50%',background:isFallback?'var(--amb)':'var(--grn)',flexShrink:0,boxShadow:isFallback?'0 0 0 3px var(--amb-bdr)':'0 0 0 3px var(--grn-bdr)'}}),
         el('div', {style:{fontWeight:600,fontSize:14,whiteSpace:'nowrap',flexShrink:0}}, 'Rock On Ruby'),
-        el('div', {className:'hide-mobile',style:{color:'var(--t3)',fontSize:12,whiteSpace:'nowrap'}}, '·  Growth Dashboard  ·  '+(viewData?.fy||'')),
-        availableYears.length > 1 && el('div', {className:'tab-bar tab-bar-scroll',style:{minWidth:0}},
-          availableYears.map(fy =>
-            el('button', {
-              key: fy,
-              title: fy + ' · ' + (data?.years?.[fy]?.fyLabel || '1 August–31 July'),
-              className: 'tab' + (fy===selectedFY ? ' active' : ''),
-              onClick: () => setSelectedFY(fy),
-              style:{padding:'4px 10px',flexShrink:0}
-            }, fy)
-          )
+        el('div', {className:'hide-mobile',style:{color:'var(--t3)',fontSize:12,whiteSpace:'nowrap'}}, '·  Growth Dashboard  ·  '+(displayFY||'')),
+        availableYears.length > 1 && el('label',{style:{fontSize:12,color:'var(--t2)',display:'flex',gap:8,alignItems:'center',minWidth:0}},'Financial year',
+          el('select',{'aria-label':'Shopify financial year',value:displayFY||'',onChange:e=>selectYear(e.target.value),style:{background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:6,padding:'6px 8px',maxWidth:'100%',minWidth:0}},
+            availableYears.map(fy=>el('option',{key:fy,value:fy},fy+(historyContext&&window.RorHistoricalFinance?.needsHistory(historyContext,RorCalc.resolveDateRange(fy),['shopify'])?' · Monthly sales history':''))))
         )
       ),
       el('div', {style:{display:'flex',alignItems:'center',gap:8,minWidth:0}},
@@ -917,7 +923,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         // (see mobile-only block just after this header), since a floating
         // bubble squeezed into this row was the first thing to get clipped
         // on narrow screens.
-        el('div', {className:'hide-mobile', style:{
+        !showMonthlyHistory && el('div', {className:'hide-mobile', style:{
           display:'flex',alignItems:'center',gap:6,
           padding:'4px 10px',borderRadius:20,
           background: isFallback ? 'var(--amb-bg)' : 'var(--grn-bg)',
@@ -938,7 +944,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         // turned out unreadable once this row wraps onto its own line on
         // mobile: nothing to tell tabs apart, and no way to tell which page
         // is active while scrolling past the visible ones.
-        el('div', {className:'tab-bar tab-bar-scroll', style:{minWidth:0}},
+        !showMonthlyHistory && el('div', {className:'tab-bar tab-bar-scroll', style:{minWidth:0}},
           [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['ads','ti-speakerphone'],['margin','ti-chart-pie']].map(([t,ic])=>
             el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t), style:{flexShrink:0,whiteSpace:'nowrap'}},
               el('i', {className:'ti '+ic, style:{fontSize:13}}),
@@ -953,13 +959,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
     // where the nav tab row happens to be scrolled to, since the active tab
     // can easily be scrolled out of view on a narrow screen.
     el('div', {className:'mobile-only', style:{padding:'8px 16px 0',fontSize:15,fontWeight:600,color:'var(--t1)'}},
-      activeTab.charAt(0).toUpperCase()+activeTab.slice(1)
+      showMonthlyHistory?'Monthly sales history':activeTab.charAt(0).toUpperCase()+activeTab.slice(1)
     ),
 
     // Mobile-only freshness line — plain left-aligned text below the sticky
     // header, not a pill, per the mobile feedback that the header pill read
     // as an out-of-place floating bubble on small screens.
-    el('div', {className:'mobile-only mobile-freshness', style:{padding:'4px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',alignItems:'center',gap:5}},
+    !showMonthlyHistory && el('div', {className:'mobile-only mobile-freshness', style:{padding:'4px 16px 0',fontSize:11,color:isFallback?'var(--amb)':'var(--grn)',alignItems:'center',gap:5}},
       el('i', {className: isFallback ? 'ti ti-database-off' : 'ti ti-database-check', style:{fontSize:11}}),
       isFallback
         ? el('span', null, 'Embedded legacy marketing data · live refresh unavailable')
@@ -969,8 +975,10 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           )
     ),
 
-    // CONTENT
-    el('div', {style:{flex:1,padding:'16px 20px',maxWidth:1200,margin:'0 auto',width:'100%'},className:'fi'},
+    // CONTENT — older fiscal years use source-labelled months, never a native Growth surrogate.
+    showMonthlyHistory ? el('div',{style:{flex:1,padding:'16px 20px',maxWidth:1200,margin:'0 auto',width:'100%'}},
+      window.RorHistoricalPeriod?el(RorHistoricalPeriod,{context:historyContext,range:selectedYearRange,channels:['shopify'],section:'Shopify',title:'Shopify sales history · '+displayFY}):el('div',{role:'status'},'Earlier-year reporting is unavailable. Refresh this page.')
+    ) : el('div', {style:{flex:1,padding:'16px 20px',maxWidth:1200,margin:'0 auto',width:'100%'},className:'fi'},
 
       el('details', {className:'card', style:{marginBottom:16,fontSize:12,lineHeight:1.7}},
         el('summary', {style:{cursor:'pointer',color:'var(--amb)'}}, 'Financial information · ' + ShopifyIntegration.labels[financialBasis]),
@@ -2049,7 +2057,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
     ), // end content
 
     // FOOTER
-    el('div', {style:{borderTop:'1px solid var(--bdr)',padding:'10px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--s1)',flexWrap:'wrap',gap:8}},
+    !showMonthlyHistory && el('div', {style:{borderTop:'1px solid var(--bdr)',padding:'10px 20px',display:'flex',alignItems:'center',justifyContent:'space-between',background:'var(--s1)',flexWrap:'wrap',gap:8}},
       el('div', {style:{fontSize:11,color:'var(--t3)'}},
         'Rock On Ruby · Growth Dashboard · '+(viewData?.fy||'')+' · '+ShopifyIntegration.labels[financialBasis]+' · ',
         isFallback
@@ -2083,9 +2091,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
      architecture. Dashboard 1 (App, just above) is untouched by any
      of this. -->
 <script src="dashboard2/data-adapter.js"></script>
-<script src="dashboard2/calculations.js?v=day-first-v1"></script>
+<script src="dashboard2/calculations.js?v=history-controls-v1"></script>
 <script src="dashboard2/charts.js?v=day-first-v1"></script>
-<script src="dashboard2/ror-sales-app.js?v=history-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=history-controls-v1"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/management.js?v=foundation-v1"></script>
@@ -2095,9 +2103,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <script src="finance/loader.js?v=publication-v1"></script>
 <script src="finance/marketplaces/contract.js"></script>
 <script src="finance/marketplaces/loader.js"></script>
-<script src="finance/historical/reporting.js?v=history-v1"></script>
+<script src="finance/historical/reporting.js?v=history-controls-v1"></script>
 <script src="finance/historical/loader.js?v=history-v1"></script>
-<script src="dashboard2/historical-sales.js?v=history-v1"></script>
+<script src="dashboard2/historical-sales.js?v=history-controls-v1"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');
@@ -2109,9 +2117,20 @@ function RootApp() {
   const [marketplaceSnapshot,setMarketplaceSnapshot]=useState(null);
   const [marketplaceError,setMarketplaceError]=useState(null);
   useEffect(()=>{let active=true;const refresh=()=>MarketplaceFinanceLoader.load({force:true}).then(s=>{if(active){setMarketplaceSnapshot(s);setMarketplaceError(null);}}).catch(e=>{if(active)setMarketplaceError(e.message);});refresh();const timer=setInterval(refresh,15*60*1000);return()=>{active=false;clearInterval(timer);};},[]);
-  const financeProps = {financeSnapshot, financialBasis:activeDashboard==='ror-sales'?rorFinancialBasis:financialBasis, setFinancialBasis:activeDashboard==='ror-sales'?setRorFinancialBasis:setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
+  const [historyData,setHistoryData]=useState(null),[historyError,setHistoryError]=useState(''),[historyAttempt,setHistoryAttempt]=useState(0);
+  useEffect(()=>{let active=true;setHistoryError('');Promise.resolve().then(()=>{if(!window.RorHistoricalLoader?.load)throw Error('Earlier sales years could not be loaded.');return RorHistoricalLoader.load({force:historyAttempt>0});}).then(data=>{if(active)setHistoryData(data);}).catch(()=>{if(active)setHistoryError('Earlier sales years could not be loaded. Current reporting remains available.');});return()=>{active=false;};},[historyAttempt]);
+  const historyThrough=RorCalc.resolveDateRange('yesterday').endDate;
+  const preparedHistory=useMemo(()=>{
+    if(!historyData||!financeSnapshot||!marketplaceSnapshot)return {context:null};
+    if(!window.RorHistoricalFinance?.prepare||!window.RorHistoricalPeriod)return {context:null,error:'Earlier-year reporting is unavailable. Refresh this page.'};
+    try{return {context:RorHistoricalFinance.prepare({...historyData,shop:financeSnapshot,markets:marketplaceSnapshot,through:historyThrough})};}
+    catch{return {context:null,error:'Earlier sales years need source validation. Current reporting remains available.'};}
+  },[historyData,financeSnapshot,marketplaceSnapshot,historyThrough]);
+  const historical={context:preparedHistory.context,error:historyError||preparedHistory.error,retry:()=>setHistoryAttempt(n=>n+1)};
+  const financeProps = {historical,financeSnapshot, financialBasis:activeDashboard==='ror-sales'?rorFinancialBasis:financialBasis, setFinancialBasis:activeDashboard==='ror-sales'?setRorFinancialBasis:setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
+    historical.error&&el('div',{role:'status',style:{padding:'12px 20px',color:'var(--amb)',fontSize:12}},historical.error,el('button',{'aria-label':'Retry earlier sales years',onClick:historical.retry,style:{marginLeft:12}},'Retry earlier years')) ,
     activeDashboard === 'ror-sales' ? el(RorSalesApp, financeProps) : el(App, financeProps)
   );
 }

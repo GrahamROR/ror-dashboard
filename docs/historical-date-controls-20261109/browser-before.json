@@ -1,0 +1,39 @@
+{
+  "shopifyFYButtons": [
+    "FY27",
+    "FY26",
+    "FY25",
+    "FY24",
+    "Unlocked",
+    "Unlocked",
+    "Locked"
+  ],
+  "rorDateOptions": [
+    "Current financial year",
+    "Previous financial year",
+    "Last 12 months (rolling calendar months)",
+    "Calendar year 2024",
+    "Calendar year 2025",
+    "Calendar year 2026 year to date",
+    "This month",
+    "Last month",
+    "Last 30 days",
+    "Last 7 days",
+    "Custom range"
+  ],
+  "archiveInitiallyOpen": false,
+  "archiveYearOptions": [
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ]
+}

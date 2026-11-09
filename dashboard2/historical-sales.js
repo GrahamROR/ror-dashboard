@@ -2,11 +2,12 @@
 'use strict';
 const M=root.RorModel,H=root.RorHistoricalFinance;
 const sourceLabel=p=>p.confidence==='self-reported'?'Workbook · recorded revenue':p.confidence===H.HIST?'API history · Net Sales':p.value!=null?'Native feed · Net Sales':'';
-function Cell({part}){
+function Cell({part,showReason=false}){
  return el('td',{style:{padding:'10px 12px',verticalAlign:'top',minWidth:145},title:M.formatDateText(part.reason||'')},
   el('div',{className:'mono',style:{fontWeight:500}},fmtC(part.value,2)),
   part.value!=null&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},sourceLabel(part)),
   part.value!=null&&el('div',{style:{fontSize:10,color:'var(--t2)'}},part.orders==null?'Order count unavailable':fmt(part.orders)+' orders'),
+  showReason&&part.value==null&&part.reason&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},part.reason),
   part.status==='partial-source'&&el('div',{style:{fontSize:10,color:'var(--amb)'}},'Partial source coverage · recorded subtotal')
  );
 }
@@ -48,5 +49,30 @@ function HistoricalSales(props){
   opened&&el(Content,props)
  );
 }
+
+// The regular date controls use this view whenever their period needs archive data.
+// It never sends workbook amounts into native Growth or management calculations.
+function PeriodHistory({context,range,channels=M.ACTIVE_CHANNELS,section='Page',title}){
+ if(!context)return el('div',{role:'status'},'Historical source data is unavailable. Retry earlier years above.');
+ if(range.unsupported)return el('div',{role:'status'},M.formatDateText(range.reason));
+ const rows=H.rangeRows(context,range),combined=channels.length>1;
+ const labels={shopify:'Shopify revenue · source basis',etsy:'Etsy Net Sales',noths:'NOTHS Net Sales'};
+ return el('div',{className:'card','data-history-report':section,'data-historical-content':true,style:{marginBottom:16}},
+  el('div',{style:{fontWeight:600,fontSize:15,marginBottom:8}},title||'Sales history · '+range.label),
+  el('div',{'data-report-period':section+' history',style:{fontSize:12,lineHeight:1.7,marginBottom:10}},M.formatDate(range.startDate)+' → '+M.formatDate(range.endDate)+' (inclusive)'),
+  el('p',{style:{fontSize:12,color:'var(--t2)',lineHeight:1.7}},'Monthly sales history for the selected dates and stores. '+(channels.some(c=>c!=='shopify')?'Marketplace figures use the agreed Net Sales maths. ':'')+(channels.includes('shopify')?'Shopify workbook months show recorded revenue and orders; their Net/Gross basis is unconfirmed. Daily figures, profit and growth comparisons are unavailable for workbook-only periods.':'')),
+  el('div',{className:'table-scroll-hint',style:{fontSize:11,color:'var(--t2)',marginBottom:8}},'Swipe to see all stores →'),
+  rows.length?el('div',{style:{overflowX:'auto',WebkitOverflowScrolling:'touch'}},el('table',{'aria-label':'Historical monthly sales · '+section,style:{width:'100%',borderCollapse:'collapse',fontSize:12}},
+   el('thead',null,el('tr',null,['Month',...channels.map(c=>labels[c]),...(combined?['All Stores Net Sales']:[])].map(label=>el('th',{key:label,style:{padding:'10px 12px',textAlign:'left',color:'var(--t2)',whiteSpace:'nowrap'}},label)))),
+   el('tbody',null,rows.map(row=>el('tr',{key:row.period,'data-history-month':row.period,style:{borderTop:'1px solid var(--bdr)'}},
+    el('td',{style:{padding:'10px 12px',verticalAlign:'top',whiteSpace:'nowrap'}},M.monthLabel(row.period),row.partial_period&&el('div',{style:{fontSize:10,color:'var(--amb)'}},M.formatDate(row.start)+' → '+M.formatDate(row.end))),
+    ...channels.map(c=>el(Cell,{key:c,part:row[c],showReason:true})),combined&&el(Cell,{part:row.all,showReason:true})
+   )))
+  )):el('div',{role:'status'},'No source history is available for these dates.'),
+  el('p',{style:{fontSize:11,color:'var(--t2)',marginTop:12,lineHeight:1.7}},'Source labels apply to each amount. '+(channels.includes('shopify')?'No daily Shopify figures are inferred from workbook months. A partial workbook month is unavailable. ':'')+(combined?'Combined Net Sales requires complete, compatible sources; recorded workbook revenue is kept separate.':'')),
+  el('p',{style:{fontSize:11,color:'var(--t2)',marginTop:6}},'Source history starts · '+channels.map(c=>M.CHANNEL_META[c].short+' '+M.formatDate(context.starts[c])).join(' · ')+' · Reporting cutoff '+M.formatDate(context.through))
+ );
+}
+root.RorHistoricalPeriod=PeriodHistory;
 root.RorHistoricalSales=HistoricalSales;
 })(window);

@@ -72,10 +72,11 @@ function StoreSelect({ value, onChange, section='Page' }) {
   );
 }
 
-function DateRangeSelect({ value, onChange, custom, onCustomChange, section = 'Report' }) {
+function DateRangeSelect({ value, onChange, custom, onCustomChange, section = 'Report', fiscalYears=[] }) {
+  const years=[...new Set([...fiscalYears,...(/^FY\d{2}$/.test(value)?[value]:[])])];
   return el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
     el(FilterLabel, null, 'Date range'),
-    el(Select, { value, onChange, ariaLabel: section + ' date range', options: C.REPORT_DATE_PRESETS.map((p) => ({ value: p.key, label: p.label })) }),
+    el(Select, { value, onChange, ariaLabel: section + ' date range', options: [...C.REPORT_DATE_PRESETS.map((p) => ({ value: p.key, label: p.label })),...years.map(value=>({value,label:value+' · '+M.formatDate(C.resolveDateRange(value).startDate)+' → '+M.formatDate(C.resolveDateRange(value).endDate)}))] }),
     value === 'custom' && el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 } },
       el('input', { type: 'date', lang: 'en-GB', 'aria-label': section + ' start date', value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } }),
@@ -209,6 +210,11 @@ function ComparisonTable({ records, channels, meta, basis }) {
   }, [records, channels.join(','), granularity, range.startPeriod, range.endPeriod, metric]);
 
   const showYoyCol = granularity === 'monthly' || granularity === 'quarterly';
+  if(root.RorHistoricalFinance?.needsHistory(records.historicalContext,range,channels))return el('div',{className:'card','data-ror-section':'comparison'},
+    el('div',{style:{fontWeight:600,marginBottom:10}},'Sales comparison table · Monthly history'),
+    el(DateRangeSelect,{section:'Sales comparison',value:rangePreset,onChange:setRangePreset,custom:customRange,onCustomChange:setCustomRange,fiscalYears:meta.fiscalYears}),
+    el(root.RorHistoricalPeriod,{context:records.historicalContext,range,channels,section:'Sales comparison',title:'Sales comparison · '+range.label})
+  );
 
   function cell(cmp) {
     if (cmp.status === 'not-occurred') return el('span', { style: { color: 'var(--t3)' } }, '—');
@@ -230,7 +236,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
         el(FilterLabel, null, 'Metric'),
         el(Select, { value: metric, onChange: setMetric, options: metricOptions(basis),ariaLabel:'Sales comparison metric' })),
       el(GranularitySelect, { value: granularity, onChange: setGranularity,section:'Sales comparison' }),
-      el(DateRangeSelect, { section: 'Sales comparison', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange })
+      el(DateRangeSelect, { fiscalYears:meta.fiscalYears,section: 'Sales comparison', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange })
     ),
     el(PeriodNotice, { range, records, channels, section: 'Sales comparison (independent dates; page store filter)' }),
     !table ? el(UnavailableNotice, { reason: range.reason }) :
@@ -372,6 +378,13 @@ function SalesExplorer({ records, meta, basis }) {
     });
   }, [seriesData, effectiveChartType]);
 
+  if(root.RorHistoricalFinance?.needsHistory(records.historicalContext,range,channels))return el('div',{className:'card','data-ror-section':'explorer'},
+    el('div',{style:{fontWeight:600,marginBottom:10}},'Sales explorer · Monthly history'),
+    el('div',{style:{display:'flex',flexWrap:'wrap',gap:14,marginBottom:12}},
+      el(StoreSelect,{section:'Sales explorer',value:storeMode==='byChannel'?'all':storeMode,onChange:setStoreMode}),
+      el(DateRangeSelect,{section:'Sales explorer',value:rangePreset,onChange:setRangePreset,custom:customRange,onCustomChange:setCustomRange,fiscalYears:meta.fiscalYears})),
+    el(root.RorHistoricalPeriod,{context:records.historicalContext,range,channels,section:'Sales explorer',title:'Sales explorer · '+range.label})
+  );
   return el('div', { className: 'card','data-ror-section':'explorer' },
     el('div', { style: { marginBottom: 16 } },
       el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Sales explorer'),
@@ -391,7 +404,7 @@ function SalesExplorer({ records, meta, basis }) {
           ariaLabel:'Sales explorer series',value: seriesMode, onChange: (v) => setStoreMode(v === 'byChannel' ? 'byChannel' : 'all'),
           options: [{ value: 'combined', label: 'Combined' }, { value: 'byChannel', label: 'Separate per store' }],
         })),
-      el(DateRangeSelect, { section: 'Sales explorer', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange, availableStart: meta.earliest, availableEnd: meta.latest }),
+      el(DateRangeSelect, { fiscalYears:meta.fiscalYears,section: 'Sales explorer', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange, availableStart: meta.earliest, availableEnd: meta.latest }),
       el(GranularitySelect, { value: granularity, onChange: setGranularity,section:'Sales explorer' }),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Comparison'),
@@ -420,16 +433,17 @@ function SalesExplorer({ records, meta, basis }) {
 }
 
 // ── top-level Dashboard 2 ────────────────────────────────────
-function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialBasis=()=>{},financeError,marketplaceSnapshot,marketplaceError}={}) {
+function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialBasis=()=>{},financeError,marketplaceSnapshot,marketplaceError,historical}={}) {
   const [loading, setLoading] = useState(true);
   const [loadErr, setLoadErr] = useState('');
-  const [meta, setMeta] = useState(null);
+  const [rawMeta, setMeta] = useState(null);
   const [importedRecords, setRecords] = useState([]);
-  const records = useMemo(()=>{const r=importedRecords.slice();r.management={shop:financeSnapshot,markets:marketplaceSnapshot,basis:financialBasis};return r;},[importedRecords,financeSnapshot,marketplaceSnapshot,financialBasis]);
+  const records = useMemo(()=>{const r=importedRecords.slice();r.management={shop:financeSnapshot,markets:marketplaceSnapshot,basis:financialBasis};r.historicalContext=historical?.context;return r;},[importedRecords,financeSnapshot,marketplaceSnapshot,financialBasis,historical?.context]);
   const [topStore, setTopStore] = useState('all');
   const [topRangePreset, setTopRangePreset] = useState(DEFAULT_REPORT_PERIOD);
   const [topCustomRange, setTopCustomRange] = useState({ start: '', end: '' });
   const [comparisonMode, setComparisonMode] = useState('mom');
+  const meta=useMemo(()=>{const h=historical?.context;if(!rawMeta||!h)return rawMeta;const first=h.earliest.length===7?h.earliest+'-01':h.earliest;return {...rawMeta,earliest:[rawMeta.earliest,first].sort()[0],fiscalYears:root.RorHistoricalFinance.fiscalYears(first,h.through).filter(fy=>C.resolveDateRange(fy).endDate<=h.through),historicalContext:h};},[rawMeta,historical?.context]);
 
   useEffect(() => {
     const adapter = RorDataAdapter.createProductionAdapter('dashboard2/sales-data.json');
@@ -443,6 +457,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
     availableStart: meta.earliest, availableEnd: meta.latest,
   }) : { unsupported: true, reason: 'Sales data is unavailable.' };
   const channels = topStore === 'all' ? M.ACTIVE_CHANNELS : [topStore];
+  const pageHistory=root.RorHistoricalFinance?.needsHistory(historical?.context,range,channels);
   // Goal actuals stay on the agreed Net Sales basis, independent of page filters.
   const goalRange = C.resolveDateRange('currentFY');
   const goalRecords = records.slice();
@@ -468,33 +483,34 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
       ),
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
-      meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot, channels, markets:marketplaceSnapshot }),
+      meta && !pageHistory && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot, channels, markets:marketplaceSnapshot }),
       (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},M.formatDateText(financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.')),
 
       marketplaceError && el(UnavailableNotice,{reason:marketplaceError}),
       marketplaceSnapshot?.refreshStatus?.status==='failed' && el(UnavailableNotice,{reason:'Latest automatic marketplace refresh failed; last validated figures are retained. Source coverage dates are shown below.'}),
-      topStore==='all' && !['net_revenue','legacy_gross'].includes(financialBasis) && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},'All Stores supports Net Sales and Legacy Imported Gross. Choose Net Sales here, or select Shopify for Gross / Total Sales.'),
+      !pageHistory && topStore==='all' && !['net_revenue','legacy_gross'].includes(financialBasis) && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},'All Stores supports Net Sales and Legacy Imported Gross. Choose Net Sales here, or select Shopify for Gross / Total Sales.'),
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
         el(StoreSelect, { value: topStore, onChange: setTopStore }),
-        el('div',{style:{display:'flex',flexDirection:'column',gap:4}},
+        !pageHistory && el('div',{style:{display:'flex',flexDirection:'column',gap:4}},
           el(FilterLabel,null,'Financial reporting basis'),
           el(Select,{value:financialBasis,onChange:setFinancialBasis,ariaLabel:'ROR Shopify financial basis',options:[...ShopifyIntegration.BASIS,'legacy_gross'].map(value=>({value,label:ManagementFinance.LABELS[value],disabled:topStore==='all'&&!['net_revenue','legacy_gross'].includes(value)}))})),
-        el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
+        el(DateRangeSelect, { fiscalYears:meta?.fiscalYears,section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
-          'KPI cards and channel contribution use these filters. Comparison and explorer dates are independent.',
-          topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+M.formatDate(goalRange.endDate):'Current progress unavailable'))),
+          pageHistory?'Monthly source history uses these filters. Comparison and explorer dates are independent.':'KPI cards and channel contribution use these filters. Comparison and explorer dates are independent.',
+          !pageHistory && topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+M.formatDate(goalRange.endDate):'Current progress unavailable'))),
       ),
 
-      root.RorHistoricalSales && el(root.RorHistoricalSales, {financeSnapshot,marketplaceSnapshot,financeError,marketplaceError}),
+      !pageHistory && root.RorHistoricalSales && el(root.RorHistoricalSales, {financeSnapshot,marketplaceSnapshot,financeError,marketplaceError}),
 
-      el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
-      range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
-        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode, basis:financialBasis }),
+      pageHistory && el(root.RorHistoricalPeriod,{context:historical.context,range,channels,section:'Page'}),
+      !pageHistory && el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
+      !pageHistory && (range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
+        el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode, basis:financialBasis })),
 
       meta && el(ComparisonTable, { records, channels, meta, basis:financialBasis }),
 
-      !range.unsupported && el(ChannelContribution, { records, channels, range }),
+      !pageHistory && !range.unsupported && el(ChannelContribution, { records, channels, range }),
 
       meta && el(SalesExplorer, { records, meta, basis:financialBasis }),
 

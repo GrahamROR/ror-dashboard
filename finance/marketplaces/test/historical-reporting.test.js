@@ -50,3 +50,30 @@ test('The unchanged live management gate continues to withhold historical-labell
 test('A missing native Shopify order count cannot produce a complete combined history figure',()=>{
  const f=fixture();f.shop=structuredClone(f.shop);f.shop.days.find(d=>d.day==='2024-01-10').orders=null;const row=H.prepare(f).month('2024-01');assert.equal(row.all.value,null);
 });
+
+test('Selected historical dates clip native daily amounts exactly without prorating workbook months',()=>{
+ const f=fixture(),ctx=H.prepare(f);
+ const row=ctx.month('2023-12',{startDate:'2023-12-15',endDate:'2023-12-31'});
+ assert.equal(row.shopify.value,null);assert.match(row.shopify.reason,/full months only/);
+ assert.equal(row.etsy.orders,17);assert.equal(row.noths.orders,17);assert.equal(row.partial_period,true);assert.equal(row.all.value,null);
+ const native=ctx.month('2024-01',{startDate:'2024-01-10',endDate:'2024-01-20'});
+ const certified={channels:Object.fromEntries(['etsy','noths'].map(c=>[c,{daily:[...f.archive.channels[c].daily,...f.markets.channels[c].daily].map(r=>({...r,completeness:'validated'}))}]))};
+ assert.equal(native.all.value,M.select(shop,certified,['shopify','etsy','noths'],'2024-01-10','2024-01-20','net_revenue').value/100);
+ assert.equal(native.etsy.orders,11);assert.equal(native.start,'2024-01-10');assert.equal(native.end,'2024-01-20');
+});
+test('Fiscal selectors derive years from actual source depth, and historical routing is per selected store',()=>{
+ assert.deepEqual(H.fiscalYears('2016-01-01','2026-11-08'),['FY27','FY26','FY25','FY24','FY23','FY22','FY21','FY20','FY19','FY18','FY17','FY16']);
+ const C=require('../../../dashboard2/calculations'),fy16=C.resolveDateRange('FY16');assert.equal(fy16.startDate,'2015-08-01');assert.equal(fy16.endDate,'2016-07-31');assert.equal(C.REPORT_DATE_PRESETS.length,11);assert.equal(C.resolveDateRange('FY1').unsupported,true);
+ const ctx={boundaries:{shopify:'2024-01-01',etsy:'2025-08-01',noths:'2025-08-01'}},r={startDate:'2024-01-01',endDate:'2024-12-31'};
+ assert.equal(H.needsHistory(ctx,r,['shopify']),false);assert.equal(H.needsHistory(ctx,r,['etsy']),true);
+ assert.equal(H.needsHistory(ctx,{startDate:'2023-08-01'},['shopify']),true);
+ assert.equal(H.needsHistory(ctx,{startDate:'2025-08-01'},['etsy','noths']),false);
+});
+test('Historical range rows preserve selected edges and show no invented future or unsupported centuries',()=>{
+ const ctx=H.prepare(fixture());
+ const list=H.rangeRows(ctx,{startDate:'2023-12-15',endDate:'2024-01-20'});
+ assert.deepEqual(list.map(r=>r.period),['2023-12','2024-01']);assert.equal(list[0].start,'2023-12-15');assert.equal(list[1].end,'2024-01-20');
+ assert.deepEqual(H.rangeRows(ctx,{startDate:'2025-01-01',endDate:'2025-12-31'}),[]);
+ const bounded=H.rangeRows(ctx,{startDate:'2000-01-01',endDate:'2030-12-31'});assert.equal(bounded.length,2);
+ assert.throws(()=>H.rangeRows(ctx,{startDate:'2024-01-20',endDate:'2023-12-15'}),/Invalid selected/);
+});

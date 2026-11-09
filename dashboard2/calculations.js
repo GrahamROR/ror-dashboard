@@ -83,7 +83,10 @@ function resolveDateRange(presetKey, opts) {
       if (!opts.customStart || !opts.customEnd) return { unsupported: true, reason: 'Pick a start and end date.', presetKey };
       if (!validDate(opts.customStart) || !validDate(opts.customEnd)) return { unsupported: true, reason: 'Enter valid start and end dates.', presetKey };
       startDate = opts.customStart; endDate = opts.customEnd; label = 'Custom range'; break;
-    default: return { unsupported: true, reason: 'Unknown date range.', presetKey };
+    default:
+      if (!/^FY\d{2}$/.test(presetKey)) return { unsupported: true, reason: 'Unknown date range.', presetKey };
+      { const endYear=2000+Number(presetKey.slice(2)); startDate=`${endYear-1}-08-01`;endDate=`${endYear}-07-31`;label=presetKey; }
+
   }
   if (startDate > endDate) return { unsupported: true, reason: presetKey === 'custom' ? 'Start date must be before end date.' : 'No completed reporting day in this period yet.', presetKey };
   const outsideCoverage = startDate < availableStart || endDate > availableEnd;
