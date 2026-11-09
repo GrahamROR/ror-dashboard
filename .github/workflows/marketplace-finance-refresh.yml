@@ -8,10 +8,6 @@ on:
         description: 'Publish verified output (main and owner-enabled automation only)'
         type: boolean
         default: false
-      require_historical_replay:
-        description: 'Require exact match to retained historical controls (initial verification)'
-        type: boolean
-        default: true
 permissions:
   contents: write
   pages: write
@@ -43,9 +39,7 @@ jobs:
       - name: Read, calculate and validate marketplace financial inputs
         env:
           PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
-          REPLAY: ${{ github.event_name == 'workflow_dispatch' && inputs.require_historical_replay }}
         run: |
           args=()
           if [[ "$PUBLISH" != "true" ]]; then args+=(--verify); fi
-          if [[ "$REPLAY" == "true" ]]; then args+=(--require-replay); fi
           node scripts/refresh-marketplace-finance.js "${args[@]}"

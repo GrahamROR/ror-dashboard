@@ -1,6 +1,6 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),cp=require('node:child_process');
-const E=require('./etsy'),A=require('./automatic-refresh'),P=require('../publication');
+const E=require('./etsy'),A=require('./automatic-refresh');
 const ROOT='finance/marketplaces/staging';
 const PRODUCERS=['finance/marketplaces/api-normalize.js','finance/marketplaces/api-source.js','finance/marketplaces/automatic-refresh.js','finance/marketplaces/publication.js','finance/marketplaces/collect.js','finance/marketplaces/store.js','finance/marketplaces/contract.js','finance/management.js','finance/publication.js','scripts/refresh-marketplace-finance.js','.github/workflows/marketplace-finance-refresh.yml'];
 function blob(repo,rev,file) {try{return cp.execFileSync('git',['-C',repo,'show',rev+':'+file],{stdio:['ignore','pipe','pipe'],maxBuffer:32*1024*1024});}catch(e){if(e.status===128)return null;throw e;}}

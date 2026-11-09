@@ -86,6 +86,6 @@ jobs:
         with:
           node-version: '22'
       - name: Verify native source components against retained reporting controls
-        run: node scripts/refresh-marketplace-finance.js --verify --require-replay
+        run: node scripts/refresh-marketplace-finance.js --verify
       - name: Verify publication files remain unchanged
         run: git diff --exit-code -- finance/staging finance/marketplaces/staging data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json

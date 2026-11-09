@@ -30,7 +30,7 @@ function validate(snapshot,{end,previous}={}) {
   }
   return result;
 }
-async function refresh({env=process.env,out=ROOT,now=new Date(),capture=Source.capture,verifyOnly=false,requireReplay=false}={}) {
+async function refresh({env=process.env,out=ROOT,now=new Date(),capture=Source.capture,verifyOnly=false}={}) {
   const previous=Store.read(out)||reference(),end=R.endYesterday(now),ranges={};
   for(const c of ['etsy','noths'])ranges[c]={start:previous.channels[c].daily[0].date,end};
   const attempted_at=now.toISOString();

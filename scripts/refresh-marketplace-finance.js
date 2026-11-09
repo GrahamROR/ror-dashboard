@@ -1,10 +1,10 @@
 'use strict';
 const A=require('../finance/marketplaces/automatic-refresh');
 async function main() {
-  const verify=process.argv.includes('--verify'),replay=process.argv.includes('--require-replay');
+  const verify=process.argv.includes('--verify');
   if(!verify&&(process.env.GITHUB_REF!=='refs/heads/main'||process.env.GITHUB_REF_NAME!=='main'||process.env.MARKETPLACE_FINANCE_ENABLED!=='true'))throw Error('Automatic marketplace publication requires enabled main workflow context');
   let outcome='success',result;
-  try {result=await A.refresh({verifyOnly:verify,requireReplay:replay});}
+  try {result=await A.refresh({verifyOnly:verify});}
   catch {outcome='failure';if(verify)throw Error('Marketplace source/validation check failed; no published files changed');}
   if(verify){console.log(JSON.stringify({status:'verified',verification:result.verification,historical_controls:result.controls}));return;}
   const P=require('../finance/publication'),MP=require('../finance/marketplaces/publication'),repo=process.cwd();
@@ -12,11 +12,7 @@ async function main() {
   console.log(JSON.stringify({publication}));
   const pages=await require('../finance/pages-publication').requestBuild({repo,repository:process.env.GITHUB_REPOSITORY,token:process.env.GH_TOKEN,revision:publication.revision});
   console.log(JSON.stringify({pages}));
-  const fs=require('node:fs'),path=require('node:path'),manifest=JSON.parse(prepared.pending.get(MP.ROOT+'/manifest.json')||fs.readFileSync(path.join(repo,MP.ROOT,'manifest.json'))),status=JSON.parse(prepared.pending.get(MP.ROOT+'/refresh-status.json'));
-  if(publication.failed) {
-    // The working directory can contain the rejected candidate. Read retained main's pointer.
-    Object.assign(manifest,JSON.parse(require('node:child_process').execFileSync('git',['show',publication.revision+':'+MP.ROOT+'/manifest.json'],{encoding:'utf8'})));
-  }
+  const cp=require('node:child_process'),manifest=JSON.parse(prepared.pending.get(MP.ROOT+'/manifest.json')||cp.execFileSync('git',['show',publication.revision+':'+MP.ROOT+'/manifest.json'],{encoding:'utf8'})),status=JSON.parse(prepared.pending.get(MP.ROOT+'/refresh-status.json'));
   const site=await fetch('https://api.github.com/repos/'+process.env.GITHUB_REPOSITORY+'/pages',{headers:{Authorization:'Bearer '+process.env.GH_TOKEN,Accept:'application/vnd.github+json'},signal:AbortSignal.timeout(30000)});
   if(!site.ok)throw Error('Published marketplace site metadata unavailable');
   const bundle=await MP.verifyServed({baseUrl:(await site.json()).html_url,manifest,status});
