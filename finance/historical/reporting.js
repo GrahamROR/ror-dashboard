@@ -41,19 +41,37 @@ function prepare({archive,legacy,shop,markets,through}){
   const old=legacyByMonth.get(period);
   if(old){if(start!==period+'-01'||end!==monthEnd(period))return absent('Workbook supports full months only.');return {value:old.revenue,orders:old.orders,status:old.revenue==null?'unavailable':'complete',confidence:'self-reported',basis:'workbook-recorded-revenue'};}
   const current=M.shopify(shop,start,end,'net_revenue');
-  return current.value==null?absent('Native Shopify coverage unavailable.'): {value:current.value/100,orders:current.orders,status:'complete',confidence:current.confidence,basis:'net_revenue'};
+  return current.value==null?absent('No Shopify source data for this period.'): {value:current.value/100,orders:current.orders,status:'complete',confidence:current.confidence,basis:'net_revenue'};
  }
- function month(period){
+ function month(period,range={}){
   if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(period))throw Error('Invalid historical month');
-  const start=period+'-01',end=monthEnd(period)<through?monthEnd(period):through;
+  const first=period+'-01',last=monthEnd(period);
+  if(range.startDate)F.day(range.startDate);if(range.endDate)F.day(range.endDate);
+  const start=[first,range.startDate||first].sort().at(-1),end=[last,through,range.endDate||last].sort()[0];
+  if(first>through)return {period,start:first,end:through,partial_period:false,shopify:absent('Future period.'),etsy:absent('Future period.'),noths:absent('Future period.'),all:absent('Future period.')};
+  if(start>last||end<first||start>end)return {period,start,end,partial_period:true,shopify:absent('No source days in the selected period.'),etsy:absent('No source days in the selected period.'),noths:absent('No source days in the selected period.'),all:absent('No source days in the selected period.')};
   if(start>through)return {period,start,end,partial_period:false,shopify:absent('Future period.'),etsy:absent('Future period.'),noths:absent('Future period.'),all:absent('Future period.')};
   const parts={shopify:shopify(period,start,end),etsy:marketplace('etsy',start,end),noths:marketplace('noths',start,end)};
   const complete=Object.values(parts).every(p=>p.status==='complete'&&p.value!=null&&p.orders!=null&&p.basis==='net_revenue');
   const all=complete?{value:Math.round(Object.values(parts).reduce((n,p)=>n+Math.round(p.value*100),0))/100,orders:Object.values(parts).every(p=>p.orders!=null)?Object.values(parts).reduce((n,p)=>n+p.orders,0):null,status:'complete',basis:'net_revenue',confidence:Object.values(parts).some(p=>p.confidence===HIST)?HIST:'provisional'}:absent(parts.shopify.basis==='workbook-recorded-revenue'?'Workbook revenue has no confirmed Net Sales basis; it is kept separate.':'Complete matching source coverage is required.');
-  return {period,start,end,partial_period:end<monthEnd(period),...parts,all};
+  return {period,start,end,partial_period:start>first||end<last,...parts,all};
  }
- const earliest=[legacy.coverage.start,...Object.values(archive.channels).map(c=>c.coverage.start),shopStart].sort()[0];
- return {month,through,earliest,years:Array.from({length:+through.slice(0,4)-+earliest.slice(0,4)+1},(_,i)=>String(+earliest.slice(0,4)+i)),default_year:legacy.coverage.start.slice(0,4),boundaries:{shopify:shopStart,etsy:channels.etsy.boundary,noths:channels.noths.boundary}};
+ const legacyStart=legacyByMonth.size?[...legacyByMonth.keys()].sort()[0]+'-01':shopStart;
+ const starts={shopify:[legacyStart,shopStart].sort()[0],etsy:channels.etsy.rows[0].date,noths:channels.noths.rows[0].date};
+ const earliest=Object.values(starts).sort()[0];
+ return {month,through,earliest,years:Array.from({length:+through.slice(0,4)-+earliest.slice(0,4)+1},(_,i)=>String(+earliest.slice(0,4)+i)),default_year:legacy.coverage.start.slice(0,4),legacy_start:starts.shopify,starts,boundaries:{shopify:shopStart,etsy:channels.etsy.boundary,noths:channels.noths.boundary}};
 }
-return {prepare,HIST,monthEnd};
+function fiscalYears(start,end){
+ F.day(start);F.day(end);if(start>end)return [];
+ const fy=day=>+day.slice(0,4)+(+day.slice(5,7)>=8?1:0);
+ return Array.from({length:fy(end)-fy(start)+1},(_,i)=>'FY'+String(fy(start)+i).slice(-2)).reverse();
+}
+function needsHistory(context,range,channels){return !!context&&!range.unsupported&&channels.some(c=>range.startDate<context.boundaries[c]);}
+function rangeRows(context,range){
+ F.day(range.startDate);F.day(range.endDate);if(range.startDate>range.endDate)throw Error('Invalid selected historical range');
+ const first=[range.startDate,context.earliest.length===7?context.earliest+'-01':context.earliest].sort().at(-1).slice(0,7),last=[range.endDate,context.through].sort()[0].slice(0,7),rows=[];
+ for(let period=first;period<=last;){rows.push(context.month(period,range));const d=new Date(period+'-01T00:00:00Z');d.setUTCMonth(d.getUTCMonth()+1);period=d.toISOString().slice(0,7);}
+ return rows;
+}
+return {prepare,HIST,monthEnd,fiscalYears,needsHistory,rangeRows};
 });
