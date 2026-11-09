@@ -126,6 +126,7 @@ async function collect({
   fetcher = fetch,
   maxPages = 80,
   dir = "desc",
+  initialOffset = 0,
 }) {
   if (
     !/T.*(?:Z|[+-]\d{2}:\d{2})$/.test(start) ||
@@ -135,6 +136,7 @@ async function collect({
   )
     throw Error("Explicit timestamp bounds required; end is exclusive");
   if (!["asc", "desc"].includes(dir)) throw Error("Unsupported marketplace sort direction");
+  if (!Number.isSafeInteger(initialOffset) || initialOffset < 0 || (channel !== "noths" && initialOffset !== 0)) throw Error("Invalid historical source offset");
   const rows = [],
     seen = new Set();
   let count = null,
@@ -154,7 +156,7 @@ async function collect({
     throw Error("Missing Etsy read credentials; token management is external");
   if (channel === "noths" && !env.NOTHS_TOKEN)
     throw Error("Missing NOTHS read credentials");
-  for (let offset = 0; pages < maxPages; ) {
+  for (let offset = initialOffset; pages < maxPages; ) {
     const limit = channel === "etsy" ? 100 : 250;
     const u = new URL(
       channel === "etsy"

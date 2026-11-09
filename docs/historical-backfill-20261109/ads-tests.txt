@@ -1,0 +1,35 @@
+✔ Rolling Ads ranges contain seven/thirty completed London days and comparable prior periods (2.631667ms)
+✔ Today remains partial; missing financial fields never become zero or comparable growth (0.167791ms)
+✔ London reporting day and UTC civil math handle DST and leap dates independently of host timezone (13.671792ms)
+✔ Both platforms required for blended CAC; zero spend is valid; old partial exports also guarded (0.217792ms)
+✔ Complete legacy proxy numbers unchanged; missing customer/cost months are not manufactured (2.902375ms)
+✔ Staged backfill is idempotent, channel-specific, preserves existing validated records and rejects invented fields (1.285709ms)
+✔ Meta selects one overlapping purchase event and keeps its matching value (0.819791ms)
+✔ Google fractional attributed conversions survive the fetcher without rounding (1.350166ms)
+  ok  - resolveAdsDateRange: today/yesterday/last7/last30 line up
+  ok  - resolveAdsDateRange: thisMonth/lastMonth/thisQuarter/thisYear
+  ok  - resolveAdsDateRange: custom validates start<=end and requires both dates
+  ok  - previousEquivalentRange shifts back by the range's own length (day-precision)
+  ok  - yearEarlierRange shifts both ends back exactly one calendar year
+  ok  - adsAggregate: sums raw components then derives ROAS/CPA/CTR/CPC — never averages ratios
+  ok  - adsAggregate: missing days are "no-data", never zero
+  ok  - adsAggregate: a future range is "not-occurred"
+  ok  - adsAggregate: today included in range is flagged "partial"
+  ok  - adsCompare: zero-denominator never produces Infinity/NaN
+  ok  - adsBucketsForGranularity: daily/weekly/monthly produce sane, non-overlapping buckets
+  ok  - adsPreviousBucket / adsYearEarlierBucket: monthly bucket steps to the correct prior month/year
+  ok  - adsPreviousBucket / adsYearEarlierBucket: daily bucket steps by exactly 1 day / 1 year
+  ok  - one missing channel-day takes precedence over a partial current day
+  ok  - incomplete current or prior ads periods never produce growth
+  ok  - Ads trailing 365-day legacy preset is labelled accurately
+
+16 passed, 0 failed
+✔ ads/test/calculations.test.js (60.684458ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87.914542

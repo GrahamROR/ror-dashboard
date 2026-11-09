@@ -1,0 +1,15 @@
+{
+  "schema": "ror-historical-bundle-v1",
+  "marketplaces": {
+    "file": "finance/marketplaces/historical/snapshots/8292539afc2a8b49de4e10e5e3b91f9acf26218ea5f282262e07f4dc7a094108.json",
+    "sha256": "8292539afc2a8b49de4e10e5e3b91f9acf26218ea5f282262e07f4dc7a094108"
+  },
+  "shopify": {
+    "file": "finance/historical/shopify-legacy.json",
+    "sha256": "575a470312af8be63a3334923ce39fa1d8d24a09482624766adc379bb5c55f81"
+  },
+  "coverage": {
+    "file": "finance/historical/coverage-check.json",
+    "sha256": "2427eff6b4a4642c8cd067d3661658482971be2e7c155f92cd0660c9b04d3f0c"
+  }
+}

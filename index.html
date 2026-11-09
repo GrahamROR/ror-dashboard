@@ -2085,7 +2085,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <script src="dashboard2/data-adapter.js"></script>
 <script src="dashboard2/calculations.js?v=day-first-v1"></script>
 <script src="dashboard2/charts.js?v=day-first-v1"></script>
-<script src="dashboard2/ror-sales-app.js?v=day-first-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=history-v1"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/management.js?v=foundation-v1"></script>
@@ -2095,6 +2095,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <script src="finance/loader.js?v=publication-v1"></script>
 <script src="finance/marketplaces/contract.js"></script>
 <script src="finance/marketplaces/loader.js"></script>
+<script src="finance/historical/reporting.js?v=history-v1"></script>
+<script src="finance/historical/loader.js?v=history-v1"></script>
+<script src="dashboard2/historical-sales.js?v=history-v1"></script>
 <script>
 function RootApp() {
   const [activeDashboard, setActiveDashboard] = useState('shopify');

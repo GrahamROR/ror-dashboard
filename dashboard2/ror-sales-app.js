@@ -486,6 +486,8 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
           topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+M.formatDate(goalRange.endDate):'Current progress unavailable'))),
       ),
 
+      root.RorHistoricalSales && el(root.RorHistoricalSales, {financeSnapshot,marketplaceSnapshot,financeError,marketplaceError}),
+
       el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
       range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
         el(KpiSection, { records, channels, range, comparisonMode, setComparisonMode, basis:financialBasis }),
