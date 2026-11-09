@@ -176,8 +176,8 @@ function nextBucket(granularity, start) {
 }
 function bucketLabel(granularity, start) {
   const d = parseDate(start); const y = d.getUTCFullYear(); const m = d.getUTCMonth() + 1;
-  if (granularity === 'daily') return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
-  if (granularity === 'weekly') return 'w/c ' + d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  if (granularity === 'daily') return RorModel.formatDate(start);
+  if (granularity === 'weekly') return 'w/c ' + RorModel.formatDate(start);
   if (granularity === 'monthly') return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit', timeZone: 'UTC' });
   if (granularity === 'quarterly') return `Q${Math.floor((m - 1) / 3) + 1} ${y}`;
   if (granularity === 'calendar-year') return String(y);

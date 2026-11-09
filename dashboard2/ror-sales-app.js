@@ -77,9 +77,9 @@ function DateRangeSelect({ value, onChange, custom, onCustomChange, section = 'R
     el(FilterLabel, null, 'Date range'),
     el(Select, { value, onChange, ariaLabel: section + ' date range', options: C.REPORT_DATE_PRESETS.map((p) => ({ value: p.key, label: p.label })) }),
     value === 'custom' && el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 } },
-      el('input', { type: 'date', 'aria-label': section + ' start date', value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
+      el('input', { type: 'date', lang: 'en-GB', 'aria-label': section + ' start date', value: custom.start || '', onChange: (e) => onCustomChange({ ...custom, start: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } }),
-      el('input', { type: 'date', 'aria-label': section + ' end date', value: custom.end || '', onChange: (e) => onCustomChange({ ...custom, end: e.target.value }),
+      el('input', { type: 'date', lang: 'en-GB', 'aria-label': section + ' end date', value: custom.end || '', onChange: (e) => onCustomChange({ ...custom, end: e.target.value }),
         style: { background: 'var(--s2)', border: '1px solid var(--bdr2)', color: 'var(--t1)', borderRadius: 'var(--r)', padding: '6px 8px', fontSize: 12 } })
     )
   );
@@ -98,7 +98,7 @@ function GranularitySelect({ value, onChange, section='Report' }) {
 function UnavailableNotice({ reason }) {
   return el('div', { className: 'card', style: { borderColor: 'var(--amb-bdr)', background: 'var(--amb-bg)', display: 'flex', gap: 10, alignItems: 'flex-start' } },
     el('i', { className: 'ti ti-alert-triangle', style: { color: 'var(--amb)', fontSize: 16, marginTop: 1 } }),
-    el('div', { style: { fontSize: 12.5, color: 'var(--t1)', lineHeight: 1.5 } }, reason)
+    el('div', { style: { fontSize: 12.5, color: 'var(--t1)', lineHeight: 1.5 } }, M.formatDateText(reason))
   );
 }
 
@@ -108,10 +108,10 @@ function PeriodNotice({ range, records, channels, section }) {
   const agg = C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate });
   const statusLabel = agg.financialBasis === 'legacy_gross' ? 'Legacy imported gross' : agg.confidence === 'provisional' ? 'Provisional' : agg.status === 'incomplete-data' ? 'Unavailable · Incomplete coverage' : agg.status === 'partial' ? 'Partial period' : '';
   return el('div', { 'data-report-period': section, style: { margin: '10px 0', fontSize: 12, lineHeight: 1.6, color: 'var(--t2)' } },
-    el('strong', null, section + ': ' + range.label + ' · ' + range.startDate + ' → ' + range.endDate + ' (inclusive)'),
+    el('strong', null, section + ': ' + range.label + ' · ' + M.formatDate(range.startDate) + ' → ' + M.formatDate(range.endDate) + ' (inclusive)'),
     el('div', null, channels.map((c) => M.CHANNEL_META[c].short).join(' · ')),
-    range.warning && el('div', { style: { color: 'var(--amb)' } }, range.warning),
-    agg.note && el('div', { style: { color: 'var(--amb)', overflowWrap: 'anywhere' }, title: agg.note }, (statusLabel ? statusLabel + ' — ' : '') + agg.note)
+    range.warning && el('div', { style: { color: 'var(--amb)' } }, M.formatDateText(range.warning)),
+    agg.note && el('div', { style: { color: 'var(--amb)', overflowWrap: 'anywhere' }, title: M.formatDateText(agg.note) }, (statusLabel ? statusLabel + ' — ' : '') + M.formatDateText(agg.note))
   );
 }
 
@@ -120,13 +120,13 @@ function MetricDefinitions({ meta, basis, snapshot, channels, markets }) {
     el('summary',{style:{cursor:'pointer',color:'var(--amb)'}},'Financial information · '+ManagementFinance.LABELS[basis]),
     el('div',null,ManagementFinance.DEFINITIONS[basis]),
     el('div',null,'In Shopify-only views, Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = selected Net Sales / eligible orders. Native merchandise AOV remains separate. Shopify-reported AOV is a separate native metric.'),
-    el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
+    el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+M.formatDate(snapshot?.coverage.end||'unavailable')+'.'),
     el('div',null,ManagementFinance.DEFINITIONS[basis]+(markets?.calculation_version?' Marketplace source components refresh automatically from read-only native APIs and are checked against retained historical reporting controls.':' Etsy source is CSV/Stats-controlled;')+' NOTHS management is provisional. Missing periods are withheld.'),
-    el('div',null,'Marketplace coverage · Etsy through '+(markets?.channels?.etsy?.daily?.at(-1)?.date || 'unavailable')+' · NOTHS through '+(markets?.channels?.noths?.daily?.at(-1)?.date || 'unavailable')+'. Current-year totals require all selected sources; no legacy-gross substitution.'),
+    el('div',null,'Marketplace coverage · Etsy through '+M.formatDate(markets?.channels?.etsy?.daily?.at(-1)?.date || 'unavailable')+' · NOTHS through '+M.formatDate(markets?.channels?.noths?.daily?.at(-1)?.date || 'unavailable')+'. Current-year totals require all selected sources; no legacy-gross substitution.'),
     el('div',null,'Known FY26 NOTHS exceptions: £1,560.71 discount funding unclassified; £941.81 cumulative refunds; £7.58 component difference; £6.27 refund excess. These are not deducted or assigned financial posting dates in the provisional order-cohort estimate.'),
     el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
     el('div',null,'Legacy ROR FY26 count: 7,834 includes two gift-voucher-only orders. Shopify native sales reporting counts 7,832 eligible merchandise orders. All native eligible IDs match the import; no local order exclusions are applied.'),
-    el('div',null,'Imported export: '+(meta.generated_at||'unknown')+' · Reporting dates use Europe/London through yesterday; absent marketplace rows remain coverage unverified.')
+    el('div',null,'Imported export: '+M.formatDateTime(meta.generated_at||'unknown')+' · Reporting dates use Europe/London through yesterday; absent marketplace rows remain coverage unverified.')
   );
 }
 
@@ -143,11 +143,11 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
     el('div', { style: { fontSize: 26, fontWeight: 600, color: 'var(--t1)', fontFamily: "'DM Mono',monospace", letterSpacing: '-0.02em', marginBottom: 6 } }, value),
     metric==='aov' && agg.nativeAov!=null && el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:6}}, 'Shopify-reported AOV: '+fmtC(agg.nativeAov,2)),
     (agg.status === 'no-data' || agg.status === 'not-occurred' || agg.status === 'incomplete-data' || agg.status === 'partial')
-      ? el('div', { style: { fontSize: 11, color: 'var(--amb)' }, title: agg.note },
+      ? el('div', { style: { fontSize: 11, color: 'var(--amb)' }, title: M.formatDateText(agg.note) },
           agg.status === 'incomplete-data' ? 'Unavailable · Incomplete coverage' : agg.status === 'partial' ? 'Partial period' : 'Unavailable',
           agg.note && el('details', { style: { marginTop: 4 } },
             el('summary', { style: { cursor: 'pointer' } }, 'Coverage details'),
-            el('div', { style: { marginTop: 4, lineHeight: 1.5, overflowWrap: 'anywhere' } }, agg.note)))
+            el('div', { style: { marginTop: 4, lineHeight: 1.5, overflowWrap: 'anywhere' } }, M.formatDateText(agg.note))))
       : el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 } },
           agg.confidence==='provisional' && el('span',{className:'badge ba'},'Provisional'),
           el('span', { style: { color: toneColor(chg.tone), fontWeight: 500 } }, chg.text),
@@ -247,7 +247,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
         ),
         el('tbody', null,
           table.rows.map((row) => el('tr', { key: row.bucket.key, style: { borderBottom: '1px solid var(--bdr)' } },
-            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' }, title: row.bucket.startDate + ' → ' + row.bucket.endDate }, row.bucket.label + (row.current.status !== 'complete' || row.bucket.truncated ? ' · incomplete period' : '')),
+            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' }, title: M.formatDate(row.bucket.startDate) + ' → ' + M.formatDate(row.bucket.endDate) }, row.bucket.label + (row.current.status !== 'complete' || row.bucket.truncated ? ' · incomplete period' : '')),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } },
               row.current.status === 'not-occurred' ? '—' : row.current.status === 'no-data' ? el('span', { style: { color: 'var(--t3)' } }, 'no data') : formatMetric(metric, row.current[metric])),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace", color: 'var(--t3)' } },
@@ -464,12 +464,12 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
         background: 'var(--grn-bg)', border: '1px solid var(--grn)', fontSize: 11.5, color: 'var(--grn)', width: 'fit-content',
       } },
         el('i', { className: 'ti ti-database', style: { fontSize: 12 } }),
-        el('span', null, `Sales reporting · ${range.startDate || meta.earliest} to ${range.endDate || meta.latest}`)
+        el('span', null, `Sales reporting · ${M.formatDate(range.startDate || meta.earliest)} to ${M.formatDate(range.endDate || meta.latest)}`)
       ),
       loadErr && el(UnavailableNotice, { reason: 'Could not load sales data: ' + loadErr }),
 
       meta && el(MetricDefinitions, { meta, basis:financialBasis, snapshot:financeSnapshot, channels, markets:marketplaceSnapshot }),
-      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.'),
+      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},M.formatDateText(financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.')),
 
       marketplaceError && el(UnavailableNotice,{reason:marketplaceError}),
       marketplaceSnapshot?.refreshStatus?.status==='failed' && el(UnavailableNotice,{reason:'Latest automatic marketplace refresh failed; last validated figures are retained. Source coverage dates are shown below.'}),
@@ -483,7 +483,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
           'KPI cards and channel contribution use these filters. Comparison and explorer dates are independent.',
-          topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+goalRange.endDate:'Current progress unavailable'))),
+          topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+M.formatDate(goalRange.endDate):'Current progress unavailable'))),
       ),
 
       el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),

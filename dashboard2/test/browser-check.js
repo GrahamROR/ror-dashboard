@@ -22,7 +22,7 @@ async (page) => {
       const section = name === 'Page' ? 'KPI cards' : name === 'Sales comparison' ? 'Sales comparison (independent dates; page store filter)' : 'Sales explorer (independent dates and stores)';
       const text = await page.locator('[data-report-period]').filter({hasText:section + ':'}).innerText();
       const range = await page.evaluate(key => RorCalc.resolveDateRange(key,{customStart:'2024-02-01',customEnd:'2024-02-29'}),option.value);
-      if (!text.includes(range.startDate + ' → ' + range.endDate)) throw Error(name + ' dates incorrect for ' + option.value);
+      if (!text.includes(await page.evaluate(r => RorModel.formatDate(r.startDate) + ' → ' + RorModel.formatDate(r.endDate), range))) throw Error(name + ' dates incorrect for ' + option.value);
       selections++;
     }
   }

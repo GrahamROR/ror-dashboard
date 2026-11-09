@@ -59,7 +59,31 @@ function monthLabel(periodKey) { return periodKeyToDate(periodKey).toLocaleDateS
 function addMonths(periodKey, n) { const d = periodKeyToDate(periodKey); d.setMonth(d.getMonth() + n); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`; }
 function compareMonthKeys(a, b) { return a < b ? -1 : a > b ? 1 : 0; }
 
+// Presentation only: source keys, date filtering and native date-input values stay ISO.
+function formatDate(value) {
+  if (value == null) return '';
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    const date = new Date(value + 'T00:00:00Z');
+    if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value) return value;
+    return value.split('-').reverse().join('-');
+  }
+  const date = Object.prototype.toString.call(value) === '[object Date]' ? new Date(value.getTime()) : typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value) ? new Date(value) : null;
+  if (!date || !Number.isFinite(date.getTime())) return String(value);
+  return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', day: '2-digit', month: '2-digit', year: 'numeric' }).format(date).replace(/\//g, '-');
+}
+function formatDateTime(value) {
+  if (value == null || /^\d{4}-\d{2}-\d{2}$/.test(value)) return formatDate(value);
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return String(value);
+  return formatDate(value) + ' at ' + new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(date);
+}
+function formatDateText(text) {
+  return typeof text !== 'string' ? text : text.replace(/\b\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?\b/g,
+    value => value.includes('T') ? formatDateTime(value) : formatDate(value));
+}
+
 const RorModel = {
+  formatDate, formatDateTime, formatDateText,
   ACTIVE_CHANNELS, LEGACY_CHANNELS: [], ALL_CHANNELS, CHANNEL_META, GRANULARITIES, METRICS,
   fyInfoForMonth, fyInfoForDate, quarterOfMonth, periodKeyToDate, monthLabel, addMonths, compareMonthKeys,
 };
