@@ -1,12 +1,34 @@
 {
-  "status": "validated-historical",
-  "checked_at": "2026-10-12T15:55:36.462Z",
-  "mechanism": "Controlled Etsy paired CSV/Stats + retained NOTHS native cohort with independent gross controls",
-  "live": false,
-  "financial_reporting_status": "provisional-management; Etsy Stats/source components validated, NOTHS refund-adjusted net not certified",
+  "status": "success",
+  "live": true,
+  "attempted_at": "2026-11-09T16:16:56.341Z",
+  "completed_at": "2026-11-09T16:21:00.042Z",
+  "snapshot_sha256": "282beec0ef7876520b1e4b467fa7804b6885ce5caebb841948bc7ff5109fa3f3",
+  "calculation_version": "marketplace-native-components-v1",
+  "mechanism": "Automatic read-only marketplace APIs; existing management maths; StockHub owns OAuth refresh",
   "source_covered_through": {
-    "etsy": "2026-09-30",
-    "noths": "2026-07-31"
+    "etsy": "2026-11-08",
+    "noths": "2026-11-08"
   },
-  "promotion": "Review candidate; no automatic marketplace production refresh"
+  "verification": {
+    "etsy": {
+      "start": "2025-08-01",
+      "end": "2026-11-08",
+      "days": 465,
+      "orders": 1329,
+      "source_sha256": "b39fe8138779cd6a198df57b0ad673b4ddd10cf115a795d553a44f1097ff6162"
+    },
+    "noths": {
+      "start": "2025-08-01",
+      "end": "2026-11-08",
+      "days": 465,
+      "orders": 4368,
+      "source_sha256": "c073227a24e97d57ea432d0df6d4d1b962ab7da075805ae164404e2f8bb3603c"
+    }
+  },
+  "historical_control_comparison": {
+    "status": "matched",
+    "differences": 0
+  },
+  "producer_revision": "d5e5b29b1979cc0e8933bfbd35ed80228a49b55a"
 }
