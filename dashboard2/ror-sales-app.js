@@ -443,6 +443,13 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
     availableStart: meta.earliest, availableEnd: meta.latest,
   }) : { unsupported: true, reason: 'Sales data is unavailable.' };
   const channels = topStore === 'all' ? M.ACTIVE_CHANNELS : [topStore];
+  // Goal actuals stay on the agreed Net Sales basis, independent of page filters.
+  const goalRange = C.resolveDateRange('currentFY');
+  const goalRecords = records.slice();
+  goalRecords.management = { ...records.management, basis: 'net_revenue' };
+  const goalActual = goalRange.unsupported ? null : C.aggregate(goalRecords, { channels: M.ACTIVE_CHANNELS, startDate: goalRange.startDate, endDate: goalRange.endDate });
+  const goalFY = goalRange.startDate ? 'FY' + String(Number(goalRange.startDate.slice(0,4)) + 1).slice(-2) : 'Current FY';
+  const goalTarget = FinancialGoals.annual(goalFY, 'all');
 
   if (loading) {
     return el('div', { style: { minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 } },
@@ -476,7 +483,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
           'KPI cards and channel contribution use these filters. Comparison and explorer dates are independent.',
-          topStore==='all' && el('div',{style:{marginTop:4}},'FY27 Goal: £500,000 · Provisional Net Sales · Current progress unavailable')),
+          topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+goalRange.endDate:'Current progress unavailable'))),
       ),
 
       el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
