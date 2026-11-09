@@ -186,7 +186,7 @@ function TimeSeriesChart(props) {
       rows.push({
         color,
         label: seriesLabel(s),
-        text: typeof p.value === 'number' ? formatValue(p.value) : (p.note || 'No data'),
+        text: typeof p.value === 'number' ? formatValue(p.value) : RorModel.formatDateText(p.note || 'No data'),
       });
     });
     if (comparisonSeries) comparisonSeries.forEach((s, si) => {
@@ -195,7 +195,7 @@ function TimeSeriesChart(props) {
       rows.push({
         color, dashed: true,
         label: seriesLabel(s) + ' (compare)',
-        text: typeof p.value === 'number' ? formatValue(p.value) : (p.note || 'No data'),
+        text: typeof p.value === 'number' ? formatValue(p.value) : RorModel.formatDateText(p.note || 'No data'),
       });
     });
     return { bucketLabel: buckets[hoverIdx].label, rows };

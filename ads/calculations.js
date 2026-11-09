@@ -14,9 +14,9 @@
 // ============================================================
 
 (function (root, factory) {
-  if (typeof module !== 'undefined' && module.exports) module.exports = factory();
-  else root.AdsCalc = factory();
-})(typeof window !== 'undefined' ? window : globalThis, function () {
+  if (typeof module !== 'undefined' && module.exports) module.exports = factory(require('../dashboard2/data-model.js'));
+  else root.AdsCalc = factory(root.RorModel);
+})(typeof window !== 'undefined' ? window : globalThis, function (RorModel) {
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 function fmtDateISO(d) { return new Intl.DateTimeFormat('en-CA', {timeZone:'Europe/London', year:'numeric', month:'2-digit', day:'2-digit'}).format(d); }
@@ -154,8 +154,7 @@ function adsCompare(current, previous, metric) {
 
 // ── granularity buckets ──────────────────────────────────────
 function shortDateLabel(dateStr) {
-  const d = parseISO(dateStr);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone:'UTC' });
+  return RorModel.formatDate(dateStr);
 }
 function monthLabelOf(dateStr) {
   const d = parseISO(dateStr);

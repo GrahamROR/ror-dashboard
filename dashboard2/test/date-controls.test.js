@@ -51,7 +51,7 @@ for (const key of presets) {
     assert.ok(inputs.every(n=>typeof n.props.onChange === 'function'));
     const periods=find(tree,n=>n.props['data-report-period']);
     assert.equal(periods.length,4);
-    assert.ok(periods.every(n=>JSON.stringify(n).includes('2024-02-01 → 2024-02-29')));
+    assert.ok(periods.every(n=>JSON.stringify(n).includes('01-02-2024 → 29-02-2024')));
   }
 }
 console.log('11 presets × 3 rendered selectors passed; all 6 custom inputs and 4 period labels verified');

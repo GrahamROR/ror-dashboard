@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,6 +86,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 </head>
 <body>
 <div id="root"></div>
+<script src="dashboard2/data-model.js?v=day-first-v1"></script>
 <script src="growth/targets.js"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
@@ -264,6 +265,9 @@ function SortableTh({ label, field, type, sort, setSort, align }) {
     },
   }, label + (active ? (sort.dir === 1 ? ' ▲' : ' ▼') : ''));
 }
+const fmtDate = value => RorModel.formatDate(value);
+const fmtDateTime = value => RorModel.formatDateTime(value);
+const dateText = text => RorModel.formatDateText(text);
 const round2 = n       => Math.round(n*100)/100;
 
 function monthlyTarget(goal, idx)  { return GrowthTargets.allocate(goal)[idx]; }
@@ -286,7 +290,7 @@ function statusBadge(s,text) {
 }
 function dateLabel(dateStr) {
   if (!dateStr) return 'Yesterday';
-  return new Date(dateStr + 'T12:00:00Z').toLocaleDateString('en-GB',{timeZone:'Europe/London',weekday:'long',day:'numeric',month:'short',year:'numeric'});
+  return fmtDate(dateStr);
 }
 
 // ── ANALYSIS ENGINE (rules-based, no LLM/API — see insights/rules.js) ──
@@ -363,7 +367,7 @@ function MetricCard({ icon, label, actual, target, unit='', statusKey, statusTex
     el('div', {style:{fontSize:12,color:'var(--t3)',marginBottom:note?6:0}}, 'Goal: ',
       el('span',{style:{color:'var(--t2)',fontFamily:"'DM Mono',monospace"}}, target), unit&&' '+unit
     ),
-    note && el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.5,borderTop:'1px solid var(--bdr)',paddingTop:8,marginTop:'auto'}}, note)
+    note && el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.5,borderTop:'1px solid var(--bdr)',paddingTop:8,marginTop:'auto'}}, dateText(note))
   );
 }
 
@@ -412,7 +416,7 @@ function YesterdayCard({ icon, label, actual, target, statusKey, statusText, not
     el('div', {style:{fontSize:12,color:'var(--t3)',marginBottom:note?8:0}}, 'Target: ',
       el('span',{style:{color:'var(--t2)',fontFamily:"'DM Mono',monospace"}}, target)
     ),
-    note && el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.5,borderTop:'1px solid var(--bdr)',paddingTop:8,marginTop:'auto'}}, note)
+    note && el('div', {style:{fontSize:11,color:'var(--t3)',lineHeight:1.5,borderTop:'1px solid var(--bdr)',paddingTop:8,marginTop:'auto'}}, dateText(note))
   );
 }
 
@@ -472,7 +476,7 @@ function WhatIfBar({ monthly, summary, projCVR, setProjCVR, projAOV, setProjAOV,
               color: 'var(--t1)',
             }
           }, fmtC(selectedActual,2)),
-          el('div',{style:{fontSize:11,color:'var(--t2)',marginTop:4}},(isProjecting?'Projected Net Sales: '+fmtC(projYTD,2)+' · ':'')+'Through '+(reportingCutoff || 'unavailable')),
+          el('div',{style:{fontSize:11,color:'var(--t2)',marginTop:4}},(isProjecting?'Projected Net Sales: '+fmtC(projYTD,2)+' · ':'')+'Through '+fmtDate(reportingCutoff || 'unavailable')),
           isProjecting && !projectionComparable && el('div',{style:{fontSize:11,color:'var(--amb)',marginTop:3}},'Projection uses legacy sessions; financial actual has a different or unavailable cutoff. Comparison withheld.')
         ),
         // Delta vs actual (only when projecting)
@@ -927,8 +931,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             ? el('span', null, 'Embedded legacy marketing data · live refresh unavailable')
             : el('span', null,
                 'Marketing updated ',
-                updatedAt ? updatedAt.toLocaleDateString('en-GB',{timeZone:'Europe/London',day:'numeric',month:'short'}) + ' at ' +
-                updatedAt.toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit'}) : '—'
+                updatedAt ? fmtDateTime(updatedAt) : '—'
               )
         ),
         // Labels stay visible at every width — icon-only tabs with no text
@@ -962,8 +965,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         ? el('span', null, 'Embedded legacy marketing data · live refresh unavailable')
         : el('span', null,
             'Marketing updated ',
-            updatedAt ? updatedAt.toLocaleDateString('en-GB',{timeZone:'Europe/London',day:'numeric',month:'short'}) + ' at ' +
-            updatedAt.toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit'}) : '—'
+            updatedAt ? fmtDateTime(updatedAt) : '—'
           )
     ),
 
@@ -976,16 +978,16 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         el('div', null, 'Financial actuals use the selected Shopify basis. Goals, target comparisons and what-if forecasts use Net Sales, including native net shipping. The original controls remain local What-If tools. Net AOV is calculated separately; native Shopify AOV is preserved. Source tax treatment is retained and is not asserted to be VAT-exclusive accounting turnover.'),
         el('div', null, RorModel.METRICS.attributedValue.basis),
         el('div', null, RorModel.METRICS.estimatedProfit.basis + ' Native product sales retain their source tax treatment. LTV and blended CAC are estimates pending customer deduplication and cost reconciliation.'),
-        el('div', null, 'Source: Shopify Analytics · Verified through ' + (financeSnapshot?.coverage.end || 'unavailable') + ' · ' + (financeError || viewData?.finance.status || 'missing') + '. FY runs 1 August–31 July.')
+        el('div', null, 'Source: Shopify Analytics · Verified through ' + fmtDate(financeSnapshot?.coverage.end || 'unavailable') + ' · ' + dateText(financeError || viewData?.finance.status || 'missing') + '. FY runs 1 August–31 July.')
       ),
 
       el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:12,fontSize:12}},
         el('label', {htmlFor:'growth-financial-basis'}, 'Financial basis'),
         el('select', {id:'growth-financial-basis','aria-label':'Shopify financial basis',value:financialBasis,onChange:e=>setFinancialBasis(e.target.value),style:{background:'var(--s2)',color:'var(--t1)',border:'1px solid var(--bdr2)',borderRadius:'var(--r)',padding:'6px 8px'}},
           ShopifyIntegration.BASIS.map(k=>el('option',{key:k,value:k},ShopifyIntegration.labels[k]))),
-        el('span',{style:{color:'var(--t3)'}}, 'Goal: Net Sales · Verified through '+(financeSnapshot?.coverage.end || 'unavailable'))
+        el('span',{style:{color:'var(--t3)'}}, 'Goal: Net Sales · Verified through '+fmtDate(financeSnapshot?.coverage.end || 'unavailable'))
       ),
-      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':financialBasis==='gross_revenue'&&viewData?.finance.gross_shipping_validated===false?'Gross shipping awaits a verified refresh; Gross Sales is unavailable.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.')),
+      (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed' || viewData?.finance.status !== 'actual') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},dateText(financeError || financeSnapshot?.freshness?.warning || (financeSnapshot?.refreshStatus?.status==='failed'?'Latest financial refresh failed; showing the last validated snapshot.':financialBasis==='gross_revenue'&&viewData?.finance.gross_shipping_validated===false?'Gross shipping awaits a verified refresh; Gross Sales is unavailable.':'Financial coverage incomplete; unavailable amounts and comparisons are withheld.'))),
 
       // ── WHAT-IF BAR ─────────────────────────────────────────────
       el(WhatIfBar, {
@@ -1142,7 +1144,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             icon:'ti-currency-pound', label:ShopifyIntegration.labels[financialBasis] + ' YTD', accentCol:'var(--grn)',
             actual: fmtC(summary.ytdRevenue,2), target: financialBasis===goalBasis?fmtC(ytdGoal,0):'Net Sales: '+fmtC(ytdGoal,0),
             statusKey: financialBasis===goalBasis?status(summary.ytdRevenue,ytdGoal*0.9):'pending',
-            note: (viewData?.finance.start || '')+' → '+(viewData?.finance.end || '')+' · Goal basis is Net Sales: '+fmtC(goalRev,0),
+            note: fmtDate(viewData?.finance.start)+' → '+fmtDate(viewData?.finance.end)+' · Goal basis is Net Sales: '+fmtC(goalRev,0),
           }),
 
         ),
@@ -1168,7 +1170,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               el('div', {className:'lbl',style:{marginBottom:4}}, 'Yesterday performance'),
               el('div', {style:{fontSize:24,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1.1}}, dateLabel(yesterday?.date)),
               el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.5}},
-                ShopifyIntegration.labels[financialBasis]+' · Orders and Shopify-reported AOV use native metrics · Targets use Net Sales'+' · Independent of selected FY'+(yesterday?.marketingAvailable===false?' · Marketing/cost capture: '+(yesterday.importedMarketingDate || 'unavailable')+'; those metrics are unavailable for this day.':'')
+                ShopifyIntegration.labels[financialBasis]+' · Orders and Shopify-reported AOV use native metrics · Targets use Net Sales'+' · Independent of selected FY'+(yesterday?.marketingAvailable===false?' · Marketing/cost capture: '+fmtDate(yesterday.importedMarketingDate || 'unavailable')+'; those metrics are unavailable for this day.':'')
               )
             ),
             el('div', {style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
@@ -1241,7 +1243,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:10}},
             el('div', null,
               el('div', {style:{fontWeight:500,fontSize:14}}, (viewData?.fy||'')+' Monthly Performance'),
-              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, (viewData?.fyLabel||'')+' · Net Sales targets scale with annual goal. YTD paced through '+(goalView?.finance.end || 'unavailable'))
+              el('div', {style:{fontSize:12,color:'var(--t2)',marginTop:2}}, (viewData?.fyLabel||'')+' · Net Sales targets scale with annual goal. YTD paced through '+fmtDate(goalView?.finance.end || 'unavailable'))
             ),
             el('div', {style:{display:'flex',gap:6,flexWrap:'wrap'}},
               [['on track','bg'],['close','ba'],['off track','br'],['future','bb']].map(([l,c])=>
@@ -1484,7 +1486,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                   sortRows(emailData.campaigns, campSort.key, campSort.dir, campSort.key==='name'?'string':campSort.key==='sendTime'?'date':'number').map((c,i) =>
                     el('tr', {key:c.id||i,style:{borderBottom:'1px solid var(--bdr)'}},
                       el('td',{style:{padding:'9px 12px',fontWeight:500}}, c.name),
-                      el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, c.sendTime ? new Date(c.sendTime).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'2-digit'}) : '—'),
+                      el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, c.sendTime ? fmtDate(c.sendTime) : '—'),
                       el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace"}}, fmt(c.recipients)),
                       el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace"}}, fmtP(c.openRate,1)),
                       el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace"}}, fmtP(c.clickRate,2)),
@@ -1581,8 +1583,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
               AdsCalc.ADS_DATE_PRESETS.map(p => el('option', {key:p.key, value:p.key}, p.label))
             ),
             adsRangePreset === 'custom' && el('div', {style:{display:'flex',gap:6,marginTop:6}},
-              el('input', {type:'date', value:adsCustomStart, onChange:e=>setAdsCustomStart(e.target.value), style:{...selectStyle,padding:'6px 8px'}}),
-              el('input', {type:'date', value:adsCustomEnd, onChange:e=>setAdsCustomEnd(e.target.value), style:{...selectStyle,padding:'6px 8px'}})
+              el('input', {type:'date', lang:'en-GB', 'aria-label':'Ads start date', value:adsCustomStart, onChange:e=>setAdsCustomStart(e.target.value), style:{...selectStyle,padding:'6px 8px'}}),
+              el('input', {type:'date', lang:'en-GB', 'aria-label':'Ads end date', value:adsCustomEnd, onChange:e=>setAdsCustomEnd(e.target.value), style:{...selectStyle,padding:'6px 8px'}})
             )
           ),
           el('div', null, lbl('Channel'),
@@ -1627,7 +1629,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 
         const kpiRow = (current.status === 'no-data' || current.status === 'not-occurred')
           ? el('div', {className:'card', style:{marginBottom:16}},
-              el('div', {style:{fontSize:12.5,color:'var(--t3)'}}, current.note)
+              el('div', {style:{fontSize:12.5,color:'var(--t3)'}}, dateText(current.note))
             )
           : el('div', {className:'fi grid-auto', style:{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:12,marginBottom:16}},
               kpiMetrics.map((m) => {
@@ -1862,7 +1864,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
         );
 
         return el('div', {className:'fi'}, dateRangeControls,
-          el('div', {className:'card',style:{marginBottom:16,fontSize:12,color:current.status === 'complete' ? 'var(--t2)' : 'var(--amb)'}}, 'Ads period: ' + range.start + ' → ' + range.end + ' · ' + (current.note || 'Complete daily coverage') + (current.status === 'incomplete-data' ? ' Displayed values are recorded subtotals; growth comparisons are unavailable.' : '')),
+          el('div', {className:'card',style:{marginBottom:16,fontSize:12,color:current.status === 'complete' ? 'var(--t2)' : 'var(--amb)'}}, 'Ads period: ' + fmtDate(range.start) + ' → ' + fmtDate(range.end) + ' · ' + dateText(current.note || 'Complete daily coverage') + (current.status === 'incomplete-data' ? ' Displayed values are recorded subtotals; growth comparisons are unavailable.' : '')),
           kpiRow, explorerCard, tableCard, shopifyPanel, adsInsightCard);
       })(),
 
@@ -1889,7 +1891,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             el('div', {key:i,className:'card'},
               el('div', {className:'lbl',style:{marginBottom:8}}, item.lbl),
               el('div', {style:{fontSize:28,fontWeight:700,color:'var(--t1)',fontFamily:"'DM Mono',monospace"}}, item.val),
-              el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6}}, item.note)
+              el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6}}, dateText(item.note))
             )
           )
         ),
@@ -1927,7 +1929,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                 );
               } else {
                 comparisonEl = el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 8, maxWidth: 260, textAlign: 'right', lineHeight: 1.5 } },
-                  comparison.note || 'Comparison with the prior 12 months isn\'t available yet.'
+                  dateText(comparison.note || 'Comparison with the prior 12 months isn\'t available yet.')
                 );
               }
             }
@@ -1986,7 +1988,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
                   el('div', { key: i, style: { background: 'var(--s2)', borderRadius: 'var(--r)', padding: '14px 16px', border: '1px solid var(--bdr)' } },
                     el('div', { className: 'lbl', style: { marginBottom: 8 } }, item.lbl),
                     el('div', { style: { fontSize: 26, fontWeight: 700, color: item.col, fontFamily: "'DM Mono',monospace", marginBottom: 6 } }, item.val),
-                    el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5 } }, item.note)
+                    el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5 } }, dateText(item.note))
                   )
                 )
               )
@@ -1999,13 +2001,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
             ),
             renderWindow(
               'Estimated LTV : CAC — rolling 12 months',
-              w => 'Trailing ' + w.window.monthsUsed + ' completed month' + (w.window.monthsUsed === 1 ? '' : 's') + ' (' + w.window.since + ' → ' + w.window.until + ')',
+              w => 'Trailing ' + w.window.monthsUsed + ' completed month' + (w.window.monthsUsed === 1 ? '' : 's') + ' (' + fmtDate(w.window.since) + ' → ' + fmtDate(w.window.until) + ')',
               lc.rolling,
               lc.rollingComparison
             ),
             renderWindow(
               'Estimated LTV : CAC — cumulative',
-              w => w.window.monthsUsed + ' of up to ' + w.window.monthsCap + ' months (' + w.window.since + ' → ' + w.window.until + ')' +
+              w => w.window.monthsUsed + ' of up to ' + w.window.monthsCap + ' months (' + fmtDate(w.window.since) + ' → ' + fmtDate(w.window.until) + ')' +
                 (w.window.monthsUsed < w.window.monthsCap ? ' — will extend toward a full 3-year lifetime view as more history builds up' : ''),
               lc.cumulative
             )
@@ -2054,8 +2056,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
           ? el('span', {style:{color:'var(--amb)'}}, 'Embedded legacy marketing/dashboard data; financial coverage is shown above')
           : el('span', {style:{color:'var(--grn)'}},
               'Legacy marketing/dashboard data updated: ',
-              updatedAt ? updatedAt.toLocaleDateString('en-GB',{timeZone:'Europe/London',weekday:'short',day:'numeric',month:'short',year:'numeric'}) +
-              ' at ' + updatedAt.toLocaleTimeString('en-GB',{timeZone:'Europe/London',hour:'2-digit',minute:'2-digit'}) + ' · Shopify financial data verified through '+(financeSnapshot?.coverage.end || 'unavailable') : '—'
+              updatedAt ? fmtDateTime(updatedAt) + ' · Shopify financial data verified through '+fmtDate(financeSnapshot?.coverage.end || 'unavailable') : '—'
             )
       )
     )
@@ -2066,7 +2067,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
 <!-- Dashboard 1's own "Paid Ads" tab calculations — see the ads/
      directory. Loaded here (before App() is actually called) so its
      AdsCalc global exists by the time App's render runs. -->
-<script src="ads/calculations.js"></script>
+<script src="ads/calculations.js?v=day-first-v1"></script>
 <script src="ads/ltv-cac.js"></script>
 
 <!-- Rules-based "analysis brain" — plain-English verdicts and suggestions
@@ -2081,11 +2082,10 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError})
      helpers. See README.md's "Dashboard 2 — ROR Sales" section for the
      architecture. Dashboard 1 (App, just above) is untouched by any
      of this. -->
-<script src="dashboard2/data-model.js"></script>
 <script src="dashboard2/data-adapter.js"></script>
-<script src="dashboard2/calculations.js"></script>
-<script src="dashboard2/charts.js"></script>
-<script src="dashboard2/ror-sales-app.js?v=foundation-ror-v2"></script>
+<script src="dashboard2/calculations.js?v=day-first-v1"></script>
+<script src="dashboard2/charts.js?v=day-first-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=day-first-v1"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/management.js?v=foundation-v1"></script>
