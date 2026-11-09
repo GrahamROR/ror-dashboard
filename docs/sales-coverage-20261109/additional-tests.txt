@@ -136,4 +136,3 @@ node insights/test/rules.test.js
   ok - ads: incomplete and partial coverage suppress performance conclusions
 
 34 passed, 0 failed
-

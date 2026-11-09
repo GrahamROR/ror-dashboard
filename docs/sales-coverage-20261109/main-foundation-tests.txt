@@ -25,10 +25,10 @@ test at ../../../../../../private/tmp/ror-dashboard-review/main-baseline/finance
 ✖ Simple Net/Gross/Total selector has explicit native components and no scenario interface (7.02975ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
   + actual - expected
-  
+
   + 300105.51
   - null
-  
+
       at TestContext.<anonymous> (/private/tmp/ror-dashboard-review/main-baseline/finance/test/foundation.test.js:9:386)
       at Test.runInAsyncScope (node:async_hooks:228:14)
       at Test.run (node:internal/test_runner/test:1118:25)
@@ -46,10 +46,10 @@ test at ../../../../../../private/tmp/ror-dashboard-review/main-baseline/finance
 ✖ Gross shipping unavailable never substitutes merchandise gross or changes eligible orders (1.754833ms)
   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
   + actual - expected
-  
+
   + 300105.51
   - null
-  
+
       at TestContext.<anonymous> (/private/tmp/ror-dashboard-review/main-baseline/finance/test/foundation.test.js:11:202)
       at Test.runInAsyncScope (node:async_hooks:228:14)
       at Test.run (node:internal/test_runner/test:1118:25)
