@@ -46,7 +46,7 @@ These differences are unresolved, informational comparisons against an unconfirm
 - FY26 All Stores Net Sales remains £398,139.18; current FY through 08-11-2026 remains £79,554.92. Changing the historical year does not change live page filters or those totals.
 - Deliberate archive corruption is blocked, live figures remain available, and retry recovers. A separately tested missing historical loader also leaves the live dashboard working. Before/after screenshots include a pre-2024 selection.
 
-Claude’s staged reviews found no blockers in the collector, source mapping/cursor, checkpoint kernel or monthly reporter/UI. The final completed-data review found no remaining concrete blockers and cleared the feature for PR/merge on this evidence; hosted CI remains the release check.
+Claude’s staged reviews found no blockers in the collector, source mapping/cursor, checkpoint kernel or monthly reporter/UI. The final completed-data review found no remaining concrete blockers and cleared the feature for PR/merge on this evidence. Hosted CI passed all reporting, reconciliation, dashboard, Ads and Insights checks for PR #29 before it was merged. The built Pages artifact was separately inspected: all three archive hashes match the reviewed bundle, the expected modules are present, and its 302 regular files contain no private workbook/cache paths, unsafe paths or links. `pages-artifact-check.json` records that check against the merged feature commit.
 
 ## Operation and rollback
 

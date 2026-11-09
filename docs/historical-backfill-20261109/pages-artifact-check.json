@@ -1,0 +1,14 @@
+{
+  "buildCommit": "ab883e27b833a70a0f9e9425dbe00d3ec8c4648a",
+  "archiveHashesVerified": {
+    "marketplaces": "8292539afc2a8b49de4e10e5e3b91f9acf26218ea5f282262e07f4dc7a094108",
+    "shopify": "575a470312af8be63a3334923ce39fa1d8d24a09482624766adc379bb5c55f81",
+    "coverage": "2427eff6b4a4642c8cd067d3661658482971be2e7c155f92cd0660c9b04d3f0c"
+  },
+  "expectedModulesPresent": true,
+  "regularFiles": 302,
+  "totalFileBytes": 136137463,
+  "privatePaths": [],
+  "unsafePaths": [],
+  "links": 0
+}
