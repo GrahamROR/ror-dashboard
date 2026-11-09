@@ -2,6 +2,11 @@ name: Validate Shopify finance refresh in staging
 # Deliberately no schedule and no production write. Enablement needs separate approval.
 on:
   workflow_dispatch:
+    inputs:
+      marketplace_verify:
+        description: 'Read-only marketplace API and historical-policy verification; no publication'
+        type: boolean
+        default: false
   pull_request:
     types: [synchronize]
     paths:
@@ -63,3 +68,24 @@ jobs:
             finance/staging/publication-simulation.json
             finance/staging/snapshots/
           retention-days: 30
+  marketplace-source-check:
+    if: github.event_name == 'workflow_dispatch' && inputs.marketplace_verify && (github.ref_name == 'main' || github.ref_name == 'codex/automatic-marketplace-finance')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: Europe/London
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_D1_DATABASE_ID: ${{ secrets.CLOUDFLARE_D1_DATABASE_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      ETSY_KEYSTRING: ${{ secrets.ETSY_KEYSTRING }}
+      ETSY_SHARED_SECRET: ${{ secrets.ETSY_SHARED_SECRET }}
+      NOTHS_TOKEN: ${{ secrets.NOTHS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify native source components against retained reporting controls
+        run: node scripts/refresh-marketplace-finance.js --verify
+      - name: Verify publication files remain unchanged
+        run: git diff --exit-code -- finance/staging finance/marketplaces/staging data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json

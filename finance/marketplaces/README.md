@@ -1,4 +1,4 @@
-> Management upgrade: native Etsy definitions below remain unchanged. The shared management layer adds the approved provisional VAT estimates and sanitized NOTHS placed-order cohort. See `../../docs/management-reporting/README.md` for definitions, current-year gaps, controls and release gates. No automatic marketplace publication is activated.
+> Automatic-refresh update (9 November 2026): see [AUTOMATION.md](AUTOMATION.md) for the owner-authorised read-only API pipeline, unchanged management maths, automatic checks and guarded publication. The CSV-only process below describes the retained historical proposal and investigation tools; it is not the new scheduled refresh mechanism.
 
 # Isolated Etsy reporting proposal
 

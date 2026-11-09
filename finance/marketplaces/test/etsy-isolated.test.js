@@ -1,7 +1,9 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
 const E=require('../etsy'),S=require('../store'),MP=require('../contract'),C=require('../../../dashboard2/calculations'),FI=require('../../integration'),controls=require('../etsy-fy26-controls.json');
-const snapshot=S.read(path.join(__dirname,'../staging')),legacy=require('../../../dashboard2/sales-data.json').records,manifest=require('../../staging/manifest.json'),shopify=require('../../staging/'+manifest.file);
+// These cases exercise the historical CSV proposal, including its intentionally absent October.
+// Automatic production snapshots are covered independently in automatic.test.js.
+const snapshot=JSON.parse(fs.readFileSync(path.join(__dirname,'../staging/snapshots/a461901ae78b160064be86eaade0ddce385942245dd3d26b1dcc227081ec2804.json'))),legacy=require('../../../dashboard2/sales-data.json').records,manifest=require('../../staging/manifest.json'),shopify=require('../../staging/'+manifest.file);
 const old=JSON.parse(fs.readFileSync(path.join(__dirname,'../staging/snapshots/c724cf6a191c0d6183042b0df017a2a8e89ec516e70595021ce3333b7d92be3c.json')));
 const records=(basis='net_sales',s=snapshot)=>MP.attach(FI.rorRecords(legacy,shopify,'net_sales'),s,basis);
 const opts={channels:['etsy'],startDate:'2025-08-01',endDate:'2026-07-31',nowDate:'2026-10-14'};

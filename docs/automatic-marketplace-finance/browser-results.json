@@ -1,0 +1,10 @@
+{
+  "historicalFY26": 398139.18,
+  "currentFY": 79554.92,
+  "reportingThrough": "2026-11-08",
+  "channelViews": 3,
+  "granularities": 6,
+  "mobileOverflow": false,
+  "lastGoodRetainedOnFailure": true,
+  "pageErrors": []
+}

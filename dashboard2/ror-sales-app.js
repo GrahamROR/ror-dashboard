@@ -121,7 +121,7 @@ function MetricDefinitions({ meta, basis, snapshot, channels, markets }) {
     el('div',null,ManagementFinance.DEFINITIONS[basis]),
     el('div',null,'In Shopify-only views, Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = selected Net Sales / eligible orders. Native merchandise AOV remains separate. Shopify-reported AOV is a separate native metric.'),
     el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
-    el('div',null,ManagementFinance.DEFINITIONS[basis]+' Etsy source is CSV/Stats-controlled; NOTHS management is provisional. Missing periods are withheld.'),
+    el('div',null,ManagementFinance.DEFINITIONS[basis]+(markets?.calculation_version?' Marketplace source components refresh automatically from read-only native APIs and are checked against retained historical reporting controls.':' Etsy source is CSV/Stats-controlled;')+' NOTHS management is provisional. Missing periods are withheld.'),
     el('div',null,'Marketplace coverage · Etsy through '+(markets?.channels?.etsy?.daily?.at(-1)?.date || 'unavailable')+' · NOTHS through '+(markets?.channels?.noths?.daily?.at(-1)?.date || 'unavailable')+'. Current-year totals require all selected sources; no legacy-gross substitution.'),
     el('div',null,'Known FY26 NOTHS exceptions: £1,560.71 discount funding unclassified; £941.81 cumulative refunds; £7.58 component difference; £6.27 refund excess. These are not deducted or assigned financial posting dates in the provisional order-cohort estimate.'),
     el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
@@ -443,6 +443,13 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
     availableStart: meta.earliest, availableEnd: meta.latest,
   }) : { unsupported: true, reason: 'Sales data is unavailable.' };
   const channels = topStore === 'all' ? M.ACTIVE_CHANNELS : [topStore];
+  // Goal actuals stay on the agreed Net Sales basis, independent of page filters.
+  const goalRange = C.resolveDateRange('currentFY');
+  const goalRecords = records.slice();
+  goalRecords.management = { ...records.management, basis: 'net_revenue' };
+  const goalActual = goalRange.unsupported ? null : C.aggregate(goalRecords, { channels: M.ACTIVE_CHANNELS, startDate: goalRange.startDate, endDate: goalRange.endDate });
+  const goalFY = goalRange.startDate ? 'FY' + String(Number(goalRange.startDate.slice(0,4)) + 1).slice(-2) : 'Current FY';
+  const goalTarget = FinancialGoals.annual(goalFY, 'all');
 
   if (loading) {
     return el('div', { style: { minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 } },
@@ -465,6 +472,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
       (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.'),
 
       marketplaceError && el(UnavailableNotice,{reason:marketplaceError}),
+      marketplaceSnapshot?.refreshStatus?.status==='failed' && el(UnavailableNotice,{reason:'Latest automatic marketplace refresh failed; last validated figures are retained. Source coverage dates are shown below.'}),
       topStore==='all' && !['net_revenue','legacy_gross'].includes(financialBasis) && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},'All Stores supports Net Sales and Legacy Imported Gross. Choose Net Sales here, or select Shopify for Gross / Total Sales.'),
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },
@@ -475,7 +483,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
         el(DateRangeSelect, { section: 'Page', value: topRangePreset, onChange: setTopRangePreset, custom: topCustomRange, onCustomChange: setTopCustomRange, availableStart: meta && meta.earliest, availableEnd: meta && meta.latest }),
         el('div', { style: { fontSize: 11, color: 'var(--t3)', lineHeight: 1.5, maxWidth: 340 } },
           'KPI cards and channel contribution use these filters. Comparison and explorer dates are independent.',
-          topStore==='all' && el('div',{style:{marginTop:4}},'FY27 Goal: £500,000 · Provisional Net Sales · Current progress unavailable')),
+          topStore==='all' && el('div',{style:{marginTop:4}},goalFY+' Goal: '+fmtC(goalTarget,0)+' · Provisional Net Sales · '+(goalActual?.revenue!=null?'Progress '+fmtC(goalActual.revenue,2)+' ('+(100*goalActual.revenue/goalTarget).toFixed(1)+'%) through '+goalRange.endDate:'Current progress unavailable'))),
       ),
 
       el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),

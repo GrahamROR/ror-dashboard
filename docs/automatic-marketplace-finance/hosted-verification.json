@@ -1,0 +1,70 @@
+{
+  "run": "https://github.com/GrahamROR/ror-dashboard/actions/runs/42650700935",
+  "conclusion": "success",
+  "verification": [
+    {
+      "status": "verified",
+      "verification": {
+        "etsy": {
+          "start": "2025-08-01",
+          "end": "2026-11-08",
+          "days": 465,
+          "orders": 1329,
+          "source_sha256": "8b4d50b46f935007a61cb29cb7ebc295c5b32037dc152de668cf5ed7079d9377"
+        },
+        "noths": {
+          "start": "2025-08-01",
+          "end": "2026-11-08",
+          "days": 465,
+          "orders": 4368,
+          "source_sha256": "af36a9d415d36f839050f50e48749f9311e8476a5417b57a425381b49ed5e0c9"
+        }
+      },
+      "historical_controls": {
+        "status": "matched",
+        "compared_days": {
+          "etsy": 426,
+          "noths": 365
+        },
+        "differences": [],
+        "source_field_differences": [
+          {
+            "channel": "etsy",
+            "date": "2025-08-06",
+            "field": "tax",
+            "reference": 0,
+            "candidate": 297
+          },
+          {
+            "channel": "etsy",
+            "date": "2025-08-08",
+            "field": "tax",
+            "reference": 0,
+            "candidate": 140
+          },
+          {
+            "channel": "etsy",
+            "date": "2025-08-11",
+            "field": "tax",
+            "reference": 0,
+            "candidate": 113
+          },
+          {
+            "channel": "etsy",
+            "date": "2025-08-20",
+            "field": "tax",
+            "reference": 0,
+            "candidate": 565
+          },
+          {
+            "channel": "etsy",
+            "date": "2025-10-24",
+            "field": "tax",
+            "reference": 0,
+            "candidate": 536
+          }
+        ]
+      }
+    }
+  ]
+}
