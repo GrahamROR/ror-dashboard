@@ -125,6 +125,7 @@ async function collect({
   env = process.env,
   fetcher = fetch,
   maxPages = 80,
+  dir = "desc",
 }) {
   if (
     !/T.*(?:Z|[+-]\d{2}:\d{2})$/.test(start) ||
@@ -133,10 +134,11 @@ async function collect({
     Date.parse(start) >= Date.parse(end)
   )
     throw Error("Explicit timestamp bounds required; end is exclusive");
+  if (!["asc", "desc"].includes(dir)) throw Error("Unsupported marketplace sort direction");
   const rows = [],
     seen = new Set();
   let count = null,
-    previous = Infinity,
+    previous = dir === "asc" ? -Infinity : Infinity,
     finished = false,
     pages = 0;
   if (!["etsy", "noths"].includes(channel)) throw Error("Unknown marketplace");
@@ -174,7 +176,7 @@ async function collect({
             per_page: limit,
             offset,
             sort: "placed_at",
-            dir: "desc",
+            dir,
             include: "financials",
           };
     Object.entries(params).forEach(([k, v]) => u.searchParams.set(k, v));
@@ -211,10 +213,10 @@ async function collect({
             : Date.parse(x.placed_at);
       if (!/^\d+$/.test(id)) throw Error("Missing native order ID");
       if (!Number.isFinite(t)) throw Error("Missing native order timestamp");
-      if (channel === "noths" && t > previous)
+      if (channel === "noths" && (dir === "asc" ? t < previous : t > previous))
         throw Error("NOTHS source sorting changed");
       previous = t;
-      if (channel === "noths" && t < Date.parse(start)) {
+      if (channel === "noths" && (dir === "asc" ? t >= Date.parse(end) : t < Date.parse(start))) {
         finished = true;
         break;
       }
