@@ -1,0 +1,54 @@
+{
+  "publication": {
+    "sha256": "8292539afc2a8b49de4e10e5e3b91f9acf26218ea5f282262e07f4dc7a094108",
+    "file": "snapshots/8292539afc2a8b49de4e10e5e3b91f9acf26218ea5f282262e07f4dc7a094108.json"
+  },
+  "boundaries": {
+    "etsy": "2025-08-01",
+    "noths": "2025-08-01"
+  },
+  "channels": {
+    "etsy": {
+      "coverage": {
+        "start": "2015-02-11",
+        "end": "2025-07-31"
+      },
+      "days": 3824,
+      "months": 126,
+      "chunks": 11,
+      "audit": {
+        "source_orders": 13886,
+        "excluded_orders": 194,
+        "native_gbp_mapped_orders": 0,
+        "native_component_rounding_orders": 0,
+        "native_component_delta_pennies": 0,
+        "listing_reference_difference_orders": 0,
+        "listing_reference_delta_pennies": 0,
+        "purchase_currency_counts": {}
+      }
+    },
+    "noths": {
+      "coverage": {
+        "start": "2015-11-04",
+        "end": "2025-07-31"
+      },
+      "days": 3558,
+      "months": 117,
+      "chunks": 117,
+      "audit": {
+        "source_orders": 129810,
+        "excluded_orders": 0,
+        "native_gbp_mapped_orders": 975,
+        "native_component_rounding_orders": 1,
+        "native_component_delta_pennies": 1,
+        "listing_reference_difference_orders": 7,
+        "listing_reference_delta_pennies": -2154,
+        "purchase_currency_counts": {
+          "USD": 142,
+          "EUR": 787,
+          "AUD": 46
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),Check=require('../historical-count-check');
+const env={CLOUDFLARE_ACCOUNT_ID:'a'.repeat(32),CLOUDFLARE_D1_DATABASE_ID:'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',CLOUDFLARE_API_TOKEN:'fixture-cloud-token',ETSY_KEYSTRING:'fixture-key',ETSY_SHARED_SECRET:'fixture-secret',NOTHS_TOKEN:'fixture-market-token'};
+const archive={channels:Object.fromEntries(['etsy','noths'].map(c=>[c,{audit:{source_orders:2},coverage:{start:'2015-01-01',end:'2025-07-31'}}]))};
+function transport({wrongCount=false,wrongRank=false}={}){const calls=[];return{calls,fetch:async(url,options)=>{const u=new URL(url);calls.push({url:u,options});let body;if(u.hostname==='api.cloudflare.com'){assert.match(JSON.parse(options.body).sql,/^SELECT /);body={success:true,result:[{results:[{shop_id:'1',access_token:'fixture-access-token',expires_at:'2100-01-01T00:00:00Z'}]}]};}else if(u.hostname==='openapi.etsy.com'){assert.equal(u.searchParams.get('limit'),'1');assert.ok(u.searchParams.has('max_created'));body={count:wrongCount?3:2,results:[{receipt_id:'must-not-appear-in-proof'}]};}else{assert.equal(u.searchParams.get('per_page'),'1');assert.equal(u.searchParams.get('dir'),'asc');const before=u.searchParams.get('offset')==='1';body={query:{total:100},data:[{id:'must-not-appear-in-proof',placed_at:before||wrongRank?'2025-07-31T12:00:00Z':'2025-08-01T12:00:00Z'}]};}return{ok:true,status:200,json:async()=>body};}};}
+test('Final coverage counts use bounded Etsy counts and bracketing NOTHS ranks without exposing source records',async()=>{
+ const t=transport(),proof=await Check.checkCounts({archive,env,transport:t.fetch});assert.equal(proof.status,'coverage-verified');assert.equal(proof.channels.etsy.provider_window_count,2);assert.equal(proof.channels.noths.boundary_rank,2);assert.equal(t.calls.length,4);assert.doesNotMatch(JSON.stringify(proof),/fixture-|must-not-appear|receipt_id|access_token|placed_at/);
+});
+test('A missing historical receipt or incorrect boundary rank cannot pass the final coverage check',async()=>{
+ for(const fault of [{wrongCount:true},{wrongRank:true}]){const t=transport(fault);await assert.rejects(Check.checkCounts({archive,env,transport:t.fetch}),/mismatch/);}
+});

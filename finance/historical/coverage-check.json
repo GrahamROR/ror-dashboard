@@ -1,0 +1,24 @@
+{
+  "schema": "historical-api-count-check-v1",
+  "status": "coverage-verified",
+  "checked_at": "2026-11-09T21:03:14.779Z",
+  "definition": "Order-count completeness only. This does not certify accounting definitions or independent financial reconciliation.",
+  "channels": {
+    "etsy": {
+      "status": "matched",
+      "historical_source_orders": 13886,
+      "provider_window_count": 13886,
+      "method": "Independent server-bounded historical receipt count"
+    },
+    "noths": {
+      "status": "matched",
+      "historical_source_orders": 129810,
+      "boundary_rank": 129810,
+      "before_boundary": true,
+      "at_or_after_boundary": true,
+      "provider_total_at_check": 134187,
+      "method": "Independent ascending API ranks immediately before and after the historical/live boundary"
+    }
+  },
+  "archive_sha256": "8292539afc2a8b49de4e10e5e3b91f9acf26218ea5f282262e07f4dc7a094108"
+}

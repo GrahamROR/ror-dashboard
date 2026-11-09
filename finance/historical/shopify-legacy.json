@@ -1,0 +1,495 @@
+{
+  "schema": "shopify-legacy-monthly-v1",
+  "source": "spreadsheet-import",
+  "confidence": "self-reported",
+  "basis": "workbook-recorded-revenue",
+  "grain": "monthly",
+  "currency": "GBP",
+  "live_start_at_capture": "2024-01-01",
+  "coverage": {
+    "start": "2016-01",
+    "end": "2023-12"
+  },
+  "months": [
+    {
+      "period": "2016-01",
+      "revenue": 391,
+      "orders": 15
+    },
+    {
+      "period": "2016-02",
+      "revenue": 492,
+      "orders": 22
+    },
+    {
+      "period": "2016-03",
+      "revenue": 381,
+      "orders": 18
+    },
+    {
+      "period": "2016-04",
+      "revenue": 215,
+      "orders": 6
+    },
+    {
+      "period": "2016-05",
+      "revenue": 688,
+      "orders": 16
+    },
+    {
+      "period": "2016-06",
+      "revenue": 603,
+      "orders": 27
+    },
+    {
+      "period": "2016-07",
+      "revenue": 798,
+      "orders": 31
+    },
+    {
+      "period": "2016-08",
+      "revenue": 686,
+      "orders": 29
+    },
+    {
+      "period": "2016-09",
+      "revenue": 889,
+      "orders": 19
+    },
+    {
+      "period": "2016-10",
+      "revenue": 1043,
+      "orders": 29
+    },
+    {
+      "period": "2016-11",
+      "revenue": 2333.07,
+      "orders": 98
+    },
+    {
+      "period": "2016-12",
+      "revenue": 3158.4,
+      "orders": 119
+    },
+    {
+      "period": "2017-01",
+      "revenue": 516,
+      "orders": 22
+    },
+    {
+      "period": "2017-02",
+      "revenue": 600.73,
+      "orders": 19
+    },
+    {
+      "period": "2017-03",
+      "revenue": 499,
+      "orders": 18
+    },
+    {
+      "period": "2017-04",
+      "revenue": 587.45,
+      "orders": 23
+    },
+    {
+      "period": "2017-05",
+      "revenue": 601.5,
+      "orders": 22
+    },
+    {
+      "period": "2017-06",
+      "revenue": 842.7,
+      "orders": 28
+    },
+    {
+      "period": "2017-07",
+      "revenue": 282,
+      "orders": 13
+    },
+    {
+      "period": "2017-08",
+      "revenue": 575,
+      "orders": 25
+    },
+    {
+      "period": "2017-09",
+      "revenue": 657.9,
+      "orders": 21
+    },
+    {
+      "period": "2017-10",
+      "revenue": 1045,
+      "orders": 45
+    },
+    {
+      "period": "2017-11",
+      "revenue": 3329.15,
+      "orders": 126
+    },
+    {
+      "period": "2017-12",
+      "revenue": 3063.65,
+      "orders": 102
+    },
+    {
+      "period": "2018-01",
+      "revenue": 1032,
+      "orders": 32
+    },
+    {
+      "period": "2018-02",
+      "revenue": 1213,
+      "orders": 38
+    },
+    {
+      "period": "2018-03",
+      "revenue": 2695,
+      "orders": 98
+    },
+    {
+      "period": "2018-04",
+      "revenue": 2965,
+      "orders": 92
+    },
+    {
+      "period": "2018-05",
+      "revenue": 2791,
+      "orders": 104
+    },
+    {
+      "period": "2018-06",
+      "revenue": 1828,
+      "orders": 61
+    },
+    {
+      "period": "2018-07",
+      "revenue": 3852,
+      "orders": 134
+    },
+    {
+      "period": "2018-08",
+      "revenue": 4022,
+      "orders": 140
+    },
+    {
+      "period": "2018-09",
+      "revenue": 3262,
+      "orders": 117
+    },
+    {
+      "period": "2018-10",
+      "revenue": 2437,
+      "orders": 81
+    },
+    {
+      "period": "2018-11",
+      "revenue": 8013,
+      "orders": 273
+    },
+    {
+      "period": "2018-12",
+      "revenue": 8668,
+      "orders": 288
+    },
+    {
+      "period": "2019-01",
+      "revenue": 2965,
+      "orders": 101
+    },
+    {
+      "period": "2019-02",
+      "revenue": 3256,
+      "orders": 101
+    },
+    {
+      "period": "2019-03",
+      "revenue": 4785,
+      "orders": 158
+    },
+    {
+      "period": "2019-04",
+      "revenue": 3827,
+      "orders": 130
+    },
+    {
+      "period": "2019-05",
+      "revenue": 3603,
+      "orders": 106
+    },
+    {
+      "period": "2019-06",
+      "revenue": 3419,
+      "orders": 107
+    },
+    {
+      "period": "2019-07",
+      "revenue": 3200,
+      "orders": 115
+    },
+    {
+      "period": "2019-08",
+      "revenue": 5666,
+      "orders": 204
+    },
+    {
+      "period": "2019-09",
+      "revenue": 3880.56,
+      "orders": 109
+    },
+    {
+      "period": "2019-10",
+      "revenue": 3510.25,
+      "orders": 103
+    },
+    {
+      "period": "2019-11",
+      "revenue": 16591.83,
+      "orders": 568
+    },
+    {
+      "period": "2019-12",
+      "revenue": 9993.92,
+      "orders": 309
+    },
+    {
+      "period": "2020-01",
+      "revenue": 9144.5,
+      "orders": 306
+    },
+    {
+      "period": "2020-02",
+      "revenue": 6960.21,
+      "orders": 203
+    },
+    {
+      "period": "2020-03",
+      "revenue": 8011.2,
+      "orders": 216
+    },
+    {
+      "period": "2020-04",
+      "revenue": 10607.96,
+      "orders": 312
+    },
+    {
+      "period": "2020-05",
+      "revenue": 16100.75,
+      "orders": 493
+    },
+    {
+      "period": "2020-06",
+      "revenue": 13729.98,
+      "orders": 412
+    },
+    {
+      "period": "2020-07",
+      "revenue": 10291.96,
+      "orders": 301
+    },
+    {
+      "period": "2020-08",
+      "revenue": 8751.15,
+      "orders": 263
+    },
+    {
+      "period": "2020-09",
+      "revenue": 8339.25,
+      "orders": 238
+    },
+    {
+      "period": "2020-10",
+      "revenue": 11017.39,
+      "orders": 298
+    },
+    {
+      "period": "2020-11",
+      "revenue": 22459.93,
+      "orders": 625
+    },
+    {
+      "period": "2020-12",
+      "revenue": 19406.71,
+      "orders": 506
+    },
+    {
+      "period": "2021-01",
+      "revenue": 14441.3,
+      "orders": 439
+    },
+    {
+      "period": "2021-02",
+      "revenue": 12626.66,
+      "orders": 344
+    },
+    {
+      "period": "2021-03",
+      "revenue": 11665.29,
+      "orders": 323
+    },
+    {
+      "period": "2021-04",
+      "revenue": 8904.95,
+      "orders": 246
+    },
+    {
+      "period": "2021-05",
+      "revenue": 7463.96,
+      "orders": 182
+    },
+    {
+      "period": "2021-06",
+      "revenue": 4275.91,
+      "orders": 124
+    },
+    {
+      "period": "2021-07",
+      "revenue": 3333.94,
+      "orders": 103
+    },
+    {
+      "period": "2021-08",
+      "revenue": 3962.53,
+      "orders": 119
+    },
+    {
+      "period": "2021-09",
+      "revenue": 2769.15,
+      "orders": 75
+    },
+    {
+      "period": "2021-10",
+      "revenue": 5655.45,
+      "orders": 163
+    },
+    {
+      "period": "2021-11",
+      "revenue": 6504.39,
+      "orders": 190
+    },
+    {
+      "period": "2021-12",
+      "revenue": 8462.26,
+      "orders": 214
+    },
+    {
+      "period": "2022-01",
+      "revenue": 5237.51,
+      "orders": 167
+    },
+    {
+      "period": "2022-02",
+      "revenue": 3299.96,
+      "orders": 89
+    },
+    {
+      "period": "2022-03",
+      "revenue": 4497.6,
+      "orders": 122
+    },
+    {
+      "period": "2022-04",
+      "revenue": 2691.92,
+      "orders": 69
+    },
+    {
+      "period": "2022-05",
+      "revenue": 2923.6,
+      "orders": 81
+    },
+    {
+      "period": "2022-06",
+      "revenue": 3124.55,
+      "orders": 86
+    },
+    {
+      "period": "2022-07",
+      "revenue": 4288.33,
+      "orders": 135
+    },
+    {
+      "period": "2022-08",
+      "revenue": 5565.13,
+      "orders": 162
+    },
+    {
+      "period": "2022-09",
+      "revenue": 4649.76,
+      "orders": 138
+    },
+    {
+      "period": "2022-10",
+      "revenue": 5856.62,
+      "orders": 160
+    },
+    {
+      "period": "2022-11",
+      "revenue": 10098.93,
+      "orders": 286
+    },
+    {
+      "period": "2022-12",
+      "revenue": 11546.15,
+      "orders": 298
+    },
+    {
+      "period": "2023-01",
+      "revenue": 5034.47,
+      "orders": 165
+    },
+    {
+      "period": "2023-02",
+      "revenue": 5078.05,
+      "orders": 128
+    },
+    {
+      "period": "2023-03",
+      "revenue": 6699.83,
+      "orders": 162
+    },
+    {
+      "period": "2023-04",
+      "revenue": 3320,
+      "orders": 93
+    },
+    {
+      "period": "2023-05",
+      "revenue": 2444,
+      "orders": 70
+    },
+    {
+      "period": "2023-06",
+      "revenue": 3280,
+      "orders": 100
+    },
+    {
+      "period": "2023-07",
+      "revenue": 4440,
+      "orders": 92
+    },
+    {
+      "period": "2023-08",
+      "revenue": 6526.28,
+      "orders": 166
+    },
+    {
+      "period": "2023-09",
+      "revenue": 5297.45,
+      "orders": 155
+    },
+    {
+      "period": "2023-10",
+      "revenue": 5304.93,
+      "orders": 157
+    },
+    {
+      "period": "2023-11",
+      "revenue": 11924.63,
+      "orders": 308
+    },
+    {
+      "period": "2023-12",
+      "revenue": 16502.77,
+      "orders": 457
+    }
+  ]
+}
