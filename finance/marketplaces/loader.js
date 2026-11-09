@@ -1,7 +1,8 @@
 // One integrity-checked loader shared by the existing dashboard components.
 (function (root) {
   let pending;
-  async function load() {
+  async function load({force=false}={}) {
+    if(force) pending=null;
     if (!pending)
       pending = (async () => {
         const response = await fetch(
@@ -37,6 +38,7 @@
           );
           if (status.ok) refreshStatus = await status.json();
         } catch {}
+        if(refreshStatus?.snapshot_sha256 && refreshStatus.snapshot_sha256!==manifest.sha256) throw Error('Marketplace refresh status does not match the verified snapshot');
         return { ...data, refreshStatus };
       })();
     try {

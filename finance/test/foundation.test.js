@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),a=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const M=require('../management'),I=require('../integration'),F=require('../contract'),C=require('../../dashboard2/calculations'),G=require('../goals'),T=require('../../growth/targets');
-const shop=require('../staging/'+require('../staging/manifest').file),markets=require('../marketplaces/staging/'+require('../marketplaces/staging/manifest').file),raw=require('../../data.json'),legacy=require('../../dashboard2/sales-data.json').records;
+const shop=require('../staging/'+require('../staging/manifest').file),markets=require('../marketplaces/staging/snapshots/a461901ae78b160064be86eaade0ddce385942245dd3d26b1dcc227081ec2804.json'),raw=require('../../data.json'),legacy=require('../../dashboard2/sales-data.json').records;
 const start='2025-08-01',end='2026-07-31',now=new Date('2026-10-14T12:00:00Z');
 function records(basis,s=shop){const r=legacy.slice();r.management={shop:s,markets,basis};return r;}
 function view(fy='FY26'){return {...raw.years[fy],fy,marketingYesterday:raw.yesterday};}

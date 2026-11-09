@@ -121,7 +121,7 @@ function MetricDefinitions({ meta, basis, snapshot, channels, markets }) {
     el('div',null,ManagementFinance.DEFINITIONS[basis]),
     el('div',null,'In Shopify-only views, Shopify orders use the native eligible count. AOV is selected sales divided by eligible orders; Net AOV = selected Net Sales / eligible orders. Native merchandise AOV remains separate. Shopify-reported AOV is a separate native metric.'),
     el('div',null,'Shopify source tax treatment is preserved; net_sales is not asserted to be VAT-exclusive accounting turnover. Source through '+(snapshot?.coverage.end||'unavailable')+'.'),
-    el('div',null,ManagementFinance.DEFINITIONS[basis]+' Etsy source is CSV/Stats-controlled; NOTHS management is provisional. Missing periods are withheld.'),
+    el('div',null,ManagementFinance.DEFINITIONS[basis]+(markets?.calculation_version?' Marketplace source components refresh automatically from read-only native APIs and are checked against retained historical reporting controls.':' Etsy source is CSV/Stats-controlled;')+' NOTHS management is provisional. Missing periods are withheld.'),
     el('div',null,'Marketplace coverage · Etsy through '+(markets?.channels?.etsy?.daily?.at(-1)?.date || 'unavailable')+' · NOTHS through '+(markets?.channels?.noths?.daily?.at(-1)?.date || 'unavailable')+'. Current-year totals require all selected sources; no legacy-gross substitution.'),
     el('div',null,'Known FY26 NOTHS exceptions: £1,560.71 discount funding unclassified; £941.81 cumulative refunds; £7.58 component difference; £6.27 refund excess. These are not deducted or assigned financial posting dates in the provisional order-cohort estimate.'),
     el('div',null,'Purchased units remain imported. Shopify financial snapshots do not redefine units. Imported source timezone/currency eligibility still needs verification.'),
@@ -465,6 +465,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
       (financeError || financeSnapshot?.freshness?.warning || financeSnapshot?.refreshStatus?.status==='failed') && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},financeError || financeSnapshot?.freshness?.warning || 'Latest financial refresh failed; showing the last validated snapshot.'),
 
       marketplaceError && el(UnavailableNotice,{reason:marketplaceError}),
+      marketplaceSnapshot?.refreshStatus?.status==='failed' && el(UnavailableNotice,{reason:'Latest automatic marketplace refresh failed; last validated figures are retained. Source coverage dates are shown below.'}),
       topStore==='all' && !['net_revenue','legacy_gross'].includes(financialBasis) && el('div',{role:'status',style:{fontSize:12,color:'var(--amb)'}},'All Stores supports Net Sales and Legacy Imported Gross. Choose Net Sales here, or select Shopify for Gross / Total Sales.'),
       // §5 top controls
       el('div', { className: 'card', style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end' } },

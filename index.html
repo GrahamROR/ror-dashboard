@@ -2105,7 +2105,7 @@ function RootApp() {
   useEffect(() => { let active=true; const refresh=()=>ShopifyFinanceLoader.load({force:true}).then(s=>{if(active){setFinanceSnapshot(s);setFinanceError('');}}).catch(e=>{if(active)setFinanceError(e.message);}); refresh(); const timer=setInterval(refresh,15*60*1000); return ()=>{active=false;clearInterval(timer);}; }, []);
   const [marketplaceSnapshot,setMarketplaceSnapshot]=useState(null);
   const [marketplaceError,setMarketplaceError]=useState(null);
-  useEffect(()=>{MarketplaceFinanceLoader.load().then(setMarketplaceSnapshot).catch(e=>setMarketplaceError(e.message));},[]);
+  useEffect(()=>{let active=true;const refresh=()=>MarketplaceFinanceLoader.load({force:true}).then(s=>{if(active){setMarketplaceSnapshot(s);setMarketplaceError(null);}}).catch(e=>{if(active)setMarketplaceError(e.message);});refresh();const timer=setInterval(refresh,15*60*1000);return()=>{active=false;clearInterval(timer);};},[]);
   const financeProps = {financeSnapshot, financialBasis:activeDashboard==='ror-sales'?rorFinancialBasis:financialBasis, setFinancialBasis:activeDashboard==='ror-sales'?setRorFinancialBasis:setFinancialBasis, financeError,marketplaceSnapshot,marketplaceError};
   return el(React.Fragment, null,
     el(RorTopNavSwitcher, {active:activeDashboard,onChange:setActiveDashboard}),
