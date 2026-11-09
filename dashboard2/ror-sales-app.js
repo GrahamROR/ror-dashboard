@@ -242,7 +242,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
         ),
         el('tbody', null,
           table.rows.map((row) => el('tr', { key: row.bucket.key, style: { borderBottom: '1px solid var(--bdr)' } },
-            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' } }, row.bucket.label + ' · ' + row.bucket.startDate + ' → ' + row.bucket.endDate + (row.current.status !== 'complete' || row.bucket.truncated ? ' · incomplete period' : '')),
+            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' }, title: row.bucket.startDate + ' → ' + row.bucket.endDate }, row.bucket.label + (row.current.status !== 'complete' || row.bucket.truncated ? ' · incomplete period' : '')),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } },
               row.current.status === 'not-occurred' ? '—' : row.current.status === 'no-data' ? el('span', { style: { color: 'var(--t3)' } }, 'no data') : formatMetric(metric, row.current[metric])),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace", color: 'var(--t3)' } },
