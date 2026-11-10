@@ -439,6 +439,36 @@ function SalesExplorer({ records, meta, basis }) {
   );
 }
 
+// Current FY goals remain independent of page store, date and reporting-basis filters.
+function MonthlyGoalsContent({records,range,fy,target,actual}) {
+ const report=root.RorGoalPlan.build(records,range,fy,target,M.ACTIVE_CHANNELS);
+ if(!report)return el('p',{role:'status'},'No completed reporting day in this financial year yet.');
+ const cell={padding:'9px 12px',textAlign:'right',verticalAlign:'top'};
+ const labels={future:'future',pending:'financial data unavailable',mtd:'MTD',green:'on track',amber:'close',red:'off track'};
+ return el('div',{'data-ror-monthly-goals':true},
+  el('p',{style:{fontSize:12,color:'var(--t2)',marginTop:14}},fy+' · All Stores Net Sales · Annual goal '+fmtC(target,0)+' · Through '+M.formatDate(range.endDate)+'. Independent of page filters. Marketplace Net Sales retains its provisional management assumptions.'),
+  el('p',{'data-seasonal-disclosure':true,style:{fontSize:12,color:'var(--t2)',lineHeight:1.6}},'Monthly pacing uses the existing Shopify seasonal shape; it is not separately tuned to marketplace seasonality yet.'),
+  el('div',{className:'scroll-x-fade',style:{overflowX:'auto',marginTop:14}},el('table',{'aria-label':'ROR Total monthly goals',style:{width:'100%',minWidth:620,borderCollapse:'collapse',fontSize:12}},
+   el('thead',null,el('tr',null,['Month','All Stores Net Sales actual','Net Sales target','Variance','Source orders','Status'].map((name,i)=>el('th',{key:name,style:{...cell,textAlign:i?'right':'left',color:'var(--t2)',borderBottom:'1px solid var(--bdr2)'}},name)))),
+   el('tbody',null,report.months.map(month=>el('tr',{key:month.key,'data-goal-month':month.key,style:{borderBottom:'1px solid var(--bdr)',opacity:month.future?0.5:1}},
+    el('td',{style:{...cell,textAlign:'left',whiteSpace:'nowrap'}},M.monthLabel(month.key)),
+    el('td',{style:cell},fmtC(month.revenue,2)),
+    el('td',{style:cell},fmtC(month.future?month.fullTarget:month.expectedTarget,2),!month.future&&month.elapsedDays<month.days&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Full month: '+fmtC(month.fullTarget,2)+' · '+month.elapsedDays+'/'+month.days+(month.actual?.status==='complete'?' verified days':' elapsed days · source coverage unavailable'))),
+    el('td',{style:{...cell,color:month.variance==null?'var(--t3)':month.variance>=0?'var(--grn)':'var(--red)'}},GrowthTargets.signed(month.variance)),
+    el('td',{style:cell},month.future?'—':fmt(month.orders)),
+    el('td',{style:cell},el('span',{className:'badge '+(month.status==='green'?'bg':month.status==='red'?'br':month.status==='future'||month.status==='pending'?'bb':'ba')},labels[month.status]))
+   ))),
+   el('tfoot',null,el('tr',{style:{borderTop:'1px solid var(--bdr2)',fontWeight:600}},el('td',{style:{...cell,textAlign:'left'}},'YTD Total'),el('td',{style:cell},fmtC(actual?.revenue,2)),el('td',{style:cell},fmtC(report.plan.ytdTarget,2)),el('td',{style:cell},GrowthTargets.signed(GrowthTargets.variance(actual?.revenue,report.plan.ytdTarget))),el('td',{style:cell},fmt(actual?.orders)),el('td',null)))
+  ))
+ );
+}
+function MonthlyGoalsCard(props){
+ const [opened,setOpened]=useState(false);
+ return el('details',{className:'card','data-ror-section':'goals',onToggle:e=>{if(e.currentTarget.open)setOpened(true);}},
+  el('summary',{style:{cursor:'pointer',color:'var(--amb)',fontWeight:500}},'ROR Total · Monthly goals'),opened&&el(MonthlyGoalsContent,props));
+}
+root.RorMonthlyGoalsContent=MonthlyGoalsContent;
+
 // ── top-level Dashboard 2 ────────────────────────────────────
 function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialBasis=()=>{},financeError,marketplaceSnapshot,marketplaceError,historical}={}) {
   const [loading, setLoading] = useState(true);
@@ -509,6 +539,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
       ),
 
       !pageHistory && root.RorHistoricalSales && el(root.RorHistoricalSales, {financeSnapshot,marketplaceSnapshot,financeError,marketplaceError}),
+      el(MonthlyGoalsCard,{records:goalRecords,range:goalRange,fy:goalFY,target:goalTarget,actual:goalActual}),
 
       pageHistory && el(root.RorHistoricalPeriod,{context:historical.context,range,channels,section:'Page'}),
       !pageHistory && el(PeriodNotice, { range, records, channels, section: 'KPI cards' }),
