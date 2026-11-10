@@ -400,10 +400,10 @@ function ChannelMixCard({ es }) {
   );
 }
 
-function YesterdayCard({ icon, label, actual, target, statusKey, statusText, note, accentCol }) {
+function YesterdayCard({ icon, label, actual, target, statusKey, statusText, note, accentCol, metric }) {
   const col = statusKey==='pending'?'var(--t3)':statusCol(statusKey);
   const bd  = statusBadge(statusKey, statusText);
-  return el('div', {className:'card',style:{display:'flex',flexDirection:'column',gap:0,minHeight:142}},
+  return el('div', {className:'card','data-performance-metric':metric,style:{display:'flex',flexDirection:'column',gap:0,minHeight:142}},
     el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:12}},
       el('div', {style:{display:'flex',alignItems:'center',gap:8,minWidth:0}},
         el('div', {style:{width:28,height:28,borderRadius:6,background:accentCol+'22',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
@@ -1194,51 +1194,51 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
         yesterday.warning&&el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},yesterday.warning),
         yesterday ? el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(190px,1fr))',gap:12,marginBottom:16},className:'grid-auto'},
           el(YesterdayCard, {
-            icon:'ti-currency-pound', label:ShopifyIntegration.labels[financialBasis], accentCol:'var(--grn)',
+            icon:'ti-currency-pound', metric:'revenue', label:ShopifyIntegration.labels[financialBasis], accentCol:'var(--grn)',
             actual: fmtC(yesterday.revenue,2), target: financialBasis===goalBasis?fmtC(yRevTarget,0):'Net Sales: '+fmtC(yRevTarget,0),
             statusKey: financialBasis===goalBasis?status(yesterday.revenue,yRevTarget):'pending',
             note: 'Verified Shopify Analytics '+financialBasis+' · Net Sales actual: '+fmtC(yesterday.netRevenue,2)+' · '+yesterday.status,
           }),
           el(YesterdayCard, {
-            icon:'ti-shopping-bag', label:'Orders', accentCol:'var(--amb)',
+            icon:'ti-shopping-bag', metric:'orders', label:'Orders', accentCol:'var(--amb)',
             actual: fmt(yesterday.orders), target: fmt(yOrdersTarget,1),
             statusKey: status(yesterday.orders, yOrdersTarget),
             note: 'Target is the window’s Net Sales target divided by £48 goal AOV.',
           }),
           el(YesterdayCard, {
-            icon:'ti-current-location', label:'Sessions', accentCol:'var(--blu)',
+            icon:'ti-current-location', metric:'sessions', label:'Sessions', accentCol:'var(--blu)',
             actual: fmt(yesterday.sessions), target: fmt(ySessionsTarget,0),
             statusKey: status(yesterday.sessions, ySessionsTarget),
             note: 'Pulled directly from Shopify Analytics sessions.',
           }),
           el(YesterdayCard, {
-            icon:'ti-percentage', label:'Conversion rate', accentCol:'var(--pur)',
+            icon:'ti-percentage', metric:'conversion', label:'Conversion rate', accentCol:'var(--pur)',
             actual: yesterday.conversionRate!=null ? fmtP(yesterday.conversionRate) : '—',
             target: fmtP(GOALS.conversion),
             statusKey: yesterday.conversionRate!=null ? status(yesterday.conversionRate, GOALS.conversion) : 'pending',
             note: fmtP(yesterday.conversionRate)+' of '+fmt(yesterday.sessions)+' sessions converted.',
           }),
           el(YesterdayCard, {
-            icon:'ti-receipt', label:RorModel.METRICS.shopifyAov.label, accentCol:'var(--grn)',
+            icon:'ti-receipt', metric:'aov', label:RorModel.METRICS.shopifyAov.label, accentCol:'var(--grn)',
             actual: fmtC(yesterday.aov,2), target: fmtC(GOALS.aov,0),
             statusKey: status(yesterday.aov, GOALS.aov),
             note: 'Shopify native average_order_value · Native merchandise AOV: '+fmtC(yesterday.netAov,2),
           }),
           el(YesterdayCard, {
-            icon:'ti-refresh', label:'Repeat rate', accentCol:'var(--amb)',
+            icon:'ti-refresh', metric:'repeat', label:'Repeat rate', accentCol:'var(--amb)',
             actual: fmtP(yesterday.repeatRate), target: fmtP(GOALS.repeatRate),
             statusKey: status(yesterday.repeatRate, GOALS.repeatRate),
             note: fmt(yesterday.returning)+' returning of '+fmt(yesterday.customers)+' order customers.',
           }),
           el(YesterdayCard, {
-            icon:'ti-percentage', label:'Margin (costed SKUs)', accentCol:'var(--pur)',
+            icon:'ti-percentage', metric:'margin', label:'Margin (costed SKUs)', accentCol:'var(--pur)',
             actual: yesterday.margin==null?'Pending':fmtP(yesterday.margin),
             target: fmtP(GOALS.margin),
             statusKey: yesterday.margin==null?'pending':status(yesterday.margin, GOALS.margin),
             note: 'Requires SKU cost/margin data before this can be calculated safely.',
           }),
           el(YesterdayCard, {
-            icon:'ti-chart-pie', label:RorModel.METRICS.estimatedProfit.label, accentCol:'var(--pur)',
+            icon:'ti-chart-pie', metric:'profit', label:RorModel.METRICS.estimatedProfit.label, accentCol:'var(--pur)',
             actual: yesterday.profit==null?'Pending':fmtC(yesterday.profit,0),
             target: fmtC(yProfitTarget,0),
             statusKey: yesterday.profit==null?'pending':status(yesterday.profit, yProfitTarget),
@@ -2100,7 +2100,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
 <script src="dashboard2/calculations.js?v=comparison-coverage-v2"></script>
 <script src="dashboard2/charts.js?v=history-style-v1"></script>
 <script src="dashboard2/goals.js?v=monthly-goals-v1"></script>
-<script src="dashboard2/ror-sales-app.js?v=monthly-goals-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=performance-v1"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/management.js?v=foundation-v1"></script>

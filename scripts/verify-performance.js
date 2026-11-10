@@ -15,7 +15,13 @@ async function main(){
   assert.equal(P.view({data:{performance},snapshot,basis:'net_revenue',key:range.key,through}).windowVerified,true);
   checks.push({key:range.key,start:range.start,end:range.end,matched:true,netMerchandise:actual.netSales,totalSales:actual.revenue,orders:actual.orders});
  }
- const report={status:'verified',through,checks,performance};
+ const [monthlySales,monthlySessions]=await Promise.all([S.fetchMonthlySales(token,through),S.fetchMonthlySessions(token,through)]);
+ for(const [key,row]of Object.entries(monthlySales)){
+  const end=[through,key+'-'+String(new Date(Date.UTC(+key.slice(0,4),+key.slice(5,7),0)).getUTCDate())].sort()[0];
+  const expected=I.report(snapshot,key+'-01',end,'net_revenue');
+  assert.equal(expected.status,'actual');assert.equal(Math.round(row.netSales*100),Math.round(expected.netSales*100));assert.equal(Math.round(row.revenue*100),Math.round(expected.totalSales*100));assert.equal(row.orders,expected.orders);
+ }
+ const report={status:'verified',through,checks,performance,monthlySales,monthlySessions};
  const output=process.env.PERFORMANCE_EVIDENCE_PATH;
  if(output)fs.writeFileSync(output,JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify({status:'verified',through,windows:checks.map(({key,start,end,matched})=>({key,start,end,matched}))}));

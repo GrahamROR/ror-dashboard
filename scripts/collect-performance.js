@@ -1,7 +1,8 @@
 'use strict';
 const P=require('../growth/performance');
-const money=value=>value==null||value===''||!Number.isFinite(Number(value))?null:Math.round(Number(value)*100)/100;
-const count=value=>value==null||value===''||!Number.isSafeInteger(Number(value))||Number(value)<0?null:Number(value);
+const numeric=value=>(typeof value==='number'||typeof value==='string'&&value.trim()!=='')&&Number.isFinite(Number(value))?Number(value):null;
+const money=value=>{const n=numeric(value);return n!=null&&Number.isSafeInteger(Math.round(n*100))?Math.round(n*100)/100:null;};
+const count=value=>{const n=numeric(value);return n!=null&&Number.isSafeInteger(n)&&n>=0?n:null;};
 async function collect({query,through}){
  const windows={};
  for(const range of P.ranges(through)){
@@ -15,7 +16,7 @@ async function collect({query,through}){
   if([revenue,netSales,orders,customers,returning,visits,converted].some(v=>v==null)||converted>visits||returning>customers)throw Error('Performance window source components unavailable');
   const cogs=money(s.cost_of_goods_sold),grossProfit=money(s.gross_profit),costedRevenue=cogs!=null&&grossProfit!=null?cogs+grossProfit:null;
   const margin=costedRevenue?grossProfit/costedRevenue:null;
-  windows[range.key]={start:range.start,end:range.end,status:'complete',revenue,netSales,orders,aov:money(s.average_order_value),customers,returning,repeatRate:customers>0?returning/customers:null,sessions:visits,convertedSessions:converted,conversionRate:visits>0?converted/visits:null,shopifyConversionRate:a.conversion_rate==null?null:Number(a.conversion_rate),margin:margin==null?null:Math.round(margin*1000)/1000,profit:margin==null?null:Math.round(netSales*margin*100)/100,costCoverage:netSales&&costedRevenue!=null?Math.round(costedRevenue/netSales*1000)/1000:null,marginSource:margin==null?'pending_sku_cost_data':'Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)',profitSource:margin==null?'pending_sku_cost_data':'estimated: net_sales × margin % (costed SKUs)'};
+  windows[range.key]={start:range.start,end:range.end,status:'complete',revenue,netSales,orders,aov:money(s.average_order_value),customers,returning,repeatRate:customers>0?returning/customers:null,sessions:visits,convertedSessions:converted,conversionRate:visits>0?converted/visits:null,shopifyConversionRate:numeric(a.conversion_rate),margin:margin==null?null:Math.round(margin*1000)/1000,profit:margin==null?null:Math.round(netSales*margin*100)/100,costCoverage:netSales&&costedRevenue!=null?Math.round(costedRevenue/netSales*1000)/1000:null,marginSource:margin==null?'pending_sku_cost_data':'Shopify Analytics cost_of_goods_sold/gross_profit (costed SKUs)',profitSource:margin==null?'pending_sku_cost_data':'estimated: net_sales × margin % (costed SKUs)'};
  }
  return {schema:'shopify-performance-v1',timezone:'Europe/London',through,status:'complete',...windows};
 }

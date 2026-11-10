@@ -31,3 +31,7 @@ test('Missing query rows/components fail instead of publishing invented zeros; z
  const q=async query=>query.startsWith('FROM sales')?[{total_sales:0,net_sales:0,orders:0,average_order_value:null,customers:0,returning_customers:0}]:[{sessions:0,sessions_that_completed_checkout:0,conversion_rate:null}];
  const p=await Collector.collect({query:q,through});assert.equal(p.last7.sessions,0);assert.equal(p.last7.conversionRate,null);assert.equal(p.last7.aov,null);assert.equal(p.last7.profit,null);
 });
+
+test('Boolean and whitespace source components never become known zero amounts',async()=>{
+ for(const invalid of [false,true,' '])await assert.rejects(Collector.collect({through,query:async q=>q.startsWith('FROM sales')?[{total_sales:invalid,net_sales:0,orders:0,average_order_value:null,customers:0,returning_customers:0}]:[{sessions:0,sessions_that_completed_checkout:0}]}),/components unavailable/);
+});
