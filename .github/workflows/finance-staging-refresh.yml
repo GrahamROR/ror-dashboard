@@ -7,6 +7,10 @@ on:
         description: 'Read-only marketplace API and historical-policy verification; no publication'
         type: boolean
         default: false
+      performance_verify:
+        description: 'Read-only Shopify Performance window checks; no publication'
+        type: boolean
+        default: false
   pull_request:
     types: [synchronize]
     paths:
@@ -89,3 +93,29 @@ jobs:
         run: node scripts/refresh-marketplace-finance.js --verify
       - name: Verify publication files remain unchanged
         run: git diff --exit-code -- finance/staging finance/marketplaces/staging data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json
+
+  performance-source-check:
+    if: github.event_name == 'workflow_dispatch' && inputs.performance_verify && (github.ref_name == 'main' || github.ref_name == 'codex/performance-tab')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      TZ: Europe/London
+      SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
+      SHOPIFY_CLIENT_ID: ${{ secrets.SHOPIFY_CLIENT_ID }}
+      SHOPIFY_CLIENT_SECRET: ${{ secrets.SHOPIFY_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify direct Performance queries against canonical window controls
+        env:
+          PERFORMANCE_EVIDENCE_PATH: ${{ runner.temp }}/performance-validation.json
+        run: node scripts/verify-performance.js
+      - name: Verify publication files remain unchanged
+        run: git diff --exit-code -- finance/staging finance/marketplaces/staging data.json dashboard2/sales-data.json ads-data.json email-data.json ltv-cac.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shopify-performance-verification-${{ github.run_id }}
+          path: ${{ runner.temp }}/performance-validation.json
+          retention-days: 7

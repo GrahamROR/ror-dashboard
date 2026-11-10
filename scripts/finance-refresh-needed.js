@@ -8,7 +8,7 @@ function needed(kind,{read=file=>JSON.parse(fs.readFileSync(file,'utf8')),now=ne
  try{
   if(kind==='shopify'){
    const base='finance/staging',status=read(base+'/refresh-status.json'),manifest=read(base+'/manifest.json'),snapshot=read(path.posix.join(base,manifest.file)),legacy=read('data.json');
-   return !(status.status==='success'&&current(status.completed_at)&&snapshot.coverage.end>=yesterday&&current(legacy.updated));
+   return !(status.status==='success'&&current(status.completed_at)&&snapshot.coverage.end>=yesterday&&current(legacy.updated)&&legacy.performance?.status==='complete'&&legacy.performance.through>=yesterday&&['yesterday','last7','last30','last90'].every(k=>legacy.performance[k]?.status==='complete'&&legacy.performance[k].end>=yesterday)&&legacy.marketingCoverage?.end>=yesterday);
   }
   if(kind==='marketplaces'){
    const status=read('finance/marketplaces/staging/refresh-status.json');
