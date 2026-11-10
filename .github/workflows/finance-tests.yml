@@ -5,6 +5,8 @@ on:
       - 'index.html'
       - 'finance/**'
       - 'scripts/fetch-data.js'
+      - 'scripts/collect-performance.js'
+      - 'scripts/verify-performance.js'
       - 'scripts/fetch-ads-data.js'
       - 'scripts/backfill-ads-data.js'
       - 'scripts/fetch-ltv-cac.js'

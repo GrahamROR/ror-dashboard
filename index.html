@@ -400,10 +400,10 @@ function ChannelMixCard({ es }) {
   );
 }
 
-function YesterdayCard({ icon, label, actual, target, statusKey, statusText, note, accentCol }) {
+function YesterdayCard({ icon, label, actual, target, statusKey, statusText, note, accentCol, metric }) {
   const col = statusKey==='pending'?'var(--t3)':statusCol(statusKey);
   const bd  = statusBadge(statusKey, statusText);
-  return el('div', {className:'card',style:{display:'flex',flexDirection:'column',gap:0,minHeight:142}},
+  return el('div', {className:'card','data-performance-metric':metric,style:{display:'flex',flexDirection:'column',gap:0,minHeight:142}},
     el('div', {style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,marginBottom:12}},
       el('div', {style:{display:'flex',alignItems:'center',gap:8,minWidth:0}},
         el('div', {style:{width:28,height:28,borderRadius:6,background:accentCol+'22',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}},
@@ -765,6 +765,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
 
   // Legacy selections never enter native Growth goals or YoY hooks. Keep all hooks unconditional.
   const [legacyFY, setLegacyFY] = useState('');
+  const [performanceWindow,setPerformanceWindow] = useState('yesterday');
 
   function resetEmailProjection() {
     setProjEmailConv(null); setProjEmailAOV(null);
@@ -773,15 +774,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
 
   // Load data.json on mount
   useEffect(() => {
-    fetch(DATA_URL + '?t=' + Date.now())
+    let active=true,loaded=false;
+    const refresh=()=>fetch(DATA_URL + '?t=' + Date.now())
       .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
-      .then(d => { setData(d); setSelectedFY(d.currentFY); setLoading(false); })
-      .catch(() => {
-        setData(FALLBACK);
-        setSelectedFY(FALLBACK.currentFY);
-        setIsFallback(true);
-        setLoading(false);
-      });
+      .then(d => { if(active){loaded=true;setData(d);setSelectedFY(fy=>fy||d.currentFY);setIsFallback(false);setLoading(false);} })
+      .catch(() => { if(active){if(!loaded)setIsFallback(true);setData(previous=>previous||FALLBACK);setSelectedFY(fy=>fy||FALLBACK.currentFY);setLoading(false);} });
+    refresh();const timer=setInterval(refresh,15*60*1000);
+    return()=>{active=false;clearInterval(timer);};
   }, []);
 
   // Years available for the selector, most recent first
@@ -840,7 +839,8 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
   const summary      = viewData?.summary || {};
   const monthly      = viewData?.monthly || [];
   const topProducts  = viewData?.topProducts || [];
-  const yesterday     = viewData?.yesterday || null;
+  const performanceThrough=RorCalc.resolveDateRange('yesterday').endDate;
+  const yesterday = GrowthPerformance.view({data,snapshot:financeSnapshot,basis:financialBasis,key:performanceWindow,through:performanceThrough});
   const updatedAt    = viewData?.updated ? new Date(viewData.updated) : null;
   const isLiveYear   = selectedFY === data?.currentFY;
 
@@ -854,10 +854,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
   const ytdVariance    = GrowthTargets.variance(goalView?.summary.ytdRevenue,ytdGoal);
   const ytdOnTrack     = ytdVariance != null && ytdVariance >= 0;
   const ytdPerformanceColour = ytdVariance==null?'var(--t3)':ytdOnTrack?'var(--grn)':'var(--red)';
-  const yesterdayIdx   = yesterday?.monthKey ? (Number(yesterday.monthKey.slice(5))+4)%12 : 0;
-  const yRevTarget     = dailyTarget(goalRev, yesterdayIdx, yesterday?.monthKey);
-  const yOrdersTarget  = yRevTarget / GOALS.aov;
-  const ySessionsTarget = dailyTarget(GOALS.sessions, yesterdayIdx, yesterday?.monthKey);
+  const yRevTarget = GrowthPerformance.target(yesterday.start,yesterday.end,(day,idx,fy)=>dailyTarget(fy===data?.currentFY&&selectedFY===data?.currentFY?goalRev:FinancialGoals.annual(fy),idx,day.slice(0,7)));
+  const yOrdersTarget = yRevTarget==null?null:yRevTarget / GOALS.aov;
+  const ySessionsTarget = GrowthPerformance.target(yesterday.start,yesterday.end,(day,idx)=>dailyTarget(GOALS.sessions,idx,day.slice(0,7)));
   const yProfitTarget  = null; // Product-only profit estimate has no shipping-inclusive goal comparison.
 
   // ── WHAT-IF DERIVED VALUES ──────────────────────────────────
@@ -949,7 +948,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
         // mobile: nothing to tell tabs apart, and no way to tell which page
         // is active while scrolling past the visible ones.
         !showMonthlyHistory && el('div', {className:'tab-bar tab-bar-scroll', style:{minWidth:0}},
-          [['overview','ti-layout-dashboard'],['yesterday','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['ads','ti-speakerphone'],['margin','ti-chart-pie']].map(([t,ic])=>
+          [['overview','ti-layout-dashboard'],['performance','ti-calendar-stats'],['monthly','ti-calendar'],['products','ti-package'],['email','ti-mail'],['ads','ti-speakerphone'],['margin','ti-chart-pie']].map(([t,ic])=>
             el('div', {key:t, className:'tab'+(activeTab===t?' active':''), onClick:()=>setActiveTab(t), style:{flexShrink:0,whiteSpace:'nowrap'}},
               el('i', {className:'ti '+ic, style:{fontSize:13}}),
               el('span', {style:{marginLeft:5}}, t.charAt(0).toUpperCase()+t.slice(1))
@@ -1175,76 +1174,78 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
       ),
 
       // ══ YESTERDAY ═══════════════════════════════════════════
-      activeTab==='yesterday' && el('div', {className:'fi'},
+      activeTab==='performance' && el('div', {className:'fi'},
         el('div', {className:'card',style:{marginBottom:16}},
           el('div', {style:{display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:12,flexWrap:'wrap'}},
             el('div', null,
-              el('div', {className:'lbl',style:{marginBottom:4}}, 'Yesterday performance'),
-              el('div', {style:{fontSize:24,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1.1}}, dateLabel(yesterday?.date)),
+              el('div', {className:'lbl',style:{marginBottom:4}}, 'Shopify Performance · '+yesterday.label),
+              el('div', {style:{fontSize:24,fontWeight:700,color:'var(--amb)',fontFamily:"'DM Mono',monospace",lineHeight:1.1}}, fmtDate(yesterday.start)+(yesterday.start===yesterday.end?'':' → '+fmtDate(yesterday.end))),
               el('div', {style:{fontSize:12,color:'var(--t3)',marginTop:6,lineHeight:1.5}},
-                ShopifyIntegration.labels[financialBasis]+' · Orders and Shopify-reported AOV use native metrics · Targets use Net Sales'+' · Independent of selected FY'+(yesterday?.marketingAvailable===false?' · Marketing/cost capture: '+fmtDate(yesterday.importedMarketingDate || 'unavailable')+'; those metrics are unavailable for this day.':'')
+                ShopifyIntegration.labels[financialBasis]+' · Orders and Shopify-reported AOV use native metrics · Targets use Net Sales'+' · Independent of selected FY'+' · Approved goals follow each trading date’s financial year'+(yesterday?.marketingAvailable===false?' · Marketing/cost metrics unavailable for this window.':'')
               )
             ),
             el('div', {style:{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}},
-              el('div', {className:'badge bb'}, 'daily targets'),
+              el('label',{style:{fontSize:12}},'Window ',el('select',{'aria-label':'Shopify Performance window',value:performanceWindow,onChange:e=>setPerformanceWindow(e.target.value),style:{background:'var(--s2)',border:'1px solid var(--bdr2)',borderRadius:6,color:'var(--t1)',padding:'7px 10px'}},GrowthPerformance.WINDOWS.map(w=>el('option',{key:w.key,value:w.key},w.label)))),
+              el('div', {className:'badge bb'}, 'selected-window targets'),
               (yesterday?.margin==null) && el('div', {className:'badge ba'}, 'margin pending')
             )
           )
         ),
+        yesterday.warning&&el('div',{role:'status',style:{fontSize:12,color:'var(--amb)',marginBottom:12}},yesterday.warning),
         yesterday ? el('div', {style:{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(190px,1fr))',gap:12,marginBottom:16},className:'grid-auto'},
           el(YesterdayCard, {
-            icon:'ti-currency-pound', label:ShopifyIntegration.labels[financialBasis], accentCol:'var(--grn)',
+            icon:'ti-currency-pound', metric:'revenue', label:ShopifyIntegration.labels[financialBasis], accentCol:'var(--grn)',
             actual: fmtC(yesterday.revenue,2), target: financialBasis===goalBasis?fmtC(yRevTarget,0):'Net Sales: '+fmtC(yRevTarget,0),
             statusKey: financialBasis===goalBasis?status(yesterday.revenue,yRevTarget):'pending',
-            note: 'Verified Shopify Analytics '+financialBasis+' · Net Sales actual: '+fmtC(goalView?.yesterday?.revenue,2)+' · '+yesterday.status,
+            note: 'Verified Shopify Analytics '+financialBasis+' · Net Sales actual: '+fmtC(yesterday.netRevenue,2)+' · '+yesterday.status,
           }),
           el(YesterdayCard, {
-            icon:'ti-shopping-bag', label:'Orders', accentCol:'var(--amb)',
+            icon:'ti-shopping-bag', metric:'orders', label:'Orders', accentCol:'var(--amb)',
             actual: fmt(yesterday.orders), target: fmt(yOrdersTarget,1),
             statusKey: status(yesterday.orders, yOrdersTarget),
-            note: 'Target is revenue daily target divided by £48 goal AOV.',
+            note: 'Target is the window’s Net Sales target divided by £48 goal AOV.',
           }),
           el(YesterdayCard, {
-            icon:'ti-current-location', label:'Sessions', accentCol:'var(--blu)',
+            icon:'ti-current-location', metric:'sessions', label:'Sessions', accentCol:'var(--blu)',
             actual: fmt(yesterday.sessions), target: fmt(ySessionsTarget,0),
             statusKey: status(yesterday.sessions, ySessionsTarget),
             note: 'Pulled directly from Shopify Analytics sessions.',
           }),
           el(YesterdayCard, {
-            icon:'ti-percentage', label:'Conversion rate', accentCol:'var(--pur)',
+            icon:'ti-percentage', metric:'conversion', label:'Conversion rate', accentCol:'var(--pur)',
             actual: yesterday.conversionRate!=null ? fmtP(yesterday.conversionRate) : '—',
             target: fmtP(GOALS.conversion),
             statusKey: yesterday.conversionRate!=null ? status(yesterday.conversionRate, GOALS.conversion) : 'pending',
             note: fmtP(yesterday.conversionRate)+' of '+fmt(yesterday.sessions)+' sessions converted.',
           }),
           el(YesterdayCard, {
-            icon:'ti-receipt', label:RorModel.METRICS.shopifyAov.label, accentCol:'var(--grn)',
+            icon:'ti-receipt', metric:'aov', label:RorModel.METRICS.shopifyAov.label, accentCol:'var(--grn)',
             actual: fmtC(yesterday.aov,2), target: fmtC(GOALS.aov,0),
             statusKey: status(yesterday.aov, GOALS.aov),
             note: 'Shopify native average_order_value · Native merchandise AOV: '+fmtC(yesterday.netAov,2),
           }),
           el(YesterdayCard, {
-            icon:'ti-refresh', label:'Repeat rate', accentCol:'var(--amb)',
+            icon:'ti-refresh', metric:'repeat', label:'Repeat rate', accentCol:'var(--amb)',
             actual: fmtP(yesterday.repeatRate), target: fmtP(GOALS.repeatRate),
             statusKey: status(yesterday.repeatRate, GOALS.repeatRate),
             note: fmt(yesterday.returning)+' returning of '+fmt(yesterday.customers)+' order customers.',
           }),
           el(YesterdayCard, {
-            icon:'ti-percentage', label:'Margin (costed SKUs)', accentCol:'var(--pur)',
+            icon:'ti-percentage', metric:'margin', label:'Margin (costed SKUs)', accentCol:'var(--pur)',
             actual: yesterday.margin==null?'Pending':fmtP(yesterday.margin),
             target: fmtP(GOALS.margin),
             statusKey: yesterday.margin==null?'pending':status(yesterday.margin, GOALS.margin),
             note: 'Requires SKU cost/margin data before this can be calculated safely.',
           }),
           el(YesterdayCard, {
-            icon:'ti-chart-pie', label:RorModel.METRICS.estimatedProfit.label, accentCol:'var(--pur)',
+            icon:'ti-chart-pie', metric:'profit', label:RorModel.METRICS.estimatedProfit.label, accentCol:'var(--pur)',
             actual: yesterday.profit==null?'Pending':fmtC(yesterday.profit,0),
             target: fmtC(yProfitTarget,0),
             statusKey: yesterday.profit==null?'pending':status(yesterday.profit, yProfitTarget),
             note: 'Estimated from costed SKUs; cost coverage: ' + (yesterday.costCoverage == null ? 'unknown' : fmtP(yesterday.costCoverage)) + '. Excludes operating expenses. Product-only estimate; no shipping-inclusive profit target is inferred.',
           })
         ) : el('div', {className:'card',style:{textAlign:'center',padding:'28px 20px'}},
-          el('div', {style:{fontWeight:600,marginBottom:6}}, 'Yesterday data not available yet'),
+          el('div', {style:{fontWeight:600,marginBottom:6}}, 'Performance data not available yet'),
           el('div', {style:{fontSize:12,color:'var(--t3)'}}, 'Run Fetch Dashboard Data once after this update deploys.')
         ),
       ),
@@ -2099,12 +2100,13 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
 <script src="dashboard2/calculations.js?v=comparison-coverage-v2"></script>
 <script src="dashboard2/charts.js?v=history-style-v1"></script>
 <script src="dashboard2/goals.js?v=monthly-goals-v1"></script>
-<script src="dashboard2/ror-sales-app.js?v=monthly-goals-v1"></script>
+<script src="dashboard2/ror-sales-app.js?v=performance-v1"></script>
 
 <script src="finance/contract.js"></script>
 <script src="finance/management.js?v=foundation-v1"></script>
 <script src="finance/goals.js?v=foundation-v1"></script>
 <script src="finance/integration.js?v=foundation-v1"></script>
+<script src="growth/performance.js?v=performance-v1"></script>
 <script src="finance/freshness.js"></script>
 <script src="finance/loader.js?v=publication-v1"></script>
 <script src="finance/marketplaces/contract.js"></script>

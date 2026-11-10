@@ -20,8 +20,9 @@ const SHOPIFY_SECRET    = process.env.SHOPIFY_CLIENT_SECRET;
 // they describe the "current" year being refreshed. Past years are
 // untouched (see writeYearBlock / main()).
 function computeFiscalYear(now) {
-  const month     = now.getMonth(); // 0 = Jan … 7 = Aug
-  const startYear = month >= 7 ? now.getFullYear() : now.getFullYear() - 1;
+  const london = londonDay(now), month = Number(london.slice(5,7))-1;
+  const year = Number(london.slice(0,4));
+  const startYear = month >= 7 ? year : year - 1;
   const endYear   = startYear + 1;
   const pad2      = n => String(n).slice(-2);
   const monthNames = ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul'];
@@ -45,18 +46,9 @@ function computeFiscalYear(now) {
 const { FY_KEY, FY_START, FY_END, FY_LABEL, FY_MONTHS } = computeFiscalYear(new Date());
 
 // ── DATE HELPERS ─────────────────────────────────────────────
-function getYesterday() {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  const pad = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-}
-
-function getCurrentMonthKey() {
-  const now = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  return `${now.getFullYear()}-${pad(now.getMonth() + 1)}`;
-}
+function londonDay(now=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);}
+function getYesterday(now=new Date()) { return require('../finance/contract').next(londonDay(now),-1); }
+function getCurrentMonthKey(now=new Date()) { return londonDay(now).slice(0,7); }
 
 // ── GET FRESH SHOPIFY TOKEN ───────────────────────────────────
 async function getShopifyToken() {
@@ -132,11 +124,12 @@ async function runShopifyQL(token, shopifyql) {
 // an estimated total gross profit by applying marginPctCovered to the
 // full net_sales figure. This is an estimate, not an audited number,
 // and gets more accurate as more SKUs get costed.
-async function fetchMonthlySales(token) {
+async function fetchMonthlySales(token, endDate = FY_END) {
+  if(endDate<FY_START)return {};
   const shopifyql =
     `FROM sales ` +
     `SHOW total_sales, net_sales, orders, average_order_value, returning_customers, customers, cost_of_goods_sold, gross_profit ` +
-    `GROUP BY month SINCE ${FY_START} UNTIL ${FY_END} ORDER BY month`;
+    `GROUP BY month SINCE ${FY_START} UNTIL ${endDate} ORDER BY month`;
 
   const rows = await runShopifyQL(token, shopifyql);
   console.log(`  ✓ Monthly sales: ${rows.length} months returned`);
@@ -174,11 +167,12 @@ async function fetchMonthlySales(token) {
 
 // ── FETCH FY SESSIONS BY MONTH ────────────────────────────────
 // Sessions come from a separate Shopify Analytics table.
-async function fetchMonthlySessions(token) {
+async function fetchMonthlySessions(token, endDate = FY_END) {
+  if(endDate<FY_START)return {};
   const shopifyql =
     `FROM sessions ` +
     `SHOW sessions, conversion_rate, sessions_that_completed_checkout ` +
-    `GROUP BY month SINCE ${FY_START} UNTIL ${FY_END} ORDER BY month`;
+    `GROUP BY month SINCE ${FY_START} UNTIL ${endDate} ORDER BY month`;
 
   const rows = await runShopifyQL(token, shopifyql);
   console.log(`  ✓ Monthly sessions: ${rows.length} months returned`);
@@ -353,11 +347,14 @@ async function main() {
   // Fetch everything in parallel
   console.log('\n→ Fetching all data from Shopify Analytics...');
   const [monthlySales, monthlySessions, yesterday, fetchedTopProducts] = await Promise.all([
-    fetchMonthlySales(token),
-    fetchMonthlySessions(token),
+    fetchMonthlySales(token, dateStr),
+    fetchMonthlySessions(token, dateStr),
     fetchYesterdaySales(token, dateStr),
     fetchTopProducts(token),
   ]);
+
+  // Direct completed-window queries; existing yesterday retains its original shape.
+  const performance = await require('./collect-performance').collect({query:q=>runShopifyQL(token,q),through:dateStr});
 
   // Build the monthly array — all 12 FY months
   const now            = new Date();
@@ -454,6 +451,8 @@ async function main() {
     updated:   new Date().toISOString(),
     currentFY: FY_KEY,
     yesterday,
+    performance,
+    marketingCoverage: {status:dateStr<FY_START?'no-completed-days':'complete',timezone:'Europe/London',start:FY_START,end:dateStr},
     years: {
       ...(existing.years || {}),
       [FY_KEY]: {
@@ -483,3 +482,5 @@ if (require.main === module) {
     : main();
   run.catch(e => { console.error('\n✗ Fetch failed:', e.message); process.exitCode = 1; });
 }
+
+module.exports={getShopifyToken,runShopifyQL,fetchYesterdaySales,fetchMonthlySales,fetchMonthlySessions,computeFiscalYear,getYesterday,getCurrentMonthKey,main};
