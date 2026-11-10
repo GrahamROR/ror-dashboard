@@ -13,7 +13,7 @@ function view({data,snapshot,basis,key='yesterday',through}){
  const sourceMatches=windowAligned&&net.status==='actual'&&captured.orders===net.orders&&close(captured.netSales,net.netSales)&&close(captured.revenue,net.totalSales);
  const marketing=sourceMatches?captured:!captured&&legacy?legacy:null;
  const fields=['sessions','convertedSessions','conversionRate','shopifyConversionRate','customers','returning','repeatRate','margin','profit','costCoverage'];
- const result={...range,...native,date:range.end,monthKey:range.end.slice(0,7),netRevenue:net.revenue,aov:sourceMatches?captured.aov:native.aov,marketingAvailable:!!marketing,windowVerified:sourceMatches,captureDate:captured?.end||legacy?.date||null,warning:sourceMatches?null:captured?'Performance source window or native control totals do not match; marketing/cost metrics are withheld.':'Performance capture is unavailable for this window. Financial values still require complete native coverage.'};
+ const result={...range,...native,date:range.end,monthKey:range.end.slice(0,7),netRevenue:net.revenue,aov:sourceMatches?captured.aov:native.aov,marketingAvailable:!!marketing,windowVerified:sourceMatches,captureDate:captured?.end||legacy?.date||null,warning:sourceMatches?null:captured?'Performance source window or native control totals do not match; marketing/cost metrics are withheld.':legacy?'Using the original date-matched single-day capture for marketing and cost metrics; new window verification is not available yet.':'Performance capture is unavailable for this window. Financial values still require complete native coverage.'};
  for(const field of fields)result[field]=marketing?.[field]??null;
  return result;
 }

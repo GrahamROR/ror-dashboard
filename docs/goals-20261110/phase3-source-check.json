@@ -1,0 +1,43 @@
+{
+  "status": "verified",
+  "through": "2026-11-09",
+  "workflow_run": 42817447038,
+  "checks": [
+    {
+      "key": "yesterday",
+      "start": "2026-11-09",
+      "end": "2026-11-09",
+      "matched": true
+    },
+    {
+      "key": "last7",
+      "start": "2026-11-03",
+      "end": "2026-11-09",
+      "matched": true
+    },
+    {
+      "key": "last30",
+      "start": "2026-10-11",
+      "end": "2026-11-09",
+      "matched": true
+    },
+    {
+      "key": "last90",
+      "start": "2026-08-12",
+      "end": "2026-11-09",
+      "matched": true
+    }
+  ],
+  "monthly_control_keys": [
+    "2026-08",
+    "2026-09",
+    "2026-10",
+    "2026-11"
+  ],
+  "monthly_session_keys": [
+    "2026-08",
+    "2026-09",
+    "2026-10",
+    "2026-11"
+  ]
+}

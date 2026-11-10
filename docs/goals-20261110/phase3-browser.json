@@ -1,0 +1,15 @@
+{
+  "mode": "local",
+  "clock": "2026-11-10T12:37:26.692Z",
+  "windows": {
+    "yesterday": "NET SALES\noff track\n\u00a3573.61\nTarget: \u00a31,219\nVerified Shopify Analytics net_revenue \u00b7 Net Sales actual: \u00a3573.61 \u00b7 actual",
+    "last7": "NET SALES\noff track\n\u00a35,232.08\nTarget: \u00a38,531\nVerified Shopify Analytics net_revenue \u00b7 Net Sales actual: \u00a35,232.08 \u00b7 actual",
+    "last30": "NET SALES\noff track\n\u00a318,541.41\nTarget: \u00a323,670\nVerified Shopify Analytics net_revenue \u00b7 Net Sales actual: \u00a318,541.41 \u00b7 actual",
+    "last90": "NET SALES\noff track\n\u00a350,125.86\nTarget: \u00a365,576\nVerified Shopify Analytics net_revenue \u00b7 Net Sales actual: \u00a350,125.86 \u00b7 actual"
+  },
+  "source": "real read-only Shopify verification aggregate",
+  "FYIndependent": true,
+  "basisAmountsMatchCanonical": true,
+  "mobileOverflow": false,
+  "pageErrors": []
+}

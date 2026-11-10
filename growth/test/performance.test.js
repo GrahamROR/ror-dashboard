@@ -35,3 +35,13 @@ test('Missing query rows/components fail instead of publishing invented zeros; z
 test('Boolean and whitespace source components never become known zero amounts',async()=>{
  for(const invalid of [false,true,' '])await assert.rejects(Collector.collect({through,query:async q=>q.startsWith('FROM sales')?[{total_sales:invalid,net_sales:0,orders:0,average_order_value:null,customers:0,returning_customers:0}]:[{sessions:0,sessions_that_completed_checkout:0}]}),/components unavailable/);
 });
+
+test('Legacy single-day fallback is disclosed as a populated original capture, distinct from unavailable windows',()=>{
+ const data={yesterday:{date:through,sessions:42}};const fallback=P.view({data,snapshot,basis:'net_revenue',through}),missing=P.view({data,snapshot,basis:'net_revenue',through,key:'last7'});
+ assert.equal(fallback.marketingAvailable,true);assert.equal(fallback.sessions,42);assert.match(fallback.warning,/original date-matched single-day capture/);assert.equal(missing.marketingAvailable,false);assert.match(missing.warning,/unavailable for this window/);assert.notEqual(fallback.warning,missing.warning);
+});
+
+test('Unvalidated Gross shipping withholds Gross money without suppressing independently Net-verified marketing or profit',()=>{
+ const data={performance:source()},unvalidated=structuredClone(snapshot);for(const day of unvalidated.days)day.gross_shipping_validated=false;
+ const result=P.view({data,snapshot:unvalidated,basis:'gross_revenue',through,key:'last7'});assert.equal(result.revenue,null);assert.equal(result.windowVerified,true);assert.equal(result.sessions,100);assert.equal(result.profit,123);
+});

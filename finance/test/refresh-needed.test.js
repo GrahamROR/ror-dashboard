@@ -1,7 +1,7 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict'),{needed}=require('../../scripts/finance-refresh-needed');
 function fixture(completed='2026-11-10T01:00:00Z',end='2026-11-09'){
- return {'finance/staging/refresh-status.json':{status:'success',completed_at:completed},'finance/staging/manifest.json':{file:'snapshots/test.json'},'finance/staging/snapshots/test.json':{coverage:{end}},'data.json':{updated:completed,marketingCoverage:{end},performance:{status:'complete',through:end,...Object.fromEntries(['yesterday','last7','last30','last90'].map(k=>[k,{status:'complete',end}]))}},'finance/marketplaces/staging/refresh-status.json':{status:'success',completed_at:completed,source_covered_through:{etsy:end,noths:end}},'dashboard2/sales-data.json':{meta:{generated_at:completed,latest:end}}};
+ return {'finance/staging/refresh-status.json':{status:'success',completed_at:completed},'finance/staging/manifest.json':{file:'snapshots/test.json'},'finance/staging/snapshots/test.json':{coverage:{end}},'data.json':{updated:completed,marketingCoverage:{end},performance:{status:'complete',through:end,...Object.fromEntries(require('../../growth/performance').ranges(end).map(w=>[w.key,{status:'complete',start:w.start,end:w.end}]))}},'finance/marketplaces/staging/refresh-status.json':{status:'success',completed_at:completed,source_covered_through:{etsy:end,noths:end}},'dashboard2/sales-data.json':{meta:{generated_at:completed,latest:end}}};
 }
 function options(data,now='2026-11-10T08:53:00Z'){return {read:file=>{if(!(file in data))throw Error('missing');return data[file];},now:new Date(now)};}
 test('Recovery checks skip only today’s successful sources covering yesterday',()=>{
