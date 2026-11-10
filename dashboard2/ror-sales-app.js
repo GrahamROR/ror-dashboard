@@ -453,7 +453,7 @@ function MonthlyGoalsContent({records,range,fy,target,actual}) {
    el('tbody',null,report.months.map(month=>el('tr',{key:month.key,'data-goal-month':month.key,style:{borderBottom:'1px solid var(--bdr)',opacity:month.future?0.5:1}},
     el('td',{style:{...cell,textAlign:'left',whiteSpace:'nowrap'}},M.monthLabel(month.key)),
     el('td',{style:cell},fmtC(month.revenue,2)),
-    el('td',{style:cell},fmtC(month.future?month.fullTarget:month.expectedTarget,2),!month.future&&month.elapsedDays<month.days&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Full month: '+fmtC(month.fullTarget,2)+' · '+month.elapsedDays+'/'+month.days+(month.actual?.status==='complete'?' verified days':' elapsed days · source coverage unavailable'))),
+    el('td',{style:cell},fmtC(month.future?month.fullTarget:month.expectedTarget,2),!month.future&&month.elapsedDays<month.days&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Full month: '+fmtC(month.fullTarget,2)+' · '+month.elapsedDays+'/'+month.days+(month.actual?.status==='complete'?' verified days':' elapsed days · source coverage unavailable')),!month.future&&month.elapsedDays<month.days&&el(MonthRunRate,{month})),
     el('td',{style:{...cell,color:month.variance==null?'var(--t3)':month.variance>=0?'var(--grn)':'var(--red)'}},GrowthTargets.signed(month.variance)),
     el('td',{style:cell},month.future?'—':fmt(month.orders)),
     el('td',{style:cell},el('span',{className:'badge '+(month.status==='green'?'bg':month.status==='red'?'br':month.status==='future'||month.status==='pending'?'bb':'ba')},labels[month.status]))
@@ -461,6 +461,10 @@ function MonthlyGoalsContent({records,range,fy,target,actual}) {
    el('tfoot',null,el('tr',{style:{borderTop:'1px solid var(--bdr2)',fontWeight:600}},el('td',{style:{...cell,textAlign:'left'}},'YTD Total'),el('td',{style:cell},fmtC(actual?.revenue,2)),el('td',{style:cell},fmtC(report.plan.ytdTarget,2)),el('td',{style:cell},GrowthTargets.signed(GrowthTargets.variance(actual?.revenue,report.plan.ytdTarget))),el('td',{style:cell},fmt(actual?.orders)),el('td',null)))
   ))
  );
+}
+function MonthRunRate({month}){
+ const pace=GrowthRunRate.month({actual:month.revenue,target:month.fullTarget,elapsedDays:month.elapsedDays,days:month.days,complete:month.actual?.status==='complete'});
+ return el('div',{'data-ror-month-run-rate':month.key,style:{fontSize:10,color:'var(--t2)',marginTop:5,lineHeight:1.6}},pace.actualPerDay==null?'Net Sales pace unavailable: financial coverage is incomplete.':'Actual pace: '+fmtC(pace.actualPerDay,2)+'/day · At this pace: '+fmtC(pace.projection,2)+' · Needed for remaining '+pace.remainingDays+' days: '+fmtC(pace.neededPerDay,2)+'/day');
 }
 function MonthlyGoalsCard(props){
  const [opened,setOpened]=useState(false);

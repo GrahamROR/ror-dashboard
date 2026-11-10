@@ -16,7 +16,7 @@ test('One absent marketplace source day withholds monthly actual/variance withou
  assert.equal(report.plan.cutoff,'2026-11-09');assert.equal(report.months[3].endDate,'2026-11-09');assert.equal(report.months[3].revenue,null);assert.equal(report.months[3].variance,null);assert.equal(report.months[3].status,'pending');assert.ok(report.months[2].revenue>0);
 });
 test('Seasonal disclosure and current-FY date bounds appear in the rendered goals table',()=>{
- const r=records(),ctx=vm.createContext({window:{RorGoalPlan:G},RorModel:M,RorCalc:C,GrowthTargets:T,FinancialGoals:require('../../finance/goals'),React:{},el:(type,props,...children)=>({type,props,children}),fmt:String,fmtC:String,fmtP:String});
+ const r=records(),ctx=vm.createContext({window:{RorGoalPlan:G},RorModel:M,RorCalc:C,GrowthRunRate:require('../../growth/run-rate'),GrowthTargets:T,FinancialGoals:require('../../finance/goals'),React:{},el:(type,props,...children)=>({type,props,children}),fmt:String,fmtC:String,fmtP:String});
  vm.runInContext(fs.readFileSync(require.resolve('../ror-sales-app'),'utf8'),ctx);
  const tree=ctx.window.RorMonthlyGoalsContent({records:r,range,fy:'FY27',target:500000,actual:C.aggregate(r,{channels:M.ACTIVE_CHANNELS,...range})});
  const rendered=JSON.stringify(tree);assert.match(rendered,/existing Shopify seasonal shape/);assert.match(rendered,/not separately tuned to marketplace seasonality yet/);assert.match(rendered,/09-11-2026/);assert.match(rendered,/9\/30 verified days/);assert.match(rendered,/YTD Total/);
