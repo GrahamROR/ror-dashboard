@@ -88,6 +88,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;heigh
 <div id="root"></div>
 <script src="dashboard2/data-model.js?v=day-first-v1"></script>
 <script src="growth/targets.js"></script>
+<script src="growth/run-rate.js?v=run-rate-v1"></script>
 <script>
 // ── CONFIG ────────────────────────────────────────────────────
 const DATA_URL      = './data.json'; // served by GitHub Pages
@@ -844,6 +845,9 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
   const isLiveYear   = selectedFY === data?.currentFY;
 
   const targetPlan = selectedFY ? GrowthTargets.forFinance(goalRev,selectedFY,goalView?.finance) : null;
+  const actualSessionPace = GrowthRunRate.sessions({fy:selectedFY,value:summary.ytdSessions,updated:data?.updated,coverage:data?.marketingCoverage,months:originalView?.monthly});
+  const actualSessionPaceText = actualSessionPace.perDay==null?'FY-to-date session average unavailable: capture dates or session coverage are incomplete.':
+    'FY-to-date actual: '+(actualSessionPace.partial?'~':'')+fmt(actualSessionPace.perDay,1)+' sessions/day · Through '+fmtDate(actualSessionPace.through)+(actualSessionPace.partial?' · Capture average; may include a partial latest day.':' · Completed reporting days.');
   const ytdGoal = targetPlan?.ytdTarget ?? null;
   const fullTargets = GrowthTargets.allocate(goalRev);
   const peakMonth = fullTargets.indexOf(Math.max(...fullTargets));
@@ -1084,7 +1088,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
             {lbl:'Weekly avg',      val:fmtC(goalRev/52,0),         sub:'Flat weekly average'},
             {lbl:'Daily avg',       val:fmtC(goalRev / (targetPlan?.months.reduce((n,m)=>n+m.days,0) || 365),0),        sub:'Every day of the financial year'},
             {lbl:'Orders/day @'+fmtC(effectiveAOV,2)+' AOV'+(projAOV!==null?' (projected)':''), val:ordersPerDay_cur.toFixed(1), sub:ordersPerDay_goal.toFixed(1)+' orders/day @ £'+GOALS.aov+' goal', col:'var(--amb)'},
-            {lbl:'Sessions/day needed'+(projCVR!==null?' (projected CVR)':''), val:fmt(Math.round(sessPerDay_cur)), sub:'At '+fmtP(effectiveCVR,2)+' conv · '+fmt(Math.round(sessPerDay_goal))+' at '+fmtP(GOALS.conversion,1)+' goal', col:'var(--blu)'},
+            {lbl:'Sessions/day needed'+(projCVR!==null?' (projected CVR)':''), val:fmt(Math.round(sessPerDay_cur)), sub:'At '+fmtP(effectiveCVR,2)+' conv · '+fmt(Math.round(sessPerDay_goal))+' at '+fmtP(GOALS.conversion,1)+' goal · '+actualSessionPaceText, col:'var(--blu)'},
           ].map((item,i)=>
             el('div', {key:i,style:{background:'var(--s2)',borderRadius:'var(--r)',padding:'12px 14px',border:'1px solid var(--bdr)'}},
               el('div', {className:'lbl',style:{marginBottom:5}}, item.lbl),
@@ -1116,7 +1120,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
             target: fmt(GOALS.sessions), unit:'/year',
             statusKey: isLiveYear ? 'pending' : status(summary.ytdSessions, GOALS.sessions),
             statusText: isLiveYear && summary.ytdSessions!=null ? 'annual progress' : undefined,
-            note: summary.ytdSessions==null ? 'Shopify Analytics pipeline active — sessions appear after first nightly run' : isLiveYear ? (summary.ytdSessions / GOALS.sessions * 100).toFixed(1)+'% of the annual goal · Accumulated legacy marketing sessions; not a YTD pace assessment.' : 'Completed financial year vs annual sessions goal.',
+            note: (summary.ytdSessions==null ? 'Shopify Analytics pipeline active — sessions appear after first nightly run' : isLiveYear ? (summary.ytdSessions / GOALS.sessions * 100).toFixed(1)+'% of the annual goal · Accumulated legacy marketing sessions; not a YTD pace assessment.' : 'Completed financial year vs annual sessions goal.')+' '+actualSessionPaceText,
           }),
 
           el(MetricCard, {
@@ -1276,6 +1280,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
                 monthly.map((m,i)=>{
                   const fullTarget = monthlyTarget(goalRev, i);
                   const tgt = targetPlan?.months[i]?.expectedTarget ?? null;
+                  const monthPace = GrowthRunRate.month({actual:goalView?.monthly?.[i]?.revenue,target:fullTarget,elapsedDays:targetPlan?.months[i]?.elapsedDays,days:targetPlan?.months[i]?.days,complete:goalView?.monthly?.[i]?.financialStatus==='actual'});
                   const aov  = m.aov ?? null;
                   const rr   = m.repeatRate ?? null;
                   const vari = GrowthTargets.variance(goalView?.monthly?.[i]?.revenue,tgt);
@@ -1290,7 +1295,7 @@ function App({financeSnapshot, financialBasis, setFinancialBasis, financeError, 
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t1)'}}, m.revenue!=null?fmtC(m.revenue,2):'—',
                       financialBasis!==goalBasis&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Net Sales: '+fmtC(goalView?.monthly?.[i]?.revenue,2))),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:'var(--t2)'}}, fmtC(m.future?fullTarget:tgt,2),
-                      !m.future && targetPlan?.months[i]?.elapsedDays<targetPlan?.months[i]?.days&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Full month: '+fmtC(fullTarget,2)+' · '+targetPlan?.months[i]?.elapsedDays+'/'+targetPlan?.months[i]?.days+' verified days')),
+                      !m.future && targetPlan?.months[i]?.elapsedDays<targetPlan?.months[i]?.days&&el('div',{style:{fontSize:10,color:'var(--t2)',marginTop:3}},'Full month: '+fmtC(fullTarget,2)+' · '+targetPlan?.months[i]?.elapsedDays+'/'+targetPlan?.months[i]?.days+' verified days'),m.mtd&&el('div',{'data-month-run-rate':m.key,style:{fontSize:10,color:'var(--t2)',marginTop:5,lineHeight:1.6}},monthPace.actualPerDay==null?'Net Sales pace unavailable: financial coverage is incomplete.':'Net Sales actual pace: '+fmtC(monthPace.actualPerDay,2)+'/day · At this pace: '+fmtC(monthPace.projection,2)+' · Needed for remaining '+monthPace.remainingDays+' days: '+fmtC(monthPace.neededPerDay,2)+'/day')),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',fontFamily:"'DM Mono',monospace",color:varCol}},
                       GrowthTargets.signed(vari)),
                     el('td',{style:{padding:'9px 12px',textAlign:'right',color:'var(--t2)'}}, m.orders!=null?fmt(m.orders):'—'),

@@ -1,0 +1,9 @@
+# Phase 2 — descriptive actual run rates
+
+Annual Sessions uses an FY-to-date average, not a trailing window. The value is calculated once and reused on Overview Sessions and What-If Sessions/day needed; the existing neutral annual-progress verdict remains unchanged.
+
+The current marketing export can include part of its capture day, so its denominator comes from that capture’s own London date via `GrowthTargets.plan`, not the independently verified financial cutoff. The caption explicitly marks a capture average that may include a partial latest day. A missing month, non-finite session value, inconsistent YTD sum or invalid timestamp gives an unavailable placeholder. An explicitly bounded completed marketing window, when supplied by phase three, uses that proven cutoff instead.
+
+Both Shopify Monthly and ROR Total monthly goals show actual Net Sales per elapsed day, the descriptive full-month projection and Net Sales needed per remaining day to reach the seasonal full-month target. These use the same verified Net Sales amount and elapsed period as the existing target plan. They remain Net Sales even when another financial basis is selected. Missing financial coverage or zero elapsed days withholds the rates; an already-achieved target needs zero additional sales, and no remaining-day division occurs after month end.
+
+Validation: full `node --test` with fresh protected baselines: 235 total, 231 pass, four intentional private-evidence skips, zero failures. Five new pure tests cover aligned/capture dates, missing and zero values, FY boundaries, leap years and remaining-day maths. Chrome checks cover both annual captions, both monthly surfaces, page-filter independence and mobile layout. Original seasonal maths, annual goals, financial completeness, marketplace/history modules and production data are unchanged.
