@@ -135,7 +135,22 @@ function aggregate(records, opts) {
   };
 }
 
+// Comparisons may read the separate archive; live aggregates and trust gates are unchanged.
+function comparisonAggregate(records, opts) {
+  const live = aggregate(records, opts), context = records.historicalContext;
+  const start = normalizeStart(opts.startDate || opts.startPeriod), end = normalizeEnd(opts.endDate || opts.endPeriod);
+  if (records.management?.basis !== 'net_revenue' || typeof context?.select !== 'function' || !opts.channels.some(c => start < context.boundaries[c])) return live;
+  let result;
+  try { result = context.select(opts.channels, start, end); } catch { return {...live,note:'Historical comparison unavailable. '+(live.note||'')}; }
+  return {...live, revenue:result.value, orders:result.orders, aov:result.value!=null&&result.orders>0?result.value/result.orders:null,
+    status:result.status, ordersStatus:result.ordersStatus, confidence:result.confidence, comparisonConfidences:result.confidences, note:result.note || live.note};
+}
+
 function compareAggregates(currentAgg, previousAgg, metric) {
+  const result = compareValues(currentAgg, previousAgg, metric);
+  return {...result, currentConfidence:currentAgg?.comparisonConfidences||currentAgg?.confidence, previousConfidence:previousAgg?.comparisonConfidences||previousAgg?.confidence};
+}
+function compareValues(currentAgg, previousAgg, metric) {
   if(metric!=='units'&&currentAgg?.financialBasis&&previousAgg?.financialBasis&&currentAgg.financialBasis!==previousAgg.financialBasis)return {status:'incompatible-basis',current:currentAgg[metric],previous:previousAgg[metric],absoluteChange:null,percentChange:null,note:'Financial definitions differ; comparison withheld.'};
   if(metric==='orders'){if(currentAgg?.ordersStatus)currentAgg={...currentAgg,status:currentAgg.ordersStatus};if(previousAgg?.ordersStatus)previousAgg={...previousAgg,status:previousAgg.ordersStatus};}
   if(metric==='units') {
@@ -210,15 +225,36 @@ function selectedBucket(bucket, from, to) {
     truncated: startDate !== bucket.startDate || endDate !== bucket.endDate };
 }
 
+// Partial calendar buckets compare the same calendar positions, only when every
+// selected position exists in the target bucket. Never compare a slice to a full month.
+function matchingBucketRange(bucket, selected, target) {
+  if (!selected.truncated) return {...target, truncated:false};
+  let startDate, endDate;
+  if (bucket.granularity === 'weekly') {
+    const offset = Math.round((parseDate(selected.startDate)-parseDate(bucket.startDate))/DAY_MS);
+    startDate = addDays(target.startDate, offset);
+    endDate = addDays(startDate, Math.round((parseDate(selected.endDate)-parseDate(selected.startDate))/DAY_MS));
+  } else {
+    const months = (parseDate(target.startDate).getUTCFullYear()-parseDate(bucket.startDate).getUTCFullYear())*12+parseDate(target.startDate).getUTCMonth()-parseDate(bucket.startDate).getUTCMonth();
+    startDate = addMonthsDate(selected.startDate, months); endDate = addMonthsDate(selected.endDate, months);
+    if (startDate.slice(8)!==selected.startDate.slice(8)||endDate.slice(8)!==selected.endDate.slice(8)) return null;
+  }
+  const length = (start,end) => Math.round((parseDate(end)-parseDate(start))/DAY_MS)+1;
+  if (length(startDate,endDate)!==length(selected.startDate,selected.endDate)||startDate<target.startDate||endDate>target.endDate) return null;
+  return {...target,startDate,endDate,startPeriod:startDate,endPeriod:endDate,truncated:false};
+}
+function bucketComparison(records,opts,bucket,selected,current,target) {
+  const range = opts.matchSelectedDates ? matchingBucketRange(bucket,selected,target) : target;
+  if (!range) return {status:'unequal-periods',current:current[opts.metric],previous:null,absoluteChange:null,percentChange:null,note:'The corresponding calendar dates have different numbers of days; comparison withheld.'};
+  const previous = comparisonAggregate(records,{channels:opts.channels,startDate:range.startDate,endDate:range.endDate,nowDate:opts.nowDate||opts.nowPeriod});
+  return {...compareAggregates(current,previous,opts.metric),currentRange:{startDate:selected.startDate,endDate:selected.endDate},previousRange:{startDate:range.startDate,endDate:range.endDate},matchedPartial:selected.truncated};
+}
 function buildComparisonTable(records, opts) {
   const buckets = bucketsForGranularity(opts.granularity, opts.fromPeriod, opts.toPeriod);
   const rows = buckets.map((bucket) => {
     const selected = selectedBucket(bucket, opts.fromPeriod, opts.toPeriod);
-    const current = { ...aggregate(records, { channels: opts.channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }), truncated: selected.truncated };
-    const prev = previousBucket(bucket); const yoy = yearEarlierBucket(bucket);
-    const previous = aggregate(records, { channels: opts.channels, startDate: prev.startDate, endDate: prev.endDate, nowDate: opts.nowDate || opts.nowPeriod });
-    const yearAgo = aggregate(records, { channels: opts.channels, startDate: yoy.startDate, endDate: yoy.endDate, nowDate: opts.nowDate || opts.nowPeriod });
-    return { bucket: selected, current, mom: compareAggregates(current, previous, opts.metric), yoy: compareAggregates(current, yearAgo, opts.metric) };
+    const current = {...aggregate(records, { channels: opts.channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }), truncated:selected.truncated&&!opts.matchSelectedDates};
+    return {bucket:selected,current,mom:bucketComparison(records,opts,bucket,selected,current,previousBucket(bucket)),yoy:bucketComparison(records,opts,bucket,selected,current,yearEarlierBucket(bucket))};
   });
   const totals = aggregate(records, { channels: opts.channels, startDate: opts.fromPeriod, endDate: opts.toPeriod, nowDate: opts.nowDate || opts.nowPeriod });
   return { rows, totals, metric: opts.metric, granularity: opts.granularity };
@@ -257,13 +293,16 @@ function buildSeries(records, opts) {
     channels,
     points: buckets.map((bucket) => {
       const selected = selectedBucket(bucket, opts.fromPeriod, opts.toPeriod);
-      const target = comparison === 'previous-year' ? yearEarlierBucket(bucket) : comparison === 'previous-period' ? previousBucket(bucket) : selected;
-      const agg = aggregate(records, { channels, startDate: target.startDate, endDate: target.endDate, nowDate: opts.nowDate || opts.nowPeriod });
+      const fullTarget = comparison === 'previous-year' ? yearEarlierBucket(bucket) : comparison === 'previous-period' ? previousBucket(bucket) : selected;
+      const target = comparison && opts.matchSelectedDates ? matchingBucketRange(bucket,selected,fullTarget) : fullTarget;
+      if (!target) return {bucket:fullTarget,value:null,status:'unequal-periods',note:'Corresponding calendar dates have different numbers of days.'};
+      const agg = (comparison ? comparisonAggregate : aggregate)(records, { channels, startDate: target.startDate, endDate: target.endDate, nowDate: opts.nowDate || opts.nowPeriod });
       if (comparison) {
-        const current = { ...aggregate(records, { channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }), truncated: selected.truncated };
-        if (compareAggregates(current, agg, opts.metric).status !== 'ok') return { bucket: target, value: null, status: 'incomplete-data', note: 'Comparison unavailable for incomplete periods.' };
+        const current = {...aggregate(records, { channels, startDate: selected.startDate, endDate: selected.endDate, nowDate: opts.nowDate || opts.nowPeriod }),truncated:selected.truncated&&!opts.matchSelectedDates};
+        const cmp=compareAggregates(current,agg,opts.metric);
+        if (!['ok','zero-denominator'].includes(cmp.status)) return { bucket: target, value: null, status: cmp.status, note: cmp.note };
       }
-      return { bucket: target, value: agg[opts.metric], status: agg.status, note: agg.note };
+      return { bucket: target, value: agg[opts.metric], status: agg.status, note: agg.note, confidence:agg.comparisonConfidences||agg.confidence };
     }),
   }));
   return { buckets, series: makeSeries(null), comparisonSeries: opts.comparison && opts.comparison !== 'none' ? makeSeries(opts.comparison) : null, metric: opts.metric, granularity: opts.granularity };
@@ -271,9 +310,9 @@ function buildSeries(records, opts) {
 
 return {
   dateKeyFromDate, monthKeyFromDate, addDays, addMonthsDate,
-  REPORT_DATE_PRESETS, DATE_PRESETS, resolveDateRange, aggregate, compareAggregates,
+  REPORT_DATE_PRESETS, DATE_PRESETS, resolveDateRange, aggregate, comparisonAggregate, compareAggregates,
   bucketsForGranularity, previousBucket, yearEarlierBucket, alignBucketStart, makeBucket,
-  previousEquivalentRange, yearEarlierRange, rangeLengthMonths,
+  previousEquivalentRange, yearEarlierRange, rangeLengthMonths, matchingBucketRange,
   buildComparisonTable, channelContribution, buildSeries,
 };
 

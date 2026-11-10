@@ -1,7 +1,8 @@
 name: Fetch Dashboard Data
 on:
   schedule:
-    - cron: '0 3 * * *'
+    # Off-hour recovery opportunities; successful sources are collected once per London day.
+    - cron: '17 1,4,7,10,13,16,19,22 * * *'
   workflow_dispatch:
     inputs:
       rollback_snapshot:
@@ -33,9 +34,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check whether today’s source needs refreshing
+        id: freshness
+        run: node scripts/finance-refresh-needed.js shopify
       - name: Fetch existing legacy Shopify data
         id: legacy
-        if: ${{ !inputs.rollback_snapshot }}
+        if: ${{ steps.freshness.outputs.needed != 'false' && (!inputs.rollback_snapshot) }}
         continue-on-error: true
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
@@ -44,12 +48,12 @@ jobs:
         run: node scripts/fetch-data.js
       - name: Publish legacy export before financial collection
         id: legacy_publish
-        if: ${{ steps.legacy.outcome == 'success' }}
+        if: ${{ steps.freshness.outputs.needed != 'false' && (steps.legacy.outcome == 'success') }}
         continue-on-error: true
         run: node scripts/publish-data.js --files data.json
       - name: Collect and validate canonical Shopify finance
         id: finance
-        if: ${{ github.ref == 'refs/heads/main' && vars.FINANCE_PUBLICATION_ENABLED == 'true' && !inputs.rollback_snapshot }}
+        if: ${{ steps.freshness.outputs.needed != 'false' && (github.ref == 'refs/heads/main' && vars.FINANCE_PUBLICATION_ENABLED == 'true' && !inputs.rollback_snapshot) }}
         continue-on-error: true
         env:
           SHOPIFY_STORE: ${{ secrets.SHOPIFY_STORE }}
@@ -58,20 +62,20 @@ jobs:
         run: node finance/refresh.js
       - name: Publish finance bundle or retained-snapshot failure warning
         id: finance_publish
-        if: ${{ always() && (steps.finance.outcome == 'success' || steps.finance.outcome == 'failure') }}
+        if: ${{ steps.freshness.outputs.needed != 'false' && (always() && (steps.finance.outcome == 'success' || steps.finance.outcome == 'failure')) }}
         continue-on-error: true
         env:
           FINANCE_OUTCOME: ${{ steps.finance.outcome }}
         run: node scripts/publish-data.js --finance-outcome "$FINANCE_OUTCOME"
       - name: Approved manual finance rollback
         id: rollback
-        if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.rollback_snapshot && inputs.approve_rollback && vars.FINANCE_PUBLICATION_ENABLED != 'true' }}
+        if: ${{ steps.freshness.outputs.needed != 'false' && (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.rollback_snapshot && inputs.approve_rollback && vars.FINANCE_PUBLICATION_ENABLED != 'true') }}
         env:
           FINANCE_ROLLBACK_APPROVED: 'true'
           ROLLBACK_ID: ${{ inputs.rollback_snapshot }}
         run: node scripts/publish-data.js --rollback "$ROLLBACK_ID"
       - name: Retain finance audit without publishing private captures
-        if: ${{ always() && (steps.finance.outcome == 'success' || steps.finance.outcome == 'failure') }}
+        if: ${{ steps.freshness.outputs.needed != 'false' && (always() && (steps.finance.outcome == 'success' || steps.finance.outcome == 'failure')) }}
         uses: actions/upload-artifact@v4
         with:
           name: shopify-finance-daily-${{ github.run_id }}
@@ -81,7 +85,7 @@ jobs:
             finance/staging/snapshots/
           retention-days: 30
       - name: Report failed collection or publication
-        if: always()
+        if: ${{ steps.freshness.outputs.needed != 'false' && (always()) }}
         env:
           LEGACY_OUTCOME: ${{ steps.legacy.outcome }}
           LEGACY_PUBLISH_OUTCOME: ${{ steps.legacy_publish.outcome }}

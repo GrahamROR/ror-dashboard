@@ -36,6 +36,7 @@ function metricLabel(metric,channels,basis) {
 function changeText(cmp) {
   if (cmp.status === 'not-occurred') return { text: 'Not yet occurred', tone: 'muted' };
   if (cmp.status === 'no-comparison-data') return { text: 'No comparison data', tone: 'muted' };
+  if (cmp.status === 'unequal-periods') return { text: 'Different day counts', tone: 'muted' };
   if (cmp.status === 'incomplete-data') return { text: 'Incomplete comparison', tone: 'muted' };
   if (cmp.status === 'zero-denominator') return { text: '—', tone: 'muted' };
   if (cmp.percentChange == null) return { text: '—', tone: 'muted' };
@@ -151,6 +152,7 @@ function KpiCard({ label, icon, metric, agg, cmp, accentCol }) {
             el('div', { style: { marginTop: 4, lineHeight: 1.5, overflowWrap: 'anywhere' } }, M.formatDateText(agg.note))))
       : el('div', { style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12 } },
           agg.confidence==='provisional' && el('span',{className:'badge ba'},'Provisional'),
+          [].concat(cmp.previousConfidence||[]).includes('historical-api-backfill')&&el('span',{className:'badge ba',title:'Prior period uses compatible historical API data; source management assumptions remain.'},'Historical comparison'),
           el('span', { style: { color: toneColor(chg.tone), fontWeight: 500 } }, chg.text),
           cmp.absoluteChange != null && el('span', { style: { color: 'var(--t3)' } }, '(' + (cmp.absoluteChange >= 0 ? '+' : '') + formatMetric(metric, cmp.absoluteChange) + ')'),
           agg.status === 'partial' && el('span', { className: 'badge ba', style: { fontSize: 10 } }, 'MTD')
@@ -163,10 +165,10 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
   const ordAgg = revAgg; // same aggregate carries both revenue+orders
 
   const prevEq = C.previousEquivalentRange(range.startPeriod, range.endPeriod);
-  const prevAgg = C.aggregate(records, { channels, startPeriod: prevEq.startPeriod, endPeriod: prevEq.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
+  const prevAgg = C.comparisonAggregate(records, { channels, startPeriod: prevEq.startPeriod, endPeriod: prevEq.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
 
   const yoyRange = C.yearEarlierRange(range.startPeriod, range.endPeriod);
-  const yoyAgg = C.aggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
+  const yoyAgg = C.comparisonAggregate(records, { channels, startPeriod: yoyRange.startPeriod, endPeriod: yoyRange.endPeriod, nowDate: C.dateKeyFromDate(new Date()) });
 
   const comparisonAgg = comparisonMode === 'yoy' ? yoyAgg : prevAgg;
   const growthCmp = C.compareAggregates(revAgg, comparisonAgg, 'revenue');
@@ -189,7 +191,8 @@ function KpiSection({ records, channels, range, comparisonMode, setComparisonMod
           }, k === 'mom' ? 'Previous equivalent period' : 'Year on year')))
       ),
       el('div', { style: { fontSize: 26, fontWeight: 600, color: toneColor(changeText(growthCmp).tone), fontFamily: "'DM Mono',monospace", marginBottom: 6 } }, changeText(growthCmp).text),
-      el('div', { style: { fontSize: 11, color: 'var(--t3)' } }, comparisonMode === 'yoy' ? 'vs. same period last year' : 'vs. previous equivalent period')
+      el('div', { style: { fontSize: 11, color: 'var(--t3)' } }, comparisonMode === 'yoy' ? 'vs. same period last year' : 'vs. previous equivalent period'),
+      [].concat(growthCmp.previousConfidence||[]).includes('historical-api-backfill')&&el('div',{style:{fontSize:10,color:'var(--t3)',marginTop:4}},'Historical API comparison · source management assumptions apply')
     )
   );
 }
@@ -204,7 +207,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
   const range = C.resolveDateRange(rangePreset, { customStart: customRange.start, customEnd: customRange.end, availableStart: meta.earliest, availableEnd: meta.latest });
   const table = useMemo(() => {
     if (range.unsupported) return null;
-    return C.buildComparisonTable(records, {
+    return C.buildComparisonTable(records, {matchSelectedDates:true,
       channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod, metric, nowDate: C.dateKeyFromDate(new Date()),
     });
   }, [records, channels.join(','), granularity, range.startPeriod, range.endPeriod, metric]);
@@ -221,7 +224,8 @@ function ComparisonTable({ records, channels, meta, basis }) {
     if (cmp.status === 'no-comparison-data') return el('span', { style: { color: 'var(--t3)' } }, 'n/a');
     if (cmp.status === 'zero-denominator') return el('span', { style: { color: 'var(--t3)' } }, '—');
     const chg = changeText(cmp);
-    return el('span', { style: { color: toneColor(chg.tone) } },
+    const dates=cmp.previousRange?'Compared with '+M.formatDate(cmp.previousRange.startDate)+' → '+M.formatDate(cmp.previousRange.endDate)+'. ':'';
+    return el('span', { title: dates+M.formatDateText(cmp.note||''), style: { color: toneColor(chg.tone) } },
       (cmp.absoluteChange != null ? (cmp.absoluteChange >= 0 ? '+' : '') + formatMetric(metric, cmp.absoluteChange) : '—') +
       '  ·  ' + chg.text
     );
@@ -231,7 +235,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
     el('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-end', marginBottom: 16 } },
       el('div', { style: { flex: 1, minWidth: 160 } },
         el('div', { style: { fontWeight: 600, fontSize: 14 } }, 'Sales comparison table'),
-        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Own date range; store follows the page filter. Growth is unavailable for incomplete or truncated buckets.')),
+        el('div', { style: { fontSize: 11, color: 'var(--t3)', marginTop: 2 } }, 'Own date range; store follows the page filter. Part-month comparisons use matching calendar dates and equal day counts.')),
       el('div', { style: { display: 'flex', flexDirection: 'column', gap: 4 } },
         el(FilterLabel, null, 'Metric'),
         el(Select, { value: metric, onChange: setMetric, options: metricOptions(basis),ariaLabel:'Sales comparison metric' })),
@@ -239,6 +243,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
       el(DateRangeSelect, { fiscalYears:meta.fiscalYears,section: 'Sales comparison', value: rangePreset, onChange: setRangePreset, custom: customRange, onCustomChange: setCustomRange })
     ),
     el(PeriodNotice, { range, records, channels, section: 'Sales comparison (independent dates; page store filter)' }),
+    table?.rows.some(r=>[r.mom,r.yoy].some(c=>[].concat(c.previousConfidence||[]).includes('historical-api-backfill')))&&el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:10}},'Comparisons include historical API data using the same Net Sales and source-order definitions. Marketplace management assumptions still apply.'),
     !table ? el(UnavailableNotice, { reason: range.reason }) :
     el('div', { className: 'scroll-x-fade', style: { overflowX: 'auto' } },
       el('table', { style: { width: '100%', borderCollapse: 'collapse', fontSize: 12.5, minWidth: 720 } },
@@ -253,7 +258,7 @@ function ComparisonTable({ records, channels, meta, basis }) {
         ),
         el('tbody', null,
           table.rows.map((row) => el('tr', { key: row.bucket.key, style: { borderBottom: '1px solid var(--bdr)' } },
-            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' }, title: M.formatDate(row.bucket.startDate) + ' → ' + M.formatDate(row.bucket.endDate) }, row.bucket.label + (row.current.status !== 'complete' || row.bucket.truncated ? ' · incomplete period' : '')),
+            el('td', { style: { padding: '7px 10px', whiteSpace: 'nowrap' }, title: M.formatDate(row.bucket.startDate) + ' → ' + M.formatDate(row.bucket.endDate) }, row.bucket.label + (row.current.status !== 'complete' ? ' · missing source coverage' : row.bucket.truncated ? ' · selected dates' : ''), row.bucket.truncated&&el('div',{style:{fontSize:10,color:'var(--t3)',marginTop:3}},M.formatDate(row.bucket.startDate)+' → '+M.formatDate(row.bucket.endDate))),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace" } },
               row.current.status === 'not-occurred' ? '—' : row.current.status === 'no-data' ? el('span', { style: { color: 'var(--t3)' } }, 'no data') : formatMetric(metric, row.current[metric])),
             el('td', { style: { padding: '7px 10px', textAlign: 'right', fontFamily: "'DM Mono',monospace", color: 'var(--t3)' } },
@@ -363,7 +368,7 @@ function SalesExplorer({ records, meta, basis }) {
 
   const seriesData = useMemo(() => {
     if (range.unsupported) return null;
-    return C.buildSeries(records, {
+    return C.buildSeries(records, {matchSelectedDates:true,
       channels, granularity, fromPeriod: range.startPeriod, toPeriod: range.endPeriod,
       metric, seriesMode, comparison, nowDate: C.dateKeyFromDate(new Date()),
     });
@@ -420,13 +425,15 @@ function SalesExplorer({ records, meta, basis }) {
       }, el('i', { className: 'ti ' + t.icon, style: { fontSize: 13, marginRight: 5 } }), t.label))
     ),
     el(PeriodNotice, { range, records, channels, section: 'Sales explorer (independent dates and stores)' }),
+    seriesData?.comparisonSeries?.some(s=>s.points.some(p=>[].concat(p.confidence||[]).includes('historical-api-backfill')))&&el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:10}},'Comparison includes historical API data using the same Net Sales and source-order definitions.'),
+    comparison!=='none'&&el('div',{style:{fontSize:11,color:'var(--t3)',marginBottom:10}},'Selected part-periods compare matching calendar dates with equal day counts. Missing or unmatched comparison points are left blank.'),
     granularity === 'weekly' && comparison === 'previous-year' && el('div', { style: { color: 'var(--t2)', fontSize: 12 } }, 'Weekly year-on-year aligns weekdays using a 364-day (52-week) shift.'),
     range.unsupported ? el(UnavailableNotice, { reason: range.reason }) :
     !seriesData ? null :
     effectiveChartType === 'donut'
       ? (C.aggregate(records, { channels, startDate: range.startDate, endDate: range.endDate }).status !== 'complete' && !(records.management?.basis==='legacy_gross' && C.channelContribution(records,{channels,startDate:range.startDate,endDate:range.endDate}).channels.every(c=>c.revenue!=null)) ? el(UnavailableNotice, { reason: 'Complete channel coverage is required for contribution charts.' }) : el(RorCharts.SalesChart, { type: 'donut', slices: donutSlices, formatValue: (v) => formatMetric(metric, v) }))
       : el(RorCharts.SalesChart, {
-          type: effectiveChartType, series: seriesData.series, comparisonSeries: seriesData.comparisonSeries,
+          type: effectiveChartType, series: seriesData.series, comparisonSeries: seriesData.comparisonSeries, preserveComparisonGaps:true,
           formatValue: (v, short) => formatMetric(metric, v, short),
         })
   );
