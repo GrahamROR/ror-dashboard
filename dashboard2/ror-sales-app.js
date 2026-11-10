@@ -543,6 +543,7 @@ function RorSalesApp({financeSnapshot,financialBasis='net_revenue',setFinancialB
       ),
 
       !pageHistory && root.RorHistoricalSales && el(root.RorHistoricalSales, {financeSnapshot,marketplaceSnapshot,financeError,marketplaceError}),
+      root.RorGoalSliderCard && el(root.RorGoalSliderCard,{key:goalFY+':'+goalTarget,records:goalRecords,range:goalRange,fy:goalFY,target:goalTarget}),
       el(MonthlyGoalsCard,{records:goalRecords,range:goalRange,fy:goalFY,target:goalTarget,actual:goalActual}),
 
       pageHistory && el(root.RorHistoricalPeriod,{context:historical.context,range,channels,section:'Page'}),

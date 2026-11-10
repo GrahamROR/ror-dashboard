@@ -1,0 +1,18 @@
+{
+  "clock": "2026-11-10T16:00:11.663Z",
+  "draggedTarget": "850000",
+  "draggedMathMatchesSharedPlan": true,
+  "filterIndependence": true,
+  "mobileOverflow": false,
+  "mobileKeyboardBounds": true,
+  "errors": [],
+  "unchanged": {
+    "monthly": true,
+    "performance": true,
+    "runRates": true,
+    "monthlyPixels": true,
+    "performancePixels": true,
+    "monthlyGoalSourceUnchanged": true,
+    "growthInlineAndCssUnchanged": true
+  }
+}
