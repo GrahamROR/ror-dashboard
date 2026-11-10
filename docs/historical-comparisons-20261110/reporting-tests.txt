@@ -1,0 +1,243 @@
+  ok  - production export has a self-consistent range, sources, rows and units
+  ok  - AOV is total revenue divided by total orders and units are summed
+  ok  - mapping state cannot affect totals because the reporting contract ignores it
+  ok  - MoM and YoY comparisons compute valid changes
+  ok  - date presets retain requested completed days when exports lag
+  ok  - custom ranges retain requested dates and warn about unavailable coverage
+  ok  - daily and weekly buckets are supported
+  ok  - financial year runs August through July
+  ok  - latest partial day is labelled rather than treated as a complete period
+  ok  - missing and future periods remain distinct from zero
+  ok  - channel contribution includes all three sources and totals to 100%
+  ok  - previous equivalent range uses the same number of days
+
+12 passed, 0 failed
+✔ dashboard2/test/calculations.test.js (117.713041ms)
+11 presets × 3 rendered selectors passed; all 6 custom inputs and 4 period labels verified
+✔ dashboard2/test/date-controls.test.js (546.142542ms)
+✔ Historical comparison overlays leave null gaps and retain isolated known months (8.352666ms)
+✔ Existing chart comparison rendering is unchanged unless gap preservation is requested (3.150542ms)
+  ok - all eleven ordered presets work through one resolver
+  ok - previous FY is exactly August–July, even with stale history
+  ok - FY boundary keeps new FY identity before its first completed day
+  ok - month boundary does not mislabel last month as this month
+  ok - London clock handles both DST transitions and BST midnight independently of host TZ
+  ok - rolling calendar months include leap day, not a hard-coded 365 days
+  ok - 2024 stays available and 2023 stays no-data without clipping
+  ok - invalid dates, missing dates and reversed custom dates are rejected
+  ok - a single missing day or missing channel suppresses both comparison directions
+  ok - an absent entire month cannot produce complete multi-month growth
+  ok - known zero differs from unknown amounts and zero-order AOV is unavailable
+  ok - adapter preserves null instead of converting it to zero
+  ok - partial data never produces growth
+  ok - monthly table and chart respect custom endpoints and reconcile to the selected total
+  ok - end-exclusive filtering excludes next-day facts
+  ok - weekly YoY shifts 52 weeks and preserves Monday
+  ok - incomplete contribution never reports apparently complete shares
+  ok - metric dictionary distinguishes gross imports, Shopify total sales, attribution and estimates
+
+18 reporting contract tests passed
+✔ dashboard2/test/reporting-contract.test.js (124.328167ms)
+✔ London completed-day bounds cover both DST transitions without dropping an hour (20.392916ms)
+✔ Etsy preserves paid unshipped sales and partial-refund policy; excludes cancelled fully refunded orders (3.391834ms)
+✔ NOTHS retains original customer totals and cohort counts without deducting cumulative refunds (0.448458ms)
+✔ Duplicate, incomplete, wrong-currency, unknown-eligibility and missing component captures cannot validate (1.678333ms)
+✔ Historical revenue controls fail on money/count drift; different native tax definitions are separately disclosed (0.922458ms)
+✔ Expired/missing Etsy connection never refreshes or modifies StockHub OAuth state (0.65925ms)
+✔ Rate limits retry read requests and respect provider delay without exposing request data (0.812ms)
+✔ Failed automatic capture retains the manifest and facts and publishes only a safe failure status (4.762292ms)
+✔ Publication validation rejects missing days and a status that identifies another snapshot (1.445958ms)
+✔ Marketplace publisher prepares snapshot, pointer and status together and guards every owned path (403.043875ms)
+✔ Hash-consistent source drift or mismatched status publishes warning only, retaining verified facts (688.46ms)
+✔ Served publication verification refuses a mixed manifest/status bundle (132.120917ms)
+✔ Published aggregate shape discards customer properties, native order identifiers and credential-like extras (1.664541ms)
+✔ Ascending NOTHS collection skips older rows and stops at the exclusive end without paging newer history (3.068166ms)
+✔ Default live NOTHS direction remains descending, with the same request, early stop and output as explicit desc (0.734208ms)
+✔ Both directions reject provider order reversal before any partial capture is returned (0.435042ms)
+✔ Direction validation fails before any source request and empty captures remain complete (0.535167ms)
+✔ Ascending stop includes exact start midnight, excludes exact end midnight and never sanitizes later rows (0.22025ms)
+✔ Page bounds still fail closed when the requested historical scope has not been exhausted (0.271792ms)
+✔ All Etsy FY26 fields and original report components reconcile 2025-08 (34.3665ms)
+✔ All Etsy FY26 fields and original report components reconcile 2025-09 (10.752417ms)
+✔ All Etsy FY26 fields and original report components reconcile 2025-10 (2.700542ms)
+✔ All Etsy FY26 fields and original report components reconcile 2025-11 (2.452208ms)
+✔ All Etsy FY26 fields and original report components reconcile 2025-12 (3.543583ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-01 (1.822417ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-02 (1.623834ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-03 (3.427791ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-04 (4.156083ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-05 (4.876875ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-06 (2.005083ms)
+✔ All Etsy FY26 fields and original report components reconcile 2026-07 (2.56975ms)
+✔ Annual Etsy and selected financial bases retain appropriate denominators (25.040833ms)
+✔ August/September candidate is independent and retains all FY26 history (4.438833ms)
+✔ October and current-year presets withhold net, preserving explicit legacy access (12.787334ms)
+✔ All Stores/NOTHS remain legacy and Shopify uses the unchanged canonical snapshot (33.402166ms)
+✔ Net and legacy comparisons cannot mix definitions (5.129167ms)
+✔ Missing marketplace source never silently substitutes gross or zero (2.543292ms)
+✔ Discounts define Stats merchandise; processing fees and partial refunds are not subtracted again (1.620209ms)
+✔ Fully refunded cancelled payment-only order is excluded (0.32675ms)
+✔ Duplicate/missing/currency source defects fail validation (0.449916ms)
+✔ London native timestamp supplies daily date independent of CSV date (0.303542ms)
+✔ Failure and rollback retain last-good snapshots; recovery preserves current accepted history (13.273958ms)
+✔ Current main Shopify refresh, goals and deployed Ads safeguards remain in the interface (1.505458ms)
+✔ Year and monthly checkpoint ranges join exactly at midnight across year end and leap February (3.311708ms)
+✔ Multi-chunk history equals a single derivation, stays separate from live, and reruns without source reads (44.846292ms)
+✔ A corrupted checkpoint or cursor chain cannot be silently reused (14.253833ms)
+✔ Protected live output and symlink aliases are rejected before any write (4.94925ms)
+✔ A later source failure retains the last archive pointer and every live file (12.88075ms)
+✔ Changing global source counts is retried with cleared transport state, without bypassing validation (8.869833ms)
+✔ Shopify workbook export publishes only monthly aggregate fields and never a partially overlapping live month (1.044667ms)
+✔ Native order identity duplicated across chunks blocks archive publication (4.515ms)
+✔ Legacy aggregate export rejects a historical-folder symlink into live finance before reading private input (4.132958ms)
+✔ Workbook comparisons describe changes in recorded fields with exact pence and the existing percent formula (1.6935ms)
+✔ Shopify workbook/native boundary blocks both revenue and order-count comparisons (0.394334ms)
+✔ Marketplace history and live figures compare on the same preserved native policy (0.282834ms)
+✔ Missing, partial and unknown-basis figures cannot become comparison values (0.334666ms)
+✔ Known zero has an absolute change without a misleading percent; zero current remains real data (0.225667ms)
+✔ Monthly comparison uses calendar months across years and rejects partial calendar selections (5.07ms)
+✔ Both source confidence labels survive comparison and fractional / unsafe order counts are rejected (0.312333ms)
+✔ Complete recorded periods total in pence and compare only against the complete matching period (3.841959ms)
+✔ A missing month yields a labelled subtotal, never a complete total or annual growth (0.239834ms)
+✔ Mixed Shopify periods split their source subtotals and never yield a blended total or cross-basis order growth (2.302791ms)
+✔ An omitted source-leading month cannot be mistaken for full fiscal coverage (0.48075ms)
+✔ Full-period previous comparison shifts by selected calendar-month count; partial selections never get growth (0.8485ms)
+✔ Whole-period comparisons retain each historical/live confidence on both sides (0.464625ms)
+✔ Known zero remains a complete period, while negative money is retained and flagged for truthful chart fallback (0.627708ms)
+✔ A subset of stores never displays an All Stores total containing an unselected channel (0.443625ms)
+✔ Known full-month workbook order counts remain independently comparable when revenue is absent (0.499417ms)
+✔ Final coverage counts use bounded Etsy counts and bracketing NOTHS ranks without exposing source records (22.376375ms)
+✔ A missing historical receipt or incorrect boundary rank cannot pass the final coverage check (3.1655ms)
+✔ Public history is a hash-consistent aggregate bundle with matching independent count evidence (92.350417ms)
+✔ Published Shopify legacy file is monthly only, source labelled, with exactly period/revenue/orders per aggregate (34.811875ms)
+✔ Archive/live mid-month split reproduces existing management maths with a distinct historical confidence (13.4905ms)
+✔ Workbook revenue stays as recorded, monthly only, and cannot create a combined Net Sales total (1.064333ms)
+✔ Overlap, duplicated days and a history row pretending to be live-validated are rejected (1.577459ms)
+✔ A missing source day remains an explicit recorded subtotal and cannot appear as a complete All Stores figure (0.998167ms)
+✔ Known zero, absent source and future months remain distinct (3.288834ms)
+✔ A monthly workbook row overlapping even one native Shopify day is rejected (0.547ms)
+✔ The unchanged live management gate continues to withhold historical-labelled days (0.800625ms)
+✔ A missing native Shopify order count cannot produce a complete combined history figure (21.341416ms)
+✔ Selected historical dates clip native daily amounts exactly without prorating workbook months (1.005792ms)
+✔ Fiscal selectors derive years from actual source depth, and historical routing is per selected store (9.511ms)
+✔ Historical range rows preserve selected edges and show no invented future or unsupported centuries (1.1765ms)
+✔ Historical foreign purchase currency maps only verified native GBP components, including nonzero delivery (1.189208ms)
+✔ Adjacent historical years resume on their shared boundary page without losing or duplicating an order (30.892291ms)
+✔ Historical offsets reject invalid values before a source read (0.675792ms)
+✔ An unused legacy reference discrepancy is disclosed without changing any native GBP component or order total (0.099959ms)
+✔ A failed historical read is evicted so the same chunk can recover on retry (1.415709ms)
+✔ A one-penny component difference is accepted only with an exact native GBP invoice identity, preserving every recorded amount (1.575417ms)
+✔ Repeatable NOTHS import retains cohort timing and customer-total basis with independent gross controls (22.56625ms)
+✔ Duplicate orders, unsupported currency, missing fields and controls never publish incomplete financial candidates (0.82ms)
+✔ Money precision is exact, signed and nullable; excessive precision is rejected (0.789958ms)
+✔ Native discounts, partial/full returns and cancellations retain signed adjustments without altering order counts (2.207125ms)
+✔ Shipping-only refunds and mixed/zero tax preserve actual tax; no VAT factor (0.371334ms)
+✔ Missing whole day, full month, tax and reversals stay unavailable, never zero (0.580625ms)
+✔ Native AOV requires exact native interval; zero-price eligible orders have zero net AOV (0.375208ms)
+✔ Products preserve unassigned money and do not sum product orders (0.608959ms)
+✔ Unknown total components remain explicit residuals (0.701959ms)
+✔ London calendar dates survive spring/autumn DST, leap day and FY boundaries (23.98025ms)
+✔ Every shared preset returns identical financial projections, including custom and absent 2023 (20.514875ms)
+✔ All daily, monthly, annual and custom source controls match both dashboards exactly (108.900708ms)
+✔ Every month and FY product components reconcile at penny precision (288.545667ms)
+✔ Monthly explorer clips custom first and last months (0.370666ms)
+✔ Snapshot payload and file hashes match manifest; no order/customer identifiers (32.596709ms)
+✔ Source parser rejects truncated tables, duplicate count formats and nullable money stays missing (0.869292ms)
+✔ Read-only transport retries rate limits and rejects parser/GraphQL failures without publishing (7.832083ms)
+✔ Collector rejects FX/store changes and failed batches leave staging manifest intact (5.812208ms)
+✔ Production exports, attribution and marketplace inputs remain byte-identical (1.021083ms)
+✔ Idempotent staging replay and rollback preserve immutable facts (174.157667ms)
+﹣ Actual native source build is repeatable and source edits fail reconciliation (0.04425ms) # SKIP
+✔ Rollback switches between two versioned snapshots and retains both histories (178.424583ms)
+✔ Collector assembles a complete custom-period capture; partial batches never become visible (3.72275ms)
+✔ Parse failure midway through capture retains previous snapshot and leaves no capture directory (0.345833ms)
+﹣ Duplicate daily facts and changed source currency are rejected by the builder (0.027208ms) # SKIP
+✔ FY26 overview original components render without added scenario/cost panels (66.4015ms)
+✔ FY26 yesterday original components render without added scenario/cost panels (30.655458ms)
+✔ FY26 monthly original components render without added scenario/cost panels (22.497083ms)
+✔ FY26 products original components render without added scenario/cost panels (24.730541ms)
+✔ FY26 email original components render without added scenario/cost panels (24.852375ms)
+✔ FY26 ads original components render without added scenario/cost panels (24.178333ms)
+✔ FY26 margin original components render without added scenario/cost panels (20.984834ms)
+✔ FY27 overview original components render without added scenario/cost panels (17.24625ms)
+✔ FY27 yesterday original components render without added scenario/cost panels (10.545292ms)
+✔ FY27 monthly original components render without added scenario/cost panels (82.436166ms)
+✔ FY27 products original components render without added scenario/cost panels (14.504042ms)
+✔ FY27 email original components render without added scenario/cost panels (10.521375ms)
+✔ FY27 ads original components render without added scenario/cost panels (13.788958ms)
+✔ FY27 margin original components render without added scenario/cost panels (9.032791ms)
+✔ Prominent FY26 selected actual: net_revenue (21.226084ms)
+﹣ Prominent FY26 selected actual: gross_revenue (0.045833ms) # SKIP
+✔ Prominent FY26 selected actual: total_sales (20.054708ms)
+✔ Original conversion/AOV handlers change model projection and reset without changing selected financial actual (128.562208ms)
+✔ Original goal slider locks, explores and resets to approved FY27 main goal (30.38475ms)
+✔ Original full ROR sections remain and NOTHS order wording is provisional (193.431583ms)
+✔ ROR opens all three original date controls on explicit FY26 and shows agreed management money immediately (187.6355ms)
+✔ Explicit Current FY selection still withholds missing combined Net Sales without switching basis or dates (216.247208ms)
+✔ Navigation retains each explicit financial selection and ROR opens Net Sales despite Growth Gross selection (197.460792ms)
+✔ Simple Net/Gross/Total selector has explicit native components and no scenario interface (13.478375ms)
+✔ Net shipping and native source measures sum daily/monthly/FY identically in Growth and ROR (135.22275ms)
+✔ Gross shipping unavailable never substitutes merchandise gross or changes eligible orders (32.299583ms)
+✔ Validated gross shipping resolves Shopify gross revenue without substitution (10.876167ms)
+﹣ Actual private native gross-shipping capture reconciles all approved FY26 source amounts (0.072416ms) # SKIP
+✔ Marketplace management estimates stay provisional; current gaps never become legacy gross (5.445167ms)
+✔ Approved goals and model Net Sales remain independent of selected actual and local exploration (17.283583ms)
+✔ Product-only costed margin, profit and existing LTV methodology remain untouched across sales bases (20.48725ms)
+✔ Production typography, colours, spacing and responsive CSS remain byte-identical (2.596541ms)
+✔ Every original date preset and custom interval keeps selected shipping-inclusive money/counts consistent (144.316ms)
+✔ Explicit ROR legacy selection cannot break a subsequent Growth navigation (7.492459ms)
+✔ Product concentration denominators exclude shipping on Net/Gross while revenue headlines include it (12.69775ms)
+✔ FY26 All Stores monthly rows, totals, channel contribution and explorer share the agreed source math (101.687459ms)
+Shopify read throttled; retry 2, waiting 51s
+Shopify read throttled; retry 1, waiting 61s
+✔ FY26 original Growth sections and ROR all consume identical canonical values for each basis (213.168542ms)
+✔ All eleven presets and custom intervals preserve consistent existing ROR KPIs/table/explorer totals for all three bases (735.925291ms)
+✔ Basis changes do not change orders, purchased units, sessions, conversions, attribution or fixed goal input (41.202583ms)
+✔ All Stores preserves consistent legacy gross totals, AOV, contribution and explorer pending P3 (70.282292ms)
+✔ Missing finance cannot fall back to stale financial facts; units/marketplace facts remain (1.204083ms)
+✔ Missing dates and partial imported units suppress comparison without changing verified financial counts (5.360167ms)
+✔ Yesterday financial fields use the same source and basis while session/margin inputs retain existing behavior (5.006792ms)
+✔ Late adjustments refresh all retained history, preserve old immutable snapshots and rollback safely (8.917083ms)
+✔ Failed reconciliation keeps last good pointer, records failure and never changes production exports (4.132583ms)
+✔ Full-history partitioning includes all prior dates and London reporting-day boundaries (0.368666ms)
+✔ Refresh uses existing client credentials without logging secrets and reports auth failures safely (0.305792ms)
+✔ Transport refresh partitions full history and validates independent monthly/FY/product controls before publishing (4.509167ms)
+✔ Credential-backed refresh respects Retry-After and GraphQL throttle refill metadata (0.725208ms)
+✔ ShopifyQL-specific window reset is respected even with full Admin GraphQL budget (0.176ms)
+✔ Refreshed Yesterday uses the London prior day without relabelling stale marketing or cost facts (1.986208ms)
+✔ Canonical snapshot, manifest and status publish together; other exports and all history remain (1708.040584ms)
+✔ Incomplete or unreconciled candidate publishes warning only and preserves old pointer/facts (967.290167ms)
+✔ Unrelated concurrent export commits survive a rejected push and retry (1612.359584ms)
+✔ Changed owned export aborts rather than overwrites newer data (629.008959ms)
+✔ Failed pushes remain failed; lost acknowledgement is confirmed without a duplicate publication (742.478125ms)
+✔ Recovery and rollback retain immutable snapshots and publish matching warning status (2519.969958ms)
+✔ Freshness warnings preserve verified data and respect London reporting date and morning deadline (1.007667ms)
+✔ Replaying the same verified snapshot is safe and producer code movement blocks stale finance publication (1981.260417ms)
+✔ Pages build request and served snapshot verification are simulated, never deployed by tests (1424.275667ms)
+✔ Valid hashes cannot promote missing days or mismatched native controls (1970.118208ms)
+✔ Production CLI cannot activate finance or rollback without explicit main approval context (132.408458ms)
+✔ Pages timeout or mixed served bundle never reports publication success (1866.922167ms)
+✔ Mobile freshness has no inline display override and uses flex only at mobile breakpoint (1.652959ms)
+✔ Current-year Sessions shows neutral annual progress, not an annual underperformance judgment (0.819292ms)
+✔ Zero and missing Sessions are distinct; completed-year comparison remains annual (1.054292ms)
+✔ Orders with unavailable YTD target stay pending; static conversion/repeat targets remain unchanged (0.535333ms)
+✔ Normalisation preserves relative seasons and exact one; largest-remainder allocation preserves every annual penny (1.821708ms)
+✔ FY26 completed-year target and signed variance use verified Total Sales (46.91725ms)
+✔ Current FY includes completed months and 11/31 October, excluding future months (0.22825ms)
+✔ Month end, leap year and financial-year boundaries pace correctly (0.543583ms)
+✔ London midnight/DST dates use completed reporting days; stale coverage clips actual and target together (2.066125ms)
+✔ Every basis reconciles monthly money/orders to annual controls without mutating facts or native AOV (74.687958ms)
+✔ Reviewed FY27 snapshot is a historical check, not a constraint on newer source data (2.213625ms)
+✔ Yesterday finance renders independently of legacy capture and selected FY, missing data never becomes zero (8.217583ms)
+✔ Original exports and all financial snapshots/manifest/status remain byte-identical to latest-main baseline (146.305083ms)
+✔ Original model uses the agreed Net Sales goal independently of the prominent selected actual (0.781375ms)
+✔ Monthly comparable variance always uses Total Sales across every selected basis, with no missing-data zero (6.376875ms)
+✔ Closed historical years keep the annual planning target even if facts are missing, without inventing actuals or variance (5.347ms)
+ℹ tests 198
+ℹ suites 0
+ℹ pass 194
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 4
+ℹ todo 0
+ℹ duration_ms 15993.57925

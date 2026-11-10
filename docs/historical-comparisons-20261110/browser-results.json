@@ -1,0 +1,26 @@
+{
+  "mode": "local",
+  "snapshotClock": "09-11-2026 20:00 UTC",
+  "shopifyFY17RecordedRevenue": 12038.85,
+  "shopifyFY17RecordedOrders": 439,
+  "january2017YoYDelta": 125,
+  "january2017MoMDelta": -2642.4,
+  "fullFY18RecordedDelta": 13007.85,
+  "mixedFY24SourceSubtotals": [
+    45556.06,
+    73774.5
+  ],
+  "mixedFY24NeverBlended": true,
+  "bookNativeRevenueAndCountComparisonsBlocked": true,
+  "barLineAndRevenueOrdersControls": true,
+  "compactSourceExplanation": true,
+  "emptyCombinedNetColumnOmitted": true,
+  "partialMonthGrowthWithheld": true,
+  "nativeGrowthRestoredExactly": true,
+  "currentFYNet": 79554.92,
+  "independentSectionsStyled": true,
+  "mobileAndTooltipOverflow": false,
+  "yearFirstDates": false,
+  "optionalComparisonFailureIsolated": true,
+  "pageErrors": []
+}

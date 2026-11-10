@@ -53,13 +53,13 @@ function seriesLabel(s) {
 
 const PALETTE = ['var(--amb)', 'var(--blu)', 'var(--pur)', 'var(--grn)', 'var(--red)'];
 
-function Tooltip({ leftPct, items }) {
+function Tooltip({ leftPct, items, constrain=false }) {
   return el('div', {
     style: {
       position: 'absolute', top: 4, left: leftPct + '%', transform: 'translateX(-50%)',
       background: 'var(--s3)', border: '1px solid var(--bdr2)', borderRadius: 8,
       padding: '8px 10px', fontSize: 12, color: 'var(--t1)', pointerEvents: 'none',
-      whiteSpace: 'nowrap', zIndex: 5, boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+      whiteSpace: constrain?'normal':'nowrap', ...(constrain?{maxWidth:'calc(100% - 16px)',width:'max-content',boxSizing:'border-box'}:{}), zIndex: 5, boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
     },
   },
     el('div', { style: { fontWeight: 600, marginBottom: 4, color: 'var(--t2)', fontSize: 11 } }, items.bucketLabel),
@@ -170,11 +170,17 @@ function TimeSeriesChart(props) {
     comparisonSeries.forEach((s, si) => {
       const baseColor = seriesColor(s, si, PALETTE);
       legendItems.push({ color: baseColor, label: seriesLabel(s) + ' (comparison)', dashed: true });
-      const pts = s.points.map((p, i) => typeof p.value === 'number' ? [PAD.left + (i + 0.5) * xStep, PAD.top + y(p.value)] : null).filter(Boolean);
-      if (pts.length > 1) {
-        const path = pts.map((pt, i) => (i === 0 ? 'M' : 'L') + pt[0] + ',' + pt[1]).join(' ');
-        marks.push(el('path', { key: `cmp-${s.key}`, d: path, fill: 'none', stroke: baseColor, strokeWidth: 1.5, strokeDasharray: '5,4', opacity: 0.7 }));
-      }
+      const pts = s.points.map((p, i) => typeof p.value === 'number' ? [PAD.left + (i + 0.5) * xStep, PAD.top + y(p.value)] : null);
+      // Historical comparisons opt in to preserving missing / incompatible month gaps.
+      const segments=[];let segment=[];
+      for(const point of pts){if(point)segment.push(point);else if(props.preserveComparisonGaps&&segment.length){segments.push(segment);segment=[];}}
+      if(segment.length)segments.push(segment);
+      segments.forEach((points,segmentIndex)=>{
+        if(points.length>1){
+          const path=points.map((pt,i)=>(i===0?'M':'L')+pt[0]+','+pt[1]).join(' ');
+          marks.push(el('path',{key:props.preserveComparisonGaps?`cmp-${s.key}-${segmentIndex}`:`cmp-${s.key}`,d:path,fill:'none',stroke:baseColor,strokeWidth:1.5,strokeDasharray:'5,4',opacity:0.7}));
+        }else if(props.preserveComparisonGaps){marks.push(el('circle',{key:`cmp-${s.key}-${segmentIndex}`,cx:points[0][0],cy:points[0][1],r:3,fill:'none',stroke:baseColor,opacity:0.7}));}
+      });
     });
   }
 
@@ -202,7 +208,7 @@ function TimeSeriesChart(props) {
   })();
 
   return el('div', { style: { position: 'relative' } },
-    hoverRows && el(Tooltip, { leftPct: ((hoverIdx + 0.5) / n) * 100, items: hoverRows }),
+    hoverRows && el(Tooltip, { leftPct: props.constrainTooltip?50:((hoverIdx + 0.5) / n) * 100, items: hoverRows,constrain:!!props.constrainTooltip }),
     el('svg', { viewBox: `0 0 ${CHART_W} ${CHART_H}`, style: { width: '100%', height: 'auto', display: 'block', overflow: 'visible' }, preserveAspectRatio: 'xMidYMid meet' },
       gridLines.map((f, i) => el('g', { key: i },
         el('line', { x1: PAD.left, x2: CHART_W - PAD.right, y1: PAD.top + PLOT_H * (1 - f), y2: PAD.top + PLOT_H * (1 - f), stroke: 'var(--bdr)', strokeWidth: 1 }),
