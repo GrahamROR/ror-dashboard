@@ -9,6 +9,7 @@ on:
       - 'scripts/backfill-ads-data.js'
       - 'scripts/fetch-ltv-cac.js'
       - 'scripts/publish-data.js'
+      - 'scripts/finance-refresh-needed.js'
       - '.github/workflows/**'
       - '.github/workflows/finance-staging-refresh.yml'
       - 'dashboard2/**'
@@ -43,6 +44,6 @@ jobs:
       - run: node dashboard2/test/calculations.test.js
       - run: node dashboard2/test/reporting-contract.test.js
       - run: node dashboard2/test/date-controls.test.js
-      - run: node --test dashboard2/test/historical-chart.test.js
+      - run: node --test dashboard2/test/historical-chart.test.js dashboard2/test/comparison-baselines.test.js
       - run: node --test ads/test/*.test.js
       - run: node insights/test/rules.test.js

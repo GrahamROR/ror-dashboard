@@ -1,7 +1,8 @@
 name: Refresh marketplace financial reporting
 on:
   schedule:
-    - cron: '0 4 * * *'
+    # Off-hour recovery opportunities; successful sources are collected once per London day.
+    - cron: '27 1,4,7,10,13,16,19,22 * * *'
   workflow_dispatch:
     inputs:
       publish:
@@ -36,7 +37,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check whether today’s source needs refreshing
+        id: freshness
+        run: node scripts/finance-refresh-needed.js marketplaces
       - name: Read, calculate and validate marketplace financial inputs
+        if: ${{ steps.freshness.outputs.needed != 'false' }}
         env:
           PUBLISH: ${{ github.event_name == 'schedule' || inputs.publish }}
         run: |

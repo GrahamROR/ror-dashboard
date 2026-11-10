@@ -10,9 +10,16 @@ async function requestBuild({repo,repository,token,revision,transport=fetch,wait
  const current=cp.execFileSync('git',['-C',repo,'rev-parse','FETCH_HEAD'],{encoding:'utf8'}).trim();cp.execFileSync('git',['-C',repo,'merge-base','--is-ancestor',revision,current],{stdio:['ignore','pipe','pipe']});
  const preRead=file=>cp.execFileSync('git',['-C',repo,'show',current+':'+file],{maxBuffer:64*1024*1024,stdio:['ignore','pipe','pipe']});const preManifest=JSON.parse(preRead(P.ROOT+'/manifest.json')),preSnapshot=P.readSnapshot(preManifest,preRead(P.ROOT+'/'+preManifest.file));P.validate(preSnapshot);assert.equal(JSON.parse(preRead(P.ROOT+'/refresh-status.json')).snapshot_id,preSnapshot.id);
  await api('/pages/builds','POST');
+ let erroredPolls=0,retried=false,lastStatus='unknown';
  for(let i=0;i<polls;i++){
-  const build=await api('/pages/builds/latest');
-  if(build.status==='errored')throw Error('Pages build failed; validated Git publication retained');
+  const build=await api('/pages/builds/latest');lastStatus=build.status;
+  erroredPolls=build.status==='errored'?erroredPolls+1:0;
+  // Allow a superseding build to appear first; retry a persistently errored
+  // queue once, bounded by the original publication deadline.
+  if(erroredPolls>=2&&!retried&&i+1<polls){await api('/pages/builds','POST');retried=true;erroredPolls=0;}
+  // An overlapping data publication can cancel an older build. Observe the
+  // latest deployment until the bounded deadline; success still requires the
+  // requested revision plus an exactly matching served financial bundle.
   if(build.status==='built'&&/^[a-f0-9]{40}$/.test(build.commit||'')){
    cp.execFileSync('git',['-C',repo,'fetch','origin','main'],{stdio:['ignore','pipe','pipe']});
    let includes=false;try{cp.execFileSync('git',['-C',repo,'merge-base','--is-ancestor',revision,build.commit],{stdio:['ignore','pipe','pipe']});includes=true;}catch{}
@@ -25,6 +32,6 @@ async function requestBuild({repo,repository,token,revision,transport=fetch,wait
   }
   if(i+1<polls)await wait(15000);
  }
- throw Error('Pages publication not verified within deadline; Git data remains intact');
+ throw Error('Pages publication not verified within deadline (last build status: '+lastStatus+'); Git data remains intact');
 }
 module.exports={requestBuild};

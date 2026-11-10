@@ -43,6 +43,20 @@ function prepare({archive,legacy,shop,markets,through}){
   const current=M.shopify(shop,start,end,'net_revenue');
   return current.value==null?absent('No Shopify source data for this period.'): {value:current.value/100,orders:current.orders,status:'complete',confidence:current.confidence,basis:'net_revenue'};
  }
+ // Explicit reporting access for native-compatible comparison baselines only.
+ // Workbook months never become daily Net Sales, and missing days are never clipped.
+ function select(selectedChannels,start,end){
+  F.day(start);F.day(end);
+  if(start>end||!selectedChannels.length||new Set(selectedChannels).size!==selectedChannels.length||selectedChannels.some(c=>!['shopify','etsy','noths'].includes(c)))throw Error('Invalid historical comparison range');
+  const parts=selectedChannels.map(channel=>{
+   const part=channel==='shopify'?(start<shopStart?absent('Workbook revenue / orders have a different source basis; native comparison unavailable.'):shopify(start.slice(0,7),start,end)):marketplace(channel,start,end);
+   return {channel,...part};
+  });
+  const complete=parts.every(p=>p.status==='complete'&&p.value!=null&&p.basis==='net_revenue');
+  const counts=parts.every(p=>p.status==='complete'&&Number.isSafeInteger(p.orders));
+  const confidences=[...new Set(parts.map(p=>p.confidence))];
+  return {value:complete?parts.reduce((n,p)=>n+Math.round(p.value*100),0)/100:null,orders:counts?parts.reduce((n,p)=>n+p.orders,0):null,status:complete&&counts?'complete':'incomplete-data',ordersStatus:counts?'complete':'incomplete-data',basis:'net_revenue',confidence:complete?(confidences.includes(HIST)?HIST:confidences.includes('provisional')?'provisional':'source-verified'):'unavailable',confidences,parts,note:parts.some(p=>p.confidence===HIST)?'Comparison includes historical API data on the same Net Sales and source-order definitions; marketplace estimates retain their management assumptions.':parts.map(p=>p.reason).filter(Boolean).join(' ')};
+ }
  function month(period,range={}){
   if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(period))throw Error('Invalid historical month');
   const first=period+'-01',last=monthEnd(period);
@@ -59,7 +73,7 @@ function prepare({archive,legacy,shop,markets,through}){
  const legacyStart=legacyByMonth.size?[...legacyByMonth.keys()].sort()[0]+'-01':shopStart;
  const starts={shopify:[legacyStart,shopStart].sort()[0],etsy:channels.etsy.rows[0].date,noths:channels.noths.rows[0].date};
  const earliest=Object.values(starts).sort()[0];
- return {month,through,earliest,years:Array.from({length:+through.slice(0,4)-+earliest.slice(0,4)+1},(_,i)=>String(+earliest.slice(0,4)+i)),default_year:legacy.coverage.start.slice(0,4),legacy_start:starts.shopify,starts,boundaries:{shopify:shopStart,etsy:channels.etsy.boundary,noths:channels.noths.boundary}};
+ return {month,select,through,earliest,years:Array.from({length:+through.slice(0,4)-+earliest.slice(0,4)+1},(_,i)=>String(+earliest.slice(0,4)+i)),default_year:legacy.coverage.start.slice(0,4),legacy_start:starts.shopify,starts,boundaries:{shopify:shopStart,etsy:channels.etsy.boundary,noths:channels.noths.boundary}};
 }
 function fiscalYears(start,end){
  F.day(start);F.day(end);if(start>end)return [];
