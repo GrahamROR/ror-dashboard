@@ -43,5 +43,6 @@ jobs:
       - run: node dashboard2/test/calculations.test.js
       - run: node dashboard2/test/reporting-contract.test.js
       - run: node dashboard2/test/date-controls.test.js
+      - run: node --test dashboard2/test/historical-chart.test.js
       - run: node --test ads/test/*.test.js
       - run: node insights/test/rules.test.js

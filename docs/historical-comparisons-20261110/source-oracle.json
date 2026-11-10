@@ -1,0 +1,22 @@
+{
+  "fy17": {
+    "months": 12,
+    "revenue": 12038.85,
+    "orders": 439
+  },
+  "fy18": {
+    "months": 12,
+    "revenue": 25046.7,
+    "orders": 878
+  },
+  "fy18RevenueDelta": 13007.85,
+  "fy24Book": {
+    "months": 5,
+    "revenue": 45556.06,
+    "orders": 1243
+  },
+  "fy24Native": {
+    "revenue": 73774.5,
+    "orders": 2035
+  }
+}
