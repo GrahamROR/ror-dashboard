@@ -1,34 +1,12 @@
 {
-  "status": "success",
+  "status": "failed",
   "live": true,
-  "attempted_at": "2026-11-12T01:35:11.510Z",
-  "completed_at": "2026-11-12T01:40:05.997Z",
+  "attempted_at": "2026-11-13T02:43:18.170Z",
   "snapshot_sha256": "b57fed69ba3c931cbc21fd9bb6660deab7b4a5c7de56d32adb55659ff54fe4ea",
-  "calculation_version": "marketplace-native-components-v1",
-  "mechanism": "Automatic read-only marketplace APIs; existing management maths; StockHub owns OAuth refresh",
+  "warning": "Automatic marketplace refresh failed; last validated snapshot retained.",
   "source_covered_through": {
     "etsy": "2026-11-11",
     "noths": "2026-11-11"
   },
-  "verification": {
-    "etsy": {
-      "start": "2025-08-01",
-      "end": "2026-11-11",
-      "days": 468,
-      "orders": 1340,
-      "source_sha256": "98809907c8e628d9ec709ee7fc116402f1e4e8064822dcf784b9182db42c04d5"
-    },
-    "noths": {
-      "start": "2025-08-01",
-      "end": "2026-11-11",
-      "days": 468,
-      "orders": 4396,
-      "source_sha256": "8968a3578ef6c28596eef9512f753f49d4919db05fe10537afd05438501f4505"
-    }
-  },
-  "historical_control_comparison": {
-    "status": "matched",
-    "differences": 0
-  },
-  "producer_revision": "f8079832726551810cbb148d2a817f1a5589308b"
+  "producer_revision": "ea198ad90b8592075a856a8f501fd010cb8ac959"
 }
