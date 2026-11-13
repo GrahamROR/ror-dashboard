@@ -1,12 +1,12 @@
 {
   "status": "failed",
   "live": true,
-  "attempted_at": "2026-11-13T02:43:18.170Z",
+  "attempted_at": "2026-11-13T12:28:22.195Z",
   "snapshot_sha256": "b57fed69ba3c931cbc21fd9bb6660deab7b4a5c7de56d32adb55659ff54fe4ea",
   "warning": "Automatic marketplace refresh failed; last validated snapshot retained.",
   "source_covered_through": {
     "etsy": "2026-11-11",
     "noths": "2026-11-11"
   },
-  "producer_revision": "ea198ad90b8592075a856a8f501fd010cb8ac959"
+  "producer_revision": "eaddee211fb197c9173edc0e55345e2ee5e6ce54"
 }
