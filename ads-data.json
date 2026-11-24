@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-23T13:30:08.886Z",
+  "updated": "2026-11-24T14:08:24.818Z",
   "days": {
     "2025-08-01": {
       "google": {
@@ -8607,19 +8607,37 @@
     },
     "2026-11-22": {
       "meta": {
-        "spend": 151.89,
+        "spend": 151.96,
         "conversions": 13,
         "conversionValue": 539.46,
         "clicks": 441,
-        "impressions": 23526,
+        "impressions": 23534,
         "source": "Meta Marketing API insights"
       },
       "google": {
         "spend": 30.85,
-        "conversions": 1.483209,
-        "conversionValue": 50.46,
+        "conversions": 1.845579,
+        "conversionValue": 91.04,
         "clicks": 163,
-        "impressions": 8222,
+        "impressions": 8221,
+        "source": "Google Ads API GAQL"
+      }
+    },
+    "2026-11-23": {
+      "meta": {
+        "spend": 199.06,
+        "conversions": 4,
+        "conversionValue": 284.03,
+        "clicks": 534,
+        "impressions": 28194,
+        "source": "Meta Marketing API insights"
+      },
+      "google": {
+        "spend": 22.24,
+        "conversions": 0,
+        "conversionValue": 0,
+        "clicks": 141,
+        "impressions": 5037,
         "source": "Google Ads API GAQL"
       }
     }
