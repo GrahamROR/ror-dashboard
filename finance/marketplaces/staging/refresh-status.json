@@ -1,34 +1,34 @@
 {
   "status": "success",
   "live": true,
-  "attempted_at": "2026-11-24T06:10:14.864Z",
-  "completed_at": "2026-11-24T06:15:11.983Z",
-  "snapshot_sha256": "408c10595daeb336902c276c85337f7935aef80f84ee3422b56330781fd4341b",
+  "attempted_at": "2026-11-25T03:05:39.047Z",
+  "completed_at": "2026-11-25T03:10:34.121Z",
+  "snapshot_sha256": "1db18a82d84e3fc5e69ab7c2dc6656c42610efd1ce303563fa74d7c61c2a4b85",
   "calculation_version": "marketplace-native-components-v1",
   "mechanism": "Automatic read-only marketplace APIs; existing management maths; StockHub owns OAuth refresh",
   "source_covered_through": {
-    "etsy": "2026-11-23",
-    "noths": "2026-11-23"
+    "etsy": "2026-11-24",
+    "noths": "2026-11-24"
   },
   "verification": {
     "etsy": {
       "start": "2025-08-01",
-      "end": "2026-11-23",
-      "days": 480,
-      "orders": 1396,
-      "source_sha256": "b095a3484f778d84ed87ad49ce28b01a3ca51b4acb8ace0d8c43a699cb72bf05"
+      "end": "2026-11-24",
+      "days": 481,
+      "orders": 1398,
+      "source_sha256": "c93e704cafd53e3fe4f8ee9ccf80e7edc0c3bad3866113dc420b1791e0fc5d79"
     },
     "noths": {
       "start": "2025-08-01",
-      "end": "2026-11-23",
-      "days": 480,
-      "orders": 4632,
-      "source_sha256": "6af9ad629f70f5a13854958801fee873a7642ae8ef8c0526a77243b88125717d"
+      "end": "2026-11-24",
+      "days": 481,
+      "orders": 4663,
+      "source_sha256": "a7991c2fd2ce299111f638cb2049c4f29d43223aeadbae15b968ed258379a181"
     }
   },
   "historical_control_comparison": {
     "status": "matched",
     "differences": 0
   },
-  "producer_revision": "34eb04c6733e5a84cfff89bddb46651f29739e2e"
+  "producer_revision": "4852cb836d50cadd47d4b2e793a70a0b2a08e5a8"
 }
