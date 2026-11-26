@@ -18,6 +18,7 @@ on:
       - 'ads/**'
       - 'insights/**'
       - 'growth/**'
+      - 'reporting/**'
       - 'docs/growth-targets/**'
       - 'docs/financial-foundation/**'
       - 'docs/pr2/**'
@@ -49,3 +50,4 @@ jobs:
       - run: node --test dashboard2/test/historical-chart.test.js dashboard2/test/comparison-baselines.test.js dashboard2/test/goals.test.js dashboard2/test/goal-slider.test.js
       - run: node --test ads/test/*.test.js
       - run: node insights/test/rules.test.js
+      - run: node --test reporting/test/*.test.js

@@ -20,6 +20,6 @@ test('Seasonal disclosure and current-FY date bounds appear in the rendered goal
  vm.runInContext(fs.readFileSync(require.resolve('../ror-sales-app'),'utf8'),ctx);
  const tree=ctx.window.RorMonthlyGoalsContent({records:r,range,fy:'FY27',target:500000,actual:C.aggregate(r,{channels:M.ACTIVE_CHANNELS,...range})});
  const rendered=JSON.stringify(tree);assert.match(rendered,/existing Shopify seasonal shape/);assert.match(rendered,/not separately tuned to marketplace seasonality yet/);assert.match(rendered,/09-11-2026/);assert.match(rendered,/9\/30 verified days/);assert.match(rendered,/YTD Total/);
- const hole=structuredClone(markets);hole.channels.noths.daily.pop();const missing=JSON.stringify(ctx.window.RorMonthlyGoalsContent({records:records(hole),range,fy:'FY27',target:500000}));assert.match(missing,/source coverage unavailable/);assert.doesNotMatch(missing,/9\/30 verified days/);
+ const hole=structuredClone(markets);hole.channels.noths.daily=hole.channels.noths.daily.filter(row=>row.date!==range.endDate);const missing=JSON.stringify(ctx.window.RorMonthlyGoalsContent({records:records(hole),range,fy:'FY27',target:500000}));assert.match(missing,/source coverage unavailable/);assert.doesNotMatch(missing,/9\/30 verified days/);
 });
 test('First day of a new FY has no fabricated reporting day or actual',()=>{assert.equal(G.build(records(),{unsupported:true},'Current FY',500000,M.ACTIVE_CHANNELS),null);const p=T.plan(500000,'FY28','2027-07-31');assert.ok(p.months.every(m=>m.elapsedDays===0));});
