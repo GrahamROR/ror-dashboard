@@ -24,10 +24,12 @@ If the reporting UI bundle cannot load at all, the entry point falls back to the
 Run the existing reporting suites with freshly captured export/financial baselines, as `.github/workflows/finance-tests.yml` does, and:
 
 ```sh
-node --test reporting/test/metrics.test.js
+node --test reporting/test/*.test.js
 ```
 
 For browser acceptance, serve the repository on `http://127.0.0.1:8775/` and execute `reporting/test/browser-check.js` with Playwright's `browser_run_code`. It checks retained original DOM/state, all seven Growth tabs, all five explorer chart types, new date presets, both dashboards at desktop/mobile widths, precision, native AOV, keyboard/scroll behaviour and isolated render/fetch failures. It does not write screenshots or data files.
+
+The component/handler tests cover Commercial's stable child slot, lazy report mounting, navigation, independent contexts and the missing-bundle fallback in CI. Real React error-boundary recovery, sticky layout and browser DOM retention still use browser acceptance rather than the component harness.
 
 The baseline on current main exposed an existing goal test that removed the newest NOTHS day, even when that day was outside its fixed reporting period. The fixture now removes its selected cutoff date explicitly. No production goal code was changed.
 
