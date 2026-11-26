@@ -17,81 +17,149 @@
     return h('div', { role: 'status', className: 'card', style: { ...card, borderColor: 'var(--amb)' } }, children);
   }
 
-  function Table({ label, headers, rows }) {
+  const storeTone = { shopify: 'blu', etsy: 'pur', noths: 'amb' };
+  const accent = tone => 'var(--' + tone + ')';
+
+  function KPIs({ items }) {
+    return h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 190px), 1fr))', gap: 12, marginBottom: 16 } },
+      items.map(([label, value, tone, icon, caption]) => h('div', { key: label, className: 'card', style: {
+        minWidth: 0, padding: '14px 16px', borderTop: '2px solid ' + accent(tone),
+        background: 'linear-gradient(var(--' + tone + '-bg), transparent), var(--s1)',
+      } },
+        h('div', { style: { color: accent(tone), display: 'flex', gap: 8, alignItems: 'center', fontWeight: 600 } },
+          h('i', { className: 'ti ti-' + icon, 'aria-hidden': true }), label),
+        h('div', { style: { fontSize: 27, fontWeight: 700, fontVariantNumeric: 'tabular-nums' } }, value),
+        caption && h('div', { style: muted }, caption))));
+  }
+
+  function Table({ label, headers, rows, tones = {}, highlights = [] }) {
     return h('div', { style: { overflowX: 'auto', maxWidth: '100%' }, tabIndex: 0, role: 'region', 'aria-label': label },
-      h('table', { 'aria-label': label, style: { width: '100%', borderCollapse: 'collapse', fontSize: 14, minWidth: 580 } },
-        h('thead', null, h('tr', null, headers.map((name, i) => h('th', { key: name, scope: 'col', style: { ...cell, textAlign: i ? 'right' : 'left', borderBottom: '1px solid var(--bdr2)' } }, name)))),
-        h('tbody', null, rows.map((row, i) => h('tr', { key: i, style: { borderBottom: '1px solid var(--bdr)' } }, row.map((value, j) =>
-          h(j ? 'td' : 'th', { key: j, scope: j ? undefined : 'row', style: { ...cell, textAlign: j ? 'right' : 'left', fontWeight: j ? 400 : 500 } }, value)))))));
+      h('table', { 'aria-label': label, style: { width: '100%', borderCollapse: 'collapse', fontSize: 14, minWidth: headers.length > 4 ? 620 : 0 } },
+        h('thead', null, h('tr', null, headers.map((name, i) => h('th', { key: name, scope: 'col', style: {
+          ...cell, textAlign: i ? 'right' : 'left', background: 'var(--s2)', color: tones[i] ? accent(tones[i]) : 'var(--t2)', borderBottom: '1px solid var(--bdr2)',
+        } }, name)))),
+        h('tbody', null, rows.map((row, i) => h('tr', { key: i, style: {
+          borderBottom: '1px solid var(--bdr)', background: highlights.includes(i) ? 'var(--blu-bg)' : i % 2 ? 'var(--s2)' : undefined,
+        } }, row.map((value, j) => h(j ? 'td' : 'th', { key: j, scope: j ? undefined : 'row', style: {
+          ...cell, textAlign: j ? 'right' : 'left', fontWeight: !j || highlights.includes(i) ? 600 : 400,
+          fontVariantNumeric: 'tabular-nums', whiteSpace: j ? 'nowrap' : undefined,
+        } }, value)))))));
+  }
+
+  function Section({ title, children }) {
+    return h('section', { className: 'card', style: card },
+      h('h2', { style: { fontSize: 17, margin: '0 0 12px' } }, title), children);
+  }
+
+  function Details({ title, children }) {
+    return h('details', { style: { ...muted, marginTop: 10 } },
+      h('summary', { style: { cursor: 'pointer', color: 'var(--blu)' } }, title), children);
   }
 
   function Statuses({ report }) {
     const maths = report.total.identity.status;
-    return h('div', { className: 'card', style: card, 'data-report-statuses': true },
-      h('div', null, h('strong', null, 'Arithmetic: '), maths === 'ties' ? 'Ties using the exact sales ÷ orders fraction' : maths === 'zero-orders' ? 'Unavailable — zero orders' : 'Unavailable — complete matching sales and counts required'),
-      h('div', null, h('strong', null, 'Source: '), report.sourceStatus === 'source-verified' ? 'Source-verified Shopify figures' : report.sourceStatus === 'provisional' ? 'Provisional management estimate — source assumptions remain' : 'Unavailable for the requested period'),
-      h('div', { 'data-report-books': true }, h('strong', null, 'Accounting: '), 'Not compared in this view. Private accounting reconciliation is separate.'),
-      h('p', { style: { ...muted, marginBottom: 0 } }, 'A ratio derived from sales will tie arithmetically. This does not independently validate source totals, order eligibility or the books.'));
+    const checked = report.sourceStatus === 'source-verified';
+    return h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }, 'data-report-statuses': true },
+      h('span', { className: 'badge ' + (maths === 'ties' ? 'bb' : 'ba') }, 'Arithmetic: ' + (maths === 'ties' ? 'Ties' : maths === 'zero-orders' ? 'Zero orders' : 'Unavailable')),
+      h('span', { className: 'badge ' + (checked ? 'bb' : 'ba') }, 'Source: ' + (checked ? 'Verified' : report.sourceStatus === 'provisional' ? 'Provisional' : 'Unavailable')),
+      h('span', { className: 'badge', 'data-report-books': true }, 'Accounting: Not compared'));
   }
 
   function Arithmetic({ report }) {
-    const rows = report.parts.map(p => [p.label, number(p.orders), money(p.pence),
-      p.identity.perOrder == null ? '—' : '£' + p.identity.perOrder.toFixed(12) + '…',
-      money(p.identity.reconstructedPence), money(p.identity.roundedDriftPence)]);
-    if (report.parts.length > 1) rows.push(['All Stores (provisional)', number(report.total.orders), money(report.total.pence),
-      report.total.identity.perOrder == null ? '—' : '£' + report.total.identity.perOrder.toFixed(12) + '…',
-      money(report.total.identity.reconstructedPence), money(report.total.identity.roundedDriftPence)]);
-    return h('section', { className: 'card', style: card, 'data-report-arithmetic': true },
-      h('h2', { style: { fontSize: 18, marginTop: 0 } }, 'Orders × Management Net Sales per order'),
-      h('p', null, 'The calculation keeps sales in integer pence and uses the exact sales ÷ orders fraction. The decimal shown here is a display approximation, never an input rounded to two decimal places.'),
-      h(Table, { label: 'Management sales arithmetic', headers: ['Store', 'Source orders', 'Management Net Sales', 'Sales per order (decimal display)', 'Exact fraction × orders', 'Drift if per order rounded to 2dp'], rows }),
-      h('p', { style: muted }, 'Drift = orders × the two-decimal displayed value − reported sales. Shopify counts eligible orders; Etsy counts source orders; NOTHS counts a provisional placed-order cohort. Zero-order periods have no per-order identity.'));
+    const row = (label, part) => [label, number(part.orders), money(part.pence),
+      part.identity.perOrder == null ? '—' : '£' + part.identity.perOrder.toFixed(12) + '…',
+      money(part.identity.reconstructedPence), money(part.identity.roundedDriftPence)];
+    const rows = report.parts.map(p => row(p.label, p));
+    if (rows.length > 1) rows.push(row('All Stores (provisional)', report.total));
+    return h(Section, { title: 'Sales reconciliation' },
+      h(Table, { label: 'Management sales arithmetic', headers: ['Store', 'Source orders', 'Management Net Sales', 'Management Net Sales per order', 'Orders × exact ratio', 'Rounding difference'], rows, tones: { 2: 'blu', 4: 'grn' }, highlights: rows.length > 1 ? [rows.length - 1] : [] }),
+      h('p', { style: muted }, 'This is an arithmetic tie. Source verification and accounting reconciliation are separate.'),
+      h(Details, { title: 'How the reconciliation works' },
+        h('p', null, 'Sales in pence ÷ source orders gives the exact ratio. The displayed decimal is an approximation. The rounding difference compares orders × the two-decimal value with net sales. A tie verifies the arithmetic. Accounting reconciliation is separate.'),
+        h('ul', null, report.parts.map(p => h('li', { key: p.channel }, p.countLabel)))));
   }
 
   function Financial({ report }) {
-    return h('div', null, h(Statuses, { report }), h(Arithmetic, { report }), report.parts.map(p =>
-      h('section', { key: p.channel, className: 'card', style: card },
-        h('h2', { style: { fontSize: 18, marginTop: 0 } }, p.label + ' · Source components'),
-        h('p', { style: muted }, p.countLabel + ' · ' + p.confidence),
-        p.available ? h(Table, { label: p.label + ' source components', headers: ['Measure', 'Source amount'], rows: p.components.map(c => [h('span', { title: c.definition }, c.label), money(c.value)]) }) :
-          h('p', { role: 'status' }, 'Complete matching source coverage is unavailable.'),
-        p.channel !== 'shopify' && h('p', { style: muted }, p.channel === 'etsy' ? 'Management Net Sales retains the existing provisional merchandise-plus-shipping ÷ 1.20 assumption and fiscal penny allocation. Source-reported tax is not deducted again.' :
-          'Management Net Sales retains the existing provisional customer-total ÷ 1.20 assumption and fiscal penny allocation. Cumulative refunds are not assigned invented posting dates.'),
-        p.warning && h('p', { style: muted }, root.RorModel.formatDateText(p.warning)))));
+    const { pence, orders, identity, countLabel } = report.total;
+    return h('div', null,
+      h(KPIs, { items: [
+        ['Management Net Sales', money(pence), report.sourceStatus === 'provisional' ? 'amb' : 'grn', 'currency-pound', report.sourceStatus === 'provisional' ? 'Provisional management estimate' : undefined],
+        ['Source orders', number(orders), 'blu', 'shopping-bag', countLabel],
+        ['Management Net Sales per order', pounds(identity.perOrder), 'pur', 'receipt', 'Rounded for display'],
+        ['Rounding difference', money(identity.roundedDriftPence), 'amb', 'calculator', 'If sales per order is rounded to 2dp'],
+      ] }),
+      h(Statuses, { report }), h(Arithmetic, { report }),
+      h(Section, { title: 'Sales breakdown' },
+        report.parts.map(p => h('details', { key: p.channel, open: report.parts.length === 1 ? true : undefined, style: { marginBottom: 8, border: '1px solid var(--bdr)', borderRadius: 8, overflow: 'hidden' } },
+          h('summary', { style: { cursor: 'pointer', padding: '10px 12px', background: 'var(--s2)', color: accent(storeTone[p.channel]), fontWeight: 600 } },
+            p.label + (p.confidence === 'provisional' ? ' · Provisional' : ''), h('span', { style: { float: 'right' } }, money(p.pence))),
+          p.available ? h(Table, { label: p.label + ' source components', headers: ['Measure', 'Source amount'], rows: [...p.components.map(c => [h('span', { title: c.definition }, c.label), money(c.value)]),
+            ...(p.channel === 'shopify' ? [] : [[(p.channel === 'etsy' ? '(Net merchandise + shipping)' : 'Original customer order total') + ' ÷ 1.20 · Management Net Sales', money(p.pence)]])] }) :
+            h('p', { role: 'status', style: { padding: '0 12px' } }, 'Complete matching source coverage is unavailable.')))));
   }
 
   function NativeAnalytics({ report, marketingStatus }) {
+    const shop = report.parts.find(p => p.channel === 'shopify');
+    const marketing = report.marketing;
+    const single = report.parts.length === 1;
+    const captureCaption = value => value != null ? 'Exact-period Shopify capture' : marketingStatus === 'loading' ? 'Loading Shopify capture…' : 'Unavailable for this exact interval';
+    const metrics = [['gross_sales', 'Gross merchandise'], ['discounts', 'Discounts (source sign)'], ['sales_reversals', 'Sales reversals'],
+      ['net_sales', 'Net merchandise'], ['shipping', 'Shipping'], ['taxes', 'Source taxes'], ['total_sales', 'Source total sales']];
+    const rows = [
+      ['Source orders', ...report.parts.map(p => number(p.orders))],
+      ...(shop ? [['Shopify-reported AOV', ...report.parts.map(p => pounds(p.nativeAov))]] : []),
+      ...metrics.filter(([key]) => report.parts.some(p => p.components.some(c => c.key === key))).map(([key, label]) =>
+        [label, ...report.parts.map(p => {
+          const component = p.components.find(c => c.key === key);
+          return h('span', { title: component?.definition }, money(component?.value));
+        })]),
+    ];
     return h('div', null,
-      h('section', { className: 'card', style: card },
-        h('h2', { style: { fontSize: 18, marginTop: 0 } }, 'Native source definitions'),
-        h('p', null, 'Shopify-reported AOV is an independently captured source measure for the exact interval, before post-order adjustments. It is distinct from management sales per order. Daily or monthly AOVs are never averaged to fill a missing interval.'),
-        h(Table, { label: 'Native source measures', headers: ['Store', 'Source order count', 'Shopify-reported AOV', 'Availability'], rows: report.parts.map(p => [p.label, number(p.orders), pounds(p.nativeAov),
-          p.channel === 'shopify' ? p.nativeStatus === 'captured' ? 'Exact native interval captured' : 'Native AOV unavailable for this exact interval' : 'Native AOV capture unavailable; source orders retain their own definition']) })),
-      report.parts.map(p => h('section', { key: p.channel, className: 'card', style: card },
-        h('h2', { style: { fontSize: 18, marginTop: 0 } }, p.label + ' · Native sales measures'),
-        h(Table, { label: p.label + ' native sales measures', headers: ['Measure', 'Value'], rows: p.components.filter(c => !['management', 'residual'].includes(c.key)).map(c => [h('span', { title: c.definition }, c.label), money(c.value)]) }),
-        !p.available && h('p', { role: 'status' }, 'Native source coverage unavailable for this period.'))),
-      h('section', { className: 'card', style: card },
-        h('h2', { style: { fontSize: 18, marginTop: 0 } }, 'Shopify sessions and customer rates'),
-        report.marketing?.status === 'matched' ? h(Table, { label: 'Exact-period Shopify marketing metrics', headers: ['Measure', 'Value'], rows: [
-          ['Sessions', number(report.marketing.sessions)], ['Online store conversion rate', percent(report.marketing.conversionRate)], ['Returning customer rate', percent(report.marketing.repeatRate)],
-        ] }) : h('p', { role: 'status' }, marketingStatus === 'loading' ? 'Loading the separate Shopify capture…' : 'Unavailable for this exact period and store selection. Choose a captured full Shopify month or performance window. Monthly sessions are never prorated.'),
-        h('p', { style: muted }, 'Email, advertising, customer acquisition and cost estimates remain in their original Commercial tabs, with their original reporting windows.')));
+      h(KPIs, { items: [
+        ...(shop ? [['Shopify-reported AOV', pounds(shop.nativeAov), 'pur', 'receipt', shop.nativeAov == null ? 'Unavailable for this exact interval' : 'Captured for this exact interval']] : []),
+        ['Source orders', number(report.total.orders), 'blu', 'shopping-bag', report.total.countLabel],
+        ...(shop && single ? [['Sessions', number(marketing?.sessions), 'grn', 'users', captureCaption(marketing?.sessions)],
+          ['Store conversion rate', percent(marketing?.conversionRate), 'amb', 'percentage', captureCaption(marketing?.conversionRate)]] : []),
+        ...(!shop || !single ? report.parts.filter(p => p.channel !== 'shopify').map(p => [p.channel === 'etsy' ? 'Etsy receipt total' : 'NOTHS original order total', money(p.components.find(c => c.key === 'total_sales')?.value), storeTone[p.channel], 'currency-pound', p.channel === 'etsy' ? 'Includes source-reported tax' : 'Placed-order cohort, before refund deductions']) : []),
+      ] }),
+      h(Section, { title: 'Native sales by store' },
+        h(Table, { label: 'Native source measures', headers: ['Measure', ...report.parts.map(p => p.label)], rows, tones: Object.fromEntries(report.parts.map((p, i) => [i + 1, storeTone[p.channel]])), highlights: shop ? [1] : [] }),
+        h(Details, { title: 'Native metric definitions' },
+          h('p', null, 'Shopify AOV is captured for the exact interval before post-order adjustments. Sales, discounts, shipping and taxes retain each platform’s source definition.'),
+          h('p', null, 'Etsy merchandise follows Stats. Shopify discounts are signed. Etsy and NOTHS discounts are shown as amounts. NOTHS totals are original customer order totals.'),
+          h('p', null, 'A dash indicates a measure is unavailable or does not apply.'),
+          h('p', null, 'Sessions and customer rates require a matching Shopify capture. Select Shopify and a captured full month or performance window.'))),
+      shop && single && marketing?.status === 'matched' && h(Section, { title: 'Shopify traffic and customer rates' },
+        h(Table, { label: 'Exact-period Shopify marketing metrics', headers: ['Measure', 'Value'], rows: [
+          ['Sessions', number(marketing.sessions)], ['Online store conversion rate', percent(marketing.conversionRate)], ['Returning customer rate', percent(marketing.repeatRate)],
+        ] })));
   }
 
   function Comparison({ report }) {
-    return h('section', { className: 'card', style: card },
-      h('h2', { style: { fontSize: 18, marginTop: 0 } }, 'Different definitions, same selected period'),
-      report.parts.map(p => h('div', { key: p.channel, style: { marginBottom: 24 } },
-        h('h3', { style: { fontSize: 16 } }, p.label),
-        h(Table, { label: p.label + ' metric comparison', headers: ['Measure', 'Per order', 'Definition'], rows: [
-          ['Management Net Sales per order', pounds(p.identity.perOrder), 'Management Net Sales ÷ ' + p.countLabel.toLowerCase()],
-          ['Shopify-reported AOV', pounds(p.nativeAov), p.channel === 'shopify' ? 'Independent native exact-period metric, before post-order adjustments' : 'Unavailable — no captured native AOV'],
-          ['Net merchandise sales per order', pounds(p.merchandisePerOrder), p.channel === 'noths' ? 'Unavailable — refund-adjusted native merchandise measure not verified' : 'Source net merchandise ÷ matching source orders; excludes shipping'],
-          ['Native total sales per order', pounds(p.totalPerOrder), 'Source total ÷ matching source orders; channel definitions differ'],
-          ['Shopify gross sales per order', pounds(p.grossPerOrder), 'Original gross merchandise + independently validated original shipping, divided by eligible orders'],
-        ] }))),
-      h('p', { style: muted }, 'These definitions cannot be substituted for one another. Native AOV × orders is not a refund ledger. Existing £48 targets, goal comparisons and What-If formulae remain in Commercial with their existing definitions.'));
+    const shop = report.parts.find(p => p.channel === 'shopify');
+    const measures = [
+      ['Management Net Sales per order', p => p.identity.perOrder, 'Management Net Sales ÷ matching source orders.'],
+      ['Shopify-reported AOV', p => p.nativeAov, 'Shopify’s exact-period AOV before post-order adjustments.'],
+      ['Net merchandise per order', p => p.merchandisePerOrder, 'Source net merchandise ÷ matching source orders. Excludes shipping.'],
+      ['Native total sales per order', p => p.totalPerOrder, 'Source total ÷ matching source orders. Each platform defines its total separately.'],
+      ['Shopify gross sales per order', p => p.grossPerOrder, 'Gross merchandise plus validated original shipping ÷ eligible orders.'],
+    ].filter((_, i) => shop || (i !== 1 && i !== 4));
+    return h('div', null,
+      h(KPIs, { items: [
+        ['Management Net Sales per order', pounds(report.total.identity.perOrder), 'grn', 'currency-pound', report.parts.length > 1 ? 'All Stores · provisional' : report.parts[0].label],
+        ...(shop ? [['Shopify-reported AOV', pounds(shop.nativeAov), 'pur', 'receipt'],
+          ['Shopify net merchandise per order', pounds(shop.merchandisePerOrder), 'blu', 'shopping-bag'],
+          ['Shopify total sales per order', pounds(shop.totalPerOrder), 'amb', 'calculator']] :
+          [['Native total sales per order', pounds(report.parts[0].totalPerOrder), 'blu', 'receipt']]),
+      ] }),
+      h(Section, { title: 'Compare sales per order' },
+        h(Table, { label: 'Sales per order comparison', headers: ['Measure', ...report.parts.map(p => p.label)], rows: measures.map(([label, get]) =>
+          [label, ...report.parts.map(p => pounds(get(p)))]), tones: Object.fromEntries(report.parts.map((p, i) => [i + 1, storeTone[p.channel]])), highlights: shop ? [0, 1] : [0] }),
+        h(Details, { title: 'How each metric is calculated' },
+          h('ul', null, report.parts.map(p => h('li', { key: p.channel }, p.countLabel))),
+          report.parts.some(p => p.channel === 'noths') && h('p', null, 'NOTHS net merchandise per order is unavailable because refund-adjusted merchandise sales are unverified.'),
+          h('dl', null, measures.map(([label, , definition]) => h('div', { key: label, style: { marginTop: 8 } },
+            h('dt', { style: { fontWeight: 600 } }, label), h('dd', { style: { margin: 0 } }, definition)))))));
   }
 
   function Reports({ dashboard, view, shop, markets, financeError, marketplaceError }) {
@@ -127,7 +195,7 @@
           root.RorCalc.REPORT_DATE_PRESETS.map(p => h('option', { key: p.key, value: p.key }, p.label)))),
         context.preset === 'custom' && field('Report start date', h('input', { type: 'date', lang: 'en-GB', 'aria-label': 'Report start date', value: context.start, style: selectStyle, onChange: e => update({ start: e.target.value }) })),
         context.preset === 'custom' && field('Report end date', h('input', { type: 'date', lang: 'en-GB', 'aria-label': 'Report end date', value: context.end, style: selectStyle, onChange: e => update({ end: e.target.value }) })),
-        h('span', { style: muted }, 'These filters are shared by Financial, Native Analytics and Metric Comparison. Commercial keeps its independent filters.')),
+        h('span', { style: muted }, 'Shared across the three reporting views')),
       range.unsupported ? h(Notice, null, range.reason) : h('div', null,
         h('p', { 'data-new-report-period': true }, h('strong', null, range.label + ' · ' + date(range.startDate) + ' → ' + date(range.endDate) + ' (inclusive)'), ' · GBP · Europe/London'),
         (financeError || marketplaceError) && h(Notice, null, root.RorModel.formatDateText([financeError, marketplaceError].filter(Boolean).join(' '))),
@@ -138,7 +206,8 @@
           view === 'financial' ? h(Financial, { report }) : view === 'native' ? h(NativeAnalytics, { report, marketingStatus }) : h(Comparison, { report }),
           h('details', { className: 'card', style: card }, h('summary', { style: { cursor: 'pointer' } }, 'Source definitions and coverage'),
             h('p', null, root.ManagementFinance.DEFINITIONS.net_revenue),
-            report.parts.map(p => h('p', { key: p.channel, style: { overflowWrap: 'anywhere' } }, p.label + ': through ' + date(p.through) + ' · ' + p.confidence + ' · ' + (p.sourceId || 'Source unavailable'))),
+            h('p', null, 'Marketplace management estimates use fiscal penny allocation. Etsy source tax is not deducted again. The NOTHS estimate uses original order totals. Cumulative refunds are excluded from the calculation because posting dates are unavailable.'),
+            report.parts.map(p => h('p', { key: p.channel, style: { overflowWrap: 'anywhere' } }, p.label + ': through ' + date(p.through) + ' · ' + p.confidence + ' · ' + (p.sourceId || 'Source unavailable'), p.warning && h('span', null, ' · ' + root.RorModel.formatDateText(p.warning)))),
             h('p', { style: muted }, 'Historical workbook figures and archived comparisons remain in Commercial. These views require complete daily source coverage.')))),
       view === 'native' && marketingStatus === 'unavailable' && h('button', { type: 'button', onClick: () => setAttempt(n => n + 1), style: selectStyle }, 'Retry Shopify capture'));
   }
