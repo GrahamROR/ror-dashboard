@@ -1,5 +1,4 @@
 // Execute with Playwright browser_run_code against the local server on 8775.
-// Optional unchanged-page reference server on 8776 enables exact Commercial DOM comparison.
 // Uses only browser state and synthetic faults; no files, accounts or source data are written.
 async (page) => {
   const errors = [], requests = [];
@@ -145,9 +144,19 @@ async (page) => {
   await tab('Financial');
   await page.getByRole('table', { name: 'Management sales arithmetic', exact: true }).waitFor();
   await page.unroute('**/data.json');
+  // A missing reporting bundle must fall back to the complete original dashboard.
+  await page.route('**/reporting/app.js*', route => route.fulfill({ status: 503, body: 'Synthetic reporting bundle failure' }));
+  await page.reload();
+  await page.getByLabel('Shopify financial basis', { exact: true }).waitFor();
+  assert((await page.locator('body').innerText()).includes('Commercial remains available'), 'Missing bundle fallback absent');
+  await page.getByText('ROR Sales', { exact: true }).click();
+  await page.getByLabel('Page date range', { exact: true }).waitFor();
+  await page.unroute('**/reporting/app.js*');
+  await page.reload();
+  await page.getByRole('tab', { name: 'Commercial', exact: true }).waitFor();
   assert(requests.every(url => !/xero|anthropic/i.test(url)), 'Unexpected external accounting/model request');
   return { growthTabs: 7, newViews: 4, viewports: [1440, 390], newPresets: presets.length,
     originalGrowthStateRetained: true, originalRorStateRetained: true, exactCommercialMarkupRetained: true,
-    renderFailureIsolated: true, auxiliaryFetchFailureIsolated: true, privateAccountingRequests: 0,
+    renderFailureIsolated: true, auxiliaryFetchFailureIsolated: true, missingBundleFallback: true, privateAccountingRequests: 0,
     unexpectedPageErrors: errors.filter(message => !message.includes('Synthetic report rendering fault')) };
 }

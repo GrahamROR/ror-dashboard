@@ -17,6 +17,8 @@ Accounting reconciliation is separate and shown as not compared. There is no acc
 
 The original dashboard sits outside the new reports' React error boundary. New report contents and their optional Shopify marketing capture load only on first entry. Returning to Commercial preserves its controls and restores its scroll position. The new tab bar supports arrow keys, Home and End, with inactive panels removed from keyboard navigation.
 
+If the reporting UI bundle cannot load at all, the entry point falls back to the original dashboard with a retry notice. A failed additional download must not blank Commercial.
+
 ## Validation
 
 Run the existing reporting suites with freshly captured export/financial baselines, as `.github/workflows/finance-tests.yml` does, and:
