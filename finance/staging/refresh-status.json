@@ -1,15 +1,15 @@
 {
   "status": "success",
-  "completed_at": "2026-11-27T04:20:21.389Z",
-  "attempted_at": "2026-11-27T04:19:00.694Z",
-  "snapshot_id": "58233a699ba2f29059e8e5c342c97b4e6ac2df616129f1f28076c7fbafb11f63",
-  "previous_snapshot_id": "9b80c1836fa0dee53a3ae3d56c9f0282e23e1305dff5a5d6b6a112d8772a0294",
+  "completed_at": "2026-11-28T02:04:05.339Z",
+  "attempted_at": "2026-11-28T02:02:42.227Z",
+  "snapshot_id": "e847b8c6c3d2b7dc4243cec5c1c072db0d68305cd790887da268a7a4b85e2f8d",
+  "previous_snapshot_id": "58233a699ba2f29059e8e5c342c97b4e6ac2df616129f1f28076c7fbafb11f63",
   "verification": {
     "start": "2024-01-01",
-    "end": "2026-11-26",
-    "days": 1061,
+    "end": "2026-11-27",
+    "days": 1062,
     "nativeControls": 42
   },
-  "producer_revision": "88fb737ed6395b7c0b3f737ae92222f8036af059",
-  "last_successful_at": "2026-11-27T04:20:21.389Z"
+  "producer_revision": "64f20ad2e67a89c18e7a9fe9b5046b095729e3ca",
+  "last_successful_at": "2026-11-28T02:04:05.339Z"
 }
